@@ -1,0 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
+/*   Updated: 2025/09/02 00:40:00 by marcnava         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PARSER_H
+# define PARSER_H
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <string.h>
+# include "structs.h"
+
+// Parser principal
+int		parse_cub_file(const char *filename, t_cub_data *data);
+
+// Parser de texturas
+int		parse_texture_line(const char *line, t_textures *textures);
+int		is_texture_identifier(const char *line);
+
+// Parser de colores
+int		parse_color_line(const char *line, t_color *floor, t_color *ceiling);
+int		is_color_identifier(const char *line);
+int		validate_rgb_values(int r, int g, int b);
+char	*extract_color_values(const char *line);
+int		parse_rgb_values(const char *rgb_str, int *rgb);
+int		assign_color(char identifier, t_color *floor, t_color *ceiling, int *rgb);
+
+// Parser de mapa
+int		parse_map_section(char **lines, int start_line, t_cub_data *data);
+int		validate_map(t_map *map, t_player *player);
+int		is_map_line(const char *line);
+int		find_player_position(t_map *map, t_player *player);
+int		is_map_closed(t_map *map);
+
+// Utilidades
+void	free_cub_data(t_cub_data *data);
+void	free_map(t_map *map);
+char	*trim_whitespace(char *str);
+int		is_empty_line(const char *line);
+char	**read_file_lines(const char *filename, int *line_count);
+int		count_file_lines(const char *filename);
+
+// Validación
+int		validate_file_extension(const char *filename);
+int		validate_texture_path(const char *path);
+
+// Debug
+void	print_cub_data(const t_cub_data *data);
+
+#endif

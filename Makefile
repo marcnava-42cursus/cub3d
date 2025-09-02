@@ -35,16 +35,30 @@ INCLUDES	:= -I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include
 
 MLX			:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-SRCS		:= $(SRCPATH)/cub3d.c
+SRCS		:= $(SRCPATH)/cub3d.c \
+			   $(SRCPATH)/parser/parser_main.c \
+			   $(SRCPATH)/parser/parser_validation.c \
+			   $(SRCPATH)/parser/parse_textures.c \
+			   $(SRCPATH)/parser/parse_map.c \
+			   $(SRCPATH)/parser/utils.c \
+			   $(SRCPATH)/parser/colors/parse_colors.c \
+			   $(SRCPATH)/parser/colors/color_validation.c \
+			   $(SRCPATH)/parser/colors/rgb_parsing.c \
+			   $(SRCPATH)/parser/colors/value_extraction.c \
+			   $(SRCPATH)/parser/utils/string_utils.c \
+			   $(SRCPATH)/parser/utils/file_utils.c \
+			   $(SRCPATH)/parser/utils/validation_utils.c \
+			   $(SRCPATH)/parser/utils/memory_utils.c \
+			   $(SRCPATH)/parser/utils/debug_utils.c
 
-OBJS		:= $(SRCS:$(SRCPATH)/%.c=$(OBJPATH)/%.o)
+OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 
 all:		$(NAME)
 
 $(NAME):	libft libmlx $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT)/libft.a $(MLX) -o $(NAME) $(INCLUDES)
 
-$(OBJPATH)/%.o:	$(SRCPATH)/%.c
+$(OBJPATH)/%.o:	%.c
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
