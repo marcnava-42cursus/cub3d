@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/01 00:54:44 by marcnava         ###   ########.fr        #
+#    Updated: 2025/09/06 17:45:54 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,8 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/parser/utils/file_utils.c \
 			   $(SRCPATH)/parser/utils/validation_utils.c \
 			   $(SRCPATH)/parser/utils/memory_utils.c \
-			   $(SRCPATH)/parser/utils/debug_utils.c
+			   $(SRCPATH)/parser/utils/debug_utils.c \
+			   $(SRCPATH)/render/window.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 
@@ -69,7 +70,7 @@ clean:
 
 fclean:		clean
 	$(RM) $(NAME)
-	$(RM) $(LIBPATH)
+	#$(RM) $(LIBPATH)
 
 re:			fclean all
 

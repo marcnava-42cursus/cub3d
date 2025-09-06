@@ -6,12 +6,15 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 00:42:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:49:54 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
+# include "MLX42/MLX42.h"
+# include "MLX42/MLX42_Int.h"
 
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
@@ -73,8 +76,12 @@ typedef struct s_game
 {
 	t_cub_data	cub_data;		// Datos parseados del archivo .cub
 	// Aquí se pueden añadir más campos según se desarrolle el juego:
-	// - Datos de renderizado (raycast, sprites, etc.)
 	// - Ventana y gráficos (MLX, texturas cargadas, etc.)
+	mlx_t		*mlx;
+	// - Datos de renderizado (raycast, sprites, etc.)
+	mlx_image_t	*rc_buf_zero;
+	mlx_image_t	*rc_buf_one;
+	mlx_image_t	*bg_buf_zero;
 	// - Estado del juego (paused, running, etc.)
 	// - Input del jugador (teclas presionadas, mouse, etc.)
 	// - Audio, animaciones, etc.

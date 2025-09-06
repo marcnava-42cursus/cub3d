@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 01:48:37 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/06 17:39:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	init_game(t_game *game, const char *map_file)
 
 	// Aquí se inicializarían otros componentes del juego
 	// como la ventana gráfica, texturas MLX, etc.
+	window_init(game);	
 
 	return (1);
 }
@@ -40,6 +41,7 @@ void	cleanup_game(t_game *game)
 
 	// Aquí se liberarían otros recursos del juego
 	// como ventanas MLX, texturas cargadas, etc.
+	window_free(game);
 }
 
 int	run_game(t_game *game)
@@ -54,6 +56,8 @@ int	run_game(t_game *game)
 	// - Procesamiento de input
 	// - Lógica del juego
 	// - Rendering
+	render_bg(game, BLUE, GREEN);
+	mlx_loop(game->mlx);
 
 	return (1);
 }
