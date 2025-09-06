@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/06 17:39:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/07 00:22:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	run_game(t_game *game)
 	// - Procesamiento de input
 	// - Lógica del juego
 	// - Rendering
-	render_bg(game, BLUE, GREEN);
+	render_bg(game);
+	render_atmospheric_perspective(game);
+	render_minimap(game);
 	mlx_loop(game->mlx);
 
 	return (1);

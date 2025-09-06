@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/06 17:49:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/06 23:33:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,11 @@ typedef struct s_game
 	// - Ventana y gráficos (MLX, texturas cargadas, etc.)
 	mlx_t		*mlx;
 	// - Datos de renderizado (raycast, sprites, etc.)
+	mlx_image_t	*bg_buf_zero;
+	mlx_image_t	*atmos_buf_zero;
 	mlx_image_t	*rc_buf_zero;
 	mlx_image_t	*rc_buf_one;
-	mlx_image_t	*bg_buf_zero;
+	mlx_image_t	*minimap;
 	// - Estado del juego (paused, running, etc.)
 	// - Input del jugador (teclas presionadas, mouse, etc.)
 	// - Audio, animaciones, etc.
