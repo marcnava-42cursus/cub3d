@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/07 00:24:39 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/07 02:19:43 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	window_init(t_game *game)
 	
 	monitor_width = 0;
 	monitor_height = 0;
-	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "cub3D", true);
+	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "cub3D", false);
 	if (!game->mlx)
 		return (false);
 	mlx_get_monitor_size(0, &monitor_width, &monitor_height);
@@ -34,7 +34,7 @@ bool	window_init(t_game *game)
 			MAX_WINDOW_HEIGHT);
 	game->atmos_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
-	game->minimap = mlx_new_image(game->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
+	minimap_init(game);
 	return (true);
 }
 
@@ -80,7 +80,7 @@ void	render_atmospheric_perspective(t_game *game)
 	while (y < game->atmos_buf_zero->height / 3)
 	{
 		x = 0;
-		while (x < game->atmos_buf_zero->width / 2)
+		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 8 == 0 && y % 8 == 0)
 				mlx_put_pixel(game->atmos_buf_zero, x, y, WHITE);
@@ -91,7 +91,7 @@ void	render_atmospheric_perspective(t_game *game)
 	while (y < game->atmos_buf_zero->height / 2)
 	{
 		x = 0;
-		while (x < game->atmos_buf_zero->width / 2)
+		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 4 == 0 && y % 4 == 0)
 				mlx_put_pixel(game->atmos_buf_zero, x, y, WHITE);
@@ -102,7 +102,7 @@ void	render_atmospheric_perspective(t_game *game)
 	while (y < game->atmos_buf_zero->height - (game->atmos_buf_zero->height / 3))
 	{
 		x = 0;
-		while (x < game->atmos_buf_zero->width / 2)
+		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 2 == 0 && y % 2 == 0)
 				mlx_put_pixel(game->atmos_buf_zero, x, y, BLACK);
@@ -113,7 +113,7 @@ void	render_atmospheric_perspective(t_game *game)
 	while (y < game->atmos_buf_zero->height - (game->atmos_buf_zero->height / 6))
 	{
 		x = 0;
-		while (x < game->atmos_buf_zero->width / 2)
+		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 3 == 0 && y % 3 == 0)
 				mlx_put_pixel(game->atmos_buf_zero, x, y, BLACK);
@@ -124,30 +124,11 @@ void	render_atmospheric_perspective(t_game *game)
 	mlx_image_to_window(game->mlx, game->atmos_buf_zero, 0, 0);
 }
 
-void	render_minimap(t_game *game)
-{
-	unsigned int	x;
-	unsigned int	y;
-
-	y = 0;
-	while (y < game->minimap->height)
-	{
-		x = 0;
-		while (x < game->minimap->width)
-		{
-			mlx_put_pixel(game->minimap, x, y, BLUE);
-			x++;
-		}
-		y++;
-	}
-	mlx_image_to_window(game->mlx, game->minimap, 
-			game->minimap->width / 2, 0);
-}
-
 void	window_free(t_game *game)
 {
 	mlx_delete_image(game->mlx, game->rc_buf_zero);
 	mlx_delete_image(game->mlx, game->rc_buf_one);
 	mlx_delete_image(game->mlx, game->bg_buf_zero);
+	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);
 }

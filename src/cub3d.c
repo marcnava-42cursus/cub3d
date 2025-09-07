@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/07 00:22:48 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/07 02:15:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	run_game(t_game *game)
 	// - Rendering
 	render_bg(game);
 	render_atmospheric_perspective(game);
-	render_minimap(game);
+	render_minimap_bg(game->mlx, &game->minimap);
+	render_minimap_player(game->mlx, &game->minimap);
 	mlx_loop(game->mlx);
 
 	return (1);

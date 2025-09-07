@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/06 23:33:32 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/09/07 02:02:58 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/parser/utils/validation_utils.c \
 			   $(SRCPATH)/parser/utils/memory_utils.c \
 			   $(SRCPATH)/parser/utils/debug_utils.c \
+			   $(SRCPATH)/render/minimap.c \
 			   $(SRCPATH)/render/window.c \
 			   $(SRCPATH)/render/utils.c
 

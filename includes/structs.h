@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/06 23:33:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/07 02:04:44 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,15 @@ typedef struct s_cub_data
 	t_player	player;
 }	t_cub_data;
 
+typedef struct s_minimap
+{
+	mlx_image_t		*bg;
+	mlx_image_t		*tile;
+	t_map			*map;
+	t_player		*player;
+	unsigned int	tile_size;
+}	t_minimap;
+
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
@@ -83,7 +92,7 @@ typedef struct s_game
 	mlx_image_t	*atmos_buf_zero;
 	mlx_image_t	*rc_buf_zero;
 	mlx_image_t	*rc_buf_one;
-	mlx_image_t	*minimap;
+	t_minimap	minimap;
 	// - Estado del juego (paused, running, etc.)
 	// - Input del jugador (teclas presionadas, mouse, etc.)
 	// - Audio, animaciones, etc.
