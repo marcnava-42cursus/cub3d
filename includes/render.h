@@ -24,8 +24,21 @@
 # define GREEN 0x00FF00FF
 # define BLUE 0x0000FFFF
 
+# define TILE_SIZE 64
+
+// Window functions
 bool	window_init(t_game *game);
 void	render_bg(t_game *game, int sky, int ground);
 void	window_free(t_game *game);
+
+// Texture loading
+int	load_map_textures(t_game *game);
+void	free_map_textures(t_game *game);
+
+// 2D Map rendering
+void	render_map_2d(t_game *game);
+void	render_map_2d_initial(t_game *game);
+void	render_map_tiles_static(t_game *game);
+void	render_player_dynamic(t_game *game);
 
 #endif

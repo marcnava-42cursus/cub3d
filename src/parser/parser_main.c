@@ -27,8 +27,9 @@ static void	init_cub_data(t_cub_data *data)
 	data->map.grid = NULL;
 	data->map.width = 0;
 	data->map.height = 0;
-	data->player.x = -1;
-	data->player.y = -1;
+	data->player.x = -1.0f;
+	data->player.y = -1.0f;
+	data->player.angle = 0.0f;
 	data->player.orientation = 0;
 }
 
@@ -111,7 +112,7 @@ static int	validate_parsed_data(const t_cub_data *data)
 		return (0);
 	if (!data->map.grid || data->map.height == 0 || data->map.width == 0)
 		return (0);
-	if (data->player.x == -1 || data->player.y == -1)
+	if (data->player.x == -1.0f || data->player.y == -1.0f)
 		return (0);
 	return (1);
 }

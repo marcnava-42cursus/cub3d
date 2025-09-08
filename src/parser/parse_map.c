@@ -63,8 +63,8 @@ int	find_player_position(t_map *map, t_player *player)
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
 				player_count++;
-				player->x = x;
-				player->y = y;
+				player->x = (float)x + 0.5f;  // Centro de la celda
+				player->y = (float)y + 0.5f;  // Centro de la celda
 				player->orientation = (t_orientation)c;
 				map->grid[y][x] = '0';
 			}

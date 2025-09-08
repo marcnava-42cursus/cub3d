@@ -48,9 +48,10 @@ typedef struct s_textures
 // Estructura para la posición del jugador
 typedef struct s_player
 {
-	int				x;
-	int				y;
-	t_orientation	orientation;
+	float			x;			// Coordenada X flotante para movimiento suave
+	float			y;			// Coordenada Y flotante para movimiento suave
+	float			angle;		// Ángulo de rotación en radianes
+	t_orientation	orientation;	// Orientación original del mapa (N, S, E, W)
 }	t_player;
 
 // Estructura para el mapa
@@ -71,20 +72,44 @@ typedef struct s_cub_data
 	t_player	player;
 }	t_cub_data;
 
+// Textures for 2D map rendering
+typedef struct s_map_textures
+{
+	mlx_image_t	*wall;			// block.png
+	mlx_image_t	*floor;			// floor.png
+	mlx_image_t	*player;		// player.png (fallback)
+	mlx_image_t	*player_north;	// player facing north
+	mlx_image_t	*player_south;	// player facing south
+	mlx_image_t	*player_east;	// player facing east
+	mlx_image_t	*player_west;	// player facing west
+}	t_map_textures;
+
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
 	t_cub_data	cub_data;		// Datos parseados del archivo .cub
-	// Aquí se pueden añadir más campos según se desarrolle el juego:
-	// - Ventana y gráficos (MLX, texturas cargadas, etc.)
+	// Ventana MLX
 	mlx_t		*mlx;
-	// - Datos de renderizado (raycast, sprites, etc.)
+	// Buffers de renderizado
 	mlx_image_t	*rc_buf_zero;
 	mlx_image_t	*rc_buf_one;
 	mlx_image_t	*bg_buf_zero;
-	// - Estado del juego (paused, running, etc.)
-	// - Input del jugador (teclas presionadas, mouse, etc.)
-	// - Audio, animaciones, etc.
+	// Capas separadas para el renderizado 2D
+	mlx_image_t	*map_layer;		// Capa estática del mapa
+	mlx_image_t	*player_layer;		// Capa dinámica del jugador
+	// Texturas 2D
+	t_map_textures	textures_2d;
+	// Variables para seguimiento de estado del jugador
+	float		last_player_x;
+	float		last_player_y;
+	float		last_player_angle;
+	// Estado de teclas para movimiento continuo
+	bool		key_w_pressed;
+	bool		key_s_pressed;
+	bool		key_a_pressed;
+	bool		key_d_pressed;
+	bool		key_left_pressed;
+	bool		key_right_pressed;
 }	t_game;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/06 17:47:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/07 13:55:06 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,39 @@
 
 bool	window_init(t_game *game)
 {
-	int			monitor_width;
-	int			monitor_height;
-	
-	monitor_width = 0;
-	monitor_height = 0;
-	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "cub3D", true);
+	int			window_width;
+	int			window_height;
+
+	window_width = game->cub_data.map.width * TILE_SIZE;
+	window_height = game->cub_data.map.height * TILE_SIZE;
+	game->mlx = mlx_init(window_width, window_height, "cub3D", false);
 	if (!game->mlx)
 		return (false);
-	mlx_get_monitor_size(0, &monitor_width, &monitor_height);
-	mlx_set_window_size(game->mlx, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
-	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH)/2, 
-			(monitor_height - MAX_WINDOW_HEIGHT)/2);
-	game->rc_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
-			MAX_WINDOW_HEIGHT);
-	game->rc_buf_one = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
-			MAX_WINDOW_HEIGHT);
-	game->bg_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
-			MAX_WINDOW_HEIGHT);
+	game->rc_buf_zero = mlx_new_image(game->mlx, window_width,
+			window_height);
+	game->rc_buf_one = mlx_new_image(game->mlx, window_width,
+			window_height);
+	game->bg_buf_zero = mlx_new_image(game->mlx, window_width,
+			window_height);
+	// Crear capas separadas para renderizado 2D
+	game->map_layer = mlx_new_image(game->mlx, window_width, window_height);
+	game->player_layer = mlx_new_image(game->mlx, window_width, window_height);
+	if (!game->map_layer || !game->player_layer)
+		return (false);
+	// Hacer la capa del jugador transparente inicialmente
+	for (unsigned int i = 0; i < window_width * window_height; i++)
+		((uint32_t*)game->player_layer->pixels)[i] = 0x00000000;
+	// Inicializar variables de seguimiento
+	game->last_player_x = -1.0f;
+	game->last_player_y = -1.0f;
+	game->last_player_angle = 0.0f;
+	// Inicializar estado de teclas
+	game->key_w_pressed = false;
+	game->key_s_pressed = false;
+	game->key_a_pressed = false;
+	game->key_d_pressed = false;
+	game->key_left_pressed = false;
+	game->key_right_pressed = false;
 	return (true);
 }
 
@@ -66,8 +81,13 @@ void	render_bg(t_game *game, int sky, int ground)
 
 void	window_free(t_game *game)
 {
+	free_map_textures(game);
 	mlx_delete_image(game->mlx, game->rc_buf_zero);
 	mlx_delete_image(game->mlx, game->rc_buf_one);
 	mlx_delete_image(game->mlx, game->bg_buf_zero);
+	if (game->map_layer)
+		mlx_delete_image(game->mlx, game->map_layer);
+	if (game->player_layer)
+		mlx_delete_image(game->mlx, game->player_layer);
 	mlx_terminate(game->mlx);
 }

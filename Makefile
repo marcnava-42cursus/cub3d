@@ -50,7 +50,9 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/parser/utils/validation_utils.c \
 			   $(SRCPATH)/parser/utils/memory_utils.c \
 			   $(SRCPATH)/parser/utils/debug_utils.c \
-			   $(SRCPATH)/render/window.c
+			   $(SRCPATH)/render/window.c \
+			   $(SRCPATH)/render/map_2d.c \
+			   $(SRCPATH)/movement.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 

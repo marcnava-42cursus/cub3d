@@ -24,9 +24,19 @@ int	init_game(t_game *game, const char *map_file)
 	// Mostrar datos parseados (para debugging)
 	print_cub_data(&game->cub_data);
 
-	// Aquí se inicializarían otros componentes del juego
-	// como la ventana gráfica, texturas MLX, etc.
-	window_init(game);	
+	// Inicializar ventana MLX
+	if (!window_init(game))
+	{
+		printf("Error: Failed to initialize window\n");
+		return (0);
+	}
+
+	// Cargar texturas 2D
+	if (!load_map_textures(game))
+	{
+		printf("Error: Failed to load textures\n");
+		return (0);
+	}
 
 	return (1);
 }
@@ -49,16 +59,28 @@ int	run_game(t_game *game)
 	// Por ahora solo muestra que el parsing fue exitoso
 	printf("Game initialized successfully!\n");
 	printf("Map size: %dx%d\n", game->cub_data.map.width, game->cub_data.map.height);
-	printf("Player at (%d, %d) facing %c\n", 
+	printf("Player at (%.2f, %.2f) facing %c\n", 
 		game->cub_data.player.x, game->cub_data.player.y, game->cub_data.player.orientation);
 
-	// Aquí iría el game loop principal
-	// - Procesamiento de input
-	// - Lógica del juego
-	// - Rendering
-	render_bg(game, BLUE, GREEN);
+	// Renderizar mapa 2D
+	render_map_2d(game);
+
+	// Inicializar sistema de movimiento
+	init_movement_system(game);
+
+	// Iniciar loop de MLX
 	mlx_loop(game->mlx);
 
+	return (1);
+}
+
+static int	validate_args(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		printf("Error:\n\tUsage: %s <map_path>\n", argv[0]);
+		return (0);
+	}
 	return (1);
 }
 
@@ -66,24 +88,18 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
-	if (argc != 2)
-		return (printf("Error:\n\tUsage: %s <map_path>\n", argv[0]), 1);
-
-	// Inicializar juego
+	if (!validate_args(argc, argv))
+		return (1);
 	if (!init_game(&game, argv[1]))
 	{
 		cleanup_game(&game);
 		return (1);
 	}
-
-	// Ejecutar juego
 	if (!run_game(&game))
 	{
 		cleanup_game(&game);
 		return (1);
 	}
-
-	// Limpiar recursos
 	cleanup_game(&game);
 	return (0);
 }
