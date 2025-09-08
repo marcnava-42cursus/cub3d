@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/07 02:02:58 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/09/08 12:19:14 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,13 @@ NAME		:= cub3D
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra #-Werror
-DFLAGS		:= -g3 -fsanitize=address
+DFLAGS		:= -g3
+SANITIZE	:= -fsanitize=address
 DEBUG		?= 0
 ifeq ($(DEBUG),1)
-CFLAGS		+= $(DFLAGS)
+	CFLAGS		+= $(DFLAGS)
+else if ($(DEBUG),2)
+	CFLAGS		+= $(DFLAGS) $(SANITIZE)
 endif
 RM			:= rm -rf
 
@@ -50,6 +53,7 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/parser/utils/validation_utils.c \
 			   $(SRCPATH)/parser/utils/memory_utils.c \
 			   $(SRCPATH)/parser/utils/debug_utils.c \
+			   $(SRCPATH)/render/background.c \
 			   $(SRCPATH)/render/minimap.c \
 			   $(SRCPATH)/render/window.c \
 			   $(SRCPATH)/render/utils.c

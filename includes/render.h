@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/07 02:21:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:18:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # define MAX_WINDOW_HEIGHT 1080
 # define MINIMAP_WIDTH 256
 # define MINIMAP_HEIGHT 256
-# define MINIMAP_TILE_SIZE 16
+# define MINIMAP_PLAYER_SIZE 16
+# define MINIMAP_TILE_SIZE 32
 
 # define RED 0xFF0000FF
 # define GREEN 0x00FF00FF
@@ -30,16 +31,19 @@
 # define WHITE 0xFFFFFFFF
 # define BLACK 0x000000FF
 
+/*------------------------------ BACKGROUND.C --------------------------------*/
+void	render_bg(t_game* game);
+
 /*-------------------------------- MINIMAP.C ---------------------------------*/
 void	minimap_init(t_game *game);
 void	render_minimap_bg(mlx_t *mlx, t_minimap *minimap);
+void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap);
 void	render_minimap_player(mlx_t *mlx, t_minimap *minimap);
 void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
-void	render_bg(t_game *game);
-void	render_atmospheric_perspective(t_game *game);
+void	render_window(t_game *game);
 void	window_free(t_game *game);
 
 /*--------------------------------- UTILS.C ----------------------------------*/

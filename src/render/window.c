@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/07 02:19:43 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:18:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,90 +38,12 @@ bool	window_init(t_game *game)
 	return (true);
 }
 
-void	render_bg(t_game *game)
+void	render_window(t_game *game)
 {
-	unsigned int	x;
-	unsigned int	y;
-	int				sky;
-	int				ground;
-
-	y = 0;
-	sky = t_color_to_int(&game->cub_data.ceiling_color, 255);
-	ground = t_color_to_int(&game->cub_data.floor_color, 255);
-	while (y < game->bg_buf_zero->height / 2)
-	{
-		x = 0;
-		while (x < game->bg_buf_zero->width)
-		{
-			mlx_put_pixel(game->bg_buf_zero, x, y, sky);
-			x++;
-		}
-		y++;
-	}
-	while (y < game->bg_buf_zero->height)
-	{
-		x = 0;
-		while (x < game->bg_buf_zero->width)
-		{
-			mlx_put_pixel(game->bg_buf_zero, x, y, ground);
-			x++;
-		}
-		y++;
-	}
-	mlx_image_to_window(game->mlx, game->bg_buf_zero, 0, 0);
-}
-
-void	render_atmospheric_perspective(t_game *game)
-{
-	unsigned int	x;
-	unsigned int	y;
-
-	y = game->atmos_buf_zero->height / 6;
-	while (y < game->atmos_buf_zero->height / 3)
-	{
-		x = 0;
-		while (x < game->atmos_buf_zero->width)
-		{
-			if (x % 8 == 0 && y % 8 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, WHITE);
-			x++;
-		}
-		y++;
-	}
-	while (y < game->atmos_buf_zero->height / 2)
-	{
-		x = 0;
-		while (x < game->atmos_buf_zero->width)
-		{
-			if (x % 4 == 0 && y % 4 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, WHITE);
-			x++;
-		}
-		y++;
-	}
-	while (y < game->atmos_buf_zero->height - (game->atmos_buf_zero->height / 3))
-	{
-		x = 0;
-		while (x < game->atmos_buf_zero->width)
-		{
-			if (x % 2 == 0 && y % 2 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, BLACK);
-			x++;
-		}
-		y++;
-	}
-	while (y < game->atmos_buf_zero->height - (game->atmos_buf_zero->height / 6))
-	{
-		x = 0;
-		while (x < game->atmos_buf_zero->width)
-		{
-			if (x % 3 == 0 && y % 3 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, BLACK);
-			x++;
-		}
-		y++;
-	}
-	mlx_image_to_window(game->mlx, game->atmos_buf_zero, 0, 0);
+	render_bg(game);
+	render_minimap_bg(game->mlx, &game->minimap);
+	render_minimap_tiles(game->mlx, &game->cub_data.map, &game->minimap);
+	render_minimap_player(game->mlx, &game->minimap);
 }
 
 void	window_free(t_game *game)

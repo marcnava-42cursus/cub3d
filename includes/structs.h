@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/07 02:04:44 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:05:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ typedef struct s_cub_data
 typedef struct s_minimap
 {
 	mlx_image_t		*bg;
+	mlx_image_t		*player_sprite;
 	mlx_image_t		*tile;
 	t_map			*map;
 	t_player		*player;
-	unsigned int	tile_size;
 }	t_minimap;
 
 // Estructura principal del juego que contiene TODOS los datos

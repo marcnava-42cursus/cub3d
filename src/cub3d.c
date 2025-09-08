@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/07 02:15:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:17:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,11 @@ int	run_game(t_game *game)
 	printf("Map size: %dx%d\n", game->cub_data.map.width, game->cub_data.map.height);
 	printf("Player at (%d, %d) facing %c\n", 
 		game->cub_data.player.x, game->cub_data.player.y, game->cub_data.player.orientation);
-
 	// Aquí iría el game loop principal
 	// - Procesamiento de input
 	// - Lógica del juego
 	// - Rendering
-	render_bg(game);
-	render_atmospheric_perspective(game);
-	render_minimap_bg(game->mlx, &game->minimap);
-	render_minimap_player(game->mlx, &game->minimap);
+	render_window(game);
 	mlx_loop(game->mlx);
 
 	return (1);
