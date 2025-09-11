@@ -1,0 +1,89 @@
+src/parser/parser.c:	data->textures.north = NULL;
+src/parser/parser.c:	data->textures.south = NULL;
+src/parser/parser.c:	data->textures.west = NULL;
+src/parser/parser.c:	data->textures.east = NULL;
+src/parser/parser.c:	data->floor_color.r = -1;
+src/parser/parser.c:	data->floor_color.g = -1;
+src/parser/parser.c:	data->floor_color.b = -1;
+src/parser/parser.c:	data->ceiling_color.r = -1;
+src/parser/parser.c:	data->ceiling_color.g = -1;
+src/parser/parser.c:	data->ceiling_color.b = -1;
+src/parser/parser.c:	data->map.grid = NULL;
+src/parser/parser.c:	data->map.width = 0;
+src/parser/parser.c:	data->map.height = 0;
+src/parser/parser.c:	data->player.x = -1;
+src/parser/parser.c:	data->player.y = -1;
+src/parser/parser.c:	data->player.orientation_x = 0;
+src/parser/parser.c:	data->player.orientation_y = 0;
+src/parser/parser.c:	data->player.orientation = 0;
+src/parser/parser.c:	if (!data->textures.north || !data->textures.south
+src/parser/parser.c:		|| !data->textures.west || !data->textures.east)
+src/parser/parser.c:	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
+src/parser/parser.c:	if (!data->map.grid || data->map.height == 0 || data->map.width == 0)
+src/parser/parser.c:	if (data->player.x == -1 || data->player.y == -1)
+src/parser/parser.c:			if (!parse_texture_line(lines[i], &data->textures))
+src/parser/parser.c:			if (!parse_color_line(lines[i], &data->floor_color,
+src/parser/parser.c:					&data->ceiling_color))
+src/parser/parser_validation.c:	if (!data->textures.north || !data->textures.south
+src/parser/parser_validation.c:		|| !data->textures.west || !data->textures.east)
+src/parser/parser_validation.c:	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
+src/parser/parser_validation.c:	if (!data->map.grid || data->map.height == 0 || data->map.width == 0)
+src/parser/parser_validation.c:	if (data->player.x == -1 || data->player.y == -1)
+src/parser/parser_main.c:	data->textures.north = NULL;
+src/parser/parser_main.c:	data->textures.south = NULL;
+src/parser/parser_main.c:	data->textures.west = NULL;
+src/parser/parser_main.c:	data->textures.east = NULL;
+src/parser/parser_main.c:	data->floor_color.r = -1;
+src/parser/parser_main.c:	data->floor_color.g = -1;
+src/parser/parser_main.c:	data->floor_color.b = -1;
+src/parser/parser_main.c:	data->ceiling_color.r = -1;
+src/parser/parser_main.c:	data->ceiling_color.g = -1;
+src/parser/parser_main.c:	data->ceiling_color.b = -1;
+src/parser/parser_main.c:	data->map.grid = NULL;
+src/parser/parser_main.c:	data->map.width = 0;
+src/parser/parser_main.c:	data->map.height = 0;
+src/parser/parser_main.c:	data->player.x = -1;
+src/parser/parser_main.c:	data->player.y = -1;
+src/parser/parser_main.c:	data->player.orientation = 0;
+src/parser/parser_main.c:			if (!parse_texture_line(lines[i], &data->textures))
+src/parser/parser_main.c:			if (!parse_color_line(lines[i], &data->floor_color,
+src/parser/parser_main.c:					&data->ceiling_color))
+src/parser/parser_main.c:	if (!data->textures.north || !data->textures.south
+src/parser/parser_main.c:		|| !data->textures.west || !data->textures.east)
+src/parser/parser_main.c:	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
+src/parser/parser_main.c:	if (!data->map.grid || data->map.height == 0 || data->map.width == 0)
+src/parser/parser_main.c:	if (data->player.x == -1 || data->player.y == -1)
+src/parser/parse_map.c:	data->map.height = map_end - start_line + 1;
+src/parser/parse_map.c:	data->map.width = calculate_map_width(lines, start_line, map_end);
+src/parser/parse_map.c:	if (data->map.height <= 0 || data->map.width <= 0)
+src/parser/parse_map.c:	data->map.grid = malloc(sizeof(char *) * (data->map.height + 1));
+src/parser/parse_map.c:	if (!data->map.grid)
+src/parser/parse_map.c:	for (i = 0; i < data->map.height; i++)
+src/parser/parse_map.c:		data->map.grid[i] = malloc(line_len + 1);
+src/parser/parse_map.c:		if (!data->map.grid[i])
+src/parser/parse_map.c:				free(data->map.grid[j]);
+src/parser/parse_map.c:			free(data->map.grid);
+src/parser/parse_map.c:			data->map.grid[i][j] = line[j];
+src/parser/parse_map.c:		data->map.grid[i][line_len] = '\0';
+src/parser/parse_map.c:	data->map.grid[data->map.height] = NULL;
+src/parser/parse_map.c:	return (validate_map(&data->map, &data->player));
+src/parser/utils/memory_utils.c:	free_texture_if_exists(&data->textures.north);
+src/parser/utils/memory_utils.c:	free_texture_if_exists(&data->textures.south);
+src/parser/utils/memory_utils.c:	free_texture_if_exists(&data->textures.west);
+src/parser/utils/memory_utils.c:	free_texture_if_exists(&data->textures.east);
+src/parser/utils/memory_utils.c:	free_map(&data->map);
+src/parser/utils/debug_utils.c:	if (data->textures.north)
+src/parser/utils/debug_utils.c:		printf("  North: %s\n", data->textures.north);
+src/parser/utils/debug_utils.c:	if (data->textures.south)
+src/parser/utils/debug_utils.c:		printf("  South: %s\n", data->textures.south);
+src/parser/utils/debug_utils.c:	if (data->textures.west)
+src/parser/utils/debug_utils.c:		printf("  West: %s\n", data->textures.west);
+src/parser/utils/debug_utils.c:	if (data->textures.east)
+src/parser/utils/debug_utils.c:		printf("  East: %s\n", data->textures.east);
+src/parser/utils/debug_utils.c:		data->floor_color.r, data->floor_color.g, data->floor_color.b);
+src/parser/utils/debug_utils.c:		data->ceiling_color.r, data->ceiling_color.g, data->ceiling_color.b);
+src/parser/utils/debug_utils.c:	printf("  Position: (%d, %d)\n", data->player.x, data->player.y);
+src/parser/utils/debug_utils.c:	printf("  Orientation: %c\n", data->player.orientation);
+src/parser/utils/debug_utils.c:	printf("Map (%dx%d):\n", data->map.width, data->map.height);
+src/parser/utils/debug_utils.c:	while (i < data->map.height)
+src/parser/utils/debug_utils.c:		printf("  %s\n", data->map.grid[i]);

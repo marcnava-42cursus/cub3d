@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/08 12:20:01 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:00:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	minimap_init(t_game *game)
 	game->minimap.bg = mlx_new_image(game->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
 	game->minimap.player_sprite = mlx_new_image(game->mlx,
 			MINIMAP_PLAYER_SIZE, MINIMAP_PLAYER_SIZE);
+	game->minimap.player_vision = mlx_new_image(game->mlx,
+			MINIMAP_WIDTH, MINIMAP_HEIGHT);
 	game->minimap.tile = mlx_new_image(game->mlx, MINIMAP_TILE_SIZE,
 			MINIMAP_TILE_SIZE);
 }
@@ -61,53 +63,89 @@ void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
 		y++;
 	}
 }
+
 void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 {
-	int	x;
-	int	y;
-	int	minimap_origin_x;
-	int	minimap_origin_y;
-	int	minimap_col;
-	int	minimap_row;
+	int		x;
+	int		y;
+	int		minimap_draw_x;
+	int		minimap_draw_y;
+	int		minimap_origin_x;
+	int		minimap_origin_y;
+	int		minimap_col;
+	int		minimap_row;
+	size_t	row_len;
 
-	y = minimap->player->y - 8;
-	minimap_origin_x = MAX_WINDOW_WIDTH - minimap->bg->width;
-	minimap_origin_y = MAX_WINDOW_HEIGHT - minimap->bg->height;
+	minimap_origin_x = MAX_WINDOW_WIDTH - MINIMAP_WIDTH;
+	minimap_origin_y = MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT;
 	render_minimap_tile(minimap->tile, MINIMAP_TILE_SIZE, WHITE);
 	minimap_row = 0;
-	while (y < minimap->player->y + 8)
+	minimap_draw_y = -MINIMAP_RADIUS;
+	while (minimap_draw_y <= MINIMAP_RADIUS)
 	{
-		x = minimap->player->x - 8;
+		y = minimap->player->y + minimap_draw_y;
 		minimap_col = 0;
-		while (x < minimap->player->x + 8)
+		if (y >= 0 && y < map->height)
 		{
-			if (y >= 0 && y < map->height && x > 0 && map->grid[y])
+			minimap_col = 0;
+			minimap_draw_x = -MINIMAP_RADIUS;
+			while (minimap_draw_x <= MINIMAP_RADIUS)
 			{
-				if ((size_t)(x - 1) < strlen(map->grid[y])
-					&& map->grid[y][x - 1] == '1') 
+				row_len = strlen(map->grid[y]);
+				x = minimap->player->x + minimap_draw_x;
+				if (x >= 0 && (size_t)x < row_len && map->grid[y][x] == '1') 
 					mlx_image_to_window(mlx, minimap->tile,
 						minimap_origin_x + minimap_col * MINIMAP_TILE_SIZE,
 						minimap_origin_y + minimap_row * MINIMAP_TILE_SIZE);
+				minimap_draw_x++;
+				minimap_col++;
 			}
-			x++;
-			minimap_col++;
 		}
-		y++;
+		minimap_draw_y++;
 		minimap_row++;
 	}
 }
 
 void	render_minimap_player(mlx_t *mlx, t_minimap *minimap)
 {
+	int	minimap_origin_x;
+	int	minimap_origin_y;
+	int	minimap_center_x;
+	int	minimap_center_y;
+
+	minimap_origin_x = MAX_WINDOW_WIDTH - MINIMAP_WIDTH;
+	minimap_origin_y = MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT;
+	minimap_center_x = minimap_origin_x + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
+		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
+	minimap_center_y = minimap_origin_y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
+		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
 	render_minimap_tile(minimap->player_sprite, MINIMAP_PLAYER_SIZE, YELLOW);
-	mlx_image_to_window(mlx, minimap->player_sprite,
-			MAX_WINDOW_WIDTH - (MINIMAP_WIDTH / 2) - 1,
-			MAX_WINDOW_HEIGHT - (MINIMAP_HEIGHT / 2) - 1);
+	mlx_image_to_window(mlx, minimap->player_sprite, minimap_center_x,
+			minimap_center_y);
+}
+
+void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap)
+{
+	int	minimap_origin_x;
+	int	minimap_origin_y;
+	int	minimap_center_x;
+	int	minimap_center_y;
+
+	minimap_origin_x = MAX_WINDOW_WIDTH - MINIMAP_WIDTH;
+	minimap_origin_y = MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT;
+	minimap_center_x = minimap_origin_x + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
+		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
+	minimap_center_y = minimap_origin_y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
+		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
+	//calculate fov
+	mlx_image_to_window(mlx, minimap->player_vision, minimap_center_x,
+			minimap_center_y);
 }
 
 void	minimap_free(mlx_t *mlx, t_minimap *minimap)
 {
 	mlx_delete_image(mlx, minimap->tile);
+	mlx_delete_image(mlx, minimap->player_vision);
 	mlx_delete_image(mlx, minimap->player_sprite);
 	mlx_delete_image(mlx, minimap->bg);
 }

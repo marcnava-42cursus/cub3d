@@ -6,23 +6,27 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/08 12:18:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/11 13:00:43 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RENDER_H
 # define RENDER_H
 
+# include <math.h>
 # include "MLX42/MLX42.h"
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
-# define MINIMAP_WIDTH 256
-# define MINIMAP_HEIGHT 256
-# define MINIMAP_PLAYER_SIZE 16
+# define PLAYER_FOV (66.0 * M_PI / 180.0)
 # define MINIMAP_TILE_SIZE 32
+# define MINIMAP_PLAYER_SIZE 16
+# define MINIMAP_RADIUS 4
+# define MINIMAP_DIAMETER (2 * MINIMAP_RADIUS + 1)
+# define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
+# define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 
 # define RED 0xFF0000FF
 # define GREEN 0x00FF00FF
@@ -39,6 +43,7 @@ void	minimap_init(t_game *game);
 void	render_minimap_bg(mlx_t *mlx, t_minimap *minimap);
 void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap);
 void	render_minimap_player(mlx_t *mlx, t_minimap *minimap);
+void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap);
 void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/

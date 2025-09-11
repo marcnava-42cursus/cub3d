@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/08 12:19:14 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/09/11 10:14:30 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SANITIZE	:= -fsanitize=address
 DEBUG		?= 0
 ifeq ($(DEBUG),1)
 	CFLAGS		+= $(DFLAGS)
-else if ($(DEBUG),2)
+else ifeq ($(DEBUG),2)
 	CFLAGS		+= $(DFLAGS) $(SANITIZE)
 endif
 RM			:= rm -rf

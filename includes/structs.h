@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/08 12:05:11 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/11 12:52:40 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ typedef struct s_player
 {
 	int				x;
 	int				y;
+	float			angle;
+	float			orientation_x;
+	float			orientation_y;
 	t_orientation	orientation;
 }	t_player;
 
@@ -75,6 +78,7 @@ typedef struct s_minimap
 {
 	mlx_image_t		*bg;
 	mlx_image_t		*player_sprite;
+	mlx_image_t		*player_vision;
 	mlx_image_t		*tile;
 	t_map			*map;
 	t_player		*player;
