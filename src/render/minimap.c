@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/11 13:00:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/18 13:40:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ void	render_minimap_bg(mlx_t *mlx, t_minimap *minimap)
 		}
 		y++;
 	}
-	mlx_image_to_window(mlx, minimap->bg,
-			MAX_WINDOW_WIDTH - (minimap->bg->width),
-			MAX_WINDOW_HEIGHT - (minimap->bg->height));
+	mlx_image_to_window(mlx, minimap->bg, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
 }
 
 void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
@@ -70,14 +68,10 @@ void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 	int		y;
 	int		minimap_draw_x;
 	int		minimap_draw_y;
-	int		minimap_origin_x;
-	int		minimap_origin_y;
 	int		minimap_col;
 	int		minimap_row;
 	size_t	row_len;
 
-	minimap_origin_x = MAX_WINDOW_WIDTH - MINIMAP_WIDTH;
-	minimap_origin_y = MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT;
 	render_minimap_tile(minimap->tile, MINIMAP_TILE_SIZE, WHITE);
 	minimap_row = 0;
 	minimap_draw_y = -MINIMAP_RADIUS;
@@ -85,18 +79,18 @@ void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 	{
 		y = minimap->player->y + minimap_draw_y;
 		minimap_col = 0;
-		if (y >= 0 && y < map->height)
+		if (y >= 0 && y < map->height && map->grid[y])
 		{
 			minimap_col = 0;
 			minimap_draw_x = -MINIMAP_RADIUS;
+			row_len = strlen(map->grid[y]);
 			while (minimap_draw_x <= MINIMAP_RADIUS)
 			{
-				row_len = strlen(map->grid[y]);
 				x = minimap->player->x + minimap_draw_x;
 				if (x >= 0 && (size_t)x < row_len && map->grid[y][x] == '1') 
 					mlx_image_to_window(mlx, minimap->tile,
-						minimap_origin_x + minimap_col * MINIMAP_TILE_SIZE,
-						minimap_origin_y + minimap_row * MINIMAP_TILE_SIZE);
+						MINIMAP_WNDW_X + minimap_col * MINIMAP_TILE_SIZE,
+						MINIMAP_WNDW_Y + minimap_row * MINIMAP_TILE_SIZE);
 				minimap_draw_x++;
 				minimap_col++;
 			}
@@ -108,38 +102,60 @@ void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 
 void	render_minimap_player(mlx_t *mlx, t_minimap *minimap)
 {
-	int	minimap_origin_x;
-	int	minimap_origin_y;
-	int	minimap_center_x;
-	int	minimap_center_y;
-
-	minimap_origin_x = MAX_WINDOW_WIDTH - MINIMAP_WIDTH;
-	minimap_origin_y = MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT;
-	minimap_center_x = minimap_origin_x + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
-		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
-	minimap_center_y = minimap_origin_y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
-		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
 	render_minimap_tile(minimap->player_sprite, MINIMAP_PLAYER_SIZE, YELLOW);
-	mlx_image_to_window(mlx, minimap->player_sprite, minimap_center_x,
-			minimap_center_y);
+	mlx_image_to_window(mlx, minimap->player_sprite, MINIMAP_CNTR_X,
+			MINIMAP_CNTR_Y);
+}
+
+static vertex_t world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
+{
+	vertex_t	viewport_origin;
+	vertex_t	minimap_vertex;
+	vertex_t	player_position;
+	float		scale;	
+
+	player_position.x = (minimap->player->x + 0.5f) * WORLDMAP_TILE_SIZE;
+	player_position.y = (minimap->player->y + 0.5f) * WORLDMAP_TILE_SIZE;
+	viewport_origin.x = player_position.x - (MINIMAP_RADIUS + 0.5f) * WORLDMAP_TILE_SIZE;
+	viewport_origin.y = player_position.y - (MINIMAP_RADIUS + 0.5f) * WORLDMAP_TILE_SIZE;
+	scale = (float)MINIMAP_TILE_SIZE / WORLDMAP_TILE_SIZE;
+	minimap_vertex.x = (world.x - viewport_origin.x) * scale;
+	minimap_vertex.y = (world.y - viewport_origin.y) * scale;
+	return (minimap_vertex);
 }
 
 void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap)
 {
-	int	minimap_origin_x;
-	int	minimap_origin_y;
-	int	minimap_center_x;
-	int	minimap_center_y;
+	const float MAX_DIST = 2000.0f;
+	t_rayhit	rayhit;
+	vertex_t	player_position;
+	vertex_t	tip;
+	vertex_t	world_to_minimap;
+	vertex_t	player_to_minimap;
+	int			i;
+	float		ray_angle;
+	float		angle_start;
+	float		increment;
 
-	minimap_origin_x = MAX_WINDOW_WIDTH - MINIMAP_WIDTH;
-	minimap_origin_y = MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT;
-	minimap_center_x = minimap_origin_x + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
-		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
-	minimap_center_y = minimap_origin_y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE +
-		(MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2;
-	//calculate fov
-	mlx_image_to_window(mlx, minimap->player_vision, minimap_center_x,
-			minimap_center_y);
+	player_position.x = (minimap->player->x + 0.5f) * WORLDMAP_TILE_SIZE;
+	player_position.y = (minimap->player->y + 0.5f) * WORLDMAP_TILE_SIZE;
+	player_to_minimap = world_to_minimap_vertex(minimap, player_position);
+	i = 0;
+	angle_start = minimap->player->angle - 0.5f * PLAYER_FOV;
+	increment = PLAYER_FOV / (float)(MINIMAP_RAYS - 1);
+	while (i < MINIMAP_RAYS)
+	{
+		ray_angle = normalize_angle(angle_start + i * increment);
+		rayhit = raycast_world(minimap->map, player_position, ray_angle, MAX_DIST);
+		world_to_minimap = world_to_minimap_vertex(minimap, rayhit.position);
+		bresenham(&player_to_minimap, &world_to_minimap, minimap->player_vision, GREEN);
+		i++;
+	}
+	tip.x = player_position.x + 100 * cosf(minimap->player->angle);
+	tip.y = player_position.y + 100 * -sinf(minimap->player->angle); 
+	world_to_minimap = world_to_minimap_vertex(minimap, tip);
+	bresenham(&player_to_minimap, &world_to_minimap, minimap->player_vision, RED);
+	mlx_image_to_window(mlx, minimap->player_vision, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
 }
 
 void	minimap_free(mlx_t *mlx, t_minimap *minimap)

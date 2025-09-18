@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 01:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/11 12:36:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/18 15:06:43 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,11 @@ int	find_player_position(t_map *map, t_player *player)
 				if (player->orientation == NORTH)
 					player->angle = M_PI/2;
 				else if (player->orientation == SOUTH)
-					player->angle = 3 * (M_PI/2);
+					player->angle = 3.0f * (M_PI/2);
 				else if (player->orientation == EAST)
-					player->angle = 0;
-				else
+					player->angle = 0.0f;
+				else if (player->orientation == WEST)
 					player->angle = M_PI;
-				player->orientation_x = cos(player->angle) * 10;
-				player->orientation_y = sin(player->angle) * 10;
 				map->grid[y][x] = '0';
 			}
 			x++;
