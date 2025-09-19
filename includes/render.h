@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/18 13:31:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/19 12:11:54 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,14 @@ void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap);
 void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
-t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle, float max_distance);
+t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
+		float max_distance);
+
+/*--------------------------------- WALLS.C ----------------------------------*/
+void	render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx);
+
+/*------------------------------- OUTLINES.C --------------------------------*/
+void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);

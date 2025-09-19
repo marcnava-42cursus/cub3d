@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/17 16:10:09 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/09/19 11:33:24 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,8 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/render/bresenham.c \
 			   $(SRCPATH)/render/minimap.c \
 			   $(SRCPATH)/render/raycast.c \
+			   $(SRCPATH)/render/walls.c \
+			   $(SRCPATH)/render/outlines.c \
 			   $(SRCPATH)/render/window.c \
 			   $(SRCPATH)/render/utils.c
 
