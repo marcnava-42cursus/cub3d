@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/19 12:11:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/19 18:53:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void	window_free(t_game *game);
 int		t_color_to_int(t_color *color, int alpha);
 int		clamp(int value, int min, int max);
 float	normalize_angle(float angle);
+void	paint_vertical_line(int x, int y[2], mlx_image_t *img, int color);
 #endif

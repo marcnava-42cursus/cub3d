@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/18 12:49:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/19 18:50:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,25 @@ float	normalize_angle(float angle)
 	while (angle >= TAU)
 		angle -= TAU;
 	return (angle);
+}
+
+//y[0] is start and y[1] is end
+void paint_vertical_line(int x, int y[2], mlx_image_t *img, int color)
+{
+	int	current_y;
+	
+	if (x < 0 || x >= (int)img->width)
+		return ;
+	if (y[0] < 0)
+		y[0] = 0;
+	if (y[1] >= (int)img->height)
+		y[1] = (int)img->height - 1;
+	if (y[0] >= y[1])
+		return ;
+	current_y = y[0];
+	while (current_y <= y[1])
+	{
+		mlx_put_pixel(img, x, current_y, color);
+		current_y++;
+	}
 }

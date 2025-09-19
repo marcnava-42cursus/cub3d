@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/18 13:40:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/19 16:27:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap)
 		i++;
 	}
 	tip.x = player_position.x + 100 * cosf(minimap->player->angle);
-	tip.y = player_position.y + 100 * -sinf(minimap->player->angle); 
+	tip.y = player_position.y + 100 * sinf(minimap->player->angle); 
 	world_to_minimap = world_to_minimap_vertex(minimap, tip);
 	bresenham(&player_to_minimap, &world_to_minimap, minimap->player_vision, RED);
 	mlx_image_to_window(mlx, minimap->player_vision, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/19 15:27:31 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/19 18:51:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,35 +50,11 @@ static bool is_raycast_edge(t_rayhit *rayhits, int x)
 	return (is_edge);
 }
 
-static void paint_vertical_edge(int x, int y_start, int y_end, mlx_image_t *img)
-{
-	int	i;
-	
-	if (x < 0 || x >= (int)img->width)
-		return ;
-
-	// Clamp y coordinates to image bounds
-	if (y_start < 0)
-		y_start = 0;
-	if (y_end >= (int)img->height)
-		y_end = (int)img->height - 1;
-
-	if (y_start >= y_end)
-		return ;
-	
-	i = y_start;
-	while (i <= y_end)
-	{
-		mlx_put_pixel(img, x, i, WHITE);
-		i++;
-	}
-}
-
+//draw[0] is start and draw[1] is end
 static void draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
 {
 	int		slice_height;
-	int		draw_start;
-	int		draw_end;
+	int		draw[2];
 	
 	if (!rayhit.hit)
 		return ;
@@ -86,13 +62,13 @@ static void draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
 	slice_height =
 		(int)(WORLDMAP_TILE_SIZE * MAX_WINDOW_HEIGHT / rayhit.distance);
 	
-	draw_start = -slice_height / 2 + MAX_WINDOW_HEIGHT / 2;
-	if (draw_start < 0)
-		draw_start = 0;
-	draw_end = slice_height / 2 + MAX_WINDOW_HEIGHT / 2;
-	if (draw_end >= MAX_WINDOW_HEIGHT)
-		draw_end = MAX_WINDOW_HEIGHT - 1;
-	paint_vertical_edge(x, draw_start, draw_end, img);
+	draw[0] = -slice_height / 2 + MAX_WINDOW_HEIGHT / 2;
+	if (draw[0] < 0)
+		draw[0] = 0;
+	draw[1] = slice_height / 2 + MAX_WINDOW_HEIGHT / 2;
+	if (draw[1] >= MAX_WINDOW_HEIGHT)
+		draw[1] = MAX_WINDOW_HEIGHT - 1;
+	paint_vertical_line(x, draw, img, WHITE);
 }
 
 void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
