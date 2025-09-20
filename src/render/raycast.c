@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:06:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/19 18:22:16 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/20 22:22:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void set_ray_direction_and_coords(vertex_t *direction, float angle, vertex_t start, int ray_coords[2])
+static void set_ray_direction_and_coords(vertex_t *direction, float angle, vertex_t start, int ray_coords[4])
 {
 	direction->x = cosf(angle);
 	direction->y = sinf(angle);
@@ -62,6 +62,24 @@ static bool	read_cell(const t_map *map, int x, int y)
 	return (true);
 }
 
+static void	set_rayhit_face(t_rayhit *rayhit, int ray_coords[4])
+{
+	if (rayhit->side == 0)
+	{
+		if (ray_coords[2] > 0)
+			rayhit->face = WEST;
+		else
+			rayhit->face = EAST;
+	}
+	else
+	{
+		if (ray_coords[3] > 0)
+			rayhit->face = SOUTH;
+		else
+			rayhit->face = NORTH;
+	}
+}
+
 //ray_coords[0] = ray's X coord in grid space (int map_x)
 //ray_coords[1] = ray's Y coord in grid space (int map_y)
 //ray_coords[2] = increment or decrement X in grid space depending on direction (int step_x)
@@ -84,6 +102,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 	rayhit.side = -1;
 	rayhit.position = start;
 	rayhit.distance = 0.0f;
+	rayhit.face = NORTH;
 
 	if (!map || !map->grid || map->height <= 0)
 		return (rayhit);
@@ -130,6 +149,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 		if (ray_coords[1] < 0 || ray_coords[1] >= map->height
 			|| !map->grid[ray_coords[1]])
 		{
+			set_rayhit_face(&rayhit, ray_coords);
 			rayhit.hit = true;
 			rayhit.cell_x = ray_coords[0];
 			rayhit.cell_y = ray_coords[1];
@@ -141,6 +161,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 		row_len = (int)strlen(map->grid[ray_coords[1]]);
 		if (ray_coords[0] < 0 || ray_coords[0] >= row_len)
 		{
+			set_rayhit_face(&rayhit, ray_coords);
 			rayhit.hit = true;
 			rayhit.cell_x = ray_coords[0];
 			rayhit.cell_y = ray_coords[1];
@@ -151,6 +172,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 		}
 		if (!read_cell(map, ray_coords[0], ray_coords[1]))
 		{
+			set_rayhit_face(&rayhit, ray_coords);
 			rayhit.hit = true;
 			rayhit.cell_x = ray_coords[0];
 			rayhit.cell_y = ray_coords[1];

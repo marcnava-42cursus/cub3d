@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/19 18:53:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/20 22:24:34 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@
 # define BLUE 0x0000FFFF
 # define YELLOW 0xFFFF00FF
 # define WHITE 0xFFFFFFFF
+# define LIGHT_GREY 0xCCCCCCFF
+# define MEDIUM_GREY 0x555555FF
+# define DARK_GREY 0x333333FF
 # define BLACK 0x000000FF
 
 /*------------------------------ BACKGROUND.C --------------------------------*/

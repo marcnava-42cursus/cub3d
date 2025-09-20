@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/18 12:44:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/20 22:03:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,13 @@ typedef struct s_minimap
 
 typedef struct s_rayhit
 {
-	bool		hit;
-	int			cell_x;
-	int			cell_y;
-	int			side;	//0 = vertical 1 = horizontal
-	vertex_t	position; // in world pixels
-	float		distance; 
+	bool			hit;
+	int				cell_x;
+	int				cell_y;
+	int				side;	//0 = vertical 1 = horizontal
+	t_orientation	face;
+	vertex_t		position; // in world pixels
+	float			distance; 
 }	t_rayhit;
 
 // Estructura principal del juego que contiene TODOS los datos

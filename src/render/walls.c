@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/19 18:50:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/20 22:23:53 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,14 @@ static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img)
 		draw[0] += 2;
 	if (original_draw[1] < MAX_WINDOW_HEIGHT && draw[1] > 0)
 		draw[1] -= 2;
-	paint_vertical_line(x, draw, img, BLACK);
+	if (rayhit.face == NORTH)
+		paint_vertical_line(x, draw, img, LIGHT_GREY);
+	if (rayhit.face == SOUTH)
+		paint_vertical_line(x, draw, img, BLACK);
+	if (rayhit.face == EAST)
+		paint_vertical_line(x, draw, img, DARK_GREY);
+	if (rayhit.face == WEST)
+		paint_vertical_line(x, draw, img, MEDIUM_GREY);
 }
 
 void render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
