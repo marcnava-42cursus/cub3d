@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/20 22:24:34 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/21 02:19:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
-# define PLAYER_FOV (66.0f * M_PI / 180.0f)
 # define MINIMAP_TILE_SIZE 32
 # define MINIMAP_PLAYER_SIZE 16
 # define MINIMAP_RADIUS 4
+# define MINIMAP_RAYS 120
+# define TEXTURE_WIDTH 64
+# define TEXTURE_HEIGHT 64
+# define WORLDMAP_TILE_SIZE 64.0f
+
 # define MINIMAP_DIAMETER (2.0f * MINIMAP_RADIUS + 1.0f)
 # define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
@@ -31,8 +35,8 @@
 # define MINIMAP_WNDW_Y (MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT)
 # define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_RADIUS * MINIMAP_TILE_SIZE + (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
 # define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE + (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
-# define MINIMAP_RAYS 120
-# define WORLDMAP_TILE_SIZE 64.0f
+# define PLAYER_FOV (66.0f * M_PI / 180.0f)
+# define TAU (2.0f * M_PI)
 
 # define RED 0xFF0000FF
 # define GREEN 0x00FF00FF
@@ -67,6 +71,10 @@ void	render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
+
+/*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
+void 	render_texture_line(t_rayhit rayhit, int x, int y[2], mlx_image_t *img, 
+		t_textures *textures);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);

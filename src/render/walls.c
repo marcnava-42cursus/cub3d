@@ -6,12 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/20 22:23:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/21 02:17:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
 
 static t_rayhit cast_ray_for_column(t_cub_data *cub_data, int x)
 {
@@ -33,7 +32,8 @@ static t_rayhit cast_ray_for_column(t_cub_data *cub_data, int x)
 }
 
 //on all int[2] the [0] is the start and the [1] is the end
-static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img)
+static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img,
+		t_textures *textures)
 {
 	int		slice_height;
 	int		draw[2];
@@ -67,14 +67,15 @@ static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img)
 		draw[0] += 2;
 	if (original_draw[1] < MAX_WINDOW_HEIGHT && draw[1] > 0)
 		draw[1] -= 2;
-	if (rayhit.face == NORTH)
-		paint_vertical_line(x, draw, img, LIGHT_GREY);
-	if (rayhit.face == SOUTH)
-		paint_vertical_line(x, draw, img, BLACK);
-	if (rayhit.face == EAST)
-		paint_vertical_line(x, draw, img, DARK_GREY);
-	if (rayhit.face == WEST)
-		paint_vertical_line(x, draw, img, MEDIUM_GREY);
+	render_texture_line(rayhit, x, draw, img, textures);
+	//if (rayhit.face == NORTH)
+	//	paint_vertical_line(x, draw, img, LIGHT_GREY);
+	//if (rayhit.face == SOUTH)
+	//	paint_vertical_line(x, draw, img, BLACK);
+	//if (rayhit.face == EAST)
+	//	paint_vertical_line(x, draw, img, DARK_GREY);
+	//if (rayhit.face == WEST)
+	//	paint_vertical_line(x, draw, img, MEDIUM_GREY);
 }
 
 void render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
@@ -86,7 +87,7 @@ void render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
 	while (i < MAX_WINDOW_WIDTH)
 	{
 		rayhits[i] = cast_ray_for_column(cub_data, i);
-		render_wall_fill(rayhits[i], i, img);
+		render_wall_fill(rayhits[i], i, img, &cub_data->textures);
 		i++;
 	}
 	add_wall_outlines(rayhits, img);
