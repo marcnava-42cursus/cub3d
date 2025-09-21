@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:20:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 02:20:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:31:51 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,42 @@
 static void	print_textures(const t_cub_data *data)
 {
 	printf("Textures:\n");
+	
+	printf("  Texture Paths:\n");
+	if (data->textures.north_path)
+		printf("    North Path: %s\n", data->textures.north_path);
+	else
+		printf("    North Path: NULL\n");
+	if (data->textures.south_path)
+		printf("    South Path: %s\n", data->textures.south_path);
+	else
+		printf("    South Path: NULL\n");
+	if (data->textures.west_path)
+		printf("    West Path: %s\n", data->textures.west_path);
+	else
+		printf("    West Path: NULL\n");
+	if (data->textures.east_path)
+		printf("    East Path: %s\n", data->textures.east_path);
+	else
+		printf("    East Path: NULL\n");
+	
+	printf("  Loaded Textures:\n");
 	if (data->textures.north)
-		printf("  North: %s\n", data->textures.north);
+		printf("    North: Loaded successfully\n");
 	else
-		printf("  North: NULL\n");
+		printf("    North: Not loaded\n");
 	if (data->textures.south)
-		printf("  South: %s\n", data->textures.south);
+		printf("    South: Loaded successfully\n");
 	else
-		printf("  South: NULL\n");
+		printf("    South: Not loaded\n");
 	if (data->textures.west)
-		printf("  West: %s\n", data->textures.west);
+		printf("    West: Loaded successfully\n");
 	else
-		printf("  West: NULL\n");
+		printf("    West: Not loaded\n");
 	if (data->textures.east)
-		printf("  East: %s\n", data->textures.east);
+		printf("    East: Loaded successfully\n");
 	else
-		printf("  East: NULL\n");
+		printf("    East: Not loaded\n");
 }
 
 static void	print_colors(const t_cub_data *data)

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:25:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 02:25:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:29:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 static void	init_cub_data(t_cub_data *data)
 {
+	data->textures.north_path = NULL;
+	data->textures.south_path = NULL;
+	data->textures.west_path = NULL;
+	data->textures.east_path = NULL;
 	data->textures.north = NULL;
 	data->textures.south = NULL;
 	data->textures.west = NULL;
 	data->textures.east = NULL;
+	
 	data->floor_color.r = -1;
 	data->floor_color.g = -1;
 	data->floor_color.b = -1;
@@ -104,8 +109,8 @@ static int	find_map_start(char **lines, int line_count)
 
 static int	validate_parsed_data(const t_cub_data *data)
 {
-	if (!data->textures.north || !data->textures.south
-		|| !data->textures.west || !data->textures.east)
+	if (!data->textures.north_path || !data->textures.south_path
+		|| !data->textures.west_path || !data->textures.east_path)
 		return (0);
 	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
 		return (0);

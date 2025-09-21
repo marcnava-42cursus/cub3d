@@ -21,6 +21,14 @@ int	init_game(t_game *game, const char *map_file)
 		return (0);
 	}
 
+	// Cargar texturas XPM
+	if (!load_textures(&game->cub_data.textures))
+	{
+		printf("Error: Failed to load textures\n");
+		free_cub_data(&game->cub_data);
+		return (0);
+	}
+
 	// Mostrar datos parseados (para debugging)
 	print_cub_data(&game->cub_data);
 

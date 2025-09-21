@@ -53,6 +53,7 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/parser/utils/validation_utils.c \
 			   $(SRCPATH)/parser/utils/memory_utils.c \
 			   $(SRCPATH)/parser/utils/debug_utils.c \
+			   $(SRCPATH)/textures/texture_loader.c \
 			   $(SRCPATH)/render/background.c \
 			   $(SRCPATH)/render/bresenham.c \
 			   $(SRCPATH)/render/minimap.c \

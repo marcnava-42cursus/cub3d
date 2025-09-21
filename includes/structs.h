@@ -39,10 +39,14 @@ typedef struct s_color
 // Estructura para texturas
 typedef struct s_textures
 {
-	char	*north;		// NO
-	char	*south;		// SO
-	char	*west;		// WE
-	char	*east;		// EA
+	char		*north_path;	// NO - file path
+	char		*south_path;	// SO - file path
+	char		*west_path;		// WE - file path
+	char		*east_path;		// EA - file path
+	xpm_t		*north;			// Loaded north texture
+	xpm_t		*south;			// Loaded south texture
+	xpm_t		*west;			// Loaded west texture
+	xpm_t		*east;			// Loaded east texture
 }	t_textures;
 
 // Estructura para la posición del jugador
