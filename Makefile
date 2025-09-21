@@ -98,10 +98,10 @@ libs/minilibx/CMakeLists.txt:
 	mkdir -p $(LIBPATH)
 	git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX)
 
-libmlx:
+libmlx:	$(LIBMLX)/CMakeLists.txt
 	cmake $(LIBMLX) -B $(LIBMLX)/build && $(MAKE) -s -C $(LIBMLX)/build -j4
 
-libft:
+libft:	$(LIBFT)/Makefile
 	$(MAKE) --no-print-directory -s -C $(LIBFT)
 
 .PHONY:		libs libft libmlx
