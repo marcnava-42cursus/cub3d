@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/21 02:19:10 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/22 16:35:35 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH)
 # define MINIMAP_WNDW_Y (MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT)
-# define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_RADIUS * MINIMAP_TILE_SIZE + (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
-# define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE + (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
+# define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_RADIUS * MINIMAP_TILE_SIZE \
+		+ (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
+# define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE \
+		+ (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
 # define PLAYER_FOV (66.0f * M_PI / 180.0f)
 # define TAU (2.0f * M_PI)
 
