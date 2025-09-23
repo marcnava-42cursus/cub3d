@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/21 02:14:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/23 02:24:55 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 void render_texture_line(t_rayhit rayhit, int x, int y[2],
 	mlx_image_t *img, t_textures *textures)
 {
-	int		current_y;
-	int		color;
-	xpm_t	*texture;
+	int			current_y;
+	int			color;
+	xpm_t		*texture;
 	uint32_t	pixel_color;
-	int		tex_x, tex_y;
+	int			tex_x; 
+	int			tex_y;
+	int			pixel_index;
+	uint8_t		*pixels;
 
-	// Select texture based on wall face
 	if (rayhit.face == NORTH)
 	{
 		texture = textures->north;
@@ -48,7 +50,6 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 		color = WHITE;
 	}
 	
-	// Bounds checking
 	if (x < 0 || x >= (int)img->width)
 		return ;
 	if (y[0] < 0)
@@ -61,7 +62,6 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 	current_y = y[0];
 	if (!texture)
 	{
-		// No texture loaded, use solid color
 		while (current_y <= y[1])
 		{
 			mlx_put_pixel(img, x, current_y, color);
@@ -70,7 +70,6 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 	}
 	else
 	{
-		// Sample from texture
 		while (current_y <= y[1])
 		{
 			// Calculate texture coordinates (simple mapping for now)
@@ -81,23 +80,23 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 			if (tex_x >= 0 && tex_x < (int)texture->texture.width &&
 				tex_y >= 0 && tex_y < (int)texture->texture.height)
 			{
-				// Get pixel color from texture bytes
-				int pixel_index = (tex_y * texture->texture.width + tex_x) * texture->texture.bytes_per_pixel;
-				if (pixel_index < (int)(texture->texture.width * texture->texture.height * texture->texture.bytes_per_pixel))
+				pixel_index = (tex_y * texture->texture.width + tex_x)
+					* texture->texture.bytes_per_pixel;
+				if (pixel_index < (int)(texture->texture.width
+					* texture->texture.height
+					* texture->texture.bytes_per_pixel))
 				{
-					// Convert bytes to color (assuming RGBA format)
-					uint8_t *pixels = texture->texture.pixels;
-					pixel_color = (pixels[pixel_index] << 24) |     // R
-								  (pixels[pixel_index + 1] << 16) | // G
-								  (pixels[pixel_index + 2] << 8) |  // B
-								  pixels[pixel_index + 3];         // A
+					pixels = texture->texture.pixels;
+					pixel_color = (pixels[pixel_index] << 24) |
+								  (pixels[pixel_index + 1] << 16) |
+								  (pixels[pixel_index + 2] << 8) |
+								  pixels[pixel_index + 3];
 				}
 				else
-					pixel_color = color; // Fallback
+					pixel_color = color;
 			}
 			else
-				pixel_color = color; // Fallback
-			
+				pixel_color = color;
 			mlx_put_pixel(img, x, current_y, pixel_color);
 			current_y++;
 		}
