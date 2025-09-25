@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/21 02:17:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 02:15:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ static t_rayhit cast_ray_for_column(t_cub_data *cub_data, int x)
 	camera_x = 2.0f * x / (float)MAX_WINDOW_WIDTH - 1.0f;
 	ray_angle =
 		cub_data->player.angle + atanf(camera_x * tanf(PLAYER_FOV / 2.0f));
-	
 	player_position.x = ((float)cub_data->player.x + 0.5f) * WORLDMAP_TILE_SIZE;
 	player_position.y = ((float)cub_data->player.y + 0.5f) * WORLDMAP_TILE_SIZE;
 	rayhit =
 		raycast_world(&cub_data->map, player_position, ray_angle, MAX_DIST);
+	// Apply fisheye correction: multiply distance by cosine of angle difference
+	if (rayhit.hit)
+		rayhit.distance *= cosf(ray_angle - cub_data->player.angle);
 	return (rayhit);
 }
 
@@ -53,29 +55,21 @@ static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img,
 		draw[1] = MAX_WINDOW_HEIGHT - 1;
 	if (original_draw[0] >= 0 && draw[0] < MAX_WINDOW_HEIGHT - 1)
 	{
-		mlx_put_pixel(img, x, draw[0], WHITE);
+		save_pixel_to_image(img, x, draw[0], WHITE);
 		if (draw[0] + 1 <= draw[1])
-			mlx_put_pixel(img, x, draw[0] + 1, WHITE);
+			save_pixel_to_image(img, x, draw[0] + 1, WHITE);
 	}
 	if (original_draw[0] < MAX_WINDOW_HEIGHT && draw[1] > 0)
 	{
-		mlx_put_pixel(img, x, draw[1], WHITE);
+		save_pixel_to_image(img, x, draw[1], WHITE);
 		if (draw[1] - 1 >= draw[0])
-			mlx_put_pixel(img, x, draw[1] - 1, WHITE);
+			save_pixel_to_image(img, x, draw[1] - 1, WHITE);
 	}
 	if (original_draw[0] >= 0 && draw[0] < MAX_WINDOW_HEIGHT - 1)
 		draw[0] += 2;
 	if (original_draw[1] < MAX_WINDOW_HEIGHT && draw[1] > 0)
 		draw[1] -= 2;
 	render_texture_line(rayhit, x, draw, img, textures);
-	//if (rayhit.face == NORTH)
-	//	paint_vertical_line(x, draw, img, LIGHT_GREY);
-	//if (rayhit.face == SOUTH)
-	//	paint_vertical_line(x, draw, img, BLACK);
-	//if (rayhit.face == EAST)
-	//	paint_vertical_line(x, draw, img, DARK_GREY);
-	//if (rayhit.face == WEST)
-	//	paint_vertical_line(x, draw, img, MEDIUM_GREY);
 }
 
 void render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)

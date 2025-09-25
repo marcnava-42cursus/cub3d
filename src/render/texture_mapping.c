@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/23 02:24:55 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 02:21:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 			}
 			else
 				pixel_color = color;
-			mlx_put_pixel(img, x, current_y, pixel_color);
+			save_pixel_to_image(img, x, current_y, pixel_color);
 			current_y++;
 		}
 	}

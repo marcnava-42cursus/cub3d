@@ -6,16 +6,16 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:29:18 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/18 19:29:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 02:20:51 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	safe_put_pixel(mlx_image_t *img, int x, int y, uint32_t color)
+static void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color)
 {
 	if ((unsigned int)x < img->width && (unsigned int)y < img->height)
-		mlx_put_pixel(img, x, y, color);
+		save_pixel_to_image(img, x, y, color);
 }
 
 static int	calc_distance(int *d_x, int *d_y, vertex_t start, vertex_t end)
@@ -105,8 +105,7 @@ void	bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img, int color)
 		safe_put_pixel(img, start->x, start->y, color);
 	else
 	{
-		if (fabsf(end->y - start->y)
-			< fabsf(end->x - start->x))
+		if (fabsf(end->y - start->y) < fabsf(end->x - start->x))
 		{
 			if (start->x > end->x)
 				paint_low(*end, *start, img, color);

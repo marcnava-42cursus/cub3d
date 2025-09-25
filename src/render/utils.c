@@ -6,11 +6,23 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/23 02:24:50 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 02:25:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "render.h"
+
+void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
+			unsigned int color)
+{
+	unsigned char *pixelstart;
+
+	pixelstart = &image->pixels[(y * image->width + x) * sizeof(unsigned int)];
+	*(pixelstart++) = (unsigned short)(color >> 24);
+	*(pixelstart++) = (unsigned short)(color >> 16);
+	*(pixelstart++) = (unsigned short)(color >> 8);
+	*(pixelstart++) = (unsigned short)(color & 255);
+}
 
 int	t_color_to_int(t_color *color, int alpha)
 {
@@ -52,7 +64,7 @@ void paint_vertical_line(int x, int y[2], mlx_image_t *img, int color)
 	current_y = y[0];
 	while (current_y <= y[1])
 	{
-		mlx_put_pixel(img, x, current_y, color);
+		save_pixel_to_image(img, x, current_y, color);
 		current_y++;
 	}
 }

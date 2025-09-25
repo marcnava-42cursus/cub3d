@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:12:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/18 11:44:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 02:17:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	render_bg_color(t_game *game)
 		x = 0;
 		while (x < game->bg_buf_zero->width)
 		{
-			mlx_put_pixel(game->bg_buf_zero, x, y, sky);
+			save_pixel_to_image(game->bg_buf_zero, x, y, sky);
 			x++;
 		}
 		y++;
@@ -37,7 +37,7 @@ static void	render_bg_color(t_game *game)
 		x = 0;
 		while (x < game->bg_buf_zero->width)
 		{
-			mlx_put_pixel(game->bg_buf_zero, x, y, ground);
+			save_pixel_to_image(game->bg_buf_zero, x, y, ground);
 			x++;
 		}
 		y++;
@@ -57,7 +57,7 @@ static void	render_atmospheric_perspective(t_game *game)
 		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 8 == 0 && y % 8 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, WHITE);
+				save_pixel_to_image(game->atmos_buf_zero, x, y, WHITE);
 			x++;
 		}
 		y++;
@@ -68,7 +68,7 @@ static void	render_atmospheric_perspective(t_game *game)
 		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 4 == 0 && y % 4 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, WHITE);
+				save_pixel_to_image(game->atmos_buf_zero, x, y, WHITE);
 			x++;
 		}
 		y++;
@@ -81,7 +81,7 @@ static void	render_atmospheric_perspective(t_game *game)
 		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 3 == 0 && y % 3 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, BLACK);
+				save_pixel_to_image(game->atmos_buf_zero, x, y, BLACK);
 			x++;
 		}
 		y++;
@@ -92,7 +92,7 @@ static void	render_atmospheric_perspective(t_game *game)
 		while (x < game->atmos_buf_zero->width)
 		{
 			if (x % 2 == 0 && y % 2 == 0)
-				mlx_put_pixel(game->atmos_buf_zero, x, y, BLACK);
+				save_pixel_to_image(game->atmos_buf_zero, x, y, BLACK);
 			x++;
 		}
 		y++;
