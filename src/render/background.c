@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:12:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:17:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:09:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "render.h"
+#include "render.h"
 
 static void	render_bg_color(t_game *game)
 {
@@ -73,9 +73,11 @@ static void	render_atmospheric_perspective(t_game *game)
 		}
 		y++;
 	}
-	while (y < game->atmos_buf_zero->height - (game->atmos_buf_zero->height / 3))
+	while (y < game->atmos_buf_zero->height
+		- (game->atmos_buf_zero->height / 3))
 		y++;
-	while (y < game->atmos_buf_zero->height - (game->atmos_buf_zero->height / 6))
+	while (y < game->atmos_buf_zero->height
+		- (game->atmos_buf_zero->height / 6))
 	{
 		x = 0;
 		while (x < game->atmos_buf_zero->width)
@@ -100,7 +102,7 @@ static void	render_atmospheric_perspective(t_game *game)
 	mlx_image_to_window(game->mlx, game->atmos_buf_zero, 0, 0);
 }
 
-void	render_bg(t_game* game)
+void	render_bg(t_game *game)
 {
 	render_bg_color(game);
 	render_atmospheric_perspective(game);

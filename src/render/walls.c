@@ -6,45 +6,51 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:56:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:06:40 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static t_rayhit cast_ray_for_column(t_cub_data *cub_data, int x)
+// Apply fisheye correction: multiply distance by cosine of angle difference
+static void	fisheye_correction(t_cub_data *cub_data, t_rayhit *rayhit,
+		float ray_angle)
 {
-	const float MAX_DIST = 2000.0f;
+	if (rayhit->hit)
+		rayhit->distance *= cosf(ray_angle - cub_data->player.angle);
+}
+
+static t_rayhit	cast_ray_for_column(t_cub_data *cub_data, int x)
+{
+	const float	MAX_DIST = 2000.0f;
 	t_rayhit	rayhit;
 	vertex_t	player_position;
 	float		ray_angle;
 	float		camera_x;
 
 	camera_x = 2.0f * x / (float)MAX_WINDOW_WIDTH - 1.0f;
-	ray_angle =
-		cub_data->player.angle + atanf(camera_x * tanf(PLAYER_FOV / 2.0f));
+	ray_angle = cub_data->player.angle
+		+ atanf(camera_x * tanf(PLAYER_FOV / 2.0f));
 	player_position.x = ((float)cub_data->player.x + 0.5f) * WORLDMAP_TILE_SIZE;
 	player_position.y = ((float)cub_data->player.y + 0.5f) * WORLDMAP_TILE_SIZE;
-	rayhit =
-		raycast_world(&cub_data->map, player_position, ray_angle, MAX_DIST);
-	// Apply fisheye correction: multiply distance by cosine of angle difference
-	if (rayhit.hit)
-		rayhit.distance *= cosf(ray_angle - cub_data->player.angle);
+	rayhit = raycast_world(&cub_data->map, player_position, ray_angle,
+			MAX_DIST);
+	fisheye_correction(cub_data, &rayhit, ray_angle);
 	return (rayhit);
 }
 
 //on all int[2] the [0] is the start and the [1] is the end
-static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img,
+static void	render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img,
 		t_textures *textures)
 {
 	int		slice_height;
 	int		draw[2];
 	int		original_draw[2];
-	
+
 	if (!rayhit.hit)
 		return ;
-	slice_height =
-		(int)(WORLDMAP_TILE_SIZE * MAX_WINDOW_HEIGHT / rayhit.distance);
+	slice_height = (int)(WORLDMAP_TILE_SIZE * MAX_WINDOW_HEIGHT
+			/ rayhit.distance);
 	original_draw[0] = -slice_height / 2 + MAX_WINDOW_HEIGHT / 2;
 	original_draw[1] = slice_height / 2 + MAX_WINDOW_HEIGHT / 2;
 	draw[0] = original_draw[0];
@@ -72,11 +78,11 @@ static void render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img,
 	render_texture_line(rayhit, x, draw, img, textures);
 }
 
-void render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
+void	render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
 {
 	int			i;
 	t_rayhit	rayhits[MAX_WINDOW_WIDTH];
-	
+
 	i = 0;
 	while (i < MAX_WINDOW_WIDTH)
 	{

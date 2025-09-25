@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:25:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:07:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "render.h"
+#include "render.h"
 
 void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 			unsigned int color)

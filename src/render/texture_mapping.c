@@ -6,20 +6,20 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:21:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:11:39 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-void render_texture_line(t_rayhit rayhit, int x, int y[2],
-	mlx_image_t *img, t_textures *textures)
+void	render_texture_line(t_rayhit rayhit, int x, int y[2], mlx_image_t *img,
+		t_textures *textures)
 {
 	int			current_y;
 	int			color;
 	xpm_t		*texture;
 	uint32_t	pixel_color;
-	int			tex_x; 
+	int			tex_x;
 	int			tex_y;
 	int			pixel_index;
 	uint8_t		*pixels;
@@ -49,7 +49,6 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 		texture = NULL;
 		color = WHITE;
 	}
-	
 	if (x < 0 || x >= (int)img->width)
 		return ;
 	if (y[0] < 0)
@@ -58,7 +57,6 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 		y[1] = (int)img->height - 1;
 	if (y[0] >= y[1])
 		return ;
-
 	current_y = y[0];
 	if (!texture)
 	{
@@ -75,10 +73,8 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 			// Calculate texture coordinates (simple mapping for now)
 			tex_x = x % texture->texture.width;
 			tex_y = current_y % texture->texture.height;
-			
-			// Get pixel from texture
-			if (tex_x >= 0 && tex_x < (int)texture->texture.width &&
-				tex_y >= 0 && tex_y < (int)texture->texture.height)
+			if (tex_x >= 0 && tex_x < (int)texture->texture.width
+				&& tex_y >= 0 && tex_y < (int)texture->texture.height)
 			{
 				pixel_index = (tex_y * texture->texture.width + tex_x)
 					* texture->texture.bytes_per_pixel;
@@ -87,10 +83,10 @@ void render_texture_line(t_rayhit rayhit, int x, int y[2],
 					* texture->texture.bytes_per_pixel))
 				{
 					pixels = texture->texture.pixels;
-					pixel_color = (pixels[pixel_index] << 24) |
-								  (pixels[pixel_index + 1] << 16) |
-								  (pixels[pixel_index + 2] << 8) |
-								  pixels[pixel_index + 3];
+					pixel_color = (pixels[pixel_index] << 24)
+						| (pixels[pixel_index + 1] << 16)
+						| (pixels[pixel_index + 2] << 8)
+						| pixels[pixel_index + 3];
 				}
 				else
 					pixel_color = color;

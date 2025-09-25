@@ -6,17 +6,17 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/19 11:36:07 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:12:40 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "render.h"
+#include "render.h"
 
 bool	window_init(t_game *game)
 {
 	int			monitor_width;
 	int			monitor_height;
-	
+
 	monitor_width = 0;
 	monitor_height = 0;
 	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "cub3D", false);
@@ -24,8 +24,8 @@ bool	window_init(t_game *game)
 		return (false);
 	mlx_get_monitor_size(0, &monitor_width, &monitor_height);
 	mlx_set_window_size(game->mlx, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
-	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH)/2, 
-			(monitor_height - MAX_WINDOW_HEIGHT)/2);
+	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH) / 2, 
+			(monitor_height - MAX_WINDOW_HEIGHT) / 2);
 	game->bg_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
 	game->rc_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,

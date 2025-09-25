@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:48:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:05:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
 {
 	unsigned int	x;
 	unsigned int	y;
-	
+
 	y = 0;
 	while (y < (unsigned int)tile_size)
 	{
@@ -87,7 +87,7 @@ void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 			while (minimap_draw_x <= MINIMAP_RADIUS)
 			{
 				x = minimap->player->x + minimap_draw_x;
-				if (x >= 0 && (size_t)x < row_len && map->grid[y][x] == '1') 
+				if (x >= 0 && (size_t)x < row_len && map->grid[y][x] == '1')
 					mlx_image_to_window(mlx, minimap->tile,
 						MINIMAP_WNDW_X + minimap_col * MINIMAP_TILE_SIZE,
 						MINIMAP_WNDW_Y + minimap_row * MINIMAP_TILE_SIZE);
@@ -104,10 +104,10 @@ void	render_minimap_player(mlx_t *mlx, t_minimap *minimap)
 {
 	render_minimap_tile(minimap->player_sprite, MINIMAP_PLAYER_SIZE, YELLOW);
 	mlx_image_to_window(mlx, minimap->player_sprite, MINIMAP_CNTR_X,
-			MINIMAP_CNTR_Y);
+		MINIMAP_CNTR_Y);
 }
 
-static vertex_t world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
+static vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
 {
 	vertex_t	viewport_origin;
 	vertex_t	minimap_vertex;
@@ -116,10 +116,10 @@ static vertex_t world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
 
 	player_position.x = (minimap->player->x + 0.5f) * WORLDMAP_TILE_SIZE;
 	player_position.y = (minimap->player->y + 0.5f) * WORLDMAP_TILE_SIZE;
-	viewport_origin.x =
-		player_position.x - (MINIMAP_RADIUS + 0.5f) * WORLDMAP_TILE_SIZE;
-	viewport_origin.y =
-		player_position.y - (MINIMAP_RADIUS + 0.5f) * WORLDMAP_TILE_SIZE;
+	viewport_origin.x = player_position.x - (MINIMAP_RADIUS + 0.5f)
+		* WORLDMAP_TILE_SIZE;
+	viewport_origin.y = player_position.y - (MINIMAP_RADIUS + 0.5f)
+		* WORLDMAP_TILE_SIZE;
 	scale = (float)MINIMAP_TILE_SIZE / WORLDMAP_TILE_SIZE;
 	minimap_vertex.x = (world.x - viewport_origin.x) * scale;
 	minimap_vertex.y = (world.y - viewport_origin.y) * scale;

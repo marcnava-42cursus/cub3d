@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:29:18 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:20:51 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 03:15:30 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ static void	paint_low(vertex_t start, vertex_t end, mlx_image_t *img, int color)
 	int			distance_y;
 	int			yi;
 	int			bresenham;
+	int			steps;
+	int			max_steps;
 	vertex_t	vtx;
 
 	yi = calc_distance(&distance_x, &distance_y, start, end);
 	bresenham = (2 * distance_y) - distance_x;
 	vtx = start;
 	vtx.v = fabsf(end.x - start.x);
-	int steps = 0;
-	int max_steps = distance_x + 1;
+	steps = 0;
+	max_steps = distance_x + 1;
 	while (vtx.x != end.x && steps < max_steps)
 	{
 		steps++;
@@ -70,20 +72,23 @@ static void	paint_low(vertex_t start, vertex_t end, mlx_image_t *img, int color)
 	}
 }
 
-static void	paint_high(vertex_t start, vertex_t end, mlx_image_t *img, int color)
+static void	paint_high(vertex_t start, vertex_t end, mlx_image_t *img,
+		int color)
 {
 	int			distance_x;
 	int			distance_y;
 	int			xi;
 	int			bresenham;
+	int			steps;
+	int			max_steps;
 	vertex_t	vtx;
 
 	xi = calc_distance(&distance_x, &distance_y, start, end);
 	bresenham = (2 * distance_x) - distance_y;
 	vtx = start;
 	vtx.v = fabsf(end.y - start.y);
-	int steps = 0;
-	int max_steps = distance_y + 1;
+	steps = 0;
+	max_steps = distance_y + 1;
 	while (vtx.y != end.y && steps < max_steps)
 	{
 		steps++;
