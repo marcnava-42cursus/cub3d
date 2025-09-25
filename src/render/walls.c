@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 03:06:40 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:10:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ static void	render_wall_fill(t_rayhit rayhit, int x, mlx_image_t *img,
 	render_texture_line(rayhit, x, draw, img, textures);
 }
 
-void	render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
+
+void	render_walls(t_game *game)
 {
 	int			i;
 	t_rayhit	rayhits[MAX_WINDOW_WIDTH];
@@ -86,10 +87,11 @@ void	render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx)
 	i = 0;
 	while (i < MAX_WINDOW_WIDTH)
 	{
-		rayhits[i] = cast_ray_for_column(cub_data, i);
-		render_wall_fill(rayhits[i], i, img, &cub_data->textures);
+		rayhits[i] = cast_ray_for_column(&game->cub_data, i);
+		render_wall_fill(rayhits[i], i, game->render_buf[FG_CURRENT],
+			&game->cub_data.textures);
 		i++;
 	}
-	add_wall_outlines(rayhits, img);
-	mlx_image_to_window(mlx, img, 0, 0);
+	add_wall_outlines(rayhits, game->render_buf[FG_CURRENT]);
+	mlx_image_to_window(game->mlx, game->render_buf[FG_CURRENT], 0, 0);
 }

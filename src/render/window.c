@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 03:12:40 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:11:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ bool	window_init(t_game *game)
 	mlx_set_window_size(game->mlx, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
 	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH) / 2, 
 			(monitor_height - MAX_WINDOW_HEIGHT) / 2);
-	game->bg_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
+	game->render_buf[BACKGROUND] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
-	game->rc_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
+	game->render_buf[ATMOSPHERE] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
-	game->rc_buf_one = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
+	game->render_buf[FG_CURRENT] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
-	game->atmos_buf_zero = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
+	game->render_buf[FG_NEXT] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
 	minimap_init(game);
 	return (true);
@@ -41,7 +41,7 @@ bool	window_init(t_game *game)
 void	render_window(t_game *game)
 {
 	render_bg(game);
-	render_walls(&game->cub_data, game->rc_buf_zero, game->mlx);
+	render_walls(game);
 	render_minimap_bg(game->mlx, &game->minimap);
 	render_minimap_player_vision(game->mlx, &game->minimap);
 	render_minimap_tiles(game->mlx, &game->cub_data.map, &game->minimap);
@@ -50,9 +50,10 @@ void	render_window(t_game *game)
 
 void	window_free(t_game *game)
 {
-	mlx_delete_image(game->mlx, game->rc_buf_zero);
-	mlx_delete_image(game->mlx, game->rc_buf_one);
-	mlx_delete_image(game->mlx, game->bg_buf_zero);
+	mlx_delete_image(game->mlx, game->render_buf[BACKGROUND]);
+	mlx_delete_image(game->mlx, game->render_buf[ATMOSPHERE]);
+	mlx_delete_image(game->mlx, game->render_buf[FG_CURRENT]);
+	mlx_delete_image(game->mlx, game->render_buf[FG_NEXT]);
 	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);
 }

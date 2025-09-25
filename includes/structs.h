@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/20 22:03:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 14:04:22 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ typedef enum e_orientation
 	EAST = 'E',
 	WEST = 'W'
 }	t_orientation;
+
+// Render order for gameplay buffers
+typedef enum e_render_order
+{
+	BACKGROUND = 0,
+	ATMOSPHERE = 1,
+	FG_CURRENT = 2,
+	FG_NEXT = 3
+}	t_render_order;
 
 // Estructura para colores RGB
 typedef struct s_color
@@ -105,10 +114,7 @@ typedef struct s_game
 	// - Ventana y gráficos (MLX, texturas cargadas, etc.)
 	mlx_t		*mlx;
 	// - Datos de renderizado (raycast, sprites, etc.)
-	mlx_image_t	*bg_buf_zero;
-	mlx_image_t	*atmos_buf_zero;
-	mlx_image_t	*rc_buf_zero;
-	mlx_image_t	*rc_buf_one;
+	mlx_image_t	*render_buf[4];
 	t_minimap	minimap;
 	// - Estado del juego (paused, running, etc.)
 	// - Input del jugador (teclas presionadas, mouse, etc.)

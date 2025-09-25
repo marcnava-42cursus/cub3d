@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 02:32:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:23:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 		float max_distance);
 
 /*--------------------------------- WALLS.C ----------------------------------*/
-void	render_walls(t_cub_data *cub_data, mlx_image_t *img, mlx_t *mlx);
+void	render_walls(t_game *game);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
