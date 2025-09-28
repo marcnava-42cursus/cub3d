@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 03:07:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/29 00:29:29 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,23 @@ float	normalize_angle(float angle)
 	return (angle);
 }
 
-//y[0] is start and y[1] is end
-void paint_vertical_line(int x, int y[2], mlx_image_t *img, int color)
+// Simple solid color vertical line painter - y[0] is start and y[1] is end
+void paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img, uint32_t color)
 {
 	int	current_y;
 	
-	if (x < 0 || x >= (int)img->width)
+	if (x >= img->width)
 		return ;
-	if (y[0] < 0)
-		y[0] = 0;
 	if (y[1] >= (int)img->height)
 		y[1] = (int)img->height - 1;
+	if (y[0] < 0)
+		y[0] = 0;
 	if (y[0] >= y[1])
 		return ;
 	current_y = y[0];
 	while (current_y <= y[1])
 	{
-		save_pixel_to_image(img, x, current_y, color);
+		save_pixel_to_image(img, x, (unsigned int)current_y, color);
 		current_y++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 13:23:18 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/29 00:28:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define TEXTURE_HEIGHT 64
 # define WORLDMAP_TILE_SIZE 64.0f
 
+# define BASE_ASPECT_RATIO (16.0f / 9.0f)  // Reference aspect ratio for scaling
 # define MINIMAP_DIAMETER (2.0f * MINIMAP_RADIUS + 1.0f)
 # define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
@@ -45,6 +46,7 @@
 # define BLUE 0x0000FFFF
 # define YELLOW 0xFFFF00FF
 # define WHITE 0xFFFFFFFF
+# define MAGENTA 0xFF00FFFF
 # define LIGHT_GREY 0xCCCCCCFF
 # define MEDIUM_GREY 0x555555FF
 # define DARK_GREY 0x333333FF
@@ -66,7 +68,7 @@ void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
-		float max_distance);
+				float max_distance);
 
 /*--------------------------------- WALLS.C ----------------------------------*/
 void	render_walls(t_game *game);
@@ -75,8 +77,10 @@ void	render_walls(t_game *game);
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
-void 	render_texture_line(t_rayhit rayhit, int x, int y[2], mlx_image_t *img, 
-		t_textures *textures);
+void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
+		int original_y[2], mlx_image_t *img, t_textures *textures);
+void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
+			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
@@ -87,7 +91,8 @@ void	window_free(t_game *game);
 int		t_color_to_int(t_color *color, int alpha);
 int		clamp(int value, int min, int max);
 float	normalize_angle(float angle);
-void	paint_vertical_line(int x, int y[2], mlx_image_t *img, int color);
+void 	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
+			uint32_t color);
 void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 			unsigned int color);
 #endif
