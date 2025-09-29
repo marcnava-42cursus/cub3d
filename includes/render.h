@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/29 00:28:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/29 23:48:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,14 @@
 # define TEXTURE_HEIGHT 64
 # define WORLDMAP_TILE_SIZE 64.0f
 
-# define BASE_ASPECT_RATIO (16.0f / 9.0f)  // Reference aspect ratio for scaling
+# define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define MINIMAP_DIAMETER (2.0f * MINIMAP_RADIUS + 1.0f)
 # define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH)
 # define MINIMAP_WNDW_Y (MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT)
-# define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_RADIUS * MINIMAP_TILE_SIZE \
-		+ (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
-# define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_RADIUS * MINIMAP_TILE_SIZE \
-		+ (MINIMAP_TILE_SIZE - MINIMAP_PLAYER_SIZE) / 2)
+# define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_WIDTH / 2 - MINIMAP_PLAYER_SIZE / 2)
+# define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_HEIGHT / 2 - MINIMAP_PLAYER_SIZE / 2)
 # define PLAYER_FOV (66.0f * M_PI / 180.0f)
 # define TAU (2.0f * M_PI)
 
@@ -58,12 +56,15 @@ void	render_bg(t_game* game);
 /*------------------------------- BRESENHAM.C --------------------------------*/
 void	bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img, int color);
 
+/*----------------------------- DOUBLE_BUFFER.C ------------------------------*/
+void	render_double_buffer(t_game *game);
+
 /*-------------------------------- MINIMAP.C ---------------------------------*/
 void	minimap_init(t_game *game);
-void	render_minimap_bg(mlx_t *mlx, t_minimap *minimap);
-void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap);
-void	render_minimap_player(mlx_t *mlx, t_minimap *minimap);
-void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap);
+void	render_minimap_bg(t_minimap *minimap);
+void	render_minimap_tiles(t_map *map, t_minimap *minimap);
+void	render_minimap_player(t_minimap *minimap);
+void	render_minimap_player_vision(t_minimap *minimap);
 void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/

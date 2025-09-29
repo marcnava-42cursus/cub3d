@@ -25,7 +25,7 @@ void	minimap_init(t_game *game)
 			MINIMAP_TILE_SIZE);
 }
 
-void	render_minimap_bg(mlx_t *mlx, t_minimap *minimap)
+void	render_minimap_bg(t_minimap *minimap)
 {
 	unsigned int	x;
 	unsigned int	y;
@@ -41,7 +41,6 @@ void	render_minimap_bg(mlx_t *mlx, t_minimap *minimap)
 		}
 		y++;
 	}
-	mlx_image_to_window(mlx, minimap->bg, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
 }
 
 void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
@@ -62,7 +61,7 @@ void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
 	}
 }
 
-void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
+void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 {
 	int		x;
 	int		y;
@@ -87,10 +86,6 @@ void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 			while (minimap_draw_x <= MINIMAP_RADIUS)
 			{
 				x = minimap->player->x + minimap_draw_x;
-				if (x >= 0 && (size_t)x < row_len && map->grid[y][x] == '1')
-					mlx_image_to_window(mlx, minimap->tile,
-						MINIMAP_WNDW_X + minimap_col * MINIMAP_TILE_SIZE,
-						MINIMAP_WNDW_Y + minimap_row * MINIMAP_TILE_SIZE);
 				minimap_draw_x++;
 				minimap_col++;
 			}
@@ -100,11 +95,9 @@ void	render_minimap_tiles(mlx_t *mlx, t_map *map, t_minimap *minimap)
 	}
 }
 
-void	render_minimap_player(mlx_t *mlx, t_minimap *minimap)
+void	render_minimap_player(t_minimap *minimap)
 {
 	render_minimap_tile(minimap->player_sprite, MINIMAP_PLAYER_SIZE, YELLOW);
-	mlx_image_to_window(mlx, minimap->player_sprite, MINIMAP_CNTR_X,
-		MINIMAP_CNTR_Y);
 }
 
 static vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
@@ -126,7 +119,7 @@ static vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
 	return (minimap_vertex);
 }
 
-void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap)
+void	render_minimap_player_vision(t_minimap *minimap)
 {
 	const float MAX_DIST = 2000.0f;
 	t_rayhit	rayhit;
@@ -157,7 +150,6 @@ void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap)
 	tip.y = player_position.y + 100 * sinf(minimap->player->angle); 
 	world_to_minimap = world_to_minimap_vertex(minimap, tip);
 	bresenham(&player_to_minimap, &world_to_minimap, minimap->player_vision, RED);
-	mlx_image_to_window(mlx, minimap->player_vision, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
 }
 
 void	minimap_free(mlx_t *mlx, t_minimap *minimap)

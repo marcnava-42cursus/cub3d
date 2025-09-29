@@ -6,13 +6,12 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/29 00:46:42 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/29 23:47:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-// Apply fisheye correction: multiply distance by cosine of angle difference
 static void	fisheye_correction(t_rayhit *rayhit, float camera_x)
 {
 	float angle_from_center;
@@ -64,7 +63,7 @@ static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
 	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
 
 	// Dynamic scaling with taller base
-	wall_height = WORLDMAP_TILE_SIZE * (1.2f + aspect_scale * 0.7f);
+	wall_height = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
 	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
 
 	// Calculate full wall slice bounds (may extend beyond image)
@@ -85,10 +84,10 @@ static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
 		return;
 	
 	if (screen_bounds[0] >= 0 && screen_bounds[0] < (int)img->height)
-		save_pixel_to_image(img, x, (unsigned int)screen_bounds[0], WHITE);
+		save_pixel_to_image(img, x, (unsigned int)screen_bounds[0], BLACK);
 	if (screen_bounds[1] >= 0 && screen_bounds[1] < (int)img->height
 		&& screen_bounds[1] != screen_bounds[0])
-		save_pixel_to_image(img, x, (unsigned int)screen_bounds[1], WHITE);
+		save_pixel_to_image(img, x, (unsigned int)screen_bounds[1], BLACK);
 	
 	if (screen_bounds[0] < (int)img->height - 1)
 		screen_bounds[0]++;
@@ -105,14 +104,13 @@ void	render_walls(t_game *game)
 	t_rayhit		rayhits[MAX_WINDOW_WIDTH];
 
 	i = 0;
-	while (i < game->render_buf[FG_CURRENT]->width && i < MAX_WINDOW_WIDTH)
+	while (i < game->double_buffer[NEXT]->width && i < MAX_WINDOW_WIDTH)
 	{
 		rayhits[i] = cast_ray_for_column(&game->cub_data, i,
-				game->render_buf[FG_CURRENT]->width);
-		render_wall_fill(rayhits[i], i, game->render_buf[FG_CURRENT],
+				game->double_buffer[NEXT]->width);
+		render_wall_fill(rayhits[i], i, game->double_buffer[NEXT],
 			&game->cub_data.textures);
 		i++;
 	}
-	add_wall_outlines(rayhits, game->render_buf[FG_CURRENT]);
-	mlx_image_to_window(game->mlx, game->render_buf[FG_CURRENT], 0, 0);
+	add_wall_outlines(rayhits, game->double_buffer[NEXT]);
 }

@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/21 01:51:07 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/09/29 19:18:54 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/textures/texture_loader.c \
 			   $(SRCPATH)/render/background.c \
 			   $(SRCPATH)/render/bresenham.c \
+			   $(SRCPATH)/render/double_buffer.c \
 			   $(SRCPATH)/render/minimap.c \
 			   $(SRCPATH)/render/raycast.c \
 			   $(SRCPATH)/render/texture_mapping.c \
