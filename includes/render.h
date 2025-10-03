@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/29 23:48:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:21:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
-void	render_window(t_game *game);
+void	render_gameplay_window(t_game *game);
 void	window_free(t_game *game);
 
 /*--------------------------------- UTILS.C ----------------------------------*/

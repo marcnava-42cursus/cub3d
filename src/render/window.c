@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/29 23:48:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/02 17:23:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,10 @@ bool	window_init(t_game *game)
 	return (true);
 }
 
-void	render_window(t_game *game)
+void	render_gameplay_window(t_game *game)
 {
 	render_bg(game);
 	render_walls(game);
-	render_minimap_tiles(&game->cub_data.map, &game->minimap);
-	render_minimap_player_vision(&game->minimap);
-	render_minimap_player(&game->minimap);
 }
 
 void	window_free(t_game *game)

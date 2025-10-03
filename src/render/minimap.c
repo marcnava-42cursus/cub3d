@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 03:05:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/03 09:06:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@ void	minimap_init(t_game *game)
 	game->minimap.map = &game->cub_data.map;
 	game->minimap.player = &game->cub_data.player;
 	game->minimap.bg = mlx_new_image(game->mlx, MINIMAP_WIDTH, MINIMAP_HEIGHT);
-	game->minimap.player_sprite = mlx_new_image(game->mlx, MINIMAP_PLAYER_SIZE,
-			MINIMAP_PLAYER_SIZE);
 	game->minimap.player_vision = mlx_new_image(game->mlx, MINIMAP_WIDTH,
 			MINIMAP_HEIGHT);
+	game->minimap.player_sprite = mlx_new_image(game->mlx, MINIMAP_PLAYER_SIZE,
+			MINIMAP_PLAYER_SIZE);
 	game->minimap.tile = mlx_new_image(game->mlx, MINIMAP_TILE_SIZE,
 			MINIMAP_TILE_SIZE);
+	mlx_image_to_window(game->mlx, game->minimap.bg, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
+	mlx_image_to_window(game->mlx, game->minimap.player_vision, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
+	mlx_image_to_window(game->mlx, game->minimap.player_sprite, MINIMAP_CNTR_X, MINIMAP_CNTR_Y);
+	mlx_image_to_window(game->mlx, game->minimap.tile, MINIMAP_WNDW_X, MINIMAP_WNDW_Y);
 }
 
 void	render_minimap_bg(t_minimap *minimap)
