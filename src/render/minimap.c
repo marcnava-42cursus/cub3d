@@ -90,6 +90,10 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 			while (minimap_draw_x <= MINIMAP_RADIUS)
 			{
 				x = minimap->player->x + minimap_draw_x;
+				if (x >= 0 && (size_t)x < row_len && map->grid[y][x] == '1')
+					mlx_image_to_window(mlx, minimap->tile,
+						MINIMAP_WNDW_X + minimap_col * MINIMAP_TILE_SIZE,
+						MINIMAP_WNDW_Y + minimap_row * MINIMAP_TILE_SIZE);
 				minimap_draw_x++;
 				minimap_col++;
 			}
