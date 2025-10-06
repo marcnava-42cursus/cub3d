@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <string.h>
 
 int	init_game(t_game *game, const char *map_file)
 {
@@ -51,7 +52,8 @@ void	cleanup_game(t_game *game)
 
 	// Aquí se liberarían otros recursos del juego
 	// como ventanas MLX, texturas cargadas, etc.
-	window_free(game);
+	if (game->mlx)
+		window_free(game);
 }
 
 int	run_game(t_game *game)
@@ -88,6 +90,7 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
+	memset(&game, 0, sizeof(t_game));
 	if (!validate_args(argc, argv))
 		return (1);
 	if (!init_game(&game, argv[1]))

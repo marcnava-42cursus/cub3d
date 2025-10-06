@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/07 13:55:06 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:44:05 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ bool	window_init(t_game *game)
 	game->key_d_pressed = false;
 	game->key_left_pressed = false;
 	game->key_right_pressed = false;
+	if (mlx_image_to_window(game->mlx, game->bg_buf_zero, 0, 0) < 0)
+		return (false);
+	game->bg_layer_attached = true;
+	if (mlx_image_to_window(game->mlx, game->map_layer, 0, 0) < 0)
+		return (false);
+	game->map_layer_attached = true;
+	if (mlx_image_to_window(game->mlx, game->player_layer, 0, 0) < 0)
+		return (false);
+	game->player_layer_attached = true;
 	return (true);
 }
 
@@ -76,7 +85,6 @@ void	render_bg(t_game *game, int sky, int ground)
 		}
 		y++;
 	}
-	mlx_image_to_window(game->mlx, game->bg_buf_zero, 0, 0);
 }
 
 void	window_free(t_game *game)
@@ -91,3 +99,4 @@ void	window_free(t_game *game)
 		mlx_delete_image(game->mlx, game->player_layer);
 	mlx_terminate(game->mlx);
 }
+

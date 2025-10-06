@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/06 17:45:54 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/09/29 16:33:20 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,12 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 			   $(SRCPATH)/parser/utils/debug_utils.c \
 			   $(SRCPATH)/render/window.c \
 			   $(SRCPATH)/render/map_2d.c \
-			   $(SRCPATH)/movement.c
+			   $(SRCPATH)/logic/movement.c \
+			   $(SRCPATH)/logic/input.c \
+			   $(SRCPATH)/logic/timing.c \
+			   $(SRCPATH)/logic/collision.c \
+			   $(SRCPATH)/logic/move.c \
+			   $(SRCPATH)/logic/rotation.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 

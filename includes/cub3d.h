@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:20:30 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/06 17:50:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/02 12:49:18 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdbool.h>
+# include "libft.h"
 # include "structs.h"
 # include "parser.h"
 # include "render.h"

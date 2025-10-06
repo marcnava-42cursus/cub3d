@@ -45,7 +45,8 @@ static void	print_colors(const t_cub_data *data)
 static void	print_player(const t_cub_data *data)
 {
 	printf("Player:\n");
-	printf("  Position: (%d, %d)\n", data->player.x, data->player.y);
+	printf("  Position: (%.2f, %.2f)\n",
+		(double)data->player.x, (double)data->player.y);
 	printf("  Orientation: %c\n", data->player.orientation);
 }
 

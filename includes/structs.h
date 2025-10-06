@@ -103,6 +103,15 @@ typedef struct s_game
 	float		last_player_x;
 	float		last_player_y;
 	float		last_player_angle;
+	// Timing y parámetros de movimiento
+	double		last_frame_time;
+	double		delta_time;
+	float		move_speed;
+	float		rot_speed;
+	float		player_radius;
+	bool		bg_layer_attached;
+	bool		map_layer_attached;
+	bool		player_layer_attached;
 	// Estado de teclas para movimiento continuo
 	bool		key_w_pressed;
 	bool		key_s_pressed;

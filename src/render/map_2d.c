@@ -12,6 +12,12 @@
 
 #include "render.h"
 #include <math.h>
+#include <stdint.h>
+#include <string.h>
+
+#ifndef M_PI_2
+# define M_PI_2 (M_PI / 2.0)
+#endif
 
 // Forward declarations
 static void	create_directional_sprites(t_game *game);
@@ -277,41 +283,6 @@ static void	render_map_tiles(t_game *game)
 	}
 }
 
-// Función para obtener el sprite correcto del jugador según su ángulo
-static mlx_image_t	*get_player_sprite(t_game *game)
-{
-	float		angle = game->cub_data.player.angle;
-	
-	// Normalizar el ángulo para facilitar la comparación
-	while (angle < 0)
-		angle += 2 * M_PI;
-	while (angle >= 2 * M_PI)
-		angle -= 2 * M_PI;
-	
-	// Determinar dirección basado en el ángulo
-	// Norte: -π/2 o 3π/2, Sur: π/2, Este: 0, Oeste: π
-	if (angle >= 7 * M_PI / 4 || angle < M_PI / 4)
-	{
-		// Mirando hacia el Este (derecha)
-		return (game->textures_2d.player_east ? game->textures_2d.player_east : game->textures_2d.player);
-	}
-	else if (angle >= M_PI / 4 && angle < 3 * M_PI / 4)
-	{
-		// Mirando hacia el Sur (abajo)
-		return (game->textures_2d.player_south ? game->textures_2d.player_south : game->textures_2d.player);
-	}
-	else if (angle >= 3 * M_PI / 4 && angle < 5 * M_PI / 4)
-	{
-		// Mirando hacia el Oeste (izquierda)
-		return (game->textures_2d.player_west ? game->textures_2d.player_west : game->textures_2d.player);
-	}
-	else
-	{
-		// Mirando hacia el Norte (arriba)
-		return (game->textures_2d.player_north ? game->textures_2d.player_north : game->textures_2d.player);
-	}
-}
-
 // Función para limpiar la capa del jugador
 static void	clear_player_layer(t_game *game)
 {
@@ -325,11 +296,100 @@ static void	clear_player_layer(t_game *game)
 		pixels[i] = 0x00000000; // Transparente
 }
 
+static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
+{
+	mlx_image_t	*texture;
+	mlx_image_t	*layer;
+	float		angle;
+	float		cos_a;
+	float		sin_a;
+	int			center_x;
+	int			center_y;
+	int			tex_width;
+	int			tex_height;
+	int			layer_w;
+	int			layer_h;
+	uint8_t		*src_pixels;
+	uint32_t	*dst_pixels;
+	int			x;
+	int			y;
+
+	texture = game->textures_2d.player;
+	layer = game->player_layer;
+	if (!texture || !layer)
+		return ;
+	angle = game->cub_data.player.angle + (float)M_PI_2;
+	cos_a = cosf(angle);
+	sin_a = sinf(angle);
+	tex_width = (int)texture->width;
+	tex_height = (int)texture->height;
+	layer_w = (int)layer->width;
+	layer_h = (int)layer->height;
+	src_pixels = texture->pixels;
+	dst_pixels = (uint32_t *)layer->pixels;
+	center_x = tex_width / 2;
+	center_y = tex_height / 2;
+	y = 0;
+	while (y < tex_height)
+	{
+		int dest_y = dst_y + y;
+		if (dest_y < 0 || dest_y >= layer_h)
+		{
+			y++;
+			continue ;
+		}
+		x = 0;
+		while (x < tex_width)
+		{
+			int dest_x = dst_x + x;
+			float rel_x;
+			float rel_y;
+			float src_rel_x;
+			float src_rel_y;
+			float src_xf;
+			float src_yf;
+			int src_x;
+			int src_y;
+			uint8_t *src_px;
+			uint32_t color;
+
+			if (dest_x < 0 || dest_x >= layer_w)
+			{
+				x++;
+				continue ;
+			}
+			rel_x = (float)x - (float)center_x;
+			rel_y = (float)y - (float)center_y;
+			src_rel_x = rel_x * cos_a + rel_y * sin_a;
+			src_rel_y = -rel_x * sin_a + rel_y * cos_a;
+			src_xf = src_rel_x + (float)center_x;
+			src_yf = src_rel_y + (float)center_y;
+			src_x = (int)roundf(src_xf);
+			src_y = (int)roundf(src_yf);
+			if (src_x < 0 || src_x >= tex_width
+				|| src_y < 0 || src_y >= tex_height)
+			{
+				x++;
+				continue ;
+			}
+			src_px = &src_pixels[(src_y * tex_width + src_x) * 4];
+			if (src_px[3] == 0)
+			{
+				x++;
+				continue ;
+			}
+			memcpy(&color, src_px, sizeof(uint32_t));
+			dst_pixels[dest_y * layer_w + dest_x] = color;
+			x++;
+		}
+		y++;
+	}
+}
+
 static void	render_player(t_game *game)
 {
 	int			player_x;
 	int			player_y;
-	mlx_image_t	*player_sprite;
 
 	// Limpiar la capa anterior del jugador
 	clear_player_layer(game);
@@ -338,24 +398,17 @@ static void	render_player(t_game *game)
 	player_x = (int)(game->cub_data.player.x * TILE_SIZE) - TILE_SIZE/2;
 	player_y = (int)(game->cub_data.player.y * TILE_SIZE) - TILE_SIZE/2;
 
-	// Obtener el sprite correcto según la orientación
-	player_sprite = get_player_sprite(game);
-
-	// Copiar el sprite del jugador a la capa del jugador
-	copy_texture_to_layer(game->player_layer, player_sprite, player_x, player_y);
+	// Dibujar la textura rotada del jugador en tiempo real
+	draw_rotated_player(game, player_x, player_y);
 }
 
 void	render_map_2d(t_game *game)
 {
 	// Renderizar mapa en su capa
 	render_map_tiles(game);
-	// Mostrar la capa del mapa en pantalla
-	mlx_image_to_window(game->mlx, game->map_layer, 0, 0);
-	
+
 	// Renderizar jugador en su capa
 	render_player(game);
-	// Mostrar la capa del jugador encima
-	mlx_image_to_window(game->mlx, game->player_layer, 0, 0);
 }
 
 // Función para renderizado inicial completo
@@ -363,18 +416,15 @@ void	render_map_2d_initial(t_game *game)
 {
 	// Renderizar todo el mapa por primera vez en su capa
 	render_map_tiles(game);
-	mlx_image_to_window(game->mlx, game->map_layer, 0, 0);
-	
+
 	// Renderizar jugador inicial en su capa
 	render_player(game);
-	mlx_image_to_window(game->mlx, game->player_layer, 0, 0);
 }
 
 // Renderizar solo los tiles del mapa (se llama una sola vez)
 void	render_map_tiles_static(t_game *game)
 {
 	render_map_tiles(game);
-	mlx_image_to_window(game->mlx, game->map_layer, 0, 0);
 }
 
 // Renderizar solo el jugador (se llama cada vez que se mueve)
@@ -387,7 +437,6 @@ void	render_player_dynamic(t_game *game)
 	{
 		// Actualizar el jugador en su capa
 		render_player(game);
-		mlx_image_to_window(game->mlx, game->player_layer, 0, 0);
 		
 		// Actualizar variables de seguimiento
 		game->last_player_x = game->cub_data.player.x;

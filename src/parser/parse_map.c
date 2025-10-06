@@ -269,7 +269,7 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 		if (line_len > 0 && line[line_len - 1] == '\n')
 			line_len--;
 
-		data->map.grid[i] = malloc(line_len + 1);
+		data->map.grid[i] = malloc(data->map.width + 1);
 		if (!data->map.grid[i])
 		{
 			// Liberar memoria ya alocada
@@ -282,7 +282,12 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 		// Copiar caracteres
 		for (j = 0; j < line_len; j++)
 			data->map.grid[i][j] = line[j];
-		data->map.grid[i][line_len] = '\0';
+		while (j < data->map.width)
+		{
+			data->map.grid[i][j] = ' ';
+			j++;
+		}
+		data->map.grid[i][data->map.width] = '\0';
 	}
 
 	data->map.grid[data->map.height] = NULL;
