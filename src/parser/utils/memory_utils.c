@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 02:15:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:30:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	free_map(t_map *map)
 	map->height = 0;
 }
 
-static void	free_texture_if_exists(char **texture)
+static void	free_texture_path(char **texture_path)
 {
-	if (*texture)
+	if (*texture_path)
 	{
-		free(*texture);
-		*texture = NULL;
+		free(*texture_path);
+		*texture_path = NULL;
 	}
 }
 
@@ -44,10 +44,11 @@ void	free_cub_data(t_cub_data *data)
 {
 	if (!data)
 		return ;
-	free_texture_if_exists(&data->textures.north);
-	free_texture_if_exists(&data->textures.south);
-	free_texture_if_exists(&data->textures.west);
-	free_texture_if_exists(&data->textures.east);
+	free_texture_path(&data->textures.north_path);
+	free_texture_path(&data->textures.south_path);
+	free_texture_path(&data->textures.west_path);
+	free_texture_path(&data->textures.east_path);
+	free_textures(&data->textures);
 	free_map(&data->map);
 }
 

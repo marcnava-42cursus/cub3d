@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 01:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 01:48:31 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/19 16:24:29 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ int	find_player_position(t_map *map, t_player *player)
 				player->x = (float)x + 0.5f;  // Centro de la celda
 				player->y = (float)y + 0.5f;  // Centro de la celda
 				player->orientation = (t_orientation)c;
+				if (player->orientation == NORTH)
+					player->angle = 3.0f * (M_PI/2);
+				else if (player->orientation == SOUTH)
+					player->angle = M_PI/2;
+				else if (player->orientation == EAST)
+					player->angle = 0.0f;
+				else if (player->orientation == WEST)
+					player->angle = M_PI;
 				map->grid[y][x] = '0';
 			}
 			x++;

@@ -78,43 +78,43 @@ static int	set_texture(t_textures *textures, const char *identifier, char *path)
 {
 	if (strcmp(identifier, "NO") == 0)
 	{
-		if (textures->north)
+		if (textures->north_path)
 		{
 			printf("Error: North texture already defined\n");
 			free(path);
 			return (0);
 		}
-		textures->north = path;
+		textures->north_path = path;
 	}
 	else if (strcmp(identifier, "SO") == 0)
 	{
-		if (textures->south)
+		if (textures->south_path)
 		{
 			printf("Error: South texture already defined\n");
 			free(path);
 			return (0);
 		}
-		textures->south = path;
+		textures->south_path = path;
 	}
 	else if (strcmp(identifier, "WE") == 0)
 	{
-		if (textures->west)
+		if (textures->west_path)
 		{
 			printf("Error: West texture already defined\n");
 			free(path);
 			return (0);
 		}
-		textures->west = path;
+		textures->west_path = path;
 	}
 	else if (strcmp(identifier, "EA") == 0)
 	{
-		if (textures->east)
+		if (textures->east_path)
 		{
 			printf("Error: East texture already defined\n");
 			free(path);
 			return (0);
 		}
-		textures->east = path;
+		textures->east_path = path;
 	}
 	else
 	{

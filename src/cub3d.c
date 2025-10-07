@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/06 17:39:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/29 19:18:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ int	init_game(t_game *game, const char *map_file)
 	if (!parse_cub_file(map_file, &game->cub_data))
 	{
 		printf("Error: Failed to parse map file %s\n", map_file);
+		return (0);
+	}
+
+	// Cargar texturas XPM
+	if (!load_textures(&game->cub_data.textures))
+	{
+		printf("Error: Failed to load textures\n");
+		free_cub_data(&game->cub_data);
 		return (0);
 	}
 
@@ -71,6 +79,11 @@ int	run_game(t_game *game)
 	init_movement_system(game);
 
 	// Iniciar loop de MLX
+	// Aquí iría el game loop principal
+	// - Procesamiento de input
+	// - Lógica del juego
+	// - Rendering
+	render_double_buffer(game);
 	mlx_loop(game->mlx);
 
 	return (1);

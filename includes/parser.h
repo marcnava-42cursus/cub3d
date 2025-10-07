@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 00:40:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/11 12:34:50 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <string.h>
+# include <math.h>
 # include "structs.h"
 
 // Parser principal
@@ -53,6 +54,10 @@ int		count_file_lines(const char *filename);
 // Validación
 int		validate_file_extension(const char *filename);
 int		validate_texture_path(const char *path);
+
+// Texture loading
+int		load_textures(t_textures *textures);
+void	free_textures(t_textures *textures);
 
 // Debug
 void	print_cub_data(const t_cub_data *data);

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/06 17:49:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/09/29 19:15:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
 
+
 // Orientaciones del jugador
 typedef enum e_orientation
 {
@@ -27,6 +28,13 @@ typedef enum e_orientation
 	EAST = 'E',
 	WEST = 'W'
 }	t_orientation;
+
+// Render order for gameplay buffers
+typedef enum e_render_order
+{
+	CURRENT = 0,
+	NEXT = 1
+}	t_render_order;
 
 // Estructura para colores RGB
 typedef struct s_color
@@ -39,19 +47,23 @@ typedef struct s_color
 // Estructura para texturas
 typedef struct s_textures
 {
-	char	*north;		// NO
-	char	*south;		// SO
-	char	*west;		// WE
-	char	*east;		// EA
+	char		*north_path;	// NO - file path
+	char		*south_path;	// SO - file path
+	char		*west_path;		// WE - file path
+	char		*east_path;		// EA - file path
+	xpm_t		*north;			// Loaded north texture
+	xpm_t		*south;			// Loaded south texture
+	xpm_t		*west;			// Loaded west texture
+	xpm_t		*east;			// Loaded east texture
 }	t_textures;
 
 // Estructura para la posición del jugador
 typedef struct s_player
 {
-	float			x;			// Coordenada X flotante para movimiento suave
-	float			y;			// Coordenada Y flotante para movimiento suave
-	float			angle;		// Ángulo de rotación en radianes
-	t_orientation	orientation;	// Orientación original del mapa (N, S, E, W)
+	float			x;            // Coordenada X flotante para movimiento suave
+	float			y;            // Coordenada Y flotante para movimiento suave
+	float			angle;        // Ángulo de rotación en radianes
+	t_orientation	orientation;  // Orientación original del mapa (N, S, E, W)
 }	t_player;
 
 // Estructura para el mapa
@@ -75,14 +87,35 @@ typedef struct s_cub_data
 // Textures for 2D map rendering
 typedef struct s_map_textures
 {
-	mlx_image_t	*wall;			// block.png
-	mlx_image_t	*floor;			// floor.png
-	mlx_image_t	*player;		// player.png (fallback)
-	mlx_image_t	*player_north;	// player facing north
-	mlx_image_t	*player_south;	// player facing south
-	mlx_image_t	*player_east;	// player facing east
-	mlx_image_t	*player_west;	// player facing west
+	mlx_image_t	*wall;          // block.png
+	mlx_image_t	*floor;         // floor.png
+	mlx_image_t	*player;        // player.png (fallback)
+	mlx_image_t	*player_north;  // player facing north
+	mlx_image_t	*player_south;  // player facing south
+	mlx_image_t	*player_east;   // player facing east
+	mlx_image_t	*player_west;   // player facing west
 }	t_map_textures;
+
+typedef struct s_minimap
+{
+	mlx_image_t		*bg;
+	mlx_image_t		*player_sprite;
+	mlx_image_t		*player_vision;
+	mlx_image_t		*tile;
+	t_map			*map;
+	t_player		*player;
+}	t_minimap;
+
+typedef struct s_rayhit
+{
+	bool			hit;
+	int				cell_x;
+	int				cell_y;
+	int				side;      // 0 = vertical 1 = horizontal
+	t_orientation	face;
+	vertex_t		position;  // in world pixels
+	float			distance;
+}	t_rayhit;
 
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
@@ -90,7 +123,7 @@ typedef struct s_game
 	t_cub_data	cub_data;		// Datos parseados del archivo .cub
 	// Ventana MLX
 	mlx_t		*mlx;
-	// Buffers de renderizado
+	// Buffers de renderizado 2D/legacy
 	mlx_image_t	*rc_buf_zero;
 	mlx_image_t	*rc_buf_one;
 	mlx_image_t	*bg_buf_zero;
@@ -119,6 +152,11 @@ typedef struct s_game
 	bool		key_d_pressed;
 	bool		key_left_pressed;
 	bool		key_right_pressed;
+
+	// Datos de renderizado (raycast, sprites, etc.)
+	mlx_image_t	*double_buffer[2];
+	float		resolution_scale;
+	t_minimap	minimap;
 }	t_game;
 
 #endif

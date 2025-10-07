@@ -14,10 +14,13 @@ NAME		:= cub3D
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra #-Werror
-DFLAGS		:= -g3 -fsanitize=address
+DFLAGS		:= -g3
+SANITIZE	:= -fsanitize=address
 DEBUG		?= 0
 ifeq ($(DEBUG),1)
-CFLAGS		+= $(DFLAGS)
+	CFLAGS		+= $(DFLAGS)
+else ifeq ($(DEBUG),2)
+	CFLAGS		+= $(DFLAGS) $(SANITIZE)
 endif
 RM			:= rm -rf
 
@@ -36,28 +39,38 @@ INCLUDES	:= -I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include
 MLX			:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 SRCS		:= $(SRCPATH)/cub3d.c \
-			   $(SRCPATH)/parser/parser_main.c \
-			   $(SRCPATH)/parser/parser_validation.c \
-			   $(SRCPATH)/parser/parse_textures.c \
-			   $(SRCPATH)/parser/parse_map.c \
-			   $(SRCPATH)/parser/utils.c \
-			   $(SRCPATH)/parser/colors/parse_colors.c \
-			   $(SRCPATH)/parser/colors/color_validation.c \
-			   $(SRCPATH)/parser/colors/rgb_parsing.c \
-			   $(SRCPATH)/parser/colors/value_extraction.c \
-			   $(SRCPATH)/parser/utils/string_utils.c \
-			   $(SRCPATH)/parser/utils/file_utils.c \
-			   $(SRCPATH)/parser/utils/validation_utils.c \
-			   $(SRCPATH)/parser/utils/memory_utils.c \
-			   $(SRCPATH)/parser/utils/debug_utils.c \
-			   $(SRCPATH)/render/window.c \
-			   $(SRCPATH)/render/map_2d.c \
-			   $(SRCPATH)/logic/movement.c \
-			   $(SRCPATH)/logic/input.c \
-			   $(SRCPATH)/logic/timing.c \
-			   $(SRCPATH)/logic/collision.c \
-			   $(SRCPATH)/logic/move.c \
-			   $(SRCPATH)/logic/rotation.c
+				   $(SRCPATH)/parser/parser_main.c \
+				   $(SRCPATH)/parser/parser_validation.c \
+				   $(SRCPATH)/parser/parse_textures.c \
+				   $(SRCPATH)/parser/parse_map.c \
+				   $(SRCPATH)/parser/utils.c \
+				   $(SRCPATH)/parser/colors/parse_colors.c \
+				   $(SRCPATH)/parser/colors/color_validation.c \
+				   $(SRCPATH)/parser/colors/rgb_parsing.c \
+				   $(SRCPATH)/parser/colors/value_extraction.c \
+				   $(SRCPATH)/parser/utils/string_utils.c \
+				   $(SRCPATH)/parser/utils/file_utils.c \
+				   $(SRCPATH)/parser/utils/validation_utils.c \
+				   $(SRCPATH)/parser/utils/memory_utils.c \
+				   $(SRCPATH)/parser/utils/debug_utils.c \
+				   $(SRCPATH)/textures/texture_loader.c \
+				   $(SRCPATH)/render/background.c \
+				   $(SRCPATH)/render/bresenham.c \
+				   $(SRCPATH)/render/double_buffer.c \
+				   $(SRCPATH)/render/minimap.c \
+				   $(SRCPATH)/render/raycast.c \
+				   $(SRCPATH)/render/texture_mapping.c \
+				   $(SRCPATH)/render/walls.c \
+				   $(SRCPATH)/render/outlines.c \
+				   $(SRCPATH)/render/window.c \
+				   $(SRCPATH)/render/utils.c \
+				   $(SRCPATH)/render/map_2d.c \
+				   $(SRCPATH)/logic/movement.c \
+				   $(SRCPATH)/logic/input.c \
+				   $(SRCPATH)/logic/timing.c \
+				   $(SRCPATH)/logic/collision.c \
+				   $(SRCPATH)/logic/move.c \
+				   $(SRCPATH)/logic/rotation.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 
@@ -93,10 +106,10 @@ libs/minilibx/CMakeLists.txt:
 	mkdir -p $(LIBPATH)
 	git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX)
 
-libmlx:
+libmlx:	$(LIBMLX)/CMakeLists.txt
 	cmake $(LIBMLX) -B $(LIBMLX)/build && $(MAKE) -s -C $(LIBMLX)/build -j4
 
-libft:
+libft:	$(LIBFT)/Makefile
 	$(MAKE) --no-print-directory -s -C $(LIBFT)
 
 .PHONY:		libs libft libmlx

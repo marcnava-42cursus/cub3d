@@ -19,8 +19,8 @@ static char	*find_start(char *str)
 	if (!str)
 		return (NULL);
 	start = str;
-	while (*start == ' ' || *start == '\t')
-		start++;
+    while (*start == ' ' || *start == '\t' || *start == '\r')
+        start++;
 	if (*start == '\0')
 		return (start);
 	return (start);
@@ -35,8 +35,8 @@ char	*trim_whitespace(char *str)
 	if (!start || *start == '\0')
 		return (start);
 	end = start + strlen(start) - 1;
-	while (end > start && (*end == ' ' || *end == '\t' || *end == '\n'))
-		end--;
+    while (end > start && (*end == ' ' || *end == '\t' || *end == '\n' || *end == '\r'))
+        end--;
 	*(end + 1) = '\0';
 	return (start);
 }
@@ -48,11 +48,11 @@ int	is_empty_line(const char *line)
 	if (!line)
 		return (1);
 	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
-			return (0);
-		i++;
-	}
+    while (line[i])
+    {
+        if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n' && line[i] != '\r')
+            return (0);
+        i++;
+    }
 	return (1);
 }

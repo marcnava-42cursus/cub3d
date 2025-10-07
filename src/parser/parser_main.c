@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:25:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 02:25:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/21 03:29:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 static void	init_cub_data(t_cub_data *data)
 {
+	data->textures.north_path = NULL;
+	data->textures.south_path = NULL;
+	data->textures.west_path = NULL;
+	data->textures.east_path = NULL;
 	data->textures.north = NULL;
 	data->textures.south = NULL;
 	data->textures.west = NULL;
 	data->textures.east = NULL;
+	
 	data->floor_color.r = -1;
 	data->floor_color.g = -1;
 	data->floor_color.b = -1;
@@ -105,8 +110,8 @@ static int	find_map_start(char **lines, int line_count)
 
 static int	validate_parsed_data(const t_cub_data *data)
 {
-	if (!data->textures.north || !data->textures.south
-		|| !data->textures.west || !data->textures.east)
+	if (!data->textures.north_path || !data->textures.south_path
+		|| !data->textures.west_path || !data->textures.east_path)
 		return (0);
 	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
 		return (0);
@@ -132,18 +137,30 @@ static void	free_lines(char **lines, int line_count)
 
 static int	process_file_data(char **lines, int line_count, t_cub_data *data)
 {
-	int	map_start;
+    int	map_start;
 
-	map_start = find_map_start(lines, line_count);
-	if (map_start == -1)
-		return (0);
-	if (!parse_elements(lines, map_start, data))
-		return (0);
-	if (!parse_map_section(lines, map_start, data))
-		return (0);
-	if (!validate_parsed_data(data))
-		return (0);
-	return (1);
+    map_start = find_map_start(lines, line_count);
+    if (map_start == -1)
+    {
+        printf("Error: Map section not found\n");
+        return (0);
+    }
+    if (!parse_elements(lines, map_start, data))
+    {
+        printf("Error: Failed parsing elements (textures/colors) before map\n");
+        return (0);
+    }
+    if (!parse_map_section(lines, map_start, data))
+    {
+        printf("Error: Failed parsing map section\n");
+        return (0);
+    }
+    if (!validate_parsed_data(data))
+    {
+        printf("Error: Parsed data invalid (missing textures/colors/map/player)\n");
+        return (0);
+    }
+    return (1);
 }
 
 int	parse_cub_file(const char *filename, t_cub_data *data)

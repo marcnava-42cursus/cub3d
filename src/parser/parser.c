@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 01:47:26 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/09/11 12:21:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	init_cub_data(t_cub_data *data)
 	data->map.height = 0;
 	data->player.x = -1;
 	data->player.y = -1;
+	data->player.orientation_x = 0;
+	data->player.orientation_y = 0;
 	data->player.orientation = 0;
 }
 
