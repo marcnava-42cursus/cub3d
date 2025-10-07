@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/29 19:15:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/07 19:51:55 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,9 @@ typedef struct s_rayhit
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
-	t_cub_data	cub_data;		// Datos parseados del archivo .cub
-	// Ventana MLX
-	mlx_t		*mlx;
+    t_cub_data	cub_data;		// Datos parseados del archivo .cub
+    // Ventana MLX
+    mlx_t		*mlx;
 	// Buffers de renderizado 2D/legacy
 	mlx_image_t	*rc_buf_zero;
 	mlx_image_t	*rc_buf_one;
@@ -151,12 +151,15 @@ typedef struct s_game
 	bool		key_a_pressed;
 	bool		key_d_pressed;
 	bool		key_left_pressed;
-	bool		key_right_pressed;
+    bool		key_right_pressed;
 
-	// Datos de renderizado (raycast, sprites, etc.)
-	mlx_image_t	*double_buffer[2];
-	float		resolution_scale;
-	t_minimap	minimap;
+    // Datos de renderizado (raycast, sprites, etc.)
+    mlx_image_t	*double_buffer[2];
+    float		resolution_scale;
+    t_minimap	minimap;
+
+    // Estado de UI
+    bool        map_2d_visible;
 }	t_game;
 
 #endif

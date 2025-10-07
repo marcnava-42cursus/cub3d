@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_2d.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agentmode <agentmode@warp.ai>               +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/06 17:36:00 by agentmode         #+#    #+#             */
-/*   Updated: 2025/09/06 17:36:00 by agentmode        ###   ########.fr       */
+/*   Created: 2025/09/06 17:36:00 by ivmirand          #+#    #+#             */
+/*   Updated: 2025/10/07 19:56:49 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <string.h>
+#include "libft.h"
 
 #ifndef M_PI_2
 # define M_PI_2 (M_PI / 2.0)
@@ -318,7 +319,7 @@ static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
 	layer = game->player_layer;
 	if (!texture || !layer)
 		return ;
-	angle = game->cub_data.player.angle + (float)M_PI_2;
+	angle = game->cub_data.player.angle + (float)FT_PI_2;
 	cos_a = cosf(angle);
 	sin_a = sinf(angle);
 	tex_width = (int)texture->width;

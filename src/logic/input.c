@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codex                                         +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 00:00:00 by codex             #+#    #+#             */
-/*   Updated: 2025/10/02 00:00:00 by codex            ###   ########.fr       */
+/*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
+/*   Updated: 2025/10/07 19:53:33 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,9 @@ void    key_hook(mlx_key_data_t keydata, void *param)
         return ;
     if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
         mlx_close_window(game->mlx);
+    else if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+    {
+        toggle_map_overlay(game);
+    }
 }
 

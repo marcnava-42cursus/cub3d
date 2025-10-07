@@ -20,25 +20,37 @@ int	load_textures(t_textures *textures)
     {
         textures->north = mlx_load_xpm42(textures->north_path);
         if (!textures->north)
-            printf("Warning: Could not load north texture: %s (using flat color)\n", textures->north_path);
+        {
+            printf("Error: Failed to load north texture: %s\n", textures->north_path);
+            return (0);
+        }
     }
     if (textures->south_path)
     {
         textures->south = mlx_load_xpm42(textures->south_path);
         if (!textures->south)
-            printf("Warning: Could not load south texture: %s (using flat color)\n", textures->south_path);
+        {
+            printf("Error: Failed to load south texture: %s\n", textures->south_path);
+            return (0);
+        }
     }
     if (textures->east_path)
     {
         textures->east = mlx_load_xpm42(textures->east_path);
         if (!textures->east)
-            printf("Warning: Could not load east texture: %s (using flat color)\n", textures->east_path);
+        {
+            printf("Error: Failed to load east texture: %s\n", textures->east_path);
+            return (0);
+        }
     }
     if (textures->west_path)
     {
         textures->west = mlx_load_xpm42(textures->west_path);
         if (!textures->west)
-            printf("Warning: Could not load west texture: %s (using flat color)\n", textures->west_path);
+        {
+            printf("Error: Failed to load west texture: %s\n", textures->west_path);
+            return (0);
+        }
     }
 
     return (1);

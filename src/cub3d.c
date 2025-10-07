@@ -72,11 +72,10 @@ int	run_game(t_game *game)
 	printf("Player at (%.2f, %.2f) facing %c\n", 
 		game->cub_data.player.x, game->cub_data.player.y, game->cub_data.player.orientation);
 
-	// Renderizar mapa 2D
-	render_map_2d(game);
-
-	// Inicializar sistema de movimiento
-	init_movement_system(game);
+    // Inicializar sistema de movimiento
+    init_movement_system(game);
+    // Por defecto, mantener oculto el overlay 2D; tecla 'M' lo alterna
+    set_map_overlay_visible(game, false);
 
 	// Iniciar loop de MLX
 	// Aquí iría el game loop principal

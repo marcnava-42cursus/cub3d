@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/02 17:21:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/07 19:57:24 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "MLX42/MLX42.h"
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
+# include "libft.h"
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
@@ -36,8 +37,8 @@
 # define MINIMAP_WNDW_Y (MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT)
 # define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_WIDTH / 2 - MINIMAP_PLAYER_SIZE / 2)
 # define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_HEIGHT / 2 - MINIMAP_PLAYER_SIZE / 2)
-# define PLAYER_FOV (66.0f * M_PI / 180.0f)
-# define TAU (2.0f * M_PI)
+# define PLAYER_FOV (66.0f * FT_PI / 180.0f)
+# define TAU (2.0f * FT_PI)
 
 # define RED 0xFF0000FF
 # define GREEN 0x00FF00FF
@@ -90,6 +91,8 @@ void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 bool	window_init(t_game *game);
 void	render_gameplay_window(t_game *game);
 void	window_free(t_game *game);
+void    set_map_overlay_visible(t_game *game, bool visible);
+void    toggle_map_overlay(t_game *game);
 
 /*--------------------------------- UTILS.C ----------------------------------*/
 int		t_color_to_int(t_color *color, int alpha);

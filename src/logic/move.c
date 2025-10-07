@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codex                                         +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 00:00:00 by codex             #+#    #+#             */
-/*   Updated: 2025/10/02 00:00:00 by codex            ###   ########.fr       */
+/*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
+/*   Updated: 2025/10/07 19:53:45 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic.h"
 #include <math.h>
 
 #ifndef FT_PI_2
@@ -46,4 +47,3 @@ void    move_strafe(t_game *game, bool right)
     ny = sinf(ang) * spd;
     attempt_move(game, nx, ny);
 }
-

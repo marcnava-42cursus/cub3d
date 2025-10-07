@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/07 19:00:00 by codex-cli       ###   ########.fr       */
+/*   Updated: 2025/10/07 19:58:03 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	window_init(t_game *game)
     mlx_image_to_window(game->mlx, game->double_buffer[CURRENT], 0, 0);
     game->resolution_scale = 0.5f;
 
-    // Create 2D map layers on top
+    // Create 2D map layers (not attached by default)
     window_width = MAX_WINDOW_WIDTH;
     window_height = MAX_WINDOW_HEIGHT;
     game->map_layer = mlx_new_image(game->mlx, window_width, window_height);
@@ -56,12 +56,8 @@ bool	window_init(t_game *game)
     game->key_d_pressed = false;
     game->key_left_pressed = false;
     game->key_right_pressed = false;
-    if (mlx_image_to_window(game->mlx, game->map_layer, 0, 0) < 0)
-        return (false);
-    game->map_layer_attached = true;
-    if (mlx_image_to_window(game->mlx, game->player_layer, 0, 0) < 0)
-        return (false);
-    game->player_layer_attached = true;
+    game->map_layer_attached = false;
+    game->player_layer_attached = false;
 
     // Initialize minimap overlay
     minimap_init(game);
@@ -87,5 +83,48 @@ void	window_free(t_game *game)
         mlx_delete_image(game->mlx, game->double_buffer[CURRENT]);
     minimap_free(game->mlx, &game->minimap);
     mlx_terminate(game->mlx);
+}
+
+static void set_image_enabled(mlx_image_t *img, bool enabled)
+{
+    if (!img)
+        return;
+    for (int i = 0; i < img->count; ++i)
+        img->instances[i].enabled = enabled;
+}
+
+void    set_map_overlay_visible(t_game *game, bool visible)
+{
+    if (!game || !game->mlx)
+        return;
+    if (visible)
+    {
+        if (!game->map_layer_attached)
+        {
+            if (mlx_image_to_window(game->mlx, game->map_layer, 0, 0) >= 0)
+                game->map_layer_attached = true;
+        }
+        if (!game->player_layer_attached)
+        {
+            if (mlx_image_to_window(game->mlx, game->player_layer, 0, 0) >= 0)
+                game->player_layer_attached = true;
+        }
+        set_image_enabled(game->map_layer, true);
+        set_image_enabled(game->player_layer, true);
+        render_map_2d_initial(game);
+    }
+    else
+    {
+        set_image_enabled(game->map_layer, false);
+        set_image_enabled(game->player_layer, false);
+    }
+    game->map_2d_visible = visible;
+}
+
+void    toggle_map_overlay(t_game *game)
+{
+    if (!game)
+        return;
+    set_map_overlay_visible(game, !game->map_2d_visible);
 }
 

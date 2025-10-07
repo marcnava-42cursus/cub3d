@@ -69,21 +69,12 @@ void	print_map_2d(t_game *game)
 static int last_grid_x = -1;
 static int last_grid_y = -1;
 
-// Variable estática para trackear si necesitamos redibujar el mapa
-static bool map_drawn = false;
-
 // Función para actualizar solo la posición del jugador
 void	update_player_position(t_game *game)
 {
-	// Solo dibujar el mapa una vez
-	if (!map_drawn)
-	{
-		render_map_tiles_static(game);
-		map_drawn = true;
-	}
-	
-	// Actualizar solo la posición del jugador
-	render_player_dynamic(game);
+	// Actualizar solo la posición del jugador (si el overlay está activo)
+	if (game->map_2d_visible)
+		render_player_dynamic(game);
 }
 
 // Función para manejar las teclas presionadas y soltadas
@@ -92,8 +83,8 @@ void	update_player_position(t_game *game)
 // Función de loop continuo para procesar movimiento suave
 void	update_game_loop(void *param)
 {
-	t_game	*game = (t_game *)param;
-	bool		moved = false;
+    t_game	*game = (t_game *)param;
+    bool		moved = false;
 	int			current_grid_x;
 	int			current_grid_y;
 
@@ -134,30 +125,33 @@ void	update_game_loop(void *param)
 		moved = true;
 	}
 	
-	// Solo actualizar si hubo movimiento
-	if (moved)
-	{
-		update_player_position(game);
-		
-		// Imprimir en terminal cada vez que cambien de celda
-		current_grid_x = (int)floor(game->cub_data.player.x);
-		current_grid_y = (int)floor(game->cub_data.player.y);
-		
-		if (current_grid_x != last_grid_x || current_grid_y != last_grid_y)
-		{
-			print_map_2d(game);
-			last_grid_x = current_grid_x;
-			last_grid_y = current_grid_y;
-		}
-		else
-		{
-			// Solo mostrar posición actual sin el mapa completo
-			printf("Player: (%.2f, %.2f) - Grid: (%d, %d) - Angle: %.2f\r",
-				game->cub_data.player.x, game->cub_data.player.y,
-				current_grid_x, current_grid_y, game->cub_data.player.angle);
-			fflush(stdout);
-		}
-	}
+    // Actualizar render si hubo movimiento
+    if (moved)
+    {
+        if (game->map_2d_visible)
+            update_player_position(game);
+        // Re-renderizar mundo (raycaster + minimapa)
+        render_double_buffer(game);
+
+        // Imprimir en terminal cada vez que cambien de celda
+        current_grid_x = (int)floor(game->cub_data.player.x);
+        current_grid_y = (int)floor(game->cub_data.player.y);
+
+        if (current_grid_x != last_grid_x || current_grid_y != last_grid_y)
+        {
+            print_map_2d(game);
+            last_grid_x = current_grid_x;
+            last_grid_y = current_grid_y;
+        }
+        else
+        {
+            // Solo mostrar posición actual sin el mapa completo
+            printf("Player: (%.2f, %.2f) - Grid: (%d, %d) - Angle: %.2f\r",
+                game->cub_data.player.x, game->cub_data.player.y,
+                current_grid_x, current_grid_y, game->cub_data.player.angle);
+            fflush(stdout);
+        }
+    }
 }
 
 // Inicializar el sistema de movimiento
