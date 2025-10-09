@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/09/29 16:33:20 by marcnava         ###   ########.fr        #
+#    Updated: 2025/10/09 15:23:48 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,6 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 				   $(SRCPATH)/parser/parser_validation.c \
 				   $(SRCPATH)/parser/parse_textures.c \
 				   $(SRCPATH)/parser/parse_map.c \
-				   $(SRCPATH)/parser/utils.c \
 				   $(SRCPATH)/parser/colors/parse_colors.c \
 				   $(SRCPATH)/parser/colors/color_validation.c \
 				   $(SRCPATH)/parser/colors/rgb_parsing.c \
@@ -90,7 +89,7 @@ clean:
 
 fclean:		clean
 	$(RM) $(NAME)
-	#$(RM) $(LIBPATH)
+	$(RM) $(LIBPATH)
 
 re:			fclean all
 
@@ -100,11 +99,11 @@ libs:		libs/libft/Makefile libs/minilibx/CMakeLists.txt
 
 libs/libft/Makefile:
 	mkdir -p $(LIBPATH)
-	git clone https://github.com/marcnava-42cursus/libft $(LIBFT)
+	git clone git@github.com:marcnava-42cursus/libft $(LIBFT)
 
 libs/minilibx/CMakeLists.txt:
 	mkdir -p $(LIBPATH)
-	git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX)
+	git clone git@github.com:codam-coding-college/MLX42.git $(LIBMLX)
 
 libmlx:	$(LIBMLX)/CMakeLists.txt
 	cmake $(LIBMLX) -B $(LIBMLX)/build && $(MAKE) -s -C $(LIBMLX)/build -j4
