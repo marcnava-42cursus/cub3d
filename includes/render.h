@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/07 19:57:24 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:09:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	minimap_init(t_game *game);
 void	render_minimap_bg(t_minimap *minimap);
 void	render_minimap_tiles(t_game *game, t_map *map, t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
-void	render_minimap_player_vision(t_minimap *minimap);
+void	render_minimap_player_vision(mlx_t *mlx, t_minimap *minimap);
 void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
