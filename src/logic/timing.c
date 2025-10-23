@@ -39,7 +39,8 @@ void    init_player_parameters(t_game *game)
 {
     game->move_speed = 4.0f;
     game->rot_speed = 2.5f;
-    game->player_radius = 0.2f;
+    game->player_radius = 0.2f; //why .2f? this may be causing the collision
+								//issues in 3D render
     game->delta_time = 0.0;
     game->last_frame_time = mlx_get_time();
 }
