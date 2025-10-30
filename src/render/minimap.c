@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/25 03:05:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/30 13:33:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,6 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 	float		player_angle;
 	size_t		row_len;
 
-	// Render blue background first
-	render_minimap_bg(minimap);
-	
 	center_x = MINIMAP_WIDTH / 2;
 	center_y = MINIMAP_HEIGHT / 2;
 	radius = (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE) / 2;
@@ -159,8 +156,8 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 				continue;
 			
 			// Calculate offset from tile center to tile center
-			world_offset.x = (world_x - minimap->player->x) * MINIMAP_TILE_SIZE;
-			world_offset.y = (world_y - minimap->player->y) * MINIMAP_TILE_SIZE;
+			world_offset.x = (world_x - minimap->player->x + 0.25f) * MINIMAP_TILE_SIZE;
+			world_offset.y = (world_y - minimap->player->y + 0.25f) * MINIMAP_TILE_SIZE;
 			
 			// Rotate the offset so player always faces up
 			rotated_offset = rotate_point(world_offset, -player_angle);
@@ -205,8 +202,8 @@ static vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
 	float		player_angle;
 	float		scale;
 
-	player_position.x = (minimap->player->x + 0.5f) * WORLDMAP_TILE_SIZE;
-	player_position.y = (minimap->player->y + 0.5f) * WORLDMAP_TILE_SIZE;
+	player_position.x = (minimap->player->x + 0.25f) * WORLDMAP_TILE_SIZE;
+	player_position.y = (minimap->player->y + 0.25f) * WORLDMAP_TILE_SIZE;
 	
 	// Calculate offset from player in world coordinates
 	world_offset.x = world.x - player_position.x;
@@ -297,7 +294,6 @@ void	render_minimap_player_vision(t_minimap *minimap)
 	const float MAX_DIST = 2000.0f;
 	t_rayhit	rayhit;
 	vertex_t	player_position;
-	vertex_t	tip;
 	vertex_t	player_to_minimap;
 	int			i;
 	float		ray_angle;
@@ -309,8 +305,8 @@ void	render_minimap_player_vision(t_minimap *minimap)
 	// Clear player vision buffer
 	memset(minimap->player_vision->pixels, 0, minimap->player_vision->width * minimap->player_vision->height * 4);
 
-	player_position.x = (minimap->player->x + 0.5f) * WORLDMAP_TILE_SIZE;
-	player_position.y = (minimap->player->y + 0.5f) * WORLDMAP_TILE_SIZE;
+	player_position.x = (minimap->player->x + 0.25f) * WORLDMAP_TILE_SIZE;
+	player_position.y = (minimap->player->y + 0.25f) * WORLDMAP_TILE_SIZE;
 	player_to_minimap = world_to_minimap_vertex(minimap, player_position);
 
 	// Cast rays and store endpoints
@@ -338,11 +334,6 @@ void	render_minimap_player_vision(t_minimap *minimap)
 	{
 		bresenham_clipped(&player_to_minimap, &ray_endpoints[i], minimap->player_vision, GREEN);
 	}
-
-	// Simple player direction indicator (always points up in rotated space)
-	tip.x = MINIMAP_WIDTH / 2;
-	tip.y = MINIMAP_HEIGHT / 2 - 30; // Points straight up
-	bresenham_clipped(&player_to_minimap, &tip, minimap->player_vision, RED);
 }
 
 void	minimap_free(mlx_t *mlx, t_minimap *minimap)
