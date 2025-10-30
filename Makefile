@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/10/09 15:23:48 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/10/30 16:55:33 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 				   $(SRCPATH)/render/outlines.c \
 				   $(SRCPATH)/render/window.c \
 				   $(SRCPATH)/render/utils.c \
+				   $(SRCPATH)/render/player.c \
 				   $(SRCPATH)/render/map_2d.c \
 				   $(SRCPATH)/logic/movement.c \
 				   $(SRCPATH)/logic/input.c \

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/07 19:51:55 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:45:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,23 @@ typedef struct s_textures
 	xpm_t		*east;			// Loaded east texture
 }	t_textures;
 
+//Player texture collection
+typedef struct s_player_textures
+{
+	xpm_t	*left_hand;
+	xpm_t	*left_thumb;
+	xpm_t	*right_hand;
+	xpm_t	*weapon;
+}	t_player_textures;
+
 // Estructura para la posición del jugador
 typedef struct s_player
 {
-	float			x;            // Coordenada X flotante para movimiento suave
-	float			y;            // Coordenada Y flotante para movimiento suave
-	float			angle;        // Ángulo de rotación en radianes
-	t_orientation	orientation;  // Orientación original del mapa (N, S, E, W)
+	float				x;            // Coordenada X flotante para movimiento suave
+	float				y;            // Coordenada Y flotante para movimiento suave
+	float				angle;        // Ángulo de rotación en radianes
+	t_orientation		orientation;  // Orientación original del mapa (N, S, E, W)
+	t_player_textures	textures;
 }	t_player;
 
 // Estructura para el mapa
@@ -123,10 +133,6 @@ typedef struct s_game
     t_cub_data	cub_data;		// Datos parseados del archivo .cub
     // Ventana MLX
     mlx_t		*mlx;
-	// Buffers de renderizado 2D/legacy
-	mlx_image_t	*rc_buf_zero;
-	mlx_image_t	*rc_buf_one;
-	mlx_image_t	*bg_buf_zero;
 	// Capas separadas para el renderizado 2D
 	mlx_image_t	*map_layer;		// Capa estática del mapa
 	mlx_image_t	*player_layer;		// Capa dinámica del jugador

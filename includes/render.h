@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/30 08:16:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/30 22:26:16 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
 # include "libft.h"
+# include "animation.h"
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
@@ -27,6 +28,12 @@
 # define MINIMAP_RAYS 120
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
+# define HAND_TEXTURE_WIDTH 192
+# define HAND_TEXTURE_HEIGHT 192
+# define THUMB_TEXTURE_WIDTH 96
+# define THUMB_TEXTURE_HEIGHT 160
+# define WEAPON_TEXTURE_WIDTH 128
+# define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
@@ -34,7 +41,7 @@
 # define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH)
-# define MINIMAP_WNDW_Y (MAX_WINDOW_HEIGHT - MINIMAP_HEIGHT)
+# define MINIMAP_WNDW_Y 0
 # define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_WIDTH / 2 - MINIMAP_PLAYER_SIZE / 2)
 # define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_HEIGHT / 2 - MINIMAP_PLAYER_SIZE / 2)
 # define PLAYER_FOV (66.0f * FT_PI / 180.0f)
@@ -113,5 +120,8 @@ void	render_map_2d(t_game *game);
 void	render_map_2d_initial(t_game *game);
 void	render_map_tiles_static(t_game *game);
 void	render_player_dynamic(t_game *game);
+
+/*---------------------------- PLAYER.C --------------------------------------*/
+void	render_player_overlay(t_game *game);
 
 #endif
