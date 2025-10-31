@@ -157,6 +157,7 @@ typedef struct s_game
 	// Variables de control de mouse
 	double		last_mouse_x;
 	bool		mouse_initialized;
+	float		mouse_delta_accumulated;
 	float		mouse_sensitivity;
 
     // Datos de renderizado (raycast, sprites, etc.)

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/31 12:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/10/31 14:25:59 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static void	handle_movement_rendering(t_game *game)
  * 1. Updates delta time (from timing.c)
  * 2. Refreshes key states (from input.c)
  * 3. Processes movement input (delegates to move.c and rotation.c)
- * 4. Checks for mouse rotation changes
+ * 4. Processes accumulated mouse rotation
  * 5. Updates rendering if movement occurred
  *
  * @param param Void pointer to game structure (casted internally)
@@ -139,9 +139,7 @@ void	update_game_loop(void *param)
 	if (game->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
-	mouse_rotated = (game->last_player_angle != game->cub_data.player.angle);
-	if (mouse_rotated)
-		game->last_player_angle = game->cub_data.player.angle;
+	mouse_rotated = process_mouse_rotation(game);
 	if (moved || mouse_rotated)
 		handle_movement_rendering(game);
 }
@@ -192,6 +190,7 @@ void	init_movement_system(t_game *game)
 	init_player_angle(game);
 	init_player_parameters(game);
 	game->mouse_initialized = false;
+	game->mouse_delta_accumulated = 0.0f;
 	game->mouse_sensitivity = 0.001f;
 	game->last_mouse_x = 0.0;
 	game->last_player_angle = game->cub_data.player.angle;

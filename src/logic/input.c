@@ -64,15 +64,12 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 /**
  * @brief Callback for mouse cursor movement
  *
- * This function handles mouse movement for camera rotation.
- * The horizontal movement of the mouse rotates the player's view,
- * similar to using the left/right arrow keys.
+ * This function accumulates mouse movement delta without applying rotation.
+ * The accumulated delta is processed once per frame in the game loop to
+ * ensure smooth, synchronized rendering with keyboard movement.
  *
- * This callback only updates the rotation angle, rendering is handled
- * by the main game loop to avoid excessive render calls.
- *
- * When the cursor approaches the window edges, it's repositioned to the
- * center to allow infinite rotation (mouse wrapping).
+ * Multiple cursor events between frames are accumulated to prevent
+ * desynchronization between input and rendering.
  *
  * @param xpos Current X position of the cursor
  * @param ypos Current Y position of the cursor (unused)
@@ -82,7 +79,6 @@ void	cursor_hook(double xpos, double ypos, void *param)
 {
 	t_game	*game;
 	double	delta_x;
-	float	rotation_amount;
 
 	(void)ypos;
 	game = (t_game *)param;
@@ -95,13 +91,32 @@ void	cursor_hook(double xpos, double ypos, void *param)
 		return ;
 	}
 	delta_x = xpos - game->last_mouse_x;
-	if (delta_x == 0.0)
-		return ;
-	rotation_amount = (float)delta_x * game->mouse_sensitivity;
+	game->last_mouse_x = xpos;
+	game->mouse_delta_accumulated += (float)delta_x;
+}
+
+/**
+ * @brief Processes accumulated mouse movement and applies rotation
+ *
+ * This function is called once per frame to apply all accumulated mouse
+ * movement as rotation. This ensures smooth synchronized rotation with
+ * keyboard movement.
+ *
+ * @param game Pointer to the game structure
+ * @return bool True if the mouse rotated the camera
+ */
+bool	process_mouse_rotation(t_game *game)
+{
+	float	rotation_amount;
+
+	if (!game || game->mouse_delta_accumulated == 0.0f)
+		return (false);
+	rotation_amount = game->mouse_delta_accumulated * game->mouse_sensitivity;
+	game->mouse_delta_accumulated = 0.0f;
 	game->cub_data.player.angle += rotation_amount;
 	if (game->cub_data.player.angle > FT_PI)
 		game->cub_data.player.angle -= (2.0f * FT_PI);
 	else if (game->cub_data.player.angle < -FT_PI)
 		game->cub_data.player.angle += (2.0f * FT_PI);
-	game->last_mouse_x = xpos;
+	return (true);
 }
