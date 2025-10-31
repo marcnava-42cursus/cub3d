@@ -60,3 +60,48 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	else if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		toggle_map_overlay(game);
 }
+
+/**
+ * @brief Callback for mouse cursor movement
+ *
+ * This function handles mouse movement for camera rotation.
+ * The horizontal movement of the mouse rotates the player's view,
+ * similar to using the left/right arrow keys.
+ *
+ * This callback only updates the rotation angle, rendering is handled
+ * by the main game loop to avoid excessive render calls.
+ *
+ * When the cursor approaches the window edges, it's repositioned to the
+ * center to allow infinite rotation (mouse wrapping).
+ *
+ * @param xpos Current X position of the cursor
+ * @param ypos Current Y position of the cursor (unused)
+ * @param param Void pointer to the game structure (casted internally)
+ */
+void	cursor_hook(double xpos, double ypos, void *param)
+{
+	t_game	*game;
+	double	delta_x;
+	float	rotation_amount;
+
+	(void)ypos;
+	game = (t_game *)param;
+	if (!game)
+		return ;
+	if (!game->mouse_initialized)
+	{
+		game->last_mouse_x = xpos;
+		game->mouse_initialized = true;
+		return ;
+	}
+	delta_x = xpos - game->last_mouse_x;
+	if (delta_x == 0.0)
+		return ;
+	rotation_amount = (float)delta_x * game->mouse_sensitivity;
+	game->cub_data.player.angle += rotation_amount;
+	if (game->cub_data.player.angle > FT_PI)
+		game->cub_data.player.angle -= (2.0f * FT_PI);
+	else if (game->cub_data.player.angle < -FT_PI)
+		game->cub_data.player.angle += (2.0f * FT_PI);
+	game->last_mouse_x = xpos;
+}

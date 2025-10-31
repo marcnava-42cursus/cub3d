@@ -19,6 +19,7 @@ typedef struct s_game t_game;
 // Input
 void    refresh_key_states(t_game *game);
 void    key_hook(mlx_key_data_t keydata, void *param);
+void    cursor_hook(double xpos, double ypos, void *param);
 
 // Timing
 void    update_delta_time(t_game *game);

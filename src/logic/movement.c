@@ -120,7 +120,8 @@ static void	handle_movement_rendering(t_game *game)
  * 1. Updates delta time (from timing.c)
  * 2. Refreshes key states (from input.c)
  * 3. Processes movement input (delegates to move.c and rotation.c)
- * 4. Updates rendering if movement occurred
+ * 4. Checks for mouse rotation changes
+ * 5. Updates rendering if movement occurred
  *
  * @param param Void pointer to game structure (casted internally)
  */
@@ -128,6 +129,7 @@ void	update_game_loop(void *param)
 {
 	t_game	*game;
 	bool	moved;
+	bool	mouse_rotated;
 
 	game = (t_game *)param;
 	if (!game)
@@ -137,7 +139,10 @@ void	update_game_loop(void *param)
 	if (game->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
-	if (moved)
+	mouse_rotated = (game->last_player_angle != game->cub_data.player.angle);
+	if (mouse_rotated)
+		game->last_player_angle = game->cub_data.player.angle;
+	if (moved || mouse_rotated)
 		handle_movement_rendering(game);
 }
 
@@ -186,11 +191,17 @@ void	init_movement_system(t_game *game)
 		return ;
 	init_player_angle(game);
 	init_player_parameters(game);
+	game->mouse_initialized = false;
+	game->mouse_sensitivity = 0.001f;
+	game->last_mouse_x = 0.0;
+	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
 	render_map_2d_initial(game);
 	print_map_2d(game);
 	print_controls();
 	mlx_key_hook(game->mlx, key_hook, game);
+	mlx_cursor_hook(game->mlx, cursor_hook, game);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	mlx_loop_hook(game->mlx, update_game_loop, game);
 }
