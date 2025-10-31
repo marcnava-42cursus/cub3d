@@ -6,23 +6,37 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/07 19:54:01 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/10/31 12:00:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic.h"
 
-void    rotate_player(t_game *game, bool right)
+#define TWO_PI (2.0f * FT_PI)
+
+/**
+ * @brief Rotates the player's camera view left or right
+ *
+ * This function updates the player's angle based on the rotation speed
+ * and delta time. The angle is kept within the range [-PI, PI] by wrapping
+ * around when necessary.
+ *
+ * @param game Pointer to the game structure
+ * @param right true to rotate right (clockwise), false to rotate left
+ */
+void	rotate_player(t_game *game, bool right)
 {
-    float   dir;
-    float   rs;
+	float	direction;
+	float	rotation_delta;
 
-    dir = right ? 1.0f : -1.0f;
-    rs = game->rot_speed * (float)game->delta_time * dir;
-    game->cub_data.player.angle += rs;
-    if (game->cub_data.player.angle > FT_PI)
-        game->cub_data.player.angle -= 2 * FT_PI;
-    else if (game->cub_data.player.angle < -FT_PI)
-        game->cub_data.player.angle += 2 * FT_PI;
+	if (!game)
+		return ;
+	direction = right ? 1.0f : -1.0f;
+	rotation_delta = game->rot_speed * (float)game->delta_time * direction;
+	game->cub_data.player.angle += rotation_delta;
+	if (game->cub_data.player.angle > FT_PI)
+		game->cub_data.player.angle -= TWO_PI;
+	else if (game->cub_data.player.angle < -FT_PI)
+		game->cub_data.player.angle += TWO_PI;
 }
-
