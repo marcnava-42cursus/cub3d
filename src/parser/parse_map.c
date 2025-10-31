@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 01:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/30 08:52:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/31 04:50:04 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,9 @@ static int	validate_map_characters(t_map *map)
 	return (1);
 }
 
+/**
+ * @deprecated
+ */
 static int	check_position(t_map *map, int x, int y)
 {
 	// Verificar límites
@@ -153,10 +156,10 @@ int	is_map_closed(t_map *map)
 			if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
 				// Verificar los 4 lados
-				int up = check_position(map, x, y - 1);
-				int down = check_position(map, x, y + 1);
-				int left = check_position(map, x - 1, y);
-				int right = check_position(map, x + 1, y);
+				// int up = check_position(map, x, y - 1);
+				// int down = check_position(map, x, y + 1);
+				// int left = check_position(map, x - 1, y);
+				// int right = check_position(map, x + 1, y);
 
 				// Si algún lado está fuera o es espacio, el mapa no está cerrado
 				if (y == 0 || y == map->height - 1)  // Primera o última fila

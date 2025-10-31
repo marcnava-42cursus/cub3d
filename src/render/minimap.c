@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/30 13:33:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/10/31 02:14:02 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static void	bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img, 
 			save_pixel_to_image(img, x0, y0, color);
 		}
 		
-		if (x0 == x1 && y0 == y1) break;
+		if (x0 == x1 && y0 == y1)
+			break ;
 		int e2 = 2 * err;
 		if (e2 > -dy) { err -= dy; x0 += sx; }
 		if (e2 < dx) { err += dx; y0 += sy; }
@@ -141,7 +142,7 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 	center_x = MINIMAP_WIDTH / 2;
 	center_y = MINIMAP_HEIGHT / 2;
 	radius = (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE) / 2;
-	player_angle = minimap->player->angle + M_PI / 2; // +90° so player points up
+	player_angle = minimap->player->angle + FT_PI / 2; // +90° so player points up
 
 	// Render tiles by sampling world space in a rotated grid
 	for (int world_y = minimap->player->y - MINIMAP_RADIUS; world_y <= minimap->player->y + MINIMAP_RADIUS; world_y++)
@@ -210,7 +211,7 @@ static vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
 	world_offset.y = world.y - player_position.y;
 	
 	// Apply rotation so player faces up
-	player_angle = minimap->player->angle + M_PI / 2;
+	player_angle = minimap->player->angle + FT_PI / 2;
 	rotated_offset = rotate_point(world_offset, -player_angle);
 	
 	// Scale and center on minimap

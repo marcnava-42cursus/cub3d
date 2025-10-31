@@ -34,6 +34,12 @@ bool    is_cell_blocking(t_game *game, int cell_x, int cell_y);
 bool    collides_with_wall(t_game *game, float x, float y);
 void    attempt_move(t_game *game, float step_x, float step_y);
 
+// Debug / Terminal Output
+void    print_controls(void);
+void    print_map_2d(t_game *game);
+void    print_player_position_inline(t_game *game, int grid_x, int grid_y);
+void    handle_debug_map_update(t_game *game, int grid_x, int grid_y);
+
 // Loop / Update
 void    update_player_position(t_game *game);
 void    update_game_loop(void *param);
