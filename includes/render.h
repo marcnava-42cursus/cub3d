@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/30 22:26:16 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/01 23:40:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
 # include "libft.h"
-# include "animation.h"
+//# include "animation.h"
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080

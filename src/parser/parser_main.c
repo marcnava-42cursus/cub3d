@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:25:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/21 03:29:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/02 00:32:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ static void	init_cub_data(t_cub_data *data)
 	data->player.y = -1.0f;
 	data->player.angle = 0.0f;
 	data->player.orientation = 0;
+
+	data->player.textures.left_hand_path = "./assets/textures/player/test_hand.xpm42";
+	data->player.textures.left_thumb_path = NULL;
+	data->player.textures.right_hand_path = NULL;
+	data->player.textures.weapon_path = NULL;
+	data->player.textures.left_hand = mlx_load_xpm42(data->player.textures.left_hand_path);
+	data->player.textures.left_thumb = NULL;
+	data->player.textures.right_hand = NULL;
+	data->player.textures.weapon = NULL;
 }
 
 static int	parse_elements(char **lines, int map_start, t_cub_data *data)

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/30 22:45:10 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/02 00:20:30 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
-
 
 // Orientaciones del jugador
 typedef enum e_orientation
@@ -60,6 +59,10 @@ typedef struct s_textures
 //Player texture collection
 typedef struct s_player_textures
 {
+	char	*left_hand_path;
+	char	*left_thumb_path;
+	char	*right_hand_path;
+	char	*weapon_path;
 	xpm_t	*left_hand;
 	xpm_t	*left_thumb;
 	xpm_t	*right_hand;
