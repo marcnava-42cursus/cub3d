@@ -6,36 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/31 14:25:59 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/04 19:16:54 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "logic.h"
 #include <math.h>
-
-/**
- * @file movement.c
- * @brief Main movement system controller and coordinator
- *
- * This file serves as the central entry point for the movement system.
- * It coordinates between different subsystems:
- * - input.c: Handles keyboard input and key state management
- * - move.c: Handles WASD movement (forward/backward/strafe)
- * - rotation.c: Handles arrow key camera rotation
- * - debug_map.c: Handles terminal debug output
- * - timing.c: Handles delta time calculations
- *
- * The main responsibilities of this file are:
- * 1. Initialize the movement system and set up hooks
- * 2. Coordinate the game loop (update_game_loop)
- * 3. Process all movement inputs and trigger appropriate handlers
- * 4. Update rendering after movement
- */
-
-/* ************************************************************************** */
-/*                          HELPER FUNCTIONS                                  */
-/* ************************************************************************** */
 
 /**
  * @brief Updates only the player position display

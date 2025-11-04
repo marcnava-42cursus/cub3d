@@ -1,42 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_validation.c                                :+:      :+:    :+:   */
+/*   parser_finder.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/02 02:30:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 02:30:00 by marcnava         ###   ########.fr       */
+/*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
+/*   Updated: 2025/11/04 00:00:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser.h"
-
-int	validate_parsed_data(const t_cub_data *data)
-{
-	if (!data->textures.north || !data->textures.south
-		|| !data->textures.west || !data->textures.east)
-	{
-		printf("Error: Missing texture definitions\n");
-		return (0);
-	}
-	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
-	{
-		printf("Error: Missing color definitions\n");
-		return (0);
-	}
-	if (!data->map.grid || data->map.height == 0 || data->map.width == 0)
-	{
-		printf("Error: Invalid or missing map\n");
-		return (0);
-	}
-	if (data->player.x == -1 || data->player.y == -1)
-	{
-		printf("Error: Player position not found\n");
-		return (0);
-	}
-	return (1);
-}
+#include "parser.h"
 
 static int	check_element_type(char *line, int *texture_count, int *color_count)
 {

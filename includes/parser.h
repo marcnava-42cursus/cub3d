@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/07 19:55:21 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/04 20:42:52 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,13 @@
 
 // Parser principal
 int		parse_cub_file(const char *filename, t_cub_data *data);
+int		find_map_start(char **lines, int line_count);
 
 // Parser de texturas
 int		parse_texture_line(const char *line, t_textures *textures);
 int		is_texture_identifier(const char *line);
+char	*extract_texture_path(const char *line, const char *identifier);
+int		set_texture(t_textures *textures, const char *identifier, char *path);
 
 // Parser de colores
 int		parse_color_line(const char *line, t_color *floor, t_color *ceiling);
@@ -40,6 +43,7 @@ int		assign_color(char identifier, t_color *floor, t_color *ceiling, int *rgb);
 // Parser de mapa
 int		parse_map_section(char **lines, int start_line, t_cub_data *data);
 int		validate_map(t_map *map, t_player *player);
+int		validate_map_characters(t_map *map);
 int		is_map_line(const char *line);
 int		find_player_position(t_map *map, t_player *player);
 int		is_map_closed(t_map *map);
@@ -47,6 +51,7 @@ int		is_map_closed(t_map *map);
 // Utilidades
 void	free_cub_data(t_cub_data *data);
 void	free_map(t_map *map);
+void	free_lines(char **lines, int line_count);
 char	*trim_whitespace(char *str);
 int		is_empty_line(const char *line);
 char	**read_file_lines(const char *filename, int *line_count);
@@ -61,6 +66,7 @@ int		load_textures(t_textures *textures);
 void	free_textures(t_textures *textures);
 
 // Debug
+void	print_textures(const t_cub_data *data);
 void	print_cub_data(const t_cub_data *data);
 
 #endif

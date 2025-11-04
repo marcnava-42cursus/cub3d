@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/21 03:30:07 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/03 18:56:31 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/parser.h"
+#include "parser.h"
 
 void	free_map(t_map *map)
 {

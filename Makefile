@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/10/31 04:23:08 by marcnava         ###   ########.fr        #
+#    Updated: 2025/11/04 20:43:26 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,19 +40,26 @@ INCLUDES	:=	-I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include
 MLX			:=	$(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 SRCS		:=	$(SRCPATH)/cub3d.c \
-				$(SRCPATH)/parser/parser_main.c \
-				$(SRCPATH)/parser/parser_validation.c \
-				$(SRCPATH)/parser/parse_textures.c \
-				$(SRCPATH)/parser/parse_map.c \
+				$(SRCPATH)/parser/core/parser_init.c \
+				$(SRCPATH)/parser/core/parser_finder.c \
+				$(SRCPATH)/parser/core/parser_orchestrator.c \
+				$(SRCPATH)/parser/map/map_characters.c \
+				$(SRCPATH)/parser/map/map_player.c \
+				$(SRCPATH)/parser/map/map_validation.c \
+				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \
 				$(SRCPATH)/parser/colors/color_validation.c \
 				$(SRCPATH)/parser/colors/rgb_parsing.c \
 				$(SRCPATH)/parser/colors/value_extraction.c \
+				$(SRCPATH)/parser/textures/texture_extraction.c \
+				$(SRCPATH)/parser/textures/texture_parser.c \
+				$(SRCPATH)/parser/textures/texture_setter.c \
 				$(SRCPATH)/parser/utils/string_utils.c \
 				$(SRCPATH)/parser/utils/file_utils.c \
 				$(SRCPATH)/parser/utils/validation_utils.c \
 				$(SRCPATH)/parser/utils/memory_utils.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
+				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/background.c \
 				$(SRCPATH)/render/bresenham.c \
@@ -135,6 +142,7 @@ clean:
 fclean:		clean
 	@echo "$(YELLOW)Removing binaries...$(RESET)"
 	@$(RM) $(NAME)
+	@$(RM) $(LIBPATH)
 	@echo "$(GREEN)✓ Full clean complete$(RESET)"
 
 libclean:
@@ -184,5 +192,8 @@ libft:	$(LIBFT)/Makefile
 			exit 1; \
 		fi; \
 	fi
+
+reload:	all
+	./cub3D maps/example.cub
 
 .PHONY:		all banner clean fclean libclean re relib libft libmlx
