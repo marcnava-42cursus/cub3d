@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/04 19:01:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/04 19:05:50 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ void	render_player_overlay(t_game *game)
 	textures = game->cub_data.player.textures;
 	render_player_part(buffer->width / 2 - HAND_TEXTURE_WIDTH * 2, 	buffer, 
 			textures.left_hand, RED);
-	render_weapon(buffer->width / 2 - HAND_TEXTURE_WIDTH * 1.7, buffer,
-			textures.weapon);
+	//render_weapon(buffer->width / 2 - HAND_TEXTURE_WIDTH * 1.7, buffer,
+	//		textures.weapon);
 	//render_player_part(buffer->width / 2 - THUMB_TEXTURE_WIDTH * 3.75, buffer,
 	//		textures.left_thumb, MAGENTA);
 	render_player_part_flip(buffer->width / 2 + HAND_TEXTURE_WIDTH, buffer,
