@@ -1,7 +1,7 @@
-NO ./assets/textures/north_wall.xpm42
-SO ./assets/textures/south_wall.xpm42
-WE ./assets/textures/west_wall.xpm42
-EA ./assets/textures/east_wall.xpm42
+NO ./assets/textures/walls/test_wall_flesh.xpm42
+SO ./assets/textures/walls/test_wall_flesh_2.xpm42
+WE ./assets/textures/walls/test_wall_flesh.xpm42
+EA ./assets/textures/walls/test_wall_flesh_2.xpm42
 
 F 220,100,0
 C 225,30,0
