@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/10/30 16:55:33 by ivmirand         ###   ########.fr        #
+#    Updated: 2025/11/12 00:43:57 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRCS		:= $(SRCPATH)/cub3d.c \
 				   $(SRCPATH)/render/raycast.c \
 				   $(SRCPATH)/render/texture_mapping.c \
 				   $(SRCPATH)/render/walls.c \
+				   $(SRCPATH)/render/floors.c \
 				   $(SRCPATH)/render/outlines.c \
 				   $(SRCPATH)/render/window.c \
 				   $(SRCPATH)/render/utils.c \

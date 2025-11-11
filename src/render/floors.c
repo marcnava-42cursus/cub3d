@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   walls.c                                            :+:      :+:    :+:   */
+/*   floors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/12 00:29:30 by ivmirand         ###   ########.fr       */
+/*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
+/*   Updated: 2025/11/12 00:46:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,32 @@ static void	fisheye_correction(t_rayhit *rayhit, float camera_x)
 	}
 }
 
-static t_rayhit	cast_ray_for_column(t_cub_data *cub_data, int x, int image_width)
+static t_rayhit	cast_ray_for_row(t_cub_data *cub_data, int y, int image_height)
 {
 	const float	MAX_DIST = 2000.0f;
 	t_rayhit	rayhit;
 	vertex_t	player_position;
 	float		ray_angle;
-	float		camera_x;
+	float		camera_y;
 
-	camera_x = 2.0f * x / (float)image_width - 1.0f;
+	camera_y = 2.0f * y / (float)image_height - 1.0f;
 	ray_angle = cub_data->player.angle
-		+ atanf(camera_x * tanf(PLAYER_FOV / 2.0f));
+		+ atanf(camera_y * tanf(PLAYER_FOV / 2.0f));
 	player_position.x = ((float)cub_data->player.x + 0.2f) * WORLDMAP_TILE_SIZE;
 	player_position.y = ((float)cub_data->player.y + 0.2f) * WORLDMAP_TILE_SIZE;
 	rayhit = raycast_world(&cub_data->map, player_position, ray_angle,
 			MAX_DIST);
-	fisheye_correction(&rayhit, camera_x);
+	fisheye_correction(&rayhit, camera_y);
 	return (rayhit);
 }
 
-static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
+static void	render_floor_fill(t_rayhit rayhit, unsigned int y, mlx_image_t *img,
 		t_textures *textures)
 {
-	int			slice_height;
+	int			slice_width;
 	int			screen_bounds[2];
-	int			wall_bounds[2];
-	float		wall_height;
+	int			floor_bounds[2];
+	float		floor_width;
 	float		dist_to_proj_plane;
 	float		current_aspect_ratio;
 	float		aspect_scale;
@@ -63,54 +63,47 @@ static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
 	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
 
 	// Dynamic scaling with taller base
-	wall_height = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
-	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
+	floor_width = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
+	slice_width = (int)(floor_width * dist_to_proj_plane / rayhit.distance);
 
 	// Calculate full wall slice bounds (may extend beyond image)
-	wall_bounds[0] = -slice_height / 2 + (int)img->height / 2;
-	wall_bounds[1] = slice_height / 2 + (int)img->height / 2;
+	floor_bounds[0] = -slice_width / 2 + (int)img->width / 2;
+	floor_bounds[1] = slice_width / 2 + (int)img->width / 2;
 	
 	// Copy wall bounds to screen bounds for clipping
-	screen_bounds[0] = wall_bounds[0];
-	screen_bounds[1] = wall_bounds[1];
+	screen_bounds[0] = floor_bounds[0];
+	screen_bounds[1] = floor_bounds[1];
 	
 	if (screen_bounds[0] < 0)
 		screen_bounds[0] = 0;
-	if (screen_bounds[1] >= (int)img->height)
-		screen_bounds[1] = (int)img->height - 1;
+	if (screen_bounds[1] >= (int)img->width)
+		screen_bounds[1] = (int)img->width - 1;
 	
 	if (screen_bounds[0] > screen_bounds[1]
-		|| screen_bounds[1] < 0 || screen_bounds[0] >= (int)img->height)
+		|| screen_bounds[1] < 0 || screen_bounds[0] >= (int)img->width)
 		return;
 	
-	//if (screen_bounds[0] >= 0 && screen_bounds[0] < (int)img->height)
-	//	save_pixel_to_image(img, x, (unsigned int)screen_bounds[0], BLACK);
-	//if (screen_bounds[1] >= 0 && screen_bounds[1] < (int)img->height
-	//	&& screen_bounds[1] != screen_bounds[0])
-	//	save_pixel_to_image(img, x, (unsigned int)screen_bounds[1], BLACK);
-	
-	if (screen_bounds[0] < (int)img->height - 1)
+	if (screen_bounds[0] < (int)img->width - 1)
 		screen_bounds[0]++;
 	if (screen_bounds[1] > 0 && screen_bounds[1] > screen_bounds[0])
 		screen_bounds[1]--;
 	
 	if (screen_bounds[0] <= screen_bounds[1])
-		render_texture_line(rayhit, x, screen_bounds, wall_bounds, img, textures);
+		render_texture_line(rayhit, y, screen_bounds, floor_bounds, img, textures);
 }
 
-void	render_walls(t_game *game)
+void	render_floors(t_game *game)
 {
 	unsigned int	i;
 	t_rayhit		rayhits[MAX_WINDOW_WIDTH];
 
 	i = 0;
-	while (i < game->double_buffer[NEXT]->width && i < MAX_WINDOW_WIDTH)
+	while (i < game->double_buffer[NEXT]->height && i < MAX_WINDOW_HEIGHT)
 	{
-		rayhits[i] = cast_ray_for_column(&game->cub_data, i,
-				game->double_buffer[NEXT]->width);
-		render_wall_fill(rayhits[i], i, game->double_buffer[NEXT],
+		rayhits[i] = cast_ray_for_row(&game->cub_data, i,
+				game->double_buffer[NEXT]->height);
+		render_floor_fill(rayhits[i], i, game->double_buffer[NEXT],
 			&game->cub_data.textures);
 		i++;
 	}
-	//add_wall_outlines(rayhits, game->double_buffer[NEXT]);
 }
