@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/12 00:42:50 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/12 23:05:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	window_init(t_game *game)
 void	render_gameplay_window(t_game *game)
 {
     render_bg(game);
-	render_floors(game);
+	//render_floors(game);
     render_walls(game);
 	render_player_overlay(game);
 }
