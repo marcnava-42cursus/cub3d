@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 12:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/31 12:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/12 19:03:52 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,6 @@
 #include "logic.h"
 #include <math.h>
 #include <stdio.h>
-
-/* Terminal control codes */
-#define ANSI_CLEAR_SCREEN "\033[2J\033[H"
-
-/* Angle thresholds for player direction display (in radians) */
-#define ANGLE_RIGHT_MIN (-FT_PI / 4.0f)
-#define ANGLE_RIGHT_MAX (FT_PI / 4.0f)
-#define ANGLE_DOWN_MIN (FT_PI / 4.0f)
-#define ANGLE_DOWN_MAX (3.0f * FT_PI / 4.0f)
-#define ANGLE_LEFT_MIN (3.0f * FT_PI / 4.0f)
-#define ANGLE_LEFT_MAX (-3.0f * FT_PI / 4.0f)
-
-/* Player direction symbols */
-#define DIR_RIGHT '>'
-#define DIR_DOWN 'v'
-#define DIR_LEFT '<'
-#define DIR_UP '^'
-
-/* ************************************************************************** */
-/*                          HELPER FUNCTIONS                                  */
-/* ************************************************************************** */
 
 /**
  * @brief Gets the character representing player direction based on angle
@@ -112,10 +91,6 @@ static void	print_map_grid(t_game *game, int player_pos[2])
 		y++;
 	}
 }
-
-/* ************************************************************************** */
-/*                          PUBLIC FUNCTIONS                                  */
-/* ************************************************************************** */
 
 /**
  * @brief Prints controls information

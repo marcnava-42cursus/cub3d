@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 19:16:54 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/12 18:56:56 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	update_player_position(t_game *game)
  *
  * @param game Game state structure
  * @return bool True if any movement occurred
- */
+*/
 static bool	process_movement_input(t_game *game)
 {
 	bool	moved;
@@ -102,10 +102,6 @@ static void	handle_movement_rendering(t_game *game)
 	current_grid_y = (int)floor(game->cub_data.player.y);
 	handle_debug_map_update(game, current_grid_x, current_grid_y);
 }
-
-/* ************************************************************************** */
-/*                          MAIN FUNCTIONS                                    */
-/* ************************************************************************** */
 
 /**
  * @brief Main game loop function for continuous movement processing
