@@ -11,14 +11,15 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-#define MAX_DELTA_TIME 0.05
+#include "logic.h"
 
 void    update_delta_time(t_game *game)
 {
     double  current_time;
     double  dt;
 
+    if (!game)
+        return ;
     current_time = mlx_get_time();
     if (game->last_frame_time <= 0.0)
     {
@@ -37,10 +38,15 @@ void    update_delta_time(t_game *game)
 
 void    init_player_parameters(t_game *game)
 {
+    if (!game)
+        return ;
     game->move_speed = 4.0f;
     game->rot_speed = 2.5f;
-    game->player_radius = 0.2f; //why .2f? this may be causing the collision
-								//issues in 3D render
+    /*
+    ** Player radius set to 0.2f for collision detection.
+    ** If there are collision issues in 3D render, this value may need tuning.
+    */
+    game->player_radius = 0.2f;
     game->delta_time = 0.0;
     game->last_frame_time = mlx_get_time();
 }

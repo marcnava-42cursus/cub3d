@@ -17,13 +17,17 @@
 bool    is_cell_blocking(t_game *game, int cell_x, int cell_y)
 {
     char    *row;
+    int     row_len;
 
+    if (!game || !game->cub_data.map.grid)
+        return (true);
     if (cell_x < 0 || cell_y < 0 || cell_y >= game->cub_data.map.height)
         return (true);
     row = game->cub_data.map.grid[cell_y];
     if (!row)
         return (true);
-    if (cell_x >= (int)strlen(row))
+    row_len = strlen(row);
+    if (cell_x >= row_len)
         return (true);
     return (row[cell_x] == '1' || row[cell_x] == ' ');
 }
@@ -35,6 +39,8 @@ bool    collides_with_wall(t_game *game, float x, float y)
     float         sy[4];
     int           i;
 
+    if (!game)
+        return (true);
     sx[0] = x - r; sy[0] = y - r;
     sx[1] = x + r; sy[1] = y - r;
     sx[2] = x - r; sy[2] = y + r;
@@ -54,6 +60,8 @@ void    attempt_move(t_game *game, float step_x, float step_y)
     float   nx;
     float   ny;
 
+    if (!game)
+        return ;
     nx = game->cub_data.player.x + step_x;
     ny = game->cub_data.player.y + step_y;
     if (!collides_with_wall(game, nx, game->cub_data.player.y))

@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 #include "logic.h"
+#include "render.h"
 
 /**
  * @brief Refreshes the state of all movement and rotation keys
@@ -34,8 +35,6 @@ void	refresh_key_states(t_game *game)
 	game->key_d_pressed = mlx_is_key_down(game->mlx, MLX_KEY_D);
 	game->key_left_pressed = mlx_is_key_down(game->mlx, MLX_KEY_LEFT);
 	game->key_right_pressed = mlx_is_key_down(game->mlx, MLX_KEY_RIGHT);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(game->mlx);
 }
 
 /**
@@ -93,6 +92,10 @@ void	cursor_hook(double xpos, double ypos, void *param)
 	delta_x = xpos - game->last_mouse_x;
 	game->last_mouse_x = xpos;
 	game->mouse_delta_accumulated += (float)delta_x;
+	if (game->mouse_delta_accumulated > MAX_MOUSE_DELTA)
+		game->mouse_delta_accumulated = MAX_MOUSE_DELTA;
+	else if (game->mouse_delta_accumulated < -MAX_MOUSE_DELTA)
+		game->mouse_delta_accumulated = -MAX_MOUSE_DELTA;
 }
 
 /**
@@ -114,9 +117,6 @@ bool	process_mouse_rotation(t_game *game)
 	rotation_amount = game->mouse_delta_accumulated * game->mouse_sensitivity;
 	game->mouse_delta_accumulated = 0.0f;
 	game->cub_data.player.angle += rotation_amount;
-	if (game->cub_data.player.angle > FT_PI)
-		game->cub_data.player.angle -= (2.0f * FT_PI);
-	else if (game->cub_data.player.angle < -FT_PI)
-		game->cub_data.player.angle += (2.0f * FT_PI);
+	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 	return (true);
 }

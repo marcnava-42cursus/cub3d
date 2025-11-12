@@ -12,8 +12,7 @@
 
 #include "cub3d.h"
 #include "logic.h"
-
-#define TWO_PI (2.0f * FT_PI)
+#include "render.h"
 
 /**
  * @brief Rotates the player's camera view left or right
@@ -35,8 +34,5 @@ void	rotate_player(t_game *game, bool right)
 	direction = right ? 1.0f : -1.0f;
 	rotation_delta = game->rot_speed * (float)game->delta_time * direction;
 	game->cub_data.player.angle += rotation_delta;
-	if (game->cub_data.player.angle > FT_PI)
-		game->cub_data.player.angle -= TWO_PI;
-	else if (game->cub_data.player.angle < -FT_PI)
-		game->cub_data.player.angle += TWO_PI;
+	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 }

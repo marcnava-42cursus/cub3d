@@ -45,18 +45,36 @@ static bool	process_movement_input(t_game *game)
 	if (!game)
 		return (false);
 	moved = false;
-	if (game->key_w_pressed && (move_forward(game, true), 1))
+	if (game->key_w_pressed)
+	{
+		move_forward(game, true);
 		moved = true;
-	if (game->key_s_pressed && (move_forward(game, false), 1))
+	}
+	if (game->key_s_pressed)
+	{
+		move_forward(game, false);
 		moved = true;
-	if (game->key_a_pressed && (move_strafe(game, false), 1))
+	}
+	if (game->key_a_pressed)
+	{
+		move_strafe(game, false);
 		moved = true;
-	if (game->key_d_pressed && (move_strafe(game, true), 1))
+	}
+	if (game->key_d_pressed)
+	{
+		move_strafe(game, true);
 		moved = true;
-	if (game->key_left_pressed && (rotate_player(game, false), 1))
+	}
+	if (game->key_left_pressed)
+	{
+		rotate_player(game, false);
 		moved = true;
-	if (game->key_right_pressed && (rotate_player(game, true), 1))
+	}
+	if (game->key_right_pressed)
+	{
+		rotate_player(game, true);
 		moved = true;
+	}
 	return (moved);
 }
 

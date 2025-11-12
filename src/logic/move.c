@@ -14,10 +14,6 @@
 #include "logic.h"
 #include <math.h>
 
-#ifndef FT_PI_2
-# define FT_PI_2 (FT_PI / 2.0f)
-#endif
-
 /**
  * @brief Moves the player forward or backward in the direction they're facing
  *
