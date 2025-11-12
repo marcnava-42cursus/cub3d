@@ -81,6 +81,8 @@ void	window_free(t_game *game)
 		mlx_delete_image(game->mlx, game->double_buffer[NEXT]);
 	if (game->double_buffer[CURRENT])
 		mlx_delete_image(game->mlx, game->double_buffer[CURRENT]);
+	if (game->crosshair)
+		mlx_delete_image(game->mlx, game->crosshair);
 	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);
 }

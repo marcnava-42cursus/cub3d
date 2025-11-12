@@ -190,6 +190,7 @@ void	init_movement_system(t_game *game)
 	render_map_2d_initial(game);
 	print_map_2d(game);
 	print_controls();
+	init_crosshair(game);
 	mlx_key_hook(game->mlx, key_hook, game);
 	mlx_cursor_hook(game->mlx, cursor_hook, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);

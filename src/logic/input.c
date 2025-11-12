@@ -58,6 +58,8 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		mlx_close_window(game->mlx);
 	else if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		toggle_map_overlay(game);
+	else if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
+		test_break_wall_in_front(game);
 }
 
 /**

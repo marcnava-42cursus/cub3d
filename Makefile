@@ -78,7 +78,8 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/collision.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
-				$(SRCPATH)/logic/debug_map.c
+				$(SRCPATH)/logic/debug_map.c \
+				tests/door_test.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 DEPS		:= $(OBJS:.o=.d)

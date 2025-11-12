@@ -62,6 +62,12 @@ void	print_map_2d(t_game *game);
 void	print_player_position_inline(t_game *game, int grid_x, int grid_y);
 void	handle_debug_map_update(t_game *game, int grid_x, int grid_y);
 
+// Debug / On-Screen Display
+void	init_crosshair(t_game *game);
+
+// Test / Prototype
+void	test_break_wall_in_front(t_game *game);
+
 // Loop / Update
 void	update_player_position(t_game *game);
 void	update_game_loop(void *param);
