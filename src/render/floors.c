@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/12 23:04:49 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/13 16:17:29 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,16 @@ static t_rayhit	cast_ray_for_row(t_cub_data *cub_data, int y, int image_height)
 	t_rayhit	rayhit;
 	vertex_t	player_position;
 	float		ray_angle;
-	float		camera_y;
+	int			current_y_to_camera;
 
-	camera_y = 2.0f * y / (float)image_height - 1.0f;
+	current_y_to_camera = y - (float)image_height / 2;
 	ray_angle = cub_data->player.angle
-		+ atanf(camera_y * tanf(PLAYER_FOV / 2.0f));
+		+ atanf((float)image_height * tanf(PLAYER_FOV / 2.0f));
 	player_position.x = ((float)cub_data->player.x + 0.2f) * WORLDMAP_TILE_SIZE;
 	player_position.y = ((float)cub_data->player.y + 0.2f) * WORLDMAP_TILE_SIZE;
 	rayhit = raycast_world(&cub_data->map, player_position, ray_angle,
 			MAX_DIST);
-	fisheye_correction(&rayhit, camera_y);
+	fisheye_correction(&rayhit, current_y_to_camera);
 	return (rayhit);
 }
 
@@ -66,7 +66,6 @@ static uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 			pixels = texture->texture.pixels;
 			pixel_color = (pixels[pixel_index] << 24)
 				| (pixels[pixel_index + 1] << 16)
-				| (pixels[pixel_index + 2] << 8)
 				| pixels[pixel_index + 3];
 			return (pixel_color);
 		}
@@ -195,7 +194,7 @@ static void	render_floor_fill(t_rayhit rayhit, unsigned int y, mlx_image_t *img,
 void	render_floors(t_game *game)
 {
 	unsigned int	i;
-	t_rayhit		rayhits[MAX_WINDOW_WIDTH];
+	t_rayhit		rayhits[MAX_WINDOW_HEIGHT];
 
 	i = 0;
 	while (i < game->double_buffer[NEXT]->height && i < MAX_WINDOW_HEIGHT)
