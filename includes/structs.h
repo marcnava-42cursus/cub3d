@@ -44,17 +44,30 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
+// Forward declaration for custom texture entries
+typedef struct s_custom_texture	t_custom_texture;
+
+// Custom texture entry for bonus mode
+struct s_custom_texture
+{
+	char				id[3];		// 2-char identifier (e.g., "DN", "dN")
+	char				*path;		// Texture file path
+	xpm_t				*texture;	// Loaded texture
+	t_custom_texture	*next;		// Next in linked list
+};
+
 // Estructura para texturas
 typedef struct s_textures
 {
-	char		*north_path;	// NO - file path
-	char		*south_path;	// SO - file path
-	char		*west_path;		// WE - file path
-	char		*east_path;		// EA - file path
-	xpm_t		*north;			// Loaded north texture
-	xpm_t		*south;			// Loaded south texture
-	xpm_t		*west;			// Loaded west texture
-	xpm_t		*east;			// Loaded east texture
+	char				*north_path;	// NO - file path
+	char				*south_path;	// SO - file path
+	char				*west_path;		// WE - file path
+	char				*east_path;		// EA - file path
+	xpm_t				*north;			// Loaded north texture
+	xpm_t				*south;			// Loaded south texture
+	xpm_t				*west;			// Loaded west texture
+	xpm_t				*east;			// Loaded east texture
+	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
 
 // Estructura para la posición del jugador

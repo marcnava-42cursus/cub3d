@@ -56,6 +56,15 @@ bool	is_cell_blocking(t_game *game, int cell_x, int cell_y);
 bool	collides_with_wall(t_game *game, float x, float y);
 void	attempt_move(t_game *game, float step_x, float step_y);
 
+# ifdef BONUS
+bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
+bool	collides_with_wall_bonus(t_game *game, float x, float y);
+void	attempt_move_bonus(t_game *game, float step_x, float step_y);
+#  define is_cell_blocking is_cell_blocking_bonus
+#  define collides_with_wall collides_with_wall_bonus
+#  define attempt_move attempt_move_bonus
+# endif
+
 // Debug / Terminal Output
 void	print_controls(void);
 void	print_map_2d(t_game *game);

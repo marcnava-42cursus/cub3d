@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME		:= cub3D
+NAME_BONUS	:= cub3D_bonus
 
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra #-Werror
@@ -81,8 +82,50 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/debug_map.c \
 				tests/state_swapper.c
 
+# Bonus sources - replace standard parser files with bonus versions
+SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
+				$(SRCPATH)/parser/core/parser_init.c \
+				$(SRCPATH)/parser/core/parser_orchestrator.c \
+				$(SRCPATH)/_bonus/parser_finder_bonus.c \
+				$(SRCPATH)/_bonus/map_validation_bonus.c \
+				$(SRCPATH)/_bonus/texture_parser_bonus.c \
+				$(SRCPATH)/_bonus/raycast_bonus.c \
+				$(SRCPATH)/_bonus/walls_bonus.c \
+				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
+				$(SRCPATH)/_bonus/collision_bonus.c \
+				$(SRCPATH)/parser/map/map_parser.c \
+				$(SRCPATH)/parser/colors/parse_colors.c \
+				$(SRCPATH)/parser/colors/color_validation.c \
+				$(SRCPATH)/parser/colors/rgb_parsing.c \
+				$(SRCPATH)/parser/colors/value_extraction.c \
+				$(SRCPATH)/parser/textures/texture_extraction.c \
+				$(SRCPATH)/parser/utils/string_utils.c \
+				$(SRCPATH)/parser/utils/file_utils.c \
+				$(SRCPATH)/parser/utils/validation_utils.c \
+				$(SRCPATH)/parser/utils/memory_utils.c \
+				$(SRCPATH)/parser/utils/debug_utils.c \
+				$(SRCPATH)/parser/utils/debug_text_utils.c \
+				$(SRCPATH)/textures/texture_loader.c \
+				$(SRCPATH)/render/background.c \
+				$(SRCPATH)/render/bresenham.c \
+				$(SRCPATH)/render/double_buffer.c \
+				$(SRCPATH)/render/minimap.c \
+				$(SRCPATH)/render/outlines.c \
+				$(SRCPATH)/render/window.c \
+				$(SRCPATH)/render/utils.c \
+				$(SRCPATH)/render/map_2d.c \
+				$(SRCPATH)/logic/movement.c \
+				$(SRCPATH)/logic/input.c \
+				$(SRCPATH)/logic/timing.c \
+				$(SRCPATH)/logic/move.c \
+				$(SRCPATH)/logic/rotation.c \
+				$(SRCPATH)/logic/debug_map.c \
+				tests/state_swapper.c
+
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
+OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH)/%.o)
 DEPS		:= $(OBJS:.o=.d)
+DEPS_BONUS	:= $(OBJS_BONUS:.o=.d)
 
 # Colors
 YELLOW		:= \033[0;33m
@@ -106,12 +149,18 @@ endef
 export ASCII_ART
 
 -include $(DEPS)
+-include $(DEPS_BONUS)
 
 .DEFAULT_GOAL := all
 
 all:
 	@echo "$$ASCII_ART"
-	@$(MAKE) _compile
+	@$(MAKE) _compile BONUS_FLAG=""
+
+bonus:
+	@echo "$$ASCII_ART"
+	@echo "$(YELLOW)$(BOLD)>>> BONUS MODE ENABLED <<<$(RESET)"
+	@$(MAKE) _compile_bonus BONUS_FLAG="-D BONUS"
 
 _compile:	libft libmlx $(OBJS)
 	@if [ ! -f $(NAME) ]; then \
@@ -126,10 +175,23 @@ _compile:	libft libmlx $(OBJS)
 		echo "$(GREEN)✓ Nothing to be done for $(NAME)$(RESET)\n"; \
 	fi
 
+_compile_bonus:	libft libmlx $(OBJS_BONUS)
+	@if [ ! -f $(NAME_BONUS) ]; then \
+		echo "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)"; \
+		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
+		echo "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n"; \
+	elif [ $(NAME_BONUS) -ot $(LIBFT)/libft.a ] || [ $(NAME_BONUS) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH) -name '*.o' -newer $(NAME_BONUS) 2>/dev/null)" ]; then \
+		echo "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)"; \
+		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
+		echo "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n"; \
+	else \
+		echo "$(GREEN)✓ Nothing to be done for $(NAME_BONUS)$(RESET)\n"; \
+	fi
+
 $(OBJPATH)/%.o:	%.c
 	@mkdir -p $(@D)
 	@printf "$(DARK_GRAY)\rCompiling %-50s$(RESET)" "$<"
-	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $< && \
+	@$(CC) $(CFLAGS) $(BONUS_FLAG) $(INCLUDES) -o $@ -c $< && \
 		printf "$(GREEN)\r✓ Compiled %-50s$(RESET)\n" "$<" || \
 		(printf "$(RED)\r✗ Failed compiling %-50s$(RESET)\n" "$<" && exit 1)
 
@@ -142,7 +204,7 @@ clean:
 
 fclean:		clean
 	@echo "$(YELLOW)Removing binaries...$(RESET)"
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(NAME_BONUS)
 	@$(RM) $(LIBPATH)
 	@echo "$(GREEN)✓ Full clean complete$(RESET)"
 
@@ -197,4 +259,7 @@ libft:	$(LIBFT)/Makefile
 reload:	all
 	./cub3D maps/example.cub
 
-.PHONY:		all banner clean fclean libclean re relib libft libmlx
+reload_bonus:	bonus
+	./cub3D_bonus maps/example.cub
+
+.PHONY:		all bonus clean fclean libclean re relib libft libmlx reload reload_bonus

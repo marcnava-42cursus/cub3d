@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   door_test.c                                        :+:      :+:    :+:   */
+/*   state_swapper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/13 16:49:28 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/13 19:38:45 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ static void	break_wall(t_game *game, int x, int y)
 	cell = &game->cub_data.map.grid[y][x];
 	if (*cell == '1')
 		*cell = '0';
+	else if (*cell == 'D')
+		*cell = 'd';
+	else if (*cell == 'd')
+		*cell = 'D';
 	else
 		printf("Not a wall at (%d, %d), cell is '%c'\n", x, y, *cell);
 }
@@ -66,7 +70,7 @@ void	test_break_wall_in_front(t_game *game)
 		cell = game->cub_data.map.grid[hit.cell_y][hit.cell_x];
 		printf("Looking at cell (%d, %d) with character '%c'\n",
 			hit.cell_x, hit.cell_y, cell);
-		if (cell == '1')
+		if (cell == '1' || cell == 'D' || cell == 'd')
 		{
 			break_wall(game, hit.cell_x, hit.cell_y);
 			wall_broken = true;

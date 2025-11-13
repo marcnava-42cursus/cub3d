@@ -14,6 +14,32 @@
 #include "parser.h"
 #include <stdio.h>
 
+static int	load_custom_textures(t_custom_texture *custom)
+{
+	t_custom_texture	*current;
+	int					count;
+
+	current = custom;
+	count = 0;
+	while (current)
+	{
+		current->texture = mlx_load_xpm42(current->path);
+		if (!current->texture)
+		{
+			printf("Warning: Failed to load custom texture %s: %s\n",
+				current->id, current->path);
+		}
+		else
+		{
+			printf("Loaded custom texture %s: %s\n", current->id, current->path);
+			count++;
+		}
+		current = current->next;
+	}
+	printf("Total custom textures loaded: %d\n", count);
+	return (1);
+}
+
 int	load_textures(t_textures *textures)
 {
     if (textures->north_path)
@@ -52,8 +78,27 @@ int	load_textures(t_textures *textures)
             return (0);
         }
     }
-
+	if (textures->custom)
+		load_custom_textures(textures->custom);
     return (1);
+}
+
+static void	free_custom_textures(t_custom_texture *custom)
+{
+	t_custom_texture	*current;
+	t_custom_texture	*next;
+
+	current = custom;
+	while (current)
+	{
+		next = current->next;
+		if (current->texture)
+			mlx_delete_xpm42(current->texture);
+		if (current->path)
+			free(current->path);
+		free(current);
+		current = next;
+	}
 }
 
 void	free_textures(t_textures *textures)
@@ -77,5 +122,10 @@ void	free_textures(t_textures *textures)
 	{
 		mlx_delete_xpm42(textures->west);
 		textures->west = NULL;
+	}
+	if (textures->custom)
+	{
+		free_custom_textures(textures->custom);
+		textures->custom = NULL;
 	}
 }

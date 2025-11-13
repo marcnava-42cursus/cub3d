@@ -69,4 +69,26 @@ void	free_textures(t_textures *textures);
 void	print_textures(const t_cub_data *data);
 void	print_cub_data(const t_cub_data *data);
 
+// Bonus functions
+# ifdef BONUS
+int		validate_map_bonus(t_map *map, t_player *player);
+int		validate_map_characters_bonus(t_map *map);
+int		is_map_closed_bonus(t_map *map);
+int		find_player_position_bonus(t_map *map, t_player *player);
+int		is_map_line_bonus(const char *line);
+int		is_texture_identifier_bonus(const char *line);
+int		parse_texture_line_bonus(const char *line, t_textures *textures);
+int		find_map_start_bonus(char **lines, int line_count);
+
+// Remap functions to bonus versions
+#  define validate_map validate_map_bonus
+#  define validate_map_characters validate_map_characters_bonus
+#  define is_map_closed is_map_closed_bonus
+#  define find_player_position find_player_position_bonus
+#  define is_map_line is_map_line_bonus
+#  define is_texture_identifier is_texture_identifier_bonus
+#  define parse_texture_line parse_texture_line_bonus
+#  define find_map_start find_map_start_bonus
+# endif
+
 #endif
