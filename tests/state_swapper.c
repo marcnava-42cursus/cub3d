@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 20:15:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/13 16:49:28 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,9 @@ static void	break_wall(t_game *game, int x, int y)
 		return ;
 	cell = &game->cub_data.map.grid[y][x];
 	if (*cell == '1')
-	{
 		*cell = '0';
-		printf("Wall broken at (%d, %d)\n", x, y);
-	}
 	else
-	{
 		printf("Not a wall at (%d, %d), cell is '%c'\n", x, y, *cell);
-	}
 }
 
 /**
@@ -62,8 +57,8 @@ void	test_break_wall_in_front(t_game *game)
 	if (!game)
 		return ;
 	wall_broken = false;
-	start.x = game->cub_data.player.x * WORLDMAP_TILE_SIZE;
-	start.y = game->cub_data.player.y * WORLDMAP_TILE_SIZE;
+	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y + 0.2f)* WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
 			game->cub_data.player.angle, 300.0f);
 	if (hit.hit)
@@ -80,9 +75,7 @@ void	test_break_wall_in_front(t_game *game)
 			printf("Cannot break: not a wall\n");
 	}
 	else
-	{
 		printf("No wall in front\n");
-	}
 	if (wall_broken)
 		render_double_buffer(game);
 }

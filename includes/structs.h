@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 19:35:08 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/13 16:42:11 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ typedef struct s_rayhit
 	bool			hit;
 	int				cell_x;
 	int				cell_y;
-	int				side;      // 0 = vertical 1 = horizontal
+	int				side;
 	t_orientation	face;
-	vertex_t		position;  // in world pixels
+	vertex_t		position;
 	float			distance;
 }	t_rayhit;
 
