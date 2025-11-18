@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/18 11:08:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 20:38:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ t_rayhit	raycast_world_bonus(const t_map *map, vertex_t start, float angle,
 /*--------------------------------- WALLS.C ----------------------------------*/
 void	render_walls(t_game *game, t_rayhit *rayhits);
 
-/*-------------------------------- FLOORS.C ----------------------------------*/
-void	render_floors(t_game *game, t_rayhit *rayhits);
-
 # ifdef BONUS
 void	render_walls_bonus(t_game *game);
 #  define render_walls render_walls_bonus
 # endif
+
+/*-------------------------------- FLOORS.C ----------------------------------*/
+void	render_floors(t_game *game, t_rayhit *rayhits);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
@@ -106,13 +106,14 @@ void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures);
-void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
 
 # ifdef BONUS
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
 # endif
+
+void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
+			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
