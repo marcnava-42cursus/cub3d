@@ -41,10 +41,10 @@ int	clamp(int value, int min, int max)
 
 float	normalize_angle(float angle)
 {
-	while (angle < 0.0f)
-		angle += TAU;
-	while (angle >= TAU)
+	while (angle > FT_PI)
 		angle -= TAU;
+	while (angle <= -FT_PI)
+		angle += TAU;
 	return (angle);
 }
 

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/02 00:20:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:32:04 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,30 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
+// Forward declaration for custom texture entries
+typedef struct s_custom_texture	t_custom_texture;
+
+// Custom texture entry for bonus mode
+struct s_custom_texture
+{
+	char				id[3];		// 2-char identifier (e.g., "DN", "dN")
+	char				*path;		// Texture file path
+	xpm_t				*texture;	// Loaded texture
+	t_custom_texture	*next;		// Next in linked list
+};
+
 // Estructura para texturas
 typedef struct s_textures
 {
-	char		*north_path;	// NO - file path
-	char		*south_path;	// SO - file path
-	char		*west_path;		// WE - file path
-	char		*east_path;		// EA - file path
-	xpm_t		*north;			// Loaded north texture
-	xpm_t		*south;			// Loaded south texture
-	xpm_t		*west;			// Loaded west texture
-	xpm_t		*east;			// Loaded east texture
+	char				*north_path;	// NO - file path
+	char				*south_path;	// SO - file path
+	char				*west_path;		// WE - file path
+	char				*east_path;		// EA - file path
+	xpm_t				*north;			// Loaded north texture
+	xpm_t				*south;			// Loaded south texture
+	xpm_t				*west;			// Loaded west texture
+	xpm_t				*east;			// Loaded east texture
+	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
 
 //Player texture collection
@@ -124,9 +137,9 @@ typedef struct s_rayhit
 	bool			hit;
 	int				cell_x;
 	int				cell_y;
-	int				side;      // 0 = vertical 1 = horizontal
+	int				side;
 	t_orientation	face;
-	vertex_t		position;  // in world pixels
+	vertex_t		position;
 	float			distance;
 }	t_rayhit;
 
@@ -136,6 +149,7 @@ typedef struct s_game
     t_cub_data	cub_data;		// Datos parseados del archivo .cub
     // Ventana MLX
     mlx_t		*mlx;
+
 	// Capas separadas para el renderizado 2D
 	mlx_image_t	*map_layer;		// Capa estática del mapa
 	mlx_image_t	*player_layer;		// Capa dinámica del jugador
@@ -145,6 +159,8 @@ typedef struct s_game
 	float		last_player_x;
 	float		last_player_y;
 	float		last_player_angle;
+	int			last_grid_x;
+	int			last_grid_y;
 	// Timing y parámetros de movimiento
 	double		last_frame_time;
 	double		delta_time;
@@ -160,15 +176,23 @@ typedef struct s_game
 	bool		key_a_pressed;
 	bool		key_d_pressed;
 	bool		key_left_pressed;
-    bool		key_right_pressed;
+	bool		key_right_pressed;
+	// Variables de control de mouse
+	double		last_mouse_x;
+	bool		mouse_initialized;
+	float		mouse_delta_accumulated;
+	float		mouse_sensitivity;
 
-    // Datos de renderizado (raycast, sprites, etc.)
-    mlx_image_t	*double_buffer[2];
-    float		resolution_scale;
-    t_minimap	minimap;
+	// Datos de renderizado (raycast, sprites, etc.)
+	mlx_image_t	*double_buffer[2];
+	float		resolution_scale;
+	t_minimap	minimap;
 
-    // Estado de UI
-    bool        map_2d_visible;
+	// Estado de UI
+	bool		map_2d_visible;
+
+	// Debug overlay
+	mlx_image_t	*crosshair;
 }	t_game;
 
 #endif

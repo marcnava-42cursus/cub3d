@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 01:55:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 01:55:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/03 19:07:15 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/parser.h"
+#include "parser.h"
 
 static char	*find_values_start(char *trimmed)
 {
@@ -26,7 +26,7 @@ static char	*find_values_end(char *values_start)
 {
 	char	*values_end;
 
-	values_end = values_start + strlen(values_start) - 1;
+	values_end = values_start + ft_strlen(values_start) - 1;
 	while (values_end > values_start && (*values_end == ' '
 			|| *values_end == '\t' || *values_end == '\n'))
 		values_end--;

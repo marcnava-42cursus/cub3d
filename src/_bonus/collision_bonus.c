@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   collision.c                                        :+:      :+:    :+:   */
+/*   collision_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 19:02:26 by marcnava         ###   ########.fr       */
+/*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
+/*   Updated: 2025/11/13 20:02:21 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include <math.h>
 #include <string.h>
 
-bool	is_cell_blocking(t_game *game, int cell_x, int cell_y)
+bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y)
 {
 	char	*row;
 	int		row_len;
+	char	cell;
 
 	if (!game || !game->cub_data.map.grid)
 		return (true);
@@ -29,10 +30,16 @@ bool	is_cell_blocking(t_game *game, int cell_x, int cell_y)
 	row_len = strlen(row);
 	if (cell_x >= row_len)
 		return (true);
-	return (row[cell_x] == '1' || row[cell_x] == ' ');
+	cell = row[cell_x];
+	if (cell == '1' || cell == ' ')
+		return (true);
+	if (cell >= 'A' && cell <= 'Z' && cell != 'N'
+		&& cell != 'S' && cell != 'E' && cell != 'W')
+		return (true);
+	return (false);
 }
 
-bool	collides_with_wall(t_game *game, float x, float y)
+bool	collides_with_wall_bonus(t_game *game, float x, float y)
 {
 	const float	r = game->player_radius;
 	float		sx[4];
@@ -52,14 +59,14 @@ bool	collides_with_wall(t_game *game, float x, float y)
 	i = 0;
 	while (i < 4)
 	{
-		if (is_cell_blocking(game, (int)floorf(sx[i]), (int)floorf(sy[i])))
+		if (is_cell_blocking_bonus(game, (int)floorf(sx[i]), (int)floorf(sy[i])))
 			return (true);
 		i++;
 	}
 	return (false);
 }
 
-void	attempt_move(t_game *game, float step_x, float step_y)
+void	attempt_move_bonus(t_game *game, float step_x, float step_y)
 {
 	float	nx;
 	float	ny;
@@ -68,8 +75,8 @@ void	attempt_move(t_game *game, float step_x, float step_y)
 		return ;
 	nx = game->cub_data.player.x + step_x;
 	ny = game->cub_data.player.y + step_y;
-	if (!collides_with_wall(game, nx, game->cub_data.player.y))
+	if (!collides_with_wall_bonus(game, nx, game->cub_data.player.y))
 		game->cub_data.player.x = nx;
-	if (!collides_with_wall(game, game->cub_data.player.x, ny))
+	if (!collides_with_wall_bonus(game, game->cub_data.player.x, ny))
 		game->cub_data.player.y = ny;
 }

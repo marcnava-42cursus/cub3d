@@ -6,94 +6,45 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/02 12:50:05 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/12 18:56:56 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
 #include "logic.h"
+#include <math.h>
 
-// Función para imprimir el mapa 2D en terminal con la posición del jugador
-void	print_map_2d(t_game *game)
-{
-	int	y;
-	int	x;
-	int	player_x;
-	int	player_y;
-	
-	player_x = (int)floor(game->cub_data.player.x);
-	player_y = (int)floor(game->cub_data.player.y);
-	
-	printf("\033[2J\033[H"); // Limpiar pantalla y mover cursor al inicio
-	printf("Player position: (%.2f, %.2f) - Grid: (%d, %d) - Angle: %.2f\n", 
-		game->cub_data.player.x, game->cub_data.player.y, 
-		player_x, player_y, game->cub_data.player.angle);
-	printf("Map:\n");
-	
-	y = 0;
-	while (y < game->cub_data.map.height)
-	{
-		x = 0;
-		while (x < game->cub_data.map.width)
-		{
-			if (x == player_x && y == player_y)
-			{
-				// Mostrar dirección del jugador
-				if (game->cub_data.player.angle >= -FT_PI/4 && game->cub_data.player.angle < FT_PI/4)
-					printf(">");
-				else if (game->cub_data.player.angle >= FT_PI/4 && game->cub_data.player.angle < 3*FT_PI/4)
-					printf("v");
-				else if (game->cub_data.player.angle >= 3*FT_PI/4 || game->cub_data.player.angle < -3*FT_PI/4)
-					printf("<");
-				else
-					printf("^");
-			}
-			else
-			{
-				printf("%c", game->cub_data.map.grid[y][x]);
-			}
-			x++;
-		}
-		printf("\n");
-		y++;
-	}
-	printf("\n");
-}
-
-// movement and rotation extracted to separate modules
-
-// Variable global para trackear la última posición de grid
-static int last_grid_x = -1;
-static int last_grid_y = -1;
-
-// Función para actualizar solo la posición del jugador
+/**
+ * @brief Updates only the player position display
+ *
+ * This is called when the map overlay is visible and the player moves.
+ *
+ * @param game Pointer to the game structure
+ */
 void	update_player_position(t_game *game)
 {
-	// Actualizar solo la posición del jugador (si el overlay está activo)
+	if (!game)
+		return ;
 	if (game->map_2d_visible)
 		render_player_dynamic(game);
 }
 
-// Función para manejar las teclas presionadas y soltadas
-// key hook extracted to input module
-
-// Función de loop continuo para procesar movimiento suave
-void	update_game_loop(void *param)
+/**
+ * @brief Processes movement input and updates game state
+ *
+ * This function checks all movement-related key states and calls the
+ * appropriate movement/rotation functions from move.c and rotation.c.
+ *
+ * @param game Game state structure
+ * @return bool True if any movement occurred
+*/
+static bool	process_movement_input(t_game *game)
 {
-    t_game	*game = (t_game *)param;
-    bool		moved = false;
-	int			current_grid_x;
-	int			current_grid_y;
+	bool	moved;
 
-	update_delta_time(game);
-	refresh_key_states(game);
-	if (game->delta_time <= 0.0)
-		return ;
-	
-	// Procesar movimiento basado en el estado de las teclas
+	if (!game)
+		return (false);
+	moved = false;
 	if (game->key_w_pressed)
 	{
 		move_forward(game, true);
@@ -124,64 +75,124 @@ void	update_game_loop(void *param)
 		rotate_player(game, true);
 		moved = true;
 	}
-	
-    // Actualizar render si hubo movimiento
-    if (moved)
-    {
-        if (game->map_2d_visible)
-            update_player_position(game);
-        // Re-renderizar mundo (raycaster + minimapa)
-        render_double_buffer(game);
-
-        // Imprimir en terminal cada vez que cambien de celda
-        current_grid_x = (int)floor(game->cub_data.player.x);
-        current_grid_y = (int)floor(game->cub_data.player.y);
-
-        if (current_grid_x != last_grid_x || current_grid_y != last_grid_y)
-        {
-            print_map_2d(game);
-            last_grid_x = current_grid_x;
-            last_grid_y = current_grid_y;
-        }
-        else
-        {
-            // Solo mostrar posición actual sin el mapa completo
-            printf("Player: (%.2f, %.2f) - Grid: (%d, %d) - Angle: %.2f\r",
-                game->cub_data.player.x, game->cub_data.player.y,
-                current_grid_x, current_grid_y, game->cub_data.player.angle);
-            fflush(stdout);
-        }
-    }
+	return (moved);
 }
 
-// Inicializar el sistema de movimiento
-void	init_movement_system(t_game *game)
+/**
+ * @brief Handles rendering updates after movement
+ *
+ * This function updates all rendering components when the player moves:
+ * 1. Updates player position on 2D map overlay (if visible)
+ * 2. Re-renders the 3D view with double buffering
+ * 3. Updates terminal debug output
+ *
+ * @param game Game state structure
+ */
+static void	handle_movement_rendering(t_game *game)
 {
-	// Convertir la orientación inicial a ángulo en radianes
+	int	current_grid_x;
+	int	current_grid_y;
+
+	if (!game)
+		return ;
+	if (game->map_2d_visible)
+		update_player_position(game);
+	render_double_buffer(game);
+	current_grid_x = (int)floor(game->cub_data.player.x);
+	current_grid_y = (int)floor(game->cub_data.player.y);
+	handle_debug_map_update(game, current_grid_x, current_grid_y);
+}
+
+/**
+ * @brief Main game loop function for continuous movement processing
+ *
+ * This function is called every frame by MLX and serves as the central
+ * coordinator for the game loop. It:
+ * 1. Updates delta time (from timing.c)
+ * 2. Refreshes key states (from input.c)
+ * 3. Processes movement input (delegates to move.c and rotation.c)
+ * 4. Processes accumulated mouse rotation
+ * 5. Updates rendering if movement occurred
+ *
+ * @param param Void pointer to game structure (casted internally)
+ */
+void	update_game_loop(void *param)
+{
+	t_game	*game;
+	bool	moved;
+	bool	mouse_rotated;
+
+	game = (t_game *)param;
+	if (!game)
+		return ;
+	update_delta_time(game);
+	refresh_key_states(game);
+	if (game->delta_time <= 0.0)
+		return ;
+	moved = process_movement_input(game);
+	mouse_rotated = process_mouse_rotation(game);
+	if (moved || mouse_rotated)
+		handle_movement_rendering(game);
+}
+
+/**
+ * @brief Initializes the player's starting angle based on orientation
+ *
+ * Converts the cardinal direction (N, S, E, W) from the map file
+ * into a radian angle for the 3D engine.
+ *
+ * @param game Game state structure
+ */
+static void	init_player_angle(t_game *game)
+{
+	if (!game)
+		return ;
 	if (game->cub_data.player.orientation == NORTH)
-		game->cub_data.player.angle = -FT_PI/2;
+		game->cub_data.player.angle = -FT_PI / 2.0f;
 	else if (game->cub_data.player.orientation == SOUTH)
-		game->cub_data.player.angle = FT_PI/2;
+		game->cub_data.player.angle = FT_PI / 2.0f;
 	else if (game->cub_data.player.orientation == EAST)
-		game->cub_data.player.angle = 0;
+		game->cub_data.player.angle = 0.0f;
 	else if (game->cub_data.player.orientation == WEST)
 		game->cub_data.player.angle = FT_PI;
+}
 
+/**
+ * @brief Initializes the movement system and sets up input/update hooks
+ *
+ * This is the main entry point for initializing the entire movement system.
+ * It should be called once during game initialization.
+ *
+ * Initialization steps:
+ * 1. Set player's starting angle based on map orientation
+ * 2. Initialize movement parameters (speed, etc.) from timing.c
+ * 3. Initialize debug grid tracking
+ * 4. Render initial game state
+ * 5. Print initial debug map and controls
+ * 6. Set up MLX input hooks (from input.c)
+ * 7. Set up MLX game loop hook
+ *
+ * @param game Pointer to the game structure
+ */
+void	init_movement_system(t_game *game)
+{
+	if (!game)
+		return ;
+	init_player_angle(game);
 	init_player_parameters(game);
-	
-	// Renderizar el estado inicial completo (solo una vez)
+	game->mouse_initialized = false;
+	game->mouse_delta_accumulated = 0.0f;
+	game->mouse_sensitivity = 0.001f;
+	game->last_mouse_x = 0.0;
+	game->last_player_angle = game->cub_data.player.angle;
+	game->last_grid_x = -1;
+	game->last_grid_y = -1;
 	render_map_2d_initial(game);
-	
-	// Imprimir el mapa inicial en terminal
 	print_map_2d(game);
-	printf("\n=== CONTROLES ===\n");
-	printf("WASD: Movimiento\n");
-	printf("Flechas: Rotación\n");
-	printf("ESC: Salir\n\n");
-	
-	// Configurar el hook de teclas
+	print_controls();
+	init_crosshair(game);
 	mlx_key_hook(game->mlx, key_hook, game);
-	
-	// Configurar el loop de actualización continua
+	mlx_cursor_hook(game->mlx, cursor_hook, game);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	mlx_loop_hook(game->mlx, update_game_loop, game);
 }

@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 01:55:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 01:55:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/03 19:07:06 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/parser.h"
+#include "parser.h"
 
 static int	convert_token_to_int(char *token)
 {
@@ -54,10 +54,10 @@ int	parse_rgb_values(const char *rgb_str, int *rgb)
 	int		values[3];
 	int		count;
 
-	str_copy = malloc(strlen(rgb_str) + 1);
+	str_copy = malloc(ft_strlen(rgb_str) + 1);
 	if (!str_copy)
 		return (0);
-	strcpy(str_copy, rgb_str);
+	ft_strlcpy(str_copy, rgb_str, ft_strlen(rgb_str) + 1);
 	count = extract_rgb_tokens(str_copy, values);
 	free(str_copy);
 	if (count != 3)

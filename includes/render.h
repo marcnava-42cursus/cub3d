@@ -82,11 +82,23 @@ void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 				float max_distance);
 
+// Bonus version
+# ifdef BONUS
+t_rayhit	raycast_world_bonus(const t_map *map, vertex_t start, float angle,
+				float max_distance);
+#  define raycast_world raycast_world_bonus
+# endif
+
 /*--------------------------------- WALLS.C ----------------------------------*/
 void	render_walls(t_game *game, t_rayhit *rayhits);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
 void	render_floors(t_game *game, t_rayhit *rayhits);
+
+# ifdef BONUS
+void	render_walls_bonus(t_game *game);
+#  define render_walls render_walls_bonus
+# endif
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
@@ -96,6 +108,11 @@ void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures);
 void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
+
+# ifdef BONUS
+void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
+		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
+# endif
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);

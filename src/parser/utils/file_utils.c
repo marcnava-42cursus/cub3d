@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:05:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 02:05:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/04 20:29:03 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/parser.h"
+#include "parser.h"
 
 int	count_file_lines(const char *filename)
 {
@@ -57,13 +57,13 @@ static int	read_lines_from_file(FILE *file, char **lines, int line_count)
 	count = 0;
 	while (fgets(buffer, MAX_LINE_LEN, file) && count < line_count)
 	{
-		lines[count] = malloc(strlen(buffer) + 1);
+		lines[count] = malloc(ft_strlen(buffer) + 1);
 		if (!lines[count])
 		{
 			free_partial_lines(lines, count);
 			return (0);
 		}
-		strcpy(lines[count], buffer);
+		ft_strlcpy(lines[count], buffer, ft_strlen(buffer) + 1);
 		count++;
 	}
 	lines[count] = NULL;

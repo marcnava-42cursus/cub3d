@@ -2,6 +2,7 @@
 	"files.associations": {
 		"cub3d.h": "c",
 		"stdint.h": "c",
-		"parser.h": "c"
+		"parser.h": "c",
+		"logic.h": "c"
 	}
 }

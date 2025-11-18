@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:36:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/07 19:56:49 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/10/31 04:48:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 #include <stdint.h>
 #include <string.h>
 #include "libft.h"
-
-#ifndef M_PI_2
-# define M_PI_2 (M_PI / 2.0)
-#endif
 
 // Forward declarations
 static void	create_directional_sprites(t_game *game);
@@ -131,7 +127,9 @@ static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow
 	}
 }
 
-// Función para llenar una imagen con un color sólido
+/**
+ * @deprecated
+ */
 static void	fill_image_color(mlx_image_t *image, uint32_t color)
 {
 	uint32_t	x;

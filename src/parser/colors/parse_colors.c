@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 03:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/09/02 03:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/04 20:39:19 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/parser.h"
+#include "parser.h"
 
 int	is_color_identifier(const char *line)
 {
@@ -20,7 +20,8 @@ int	is_color_identifier(const char *line)
 	trimmed = trim_whitespace((char *)line);
 	if (!trimmed)
 		return (0);
-	result = (strncmp(trimmed, "F ", 2) == 0 || strncmp(trimmed, "C ", 2) == 0);
+	result = (ft_strncmp(trimmed, "F ", 2) == 0
+			|| ft_strncmp(trimmed, "C ", 2) == 0);
 	return (result);
 }
 
@@ -57,7 +58,7 @@ int	parse_color_line(const char *line, t_color *floor, t_color *ceiling)
 	int		rgb[3];
 
 	trimmed = trim_whitespace((char *)line);
-	if (!trimmed || strlen(trimmed) < 2)
+	if (!trimmed || ft_strlen(trimmed) < 2)
 		return (0);
 	identifier = trimmed[0];
 	if (!validate_identifier(identifier))

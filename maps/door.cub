@@ -1,0 +1,21 @@
+NO ./assets/textures/north_wall.xpm42
+SO ./assets/textures/south_wall.xpm42
+WE ./assets/textures/west_wall.xpm42
+EA ./assets/textures/east_wall.xpm42
+DN ./assets/textures/north_door.xpm42
+DS ./assets/textures/south_door.xpm42
+DW ./assets/textures/west_door.xpm42
+DE ./assets/textures/east_door.xpm42
+dN ./assets/textures/south_door.xpm42
+dS ./assets/textures/north_door.xpm42
+dW ./assets/textures/east_door.xpm42
+dE ./assets/textures/west_door.xpm42
+
+F 220,100,0
+C 225,30,0
+
+11111111
+10000D01
+10E00111
+10000001
+11111111
