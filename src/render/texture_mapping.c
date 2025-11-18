@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/12 22:55:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/13 18:18:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,17 @@ static uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 void paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 		xpm_t *texture, int tex_x, float tex_pos, float tex_step)
 {
-	int	current_y;
+	int		current_y;
 	float	current_tex_pos;
 	
-	if (x >= img->width)
-		return ;
-	if (y[1] >= (int)img->height)
-		y[1] = (int)img->height - 1;
-	if (y[0] < 0)
-		y[0] = 0;
-	if (y[0] >= y[1])
-		return ;
+	//if (x >= img->width)
+	//	return ;
+	//if (y[1] >= (int)img->height)
+	//	y[1] = (int)img->height - 1;
+	//if (y[0] < 0)
+	//	y[0] = 0;
+	//if (y[0] >= y[1])
+	//	return ;
 	current_y = y[0];
 	current_tex_pos = tex_pos;
 	while (current_y <= y[1])

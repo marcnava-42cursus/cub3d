@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/12 00:47:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:08:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 				float max_distance);
 
 /*--------------------------------- WALLS.C ----------------------------------*/
-void	render_walls(t_game *game);
+void	render_walls(t_game *game, t_rayhit *rayhits);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
-void	render_floors(t_game *game);
+void	render_floors(t_game *game, t_rayhit *rayhits);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
@@ -99,10 +99,12 @@ void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
-void	render_gameplay_window(t_game *game);
 void	window_free(t_game *game);
 void    set_map_overlay_visible(t_game *game, bool visible);
 void    toggle_map_overlay(t_game *game);
+
+/*---------------------------- GAMEPLAY_WINDOW.C -----------------------------*/
+void	render_gameplay_window(t_game *game, unsigned int buffer_width);
 
 /*--------------------------------- UTILS.C ----------------------------------*/
 int		t_color_to_int(t_color *color, int alpha);
@@ -115,7 +117,7 @@ void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 
 /*---------------------------- 2D MAP RENDERING ------------------------------*/
 // Texture loading
-int	load_map_textures(t_game *game);
+int		load_map_textures(t_game *game);
 void	free_map_textures(t_game *game);
 
 // 2D Map rendering

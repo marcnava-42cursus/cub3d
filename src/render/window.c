@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/13 16:17:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 10:58:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,6 @@ bool	window_init(t_game *game)
     // Initialize minimap overlay
     minimap_init(game);
     return (true);
-}
-
-void	render_gameplay_window(t_game *game)
-{
-    render_bg(game);
-	//render_floors(game);
-    render_walls(game);
-	render_player_overlay(game);
 }
 
 void	window_free(t_game *game)

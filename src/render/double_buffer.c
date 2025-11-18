@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 17:32:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/29 21:00:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 11:07:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	render_double_buffer(t_game *game)
 	mlx_resize_image(game->double_buffer[NEXT],
 			game->double_buffer[CURRENT]->width * game->resolution_scale,
 			game->double_buffer[CURRENT]->height * game->resolution_scale);
-	render_gameplay_window(game);
+	render_gameplay_window(game, game->double_buffer[NEXT]->width);
 	mlx_resize_image(game->double_buffer[NEXT],
 			game->double_buffer[CURRENT]->width,
 			game->double_buffer[CURRENT]->height);
