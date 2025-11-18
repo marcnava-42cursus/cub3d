@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/13 17:08:55 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/18 18:58:56 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,13 @@ void	init_cub_data(t_cub_data *data)
 	ft_memset(&(data->floor_color), -1, sizeof(t_color));
 	ft_memset(&(data->ceiling_color), -1, sizeof(t_color));
 	ft_memset(&(data->player), -1.0f, sizeof(t_player));
+
+	data->player.textures.left_hand_path = "./assets/textures/player/test_hand.xpm42";
+	data->player.textures.left_thumb_path = "./assets/textures/player/test_thumb.xpm42";
+	data->player.textures.right_hand_path = NULL;
+	data->player.textures.weapon_path = "./assets/textures/player/test_weapon.xpm42";
+	data->player.textures.left_hand = mlx_load_xpm42(data->player.textures.left_hand_path);
+	data->player.textures.left_thumb = mlx_load_xpm42(data->player.textures.left_thumb_path);
+	data->player.textures.right_hand = NULL;
+	data->player.textures.weapon = mlx_load_xpm42(data->player.textures.weapon_path);
 }

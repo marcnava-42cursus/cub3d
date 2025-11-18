@@ -6,11 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2025/11/18 11:11:01 by ivmirand         ###   ########.fr        #
-=======
-#    Updated: 2025/11/13 17:11:30 by marcnava         ###   ########.fr        #
->>>>>>> fixed_movement
+#    Updated: 2025/11/18 19:00:15 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,43 +40,6 @@ INCLUDES	:=	-I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include
 
 MLX			:=	$(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-<<<<<<< HEAD
-SRCS		:= $(SRCPATH)/cub3d.c \
-				   $(SRCPATH)/parser/parser_main.c \
-				   $(SRCPATH)/parser/parser_validation.c \
-				   $(SRCPATH)/parser/parse_textures.c \
-				   $(SRCPATH)/parser/parse_map.c \
-				   $(SRCPATH)/parser/colors/parse_colors.c \
-				   $(SRCPATH)/parser/colors/color_validation.c \
-				   $(SRCPATH)/parser/colors/rgb_parsing.c \
-				   $(SRCPATH)/parser/colors/value_extraction.c \
-				   $(SRCPATH)/parser/utils/string_utils.c \
-				   $(SRCPATH)/parser/utils/file_utils.c \
-				   $(SRCPATH)/parser/utils/validation_utils.c \
-				   $(SRCPATH)/parser/utils/memory_utils.c \
-				   $(SRCPATH)/parser/utils/debug_utils.c \
-				   $(SRCPATH)/textures/texture_loader.c \
-				   $(SRCPATH)/render/background.c \
-				   $(SRCPATH)/render/bresenham.c \
-				   $(SRCPATH)/render/double_buffer.c \
-				   $(SRCPATH)/render/minimap.c \
-				   $(SRCPATH)/render/raycast.c \
-				   $(SRCPATH)/render/texture_mapping.c \
-				   $(SRCPATH)/render/walls.c \
-				   $(SRCPATH)/render/floors.c \
-				   $(SRCPATH)/render/outlines.c \
-				   $(SRCPATH)/render/window.c \
-				   $(SRCPATH)/render/gameplay_window.c \
-				   $(SRCPATH)/render/utils.c \
-				   $(SRCPATH)/render/player.c \
-				   $(SRCPATH)/render/map_2d.c \
-				   $(SRCPATH)/logic/movement.c \
-				   $(SRCPATH)/logic/input.c \
-				   $(SRCPATH)/logic/timing.c \
-				   $(SRCPATH)/logic/collision.c \
-				   $(SRCPATH)/logic/move.c \
-				   $(SRCPATH)/logic/rotation.c
-=======
 SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/core/parser_init.c \
 				$(SRCPATH)/parser/core/parser_finder.c \
@@ -121,6 +80,9 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/logic/debug_map.c \
+				$(SRCPATH)/render/gameplay_window.c \
+				$(SRCPATH)/render/player.c \
+				$(SRCPATH)/render/floors.c \
 				tests/state_swapper.c
 
 # Bonus sources - replace standard parser files with bonus versions
@@ -161,8 +123,10 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/logic/debug_map.c \
+				$(SRCPATH)/render/gameplay_window.c \
+				$(SRCPATH)/render/player.c \
+				$(SRCPATH)/render/floors.c \
 				tests/state_swapper.c
->>>>>>> fixed_movement
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH)/%.o)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   walls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/18 11:10:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:08:25 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,5 @@ void	render_walls(t_game *game, t_rayhit *rayhits)
 			&game->cub_data.textures);
 		i++;
 	}
-	//add_wall_outlines(rayhits, game->double_buffer[NEXT]);
+	add_wall_outlines(rayhits, game->double_buffer[NEXT]);
 }

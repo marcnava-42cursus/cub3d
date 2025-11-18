@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outlines.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/29 16:26:34 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/11/18 19:08:51 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
 	
 	// Use paint_vertical_line_color for solid white outlines
-	paint_vertical_line_color((unsigned int)x, slice_bounds, img, BLACK);
+	paint_vertical_line_color((unsigned int)x, slice_bounds, img, WHITE);
 }
 
 void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
