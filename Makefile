@@ -30,6 +30,7 @@ MAKEFLAGS	+=	--no-print-directory
 
 SRCPATH		:=	src
 OBJPATH		:=	build
+OBJPATH_BONUS	:=	build_bonus
 INCPATH		:=	includes
 LIBPATH		:=	libs
 
@@ -82,8 +83,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
-				$(SRCPATH)/render/floors.c \
-				tests/state_swapper.c
+				$(SRCPATH)/render/floors.c
 
 # Bonus sources - replace standard parser files with bonus versions
 SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
@@ -126,10 +126,10 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
-				tests/state_swapper.c
+				$(SRCPATH)/_bonus/state_swapper.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
-OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH)/%.o)
+OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_BONUS)/%.o)
 DEPS		:= $(OBJS:.o=.d)
 DEPS_BONUS	:= $(OBJS_BONUS:.o=.d)
 
@@ -186,7 +186,7 @@ _compile_bonus:	libft libmlx $(OBJS_BONUS)
 		echo "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)"; \
 		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
 		echo "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n"; \
-	elif [ $(NAME_BONUS) -ot $(LIBFT)/libft.a ] || [ $(NAME_BONUS) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH) -name '*.o' -newer $(NAME_BONUS) 2>/dev/null)" ]; then \
+	elif [ $(NAME_BONUS) -ot $(LIBFT)/libft.a ] || [ $(NAME_BONUS) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH_BONUS) -name '*.o' -newer $(NAME_BONUS) 2>/dev/null)" ]; then \
 		echo "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)"; \
 		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
 		echo "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n"; \
@@ -201,9 +201,16 @@ $(OBJPATH)/%.o:	%.c
 		printf "$(GREEN)\r✓ Compiled %-50s$(RESET)\n" "$<" || \
 		(printf "$(RED)\r✗ Failed compiling %-50s$(RESET)\n" "$<" && exit 1)
 
+$(OBJPATH_BONUS)/%.o:	%.c
+	@mkdir -p $(@D)
+	@printf "$(DARK_GRAY)\rCompiling %-50s$(RESET)" "$<"
+	@$(CC) $(CFLAGS) $(BONUS_FLAG) $(INCLUDES) -o $@ -c $< && \
+		printf "$(GREEN)\r✓ Compiled %-50s$(RESET)\n" "$<" || \
+		(printf "$(RED)\r✗ Failed compiling %-50s$(RESET)\n" "$<" && exit 1)
+
 clean:
 	@echo "$(YELLOW)Cleaning object files...$(RESET)"
-	@$(RM) $(OBJPATH)
+	@$(RM) $(OBJPATH) $(OBJPATH_BONUS)
 	@$(MAKE) -C $(LIBFT) clean > /dev/null 2>&1
 	@-$(MAKE) -C $(LIBMLX)/build clean > /dev/null 2>&1
 	@echo "$(GREEN)✓ Clean complete$(RESET)"

@@ -57,7 +57,7 @@ static bool	read_cell(const t_map *map, int x, int y)
 	if (x < 0 || x >= len)
 		return (false);
 	cell = row[x];
-	if (cell == '1' || cell == ' ' || cell == '\0')
+	if (cell == '1' || cell == '2' || cell == ' ' || cell == '\0')
 		return (false);
 	return (true);
 }

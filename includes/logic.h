@@ -74,8 +74,10 @@ void	handle_debug_map_update(t_game *game, int grid_x, int grid_y);
 // Debug / On-Screen Display
 void	init_crosshair(t_game *game);
 
+#ifdef BONUS
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
+#endif
 
 // Loop / Update
 void	update_player_position(t_game *game);

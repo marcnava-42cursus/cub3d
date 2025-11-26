@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 19:02:26 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/26 20:38:54 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,60 +16,24 @@
 
 bool	is_cell_blocking(t_game *game, int cell_x, int cell_y)
 {
-	char	*row;
-	int		row_len;
-
-	if (!game || !game->cub_data.map.grid)
-		return (true);
-	if (cell_x < 0 || cell_y < 0 || cell_y >= game->cub_data.map.height)
-		return (true);
-	row = game->cub_data.map.grid[cell_y];
-	if (!row)
-		return (true);
-	row_len = strlen(row);
-	if (cell_x >= row_len)
-		return (true);
-	return (row[cell_x] == '1' || row[cell_x] == ' ');
+	(void)game;
+	(void)cell_x;
+	(void)cell_y;
+	return (false);
 }
 
 bool	collides_with_wall(t_game *game, float x, float y)
 {
-	const float	r = game->player_radius;
-	float		sx[4];
-	float		sy[4];
-	int			i;
-
-	if (!game)
-		return (true);
-	sx[0] = x - r;
-	sy[0] = y - r;
-	sx[1] = x + r;
-	sy[1] = y - r;
-	sx[2] = x - r;
-	sy[2] = y + r;
-	sx[3] = x + r;
-	sy[3] = y + r;
-	i = 0;
-	while (i < 4)
-	{
-		if (is_cell_blocking(game, (int)floorf(sx[i]), (int)floorf(sy[i])))
-			return (true);
-		i++;
-	}
+	(void)game;
+	(void)x;
+	(void)y;
 	return (false);
 }
 
 void	attempt_move(t_game *game, float step_x, float step_y)
 {
-	float	nx;
-	float	ny;
-
 	if (!game)
 		return ;
-	nx = game->cub_data.player.x + step_x;
-	ny = game->cub_data.player.y + step_y;
-	if (!collides_with_wall(game, nx, game->cub_data.player.y))
-		game->cub_data.player.x = nx;
-	if (!collides_with_wall(game, game->cub_data.player.x, ny))
-		game->cub_data.player.y = ny;
+	game->cub_data.player.x += step_x;
+	game->cub_data.player.y += step_y;
 }

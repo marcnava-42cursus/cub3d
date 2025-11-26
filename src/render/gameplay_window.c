@@ -55,7 +55,10 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 		i++;
 	}
 	render_floors(game, rayhits);
-    render_walls(game, rayhits);
+#ifdef BONUS
+	render_walls(game);
+#else
+	render_walls(game, rayhits);
+#endif
 	render_player_overlay(game);
 }
-

@@ -15,31 +15,36 @@
 #include "render.h"
 
 /**
- * @brief Changes wall ('1') to floor ('0') at specific coordinates
- *
- * @param game Game state structure
- * @param x X coordinate in grid
- * @param y Y coordinate in grid
+ * @brief Apply interaction to the targeted cell.
+ * Returns true when the cell changes state.
  */
-static void	break_wall(t_game *game, int x, int y)
+static bool	modify_interactive_cell(t_game *game, int x, int y)
 {
 	char	*cell;
 
 	if (!game || !game->cub_data.map.grid)
-		return ;
+		return (false);
 	if (y < 0 || y >= game->cub_data.map.height)
-		return ;
+		return (false);
 	if (x < 0 || x >= (int)ft_strlen(game->cub_data.map.grid[y]))
-		return ;
+		return (false);
 	cell = &game->cub_data.map.grid[y][x];
-	if (*cell == '1')
+	if (*cell == '2')
+	{
 		*cell = '0';
-	else if (*cell == 'D')
+		return (true);
+	}
+	if (*cell == 'D')
+	{
 		*cell = 'd';
-	else if (*cell == 'd')
+		return (true);
+	}
+	if (*cell == 'd')
+	{
 		*cell = 'D';
-	else
-		printf("Not a wall at (%d, %d), cell is '%c'\n", x, y, *cell);
+		return (true);
+	}
+	return (false);
 }
 
 /**
@@ -70,13 +75,15 @@ void	test_break_wall_in_front(t_game *game)
 		cell = game->cub_data.map.grid[hit.cell_y][hit.cell_x];
 		printf("Looking at cell (%d, %d) with character '%c'\n",
 			hit.cell_x, hit.cell_y, cell);
-		if (cell == '1' || cell == 'D' || cell == 'd')
+		if (cell == '2' || cell == 'D' || cell == 'd')
 		{
-			break_wall(game, hit.cell_x, hit.cell_y);
-			wall_broken = true;
+			wall_broken = modify_interactive_cell(game,
+				hit.cell_x, hit.cell_y);
+			if (wall_broken && cell == '2')
+				printf("Breakable block destroyed!\n");
 		}
 		else
-			printf("Cannot break: not a wall\n");
+			printf("Cannot break cell '%c'\n", cell);
 	}
 	else
 		printf("No wall in front\n");
