@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/29 00:29:29 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/02 08:47:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 			unsigned int color)
 {
-	unsigned char *pixelstart;
+	unsigned char	*pixelstart;
 
 	pixelstart = &image->pixels[(y * image->width + x) * sizeof(unsigned int)];
 	*(pixelstart++) = (unsigned short)(color >> 24);
@@ -49,10 +49,11 @@ float	normalize_angle(float angle)
 }
 
 // Simple solid color vertical line painter - y[0] is start and y[1] is end
-void paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img, uint32_t color)
+void	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
+		uint32_t color)
 {
 	int	current_y;
-	
+
 	if (x >= img->width)
 		return ;
 	if (y[1] >= (int)img->height)

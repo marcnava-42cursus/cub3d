@@ -6,24 +6,23 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/18 19:08:25 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 18:32:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
+static void	render_wall_fill(t_rayhit *rayhit, unsigned int x, mlx_image_t *img,
 		t_textures *textures)
 {
 	int			slice_height;
 	int			screen_bounds[2];
-	int			wall_bounds[2];
 	float		wall_height;
 	float		dist_to_proj_plane;
 	float		current_aspect_ratio;
 	float		aspect_scale;
 
-	if (!rayhit.hit)
+	if (!rayhit->hit)
 		return ;
 	
 	// Calculate distance to projection plane for proper perspective
@@ -34,15 +33,15 @@ static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
 
 	// Dynamic scaling with taller base
 	wall_height = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
-	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
+	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit->distance);
 
 	// Calculate full wall slice bounds (may extend beyond image)
-	wall_bounds[0] = -slice_height / 2 + (int)img->height / 2;
-	wall_bounds[1] = slice_height / 2 + (int)img->height / 2;
+	rayhit->wall_bounds[0] = -slice_height / 2 + (int)img->height / 2;
+	rayhit->wall_bounds[1] = slice_height / 2 + (int)img->height / 2;
 	
 	// Copy wall bounds to screen bounds for clipping
-	screen_bounds[0] = wall_bounds[0];
-	screen_bounds[1] = wall_bounds[1];
+	screen_bounds[0] = rayhit->wall_bounds[0];
+	screen_bounds[1] = rayhit->wall_bounds[1];
 	
 	if (screen_bounds[0] < 0)
 		screen_bounds[0] = 0;
@@ -53,19 +52,16 @@ static void	render_wall_fill(t_rayhit rayhit, unsigned int x, mlx_image_t *img,
 		|| screen_bounds[1] < 0 || screen_bounds[0] >= (int)img->height)
 		return;
 	
-	//if (screen_bounds[0] >= 0 && screen_bounds[0] < (int)img->height)
-	//	save_pixel_to_image(img, x, (unsigned int)screen_bounds[0], BLACK);
-	//if (screen_bounds[1] >= 0 && screen_bounds[1] < (int)img->height
-	//	&& screen_bounds[1] != screen_bounds[0])
-	//	save_pixel_to_image(img, x, (unsigned int)screen_bounds[1], BLACK);
-	
 	if (screen_bounds[0] < (int)img->height - 1)
 		screen_bounds[0]++;
 	if (screen_bounds[1] > 0 && screen_bounds[1] > screen_bounds[0])
 		screen_bounds[1]--;
 	
 	if (screen_bounds[0] <= screen_bounds[1])
-		render_texture_line(rayhit, x, screen_bounds, wall_bounds, img, textures);
+		render_texture_line(*rayhit, x, screen_bounds, rayhit->wall_bounds, img, textures);
+	// Copy screen bounds to wall bounds for clipping
+	rayhit->wall_bounds[0] = screen_bounds[0];
+	rayhit->wall_bounds[1] = screen_bounds[1];
 }
 
 void	render_walls(t_game *game, t_rayhit *rayhits)
@@ -75,7 +71,7 @@ void	render_walls(t_game *game, t_rayhit *rayhits)
 	i = 0;
 	while (i < game->double_buffer[NEXT]->width)
 	{
-		render_wall_fill(rayhits[i], i, game->double_buffer[NEXT],
+		render_wall_fill(&rayhits[i], i, game->double_buffer[NEXT],
 			&game->cub_data.textures);
 		i++;
 	}

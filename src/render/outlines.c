@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/18 19:08:51 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/11/18 21:19:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,42 @@ static void draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
 	paint_vertical_line_color((unsigned int)x, slice_bounds, img, WHITE);
 }
 
+static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit, mlx_image_t *img)
+{
+	int			slice_height;
+	int			slice_bounds[2];
+	float		wall_height;
+	float		dist_to_proj_plane;
+	float		current_aspect_ratio;
+	float		aspect_scale;
+	
+	if (!rayhit.hit)
+		return ;
+	
+	// Use the same perspective calculation as in walls.c
+	// Calculate dynamic aspect ratio scaling to match walls.c
+	current_aspect_ratio = (float)img->width / (float)img->height;
+	aspect_scale = current_aspect_ratio / BASE_ASPECT_RATIO;
+	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
+ 	// Dynamic scaling with taller base
+	wall_height = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
+	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
+	
+	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
+	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
+		
+	if (x >= img->width)
+		return ;
+	if (slice_bounds[1] >= (int)img->height)
+		slice_bounds[1] = (int)img->height - 1;
+	if (slice_bounds[0] < 0)
+		slice_bounds[0] = 0;
+	if (slice_bounds[0] >= slice_bounds[1])
+		return ;
+	save_pixel_to_image(img, (unsigned int)x, slice_bounds[0], WHITE);
+	save_pixel_to_image(img, (unsigned int)x, slice_bounds[1], WHITE);
+}
+
 void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
 {
 	unsigned int i;
@@ -87,6 +123,8 @@ void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
 	{
 		if (is_raycast_edge(rayhits, i, img))
 			draw_vertical_outline(i, rayhits[i], img);
+		else
+			draw_top_and_bottom_outline(i, rayhits[i], img);
 		i++;
 	}
 }

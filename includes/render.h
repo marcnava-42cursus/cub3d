@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/18 20:38:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/02 16:28:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define WEAPON_TEXTURE_WIDTH 128
 # define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
+# define MAX_RENDER_DISTANCE 2000.0f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define MINIMAP_DIAMETER (2.0f * MINIMAP_RADIUS + 1.0f)
@@ -106,20 +107,17 @@ void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures);
-
+void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
+			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
+void	paint_horizontal_line_texture(unsigned int y, unsigned int x, mlx_image_t *img,
+		xpm_t *texture, int tex_y, float tex_x);
 # ifdef BONUS
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
 # endif
-
-void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
-
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
 void	window_free(t_game *game);
-void    set_map_overlay_visible(t_game *game, bool visible);
-void    toggle_map_overlay(t_game *game);
 
 /*---------------------------- GAMEPLAY_WINDOW.C -----------------------------*/
 void	render_gameplay_window(t_game *game, unsigned int buffer_width);
@@ -132,6 +130,11 @@ void 	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
 			uint32_t color);
 void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 			unsigned int color);
+
+/*--------------------------------- WINDOW.C ---------------------------------*/
+bool	world_map_init(t_game *game);
+void    set_map_overlay_visible(t_game *game, bool visible);
+void    toggle_map_overlay(t_game *game);
 
 /*---------------------------- 2D MAP RENDERING ------------------------------*/
 // Texture loading

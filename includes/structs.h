@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/18 18:32:04 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 17:52:32 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ typedef struct s_rayhit
 	t_orientation	face;
 	vertex_t		position;
 	float			distance;
+	int				wall_bounds[2];
 }	t_rayhit;
 
 // Estructura principal del juego que contiene TODOS los datos

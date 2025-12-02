@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/11/18 19:00:15 by marcnava         ###   ########.fr        #
+#    Updated: 2025/12/02 09:09:30 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
+				$(SRCPATH)/render/world_map.c \
 				tests/state_swapper.c
 
 # Bonus sources - replace standard parser files with bonus versions
@@ -126,6 +127,7 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
+				$(SRCPATH)/render/world_map.c \
 				tests/state_swapper.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
