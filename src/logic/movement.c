@@ -6,13 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 18:56:56 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 20:33:05 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
 #include "logic.h"
-#include <math.h>
 
 /**
  * @brief Updates only the player position display

@@ -6,13 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/26 20:38:54 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 20:26:35 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-#include <math.h>
-#include <string.h>
+#include "logic.h"
 
 bool	is_cell_blocking(t_game *game, int cell_x, int cell_y)
 {

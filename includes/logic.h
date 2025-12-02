@@ -6,33 +6,37 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 19:01:20 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 20:32:08 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LOGIC_H
 # define LOGIC_H
 
+# include "structs.h"
+# include "libft.h"
+# include "render.h"
+
 # define TWO_PI (2.0f * FT_PI)
 # define MAX_DELTA_TIME 0.05
 # define MAX_MOUSE_DELTA 100.0f
 
 /* Terminal control codes */
-#define ANSI_CLEAR_SCREEN "\033[2J\033[H"
+# define ANSI_CLEAR_SCREEN "\033[2J\033[H"
 
 /* Angle thresholds for player direction display (in radians) */
-#define ANGLE_RIGHT_MIN (-FT_PI / 4.0f)
-#define ANGLE_RIGHT_MAX (FT_PI / 4.0f)
-#define ANGLE_DOWN_MIN (FT_PI / 4.0f)
-#define ANGLE_DOWN_MAX (3.0f * FT_PI / 4.0f)
-#define ANGLE_LEFT_MIN (3.0f * FT_PI / 4.0f)
-#define ANGLE_LEFT_MAX (-3.0f * FT_PI / 4.0f)
+# define ANGLE_RIGHT_MIN (-FT_PI / 4.0f)
+# define ANGLE_RIGHT_MAX (FT_PI / 4.0f)
+# define ANGLE_DOWN_MIN (FT_PI / 4.0f)
+# define ANGLE_DOWN_MAX (3.0f * FT_PI / 4.0f)
+# define ANGLE_LEFT_MIN (3.0f * FT_PI / 4.0f)
+# define ANGLE_LEFT_MAX (-3.0f * FT_PI / 4.0f)
 
 /* Player direction symbols */
-#define DIR_RIGHT '>'
-#define DIR_DOWN 'v'
-#define DIR_LEFT '<'
-#define DIR_UP '^'
+# define DIR_RIGHT '>'
+# define DIR_DOWN 'v'
+# define DIR_LEFT '<'
+# define DIR_UP '^'
 
 typedef struct s_game t_game;
 
@@ -77,6 +81,7 @@ void	init_crosshair(t_game *game);
 #ifdef BONUS
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
+void	place_breakable_block(t_game *game);
 #endif
 
 // Loop / Update

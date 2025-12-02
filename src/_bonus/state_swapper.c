@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/13 19:38:45 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 19:38:32 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,87 @@ static bool	modify_interactive_cell(t_game *game, int x, int y)
 		return (true);
 	}
 	return (false);
+}
+
+static bool	is_valid_target_cell(t_game *game, int x, int y)
+{
+	int		player_x;
+	int		player_y;
+	size_t	row_len;
+
+	if (!game || !game->cub_data.map.grid)
+		return (false);
+	if (y < 0 || y >= game->cub_data.map.height)
+		return (false);
+	row_len = ft_strlen(game->cub_data.map.grid[y]);
+	if (x < 0 || x >= (int)row_len)
+		return (false);
+	player_x = (int)floorf(game->cub_data.player.x);
+	player_y = (int)floorf(game->cub_data.player.y);
+	if (x == player_x && y == player_y)
+		return (false);
+	return (game->cub_data.map.grid[y][x] == '0');
+}
+
+static bool	get_attachment_coords(t_game *game, t_rayhit *hit, int *x, int *y)
+{
+	vertex_t	dir;
+	vertex_t	point_before_hit;
+
+	if (!game || !hit || !hit->hit)
+		return (false);
+	dir.x = cosf(game->cub_data.player.angle);
+	dir.y = sinf(game->cub_data.player.angle);
+	point_before_hit.x = hit->position.x - dir.x;
+	point_before_hit.y = hit->position.y - dir.y;
+	*x = (int)floorf(point_before_hit.x / WORLDMAP_TILE_SIZE);
+	*y = (int)floorf(point_before_hit.y / WORLDMAP_TILE_SIZE);
+	return (true);
+}
+
+/**
+ * @brief Places a breakable block ('2') on the face of the wall the player
+ * is looking at, if the adjacent cell is empty floor.
+ */
+void	place_breakable_block(t_game *game)
+{
+	t_rayhit	hit;
+	vertex_t	start;
+	char		cell;
+	int			target_x;
+	int			target_y;
+
+	if (!game)
+		return ;
+	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y + 0.2f) * WORLDMAP_TILE_SIZE;
+	hit = raycast_world(&game->cub_data.map, start,
+			game->cub_data.player.angle, 300.0f);
+	if (!hit.hit)
+	{
+		printf("No wall in front to attach block\n");
+		return ;
+	}
+	if (hit.cell_y < 0 || hit.cell_y >= game->cub_data.map.height
+		|| hit.cell_x < 0
+		|| hit.cell_x >= (int)ft_strlen(game->cub_data.map.grid[hit.cell_y]))
+		return ;
+	cell = game->cub_data.map.grid[hit.cell_y][hit.cell_x];
+	if (cell != '1' && cell != '2')
+	{
+		printf("Cannot place block on cell '%c'\n", cell);
+		return ;
+	}
+	if (!get_attachment_coords(game, &hit, &target_x, &target_y))
+		return ;
+	if (!is_valid_target_cell(game, target_x, target_y))
+	{
+		printf("Cannot place block at (%d, %d)\n", target_x, target_y);
+		return ;
+	}
+	game->cub_data.map.grid[target_y][target_x] = '2';
+	printf("Placed breakable block at (%d, %d)\n", target_x, target_y);
+	render_double_buffer(game);
 }
 
 /**

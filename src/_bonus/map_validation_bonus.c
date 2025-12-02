@@ -147,6 +147,15 @@ int	find_player_position_bonus(t_map *map, t_player *player)
 				player->x = (float)x + 0.5f;
 				player->y = (float)y + 0.5f;
 				player->orientation = map->grid[y][x];
+				if (player->orientation == NORTH)
+					player->angle = 3.0f * (FT_PI / 2);
+				else if (player->orientation == SOUTH)
+					player->angle = FT_PI / 2;
+				else if (player->orientation == EAST)
+					player->angle = 0.0f;
+				else if (player->orientation == WEST)
+					player->angle = FT_PI;
+				map->grid[y][x] = '0';
 				found = 1;
 			}
 		}

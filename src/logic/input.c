@@ -6,13 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/31 12:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 20:32:50 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
 #include "logic.h"
-#include "render.h"
 
 /**
  * @brief Refreshes the state of all movement and rotation keys
@@ -55,10 +53,15 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	if (!game)
 		return ;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	{
+		printf("\n");
 		mlx_close_window(game->mlx);
+	}
 	else if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		toggle_map_overlay(game);
 #ifdef BONUS
+	else if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+		place_breakable_block(game);
 	else if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
 		test_break_wall_in_front(game);
 #endif
