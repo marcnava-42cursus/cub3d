@@ -6,33 +6,37 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/12 19:01:20 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 20:32:08 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LOGIC_H
 # define LOGIC_H
 
+# include "structs.h"
+# include "libft.h"
+# include "render.h"
+
 # define TWO_PI (2.0f * FT_PI)
 # define MAX_DELTA_TIME 0.05
 # define MAX_MOUSE_DELTA 100.0f
 
 /* Terminal control codes */
-#define ANSI_CLEAR_SCREEN "\033[2J\033[H"
+# define ANSI_CLEAR_SCREEN "\033[2J\033[H"
 
 /* Angle thresholds for player direction display (in radians) */
-#define ANGLE_RIGHT_MIN (-FT_PI / 4.0f)
-#define ANGLE_RIGHT_MAX (FT_PI / 4.0f)
-#define ANGLE_DOWN_MIN (FT_PI / 4.0f)
-#define ANGLE_DOWN_MAX (3.0f * FT_PI / 4.0f)
-#define ANGLE_LEFT_MIN (3.0f * FT_PI / 4.0f)
-#define ANGLE_LEFT_MAX (-3.0f * FT_PI / 4.0f)
+# define ANGLE_RIGHT_MIN (-FT_PI / 4.0f)
+# define ANGLE_RIGHT_MAX (FT_PI / 4.0f)
+# define ANGLE_DOWN_MIN (FT_PI / 4.0f)
+# define ANGLE_DOWN_MAX (3.0f * FT_PI / 4.0f)
+# define ANGLE_LEFT_MIN (3.0f * FT_PI / 4.0f)
+# define ANGLE_LEFT_MAX (-3.0f * FT_PI / 4.0f)
 
 /* Player direction symbols */
-#define DIR_RIGHT '>'
-#define DIR_DOWN 'v'
-#define DIR_LEFT '<'
-#define DIR_UP '^'
+# define DIR_RIGHT '>'
+# define DIR_DOWN 'v'
+# define DIR_LEFT '<'
+# define DIR_UP '^'
 
 typedef struct s_game t_game;
 
@@ -63,6 +67,11 @@ void	attempt_move_bonus(t_game *game, float step_x, float step_y);
 #  define is_cell_blocking is_cell_blocking_bonus
 #  define collides_with_wall collides_with_wall_bonus
 #  define attempt_move attempt_move_bonus
+
+// Inventory
+bool	player_has_block(const t_player *player);
+bool	store_block_in_inventory(t_player *player, char block);
+char	consume_inventory_block(t_player *player);
 # endif
 
 // Debug / Terminal Output
@@ -74,8 +83,11 @@ void	handle_debug_map_update(t_game *game, int grid_x, int grid_y);
 // Debug / On-Screen Display
 void	init_crosshair(t_game *game);
 
+#ifdef BONUS
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
+void	place_breakable_block(t_game *game);
+#endif
 
 // Loop / Update
 void	update_player_position(t_game *game);

@@ -21,8 +21,9 @@ int	is_map_line(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != '0' && line[i] != '1' && line[i] != 'N'
-			&& line[i] != 'S' && line[i] != 'E' && line[i] != 'W'
+		if (line[i] != '0' && line[i] != '1' && line[i] != '2'
+			&& line[i] != 'N' && line[i] != 'S'
+			&& line[i] != 'E' && line[i] != 'W'
 			&& line[i] != ' ' && line[i] != '\n')
 		{
 			return (0);
@@ -32,8 +33,9 @@ int	is_map_line(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '0' || line[i] == '1' || line[i] == 'N'
-			|| line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
+		if (line[i] == '0' || line[i] == '1' || line[i] == '2'
+			|| line[i] == 'N' || line[i] == 'S'
+			|| line[i] == 'E' || line[i] == 'W')
 		{
 			return (1);
 		}
@@ -44,8 +46,8 @@ int	is_map_line(const char *line)
 
 static int	is_valid_map_char(char c)
 {
-	return (c == '0' || c == '1' || c == 'N' || c == 'S'
-		|| c == 'E' || c == 'W' || c == ' ');
+	return (c == '0' || c == '1' || c == '2' || c == 'N'
+		|| c == 'S' || c == 'E' || c == 'W' || c == ' ');
 }
 
 int	validate_map_characters(t_map *map)

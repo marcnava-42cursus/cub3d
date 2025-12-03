@@ -50,6 +50,18 @@ static vertex_t	rotate_point(vertex_t point, float angle)
 	return (rotated);
 }
 
+static bool	is_minimap_wall(char tile)
+{
+	return (tile == '1' || tile == '2');
+}
+
+static uint32_t	get_minimap_wall_color(char tile)
+{
+	if (tile == '2')
+		return (ORANGE);
+	return (WHITE);
+}
+
 // Clipped version of bresenham that only draws within the circle
 static void	bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img, int color)
 {
@@ -153,8 +165,15 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 		row_len = strlen(map->grid[world_y]);
 		for (int world_x = minimap->player->x - MINIMAP_RADIUS; world_x <= minimap->player->x + MINIMAP_RADIUS; world_x++)
 		{
-			if (world_x < 0 || (size_t)world_x >= row_len || map->grid[world_y][world_x] != '1')
+			char tile;
+			uint32_t tile_color;
+
+			if (world_x < 0 || (size_t)world_x >= row_len)
 				continue;
+			tile = map->grid[world_y][world_x];
+			if (!is_minimap_wall(tile))
+				continue;
+			tile_color = get_minimap_wall_color(tile);
 			
 			// Calculate offset from tile center to tile center
 			world_offset.x = (world_x - minimap->player->x + 0.25f) * MINIMAP_TILE_SIZE;
@@ -179,7 +198,7 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 						pixel_y >= 0 && pixel_y < (int)minimap->bg->height &&
 						is_inside_minimap_circle(pixel_x, pixel_y, center_x, center_y, radius))
 					{
-						save_pixel_to_image(minimap->bg, pixel_x, pixel_y, WHITE);
+						save_pixel_to_image(minimap->bg, pixel_x, pixel_y, tile_color);
 					}
 				}
 			}

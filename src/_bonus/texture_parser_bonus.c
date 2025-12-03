@@ -22,7 +22,7 @@ int	is_texture_identifier_bonus(const char *line)
 		return (0);
 	if (ft_strlen(trimmed) < 3)
 		return (0);
-	result = (ft_isalpha(trimmed[0])
+	result = ((ft_isalpha(trimmed[0]) || ft_isdigit(trimmed[0]))
 			&& ft_isalpha(trimmed[1])
 			&& trimmed[2] == ' ');
 	return (result);
@@ -95,7 +95,8 @@ int	parse_texture_line_bonus(const char *line, t_textures *textures)
 	identifier[0] = trimmed[0];
 	identifier[1] = trimmed[1];
 	identifier[2] = '\0';
-	if (!ft_isalpha(identifier[0]) || !ft_isalpha(identifier[1]))
+	if (!ft_isalpha(identifier[1])
+		|| (!ft_isalpha(identifier[0]) && !ft_isdigit(identifier[0])))
 	{
 		printf("Error: Invalid texture identifier: %s\n", identifier);
 		return (0);

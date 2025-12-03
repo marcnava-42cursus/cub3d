@@ -271,7 +271,7 @@ static void	render_map_tiles(t_game *game)
 		while (x < game->cub_data.map.width)
 		{
 			tile = game->cub_data.map.grid[y][x];
-			if (tile == '1')
+			if (tile == '1' || tile == '2')
 				draw_tile_to_layer(game, x, y, game->textures_2d.wall);
 			else if (tile == '0' || tile == 'N' || tile == 'S' 
 				 || tile == 'E' || tile == 'W')

@@ -1,0 +1,19 @@
+NO ./assets/textures/walls/test_wall_flesh.xpm42
+SO ./assets/textures/walls/test_wall_flesh_2.xpm42
+WE ./assets/textures/walls/test_wall_flesh.xpm42
+EA ./assets/textures/walls/test_wall_flesh_2.xpm42
+2N ./assets/textures/north_wall.xpm42
+2S ./assets/textures/south_wall.xpm42
+2W ./assets/textures/west_wall.xpm42
+2E ./assets/textures/east_wall.xpm42
+
+F 120,120,120
+C 40,40,60
+
+111111111111
+100000000001
+102222022201
+100000N00001
+102222022201
+100000000001
+111111111111

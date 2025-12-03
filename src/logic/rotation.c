@@ -6,13 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/10/31 12:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/02 21:34:52 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
 #include "logic.h"
-#include "render.h"
 
 /**
  * @brief Rotates the player's camera view left or right

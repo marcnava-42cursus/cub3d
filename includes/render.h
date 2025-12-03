@@ -58,6 +58,7 @@
 # define MEDIUM_GREY 0x555555FF
 # define DARK_GREY 0x333333FF
 # define BLACK 0x000000FF
+# define ORANGE 0xFF7F00FF
 
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64

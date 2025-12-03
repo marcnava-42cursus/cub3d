@@ -9,13 +9,13 @@
 ### Core Mechanics
 - [ ] **Block System** 🧱
   - [ ] Break blocks with mouse interaction
-  - [ ] Place blocks (single block type, no selection)
-  - [ ] Block collision detection
+  - [x] Place blocks (single block type, no selection)
+  - [x] Block collision detection
 
 - [ ] **Physics Engine** ⚡
   - [ ] Push/pull moveable blocks
-  - [ ] Basic collision response
-  - [ ] First-person movement only (no jumping)
+  - [x] Basic collision response
+  - [x] First-person movement only (no jumping)
 
 - [ ] **Combat System** 🔫
   - [ ] Shooter mode implementation
@@ -36,7 +36,7 @@
 ### Performance & Architecture
 - [ ] **Optimization** ⚙️
   - [ ] Multithreading support
-  - [ ] Memory pool allocation
+  - [x] Memory pool allocation
   - [ ] Level-of-detail (LOD) system
   - [ ] Frustum culling improvements
 
