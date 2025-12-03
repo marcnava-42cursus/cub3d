@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/03 01:17:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/03 02:37:19 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,6 @@ t_rayhit	raycast_world_bonus(const t_map *map, vertex_t start, float angle,
 
 /*--------------------------------- WALLS.C ----------------------------------*/
 void	render_walls(t_game *game, t_rayhit *rayhits);
-
-# ifdef BONUS
-void	render_walls_bonus(t_game *game);
-#  define render_walls render_walls_bonus
-# endif
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
 void	render_floors(t_game *game, t_rayhit *rayhits);

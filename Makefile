@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/12/03 02:32:26 by marcnava         ###   ########.fr        #
+#    Updated: 2025/12/03 02:39:39 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,8 +84,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
-				$(SRCPATH)/render/world_map.c \
-				tests/state_swapper.c
+				$(SRCPATH)/render/world_map.c
 
 # Bonus sources - replace standard parser files with bonus versions
 SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
@@ -95,8 +94,9 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/_bonus/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/texture_parser_bonus.c \
 				$(SRCPATH)/_bonus/raycast_bonus.c \
-				$(SRCPATH)/_bonus/walls_bonus.c \
+				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
+				$(SRCPATH)/render/texture_mapping.c \
 				$(SRCPATH)/_bonus/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \

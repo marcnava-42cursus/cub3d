@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/13 20:04:30 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/03 02:36:32 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,4 @@ static void	render_wall_fill_bonus(t_rayhit rayhit, unsigned int x, mlx_image_t 
 
 	if (screen_bounds[0] <= screen_bounds[1])
 		render_texture_line_bonus(rayhit, x, screen_bounds, wall_bounds, img, textures, map);
-}
-
-void	render_walls_bonus(t_game *game)
-{
-	unsigned int	i;
-	t_rayhit		rayhits[MAX_WINDOW_WIDTH];
-
-	i = 0;
-	while (i < game->double_buffer[NEXT]->width && i < MAX_WINDOW_WIDTH)
-	{
-		rayhits[i] = cast_ray_for_column(&game->cub_data, i,
-				game->double_buffer[NEXT]->width);
-		render_wall_fill_bonus(rayhits[i], i, game->double_buffer[NEXT],
-			&game->cub_data.textures, &game->cub_data.map);
-		i++;
-	}
-	add_wall_outlines(rayhits, game->double_buffer[NEXT]);
 }
