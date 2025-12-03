@@ -31,6 +31,11 @@ static bool	modify_interactive_cell(t_game *game, int x, int y)
 	cell = &game->cub_data.map.grid[y][x];
 	if (*cell == '2')
 	{
+		if (!store_block_in_inventory(&game->cub_data.player, *cell))
+		{
+			printf("Cannot break block: inventory already contains one\n");
+			return (false);
+		}
 		*cell = '0';
 		return (true);
 	}
@@ -97,6 +102,11 @@ void	place_breakable_block(t_game *game)
 
 	if (!game)
 		return ;
+	if (!player_has_block(&game->cub_data.player))
+	{
+		printf("Inventory is empty, cannot place a block\n");
+		return ;
+	}
 	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y + 0.2f) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
@@ -123,7 +133,10 @@ void	place_breakable_block(t_game *game)
 		printf("Cannot place block at (%d, %d)\n", target_x, target_y);
 		return ;
 	}
-	game->cub_data.map.grid[target_y][target_x] = '2';
+	cell = consume_inventory_block(&game->cub_data.player);
+	if (cell == '\0')
+		return ;
+	game->cub_data.map.grid[target_y][target_x] = cell;
 	printf("Placed breakable block at (%d, %d)\n", target_x, target_y);
 	render_double_buffer(game);
 }
@@ -142,11 +155,11 @@ void	test_break_wall_in_front(t_game *game)
 	t_rayhit	hit;
 	vertex_t	start;
 	char		cell;
-	bool		wall_broken;
+	bool		cell_changed;
 
 	if (!game)
 		return ;
-	wall_broken = false;
+	cell_changed = false;
 	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y + 0.2f)* WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
@@ -156,18 +169,20 @@ void	test_break_wall_in_front(t_game *game)
 		cell = game->cub_data.map.grid[hit.cell_y][hit.cell_x];
 		printf("Looking at cell (%d, %d) with character '%c'\n",
 			hit.cell_x, hit.cell_y, cell);
-		if (cell == '2' || cell == 'D' || cell == 'd')
+		if (cell == '2')
 		{
-			wall_broken = modify_interactive_cell(game,
-				hit.cell_x, hit.cell_y);
-			if (wall_broken && cell == '2')
-				printf("Breakable block destroyed!\n");
+			cell_changed = modify_interactive_cell(game,
+					hit.cell_x, hit.cell_y);
+			if (cell_changed)
+				printf("Breakable block stored in inventory!\n");
 		}
+		else if (cell == 'D' || cell == 'd')
+			cell_changed = modify_interactive_cell(game, hit.cell_x, hit.cell_y);
 		else
 			printf("Cannot break cell '%c'\n", cell);
 	}
 	else
 		printf("No wall in front\n");
-	if (wall_broken)
+	if (cell_changed)
 		render_double_buffer(game);
 }

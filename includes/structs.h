@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/18 18:32:04 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/03 00:54:34 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,11 @@ typedef struct s_player_textures
 // Estructura para la posición del jugador
 typedef struct s_player
 {
-	float				x;            // Coordenada X flotante para movimiento suave
-	float				y;            // Coordenada Y flotante para movimiento suave
-	float				angle;        // Ángulo de rotación en radianes
-	t_orientation		orientation;  // Orientación original del mapa (N, S, E, W)
+	float				x;
+	float				y;
+	float				angle;
+	char				inventory;
+	t_orientation		orientation;
 	t_player_textures	textures;
 }	t_player;
 
@@ -146,9 +147,9 @@ typedef struct s_rayhit
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
-    t_cub_data	cub_data;		// Datos parseados del archivo .cub
-    // Ventana MLX
-    mlx_t		*mlx;
+	t_cub_data	cub_data;		// Datos parseados del archivo .cub
+	// Ventana MLX
+	mlx_t		*mlx;
 
 	// Capas separadas para el renderizado 2D
 	mlx_image_t	*map_layer;		// Capa estática del mapa

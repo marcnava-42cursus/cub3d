@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/12 23:24:04 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:53:20 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ void	render_player_overlay(t_game *game)
 	textures = game->cub_data.player.textures;
 	render_player_part(buffer->width / 2 - HAND_TEXTURE_WIDTH * 2, 	buffer, 
 			textures.left_hand, RED);
-	render_weapon(buffer->width / 2 - HAND_TEXTURE_WIDTH * 1.7, buffer,
+	if (game->cub_data.player.inventory)
+		render_weapon(buffer->width / 2 - HAND_TEXTURE_WIDTH * 1.7, buffer,
 			textures.weapon);
 	render_player_part(buffer->width / 2 - HAND_TEXTURE_WIDTH * 2, buffer,
 			textures.left_thumb, MAGENTA);

@@ -67,6 +67,11 @@ void	attempt_move_bonus(t_game *game, float step_x, float step_y);
 #  define is_cell_blocking is_cell_blocking_bonus
 #  define collides_with_wall collides_with_wall_bonus
 #  define attempt_move attempt_move_bonus
+
+// Inventory
+bool	player_has_block(const t_player *player);
+bool	store_block_in_inventory(t_player *player, char block);
+char	consume_inventory_block(t_player *player);
 # endif
 
 // Debug / Terminal Output
