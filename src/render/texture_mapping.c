@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/02 17:21:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:17:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
+uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 {
 	int			tex_y;
 	int			pixel_index;

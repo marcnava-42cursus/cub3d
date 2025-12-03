@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/11/18 21:19:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/03 01:57:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,21 @@ static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit, mlx_image_t *img
 void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
 {
 	unsigned int i;
+	int center_cell_x;
+	int center_cell_y;
 	
 	i = 0;
+	center_cell_x = rayhits[img->width / 2].cell_x;
+	center_cell_y = rayhits[img->width / 2].cell_y;
 	while (i < img->width && i < MAX_WINDOW_WIDTH)
 	{
-		if (is_raycast_edge(rayhits, i, img))
-			draw_vertical_outline(i, rayhits[i], img);
-		else
-			draw_top_and_bottom_outline(i, rayhits[i], img);
+		if (rayhits[i].cell_x == center_cell_x && rayhits[i].cell_y == center_cell_y && rayhits[i].distance <= 300.0f)
+		{
+			if (is_raycast_edge(rayhits, i, img))
+				draw_vertical_outline(i, rayhits[i], img);
+			else
+				draw_top_and_bottom_outline(i, rayhits[i], img);
+		}
 		i++;
 	}
 }
