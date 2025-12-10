@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/03 02:33:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/10 01:10:13 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,49 @@ typedef struct s_map
 	int		height;
 }	t_map;
 
+// Floor node for bonus multi-level maps
+typedef struct s_floor
+{
+	char			*path;			// File path for this floor
+	t_map			map;			// Map data
+	char			*up_path;		// Path to upper floor
+	char			*down_path;		// Path to lower floor
+	struct s_floor	*up;			// Pointer to upper floor node
+	struct s_floor	*down;			// Pointer to lower floor node
+	struct s_floor	*next;			// Singly-linked list chain (for cleanup)
+	int				index;			// Relative index (0 = entry map)
+	int				has_player;		// 1 if this floor contains the player
+	int				parsed_neighbors;// 1 if neighbors already expanded
+	t_player		player;			// Player data if present on this floor
+	t_textures		textures;		// Textures for this floor
+	t_color			floor_color;
+	t_color			ceiling_color;
+	bool			textures_loaded;
+	int				elevator_count;	// Elevators present in this floor
+	char			elevator_ids[16];
+	int				elevator_x[16];
+	int				elevator_y[16];
+}	t_floor;
+
 // Estructura principal que contiene todos los datos parseados
 typedef struct s_cub_data
 {
 	t_textures	textures;
 	t_color		floor_color;
 	t_color		ceiling_color;
+	char		*up_path;
+	char		*down_path;
 	t_map		map;
 	t_player	player;
+	t_floor		*floors;
+	t_floor		*current_floor;
+	int			floor_count;
+	int			player_floor_index;
+	char		*player_floor_path;
+	int			elevator_id_count;
+	char		elevator_ids[16];
+	t_floor		*elevator_floor_a[16];
+	t_floor		*elevator_floor_b[16];
 }	t_cub_data;
 
 // Textures for 2D map rendering
@@ -169,6 +204,9 @@ typedef struct s_game
 	float		move_speed;
 	float		rot_speed;
 	float		player_radius;
+	double		movement_lock_until;
+	double		last_teleport_time;
+	char		last_teleport_id;
 	bool		bg_layer_attached;
 	bool		map_layer_attached;
 	bool		player_layer_attached;

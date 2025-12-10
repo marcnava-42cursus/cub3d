@@ -90,6 +90,8 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/core/parser_init.c \
 				$(SRCPATH)/parser/core/parser_orchestrator.c \
+				$(SRCPATH)/_bonus/link_utils_bonus.c \
+				$(SRCPATH)/_bonus/floor_manager_bonus.c \
 				$(SRCPATH)/_bonus/parser_finder_bonus.c \
 				$(SRCPATH)/_bonus/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/texture_parser_bonus.c \

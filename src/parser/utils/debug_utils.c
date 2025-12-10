@@ -21,6 +21,19 @@ static void	print_colors(const t_cub_data *data)
 		data->ceiling_color.r, data->ceiling_color.g, data->ceiling_color.b);
 }
 
+static void	print_links(const t_cub_data *data)
+{
+	printf("Links:\n");
+	if (data->up_path)
+		printf("  Up: %s\n", data->up_path);
+	else
+		printf("  Up: (none)\n");
+	if (data->down_path)
+		printf("  Down: %s\n", data->down_path);
+	else
+		printf("  Down: (none)\n");
+}
+
 static void	print_player(const t_cub_data *data)
 {
 	printf("Player:\n");
@@ -52,7 +65,10 @@ void	print_cub_data(const t_cub_data *data)
 	printf("=== CUB FILE DATA ===\n");
 	print_textures(data);
 	print_colors(data);
+	print_links(data);
 	print_player(data);
 	print_map(data);
+	printf("Floor index with player: %d (total floors: %d)\n",
+		data->player_floor_index, data->floor_count);
 	printf("==================\n");
 }

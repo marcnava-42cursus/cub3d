@@ -161,8 +161,13 @@ int	find_player_position_bonus(t_map *map, t_player *player)
 		}
 	}
 	if (!found)
-		printf("Error: No player position found\n");
-	return (found);
+	{
+		player->x = -1.0f;
+		player->y = -1.0f;
+		player->angle = 0.0f;
+		player->orientation = 0;
+	}
+	return (1);
 }
 
 int	validate_map_bonus(t_map *map, t_player *player)

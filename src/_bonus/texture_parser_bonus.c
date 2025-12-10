@@ -20,6 +20,8 @@ int	is_texture_identifier_bonus(const char *line)
 	trimmed = trim_whitespace((char *)line);
 	if (!trimmed)
 		return (0);
+	if (is_link_identifier_bonus(trimmed))
+		return (0);
 	if (ft_strlen(trimmed) < 3)
 		return (0);
 	result = ((ft_isalpha(trimmed[0]) || ft_isdigit(trimmed[0]))

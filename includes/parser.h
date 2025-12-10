@@ -25,6 +25,7 @@
 // Parser principal
 int		parse_cub_file(const char *filename, t_cub_data *data);
 int		find_map_start(char **lines, int line_count);
+void	init_cub_data_parser_only(t_cub_data *data);
 
 // Parser de texturas
 int		parse_texture_line(const char *line, t_textures *textures);
@@ -47,6 +48,7 @@ int		validate_map_characters(t_map *map);
 int		is_map_line(const char *line);
 int		find_player_position(t_map *map, t_player *player);
 int		is_map_closed(t_map *map);
+int		process_file_data(char **lines, int line_count, t_cub_data *data);
 
 // Utilidades
 void	free_cub_data(t_cub_data *data);
@@ -79,6 +81,8 @@ int		is_map_line_bonus(const char *line);
 int		is_texture_identifier_bonus(const char *line);
 int		parse_texture_line_bonus(const char *line, t_textures *textures);
 int		find_map_start_bonus(char **lines, int line_count);
+int		is_link_identifier_bonus(const char *line);
+int		build_floor_graph_bonus(const char *path, t_cub_data *data);
 
 // Remap functions to bonus versions
 #  define validate_map validate_map_bonus

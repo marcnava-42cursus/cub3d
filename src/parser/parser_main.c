@@ -29,6 +29,13 @@ static void	init_cub_data(t_cub_data *data)
 	data->ceiling_color.r = -1;
 	data->ceiling_color.g = -1;
 	data->ceiling_color.b = -1;
+	data->up_path = NULL;
+	data->down_path = NULL;
+	data->floors = NULL;
+	data->current_floor = NULL;
+	data->floor_count = 0;
+	data->player_floor_index = -1;
+	data->player_floor_path = NULL;
 	data->map.grid = NULL;
 	data->map.width = 0;
 	data->map.height = 0;

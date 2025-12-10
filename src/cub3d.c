@@ -29,6 +29,11 @@ int	init_game(t_game *game, const char *map_file)
 		free_cub_data(&game->cub_data);
 		return (0);
 	}
+	if (game->cub_data.current_floor)
+	{
+		game->cub_data.current_floor->textures = game->cub_data.textures;
+		game->cub_data.current_floor->textures_loaded = true;
+	}
 
 	// Mostrar datos parseados (para debugging)
 	print_cub_data(&game->cub_data);

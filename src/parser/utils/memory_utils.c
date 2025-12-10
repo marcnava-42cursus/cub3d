@@ -44,12 +44,38 @@ void	free_cub_data(t_cub_data *data)
 {
 	if (!data)
 		return ;
-	free_texture_path(&data->textures.north_path);
-	free_texture_path(&data->textures.south_path);
-	free_texture_path(&data->textures.west_path);
-	free_texture_path(&data->textures.east_path);
-	free_textures(&data->textures);
-	free_map(&data->map);
+	if (data->floors)
+	{
+		t_floor	*current;
+		t_floor	*next;
+
+		current = data->floors;
+		while (current)
+		{
+			next = current->next;
+			free_textures(&current->textures);
+			free_texture_path(&current->up_path);
+			free_texture_path(&current->down_path);
+			if (current->map.grid)
+				free_map(&(current->map));
+			free_texture_path(&current->path);
+			free(current);
+			current = next;
+		}
+		data->map.grid = NULL;
+	}
+	else
+	{
+		free_texture_path(&data->textures.north_path);
+		free_texture_path(&data->textures.south_path);
+		free_texture_path(&data->textures.west_path);
+		free_texture_path(&data->textures.east_path);
+		free_textures(&data->textures);
+		free_map(&data->map);
+	}
+	free_texture_path(&data->up_path);
+	free_texture_path(&data->down_path);
+	free_texture_path(&data->player_floor_path);
 }
 
 void	free_lines(char **lines, int line_count)

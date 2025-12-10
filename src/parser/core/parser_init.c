@@ -17,13 +17,46 @@ void	init_cub_data(t_cub_data *data)
 	ft_bzero(data, sizeof(t_cub_data));
 	ft_memset(&(data->floor_color), -1, sizeof(t_color));
 	ft_memset(&(data->ceiling_color), -1, sizeof(t_color));
-	ft_memset(&(data->player), -1.0f, sizeof(t_player));
-
+	data->player.x = -1.0f;
+	data->player.y = -1.0f;
+	data->player.angle = 0.0f;
+	data->player.orientation = 0;
 	data->player.inventory = '2';
+
 	data->player.textures.left_hand_path = "./assets/textures/player/test_hand.xpm42";
 	data->player.textures.left_thumb_path = "./assets/textures/player/test_thumb.xpm42";
 	data->player.textures.weapon_path = "./assets/textures/player/test_weapon.xpm42";
 	data->player.textures.left_hand = mlx_load_xpm42(data->player.textures.left_hand_path);
 	data->player.textures.left_thumb = mlx_load_xpm42(data->player.textures.left_thumb_path);
 	data->player.textures.weapon = mlx_load_xpm42(data->player.textures.weapon_path);
+	data->floors = NULL;
+	data->current_floor = NULL;
+	data->floor_count = 0;
+	data->player_floor_index = -1;
+	data->player_floor_path = NULL;
+	data->elevator_id_count = 0;
+	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
+	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
+	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));
+}
+
+void	init_cub_data_parser_only(t_cub_data *data)
+{
+	ft_bzero(data, sizeof(t_cub_data));
+	ft_memset(&(data->floor_color), -1, sizeof(t_color));
+	ft_memset(&(data->ceiling_color), -1, sizeof(t_color));
+	data->player.x = -1.0f;
+	data->player.y = -1.0f;
+	data->player.angle = 0.0f;
+	data->player.orientation = 0;
+	data->player.inventory = '2';
+	data->floors = NULL;
+	data->current_floor = NULL;
+	data->floor_count = 0;
+	data->player_floor_index = -1;
+	data->player_floor_path = NULL;
+	data->elevator_id_count = 0;
+	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
+	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
+	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));
 }

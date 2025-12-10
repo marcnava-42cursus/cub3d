@@ -7,9 +7,6 @@ EA ./assets/textures/walls/test_wall_flesh_2.xpm42
 2W ./assets/textures/west_wall.xpm42
 2E ./assets/textures/east_wall.xpm42
 
-F 120,120,120
-C 40,40,60
-
 111111111111
 100000000001
 102222022201

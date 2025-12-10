@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/13 20:03:10 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/04 00:00:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	is_standard_texture(const char *line)
 static int	check_element_type_bonus(char *line, int *texture_count,
 		int *color_count)
 {
+	if (is_link_identifier_bonus(line))
+		return (0);
 	if (is_texture_identifier(line))
 	{
 		if (is_standard_texture(line))
@@ -41,12 +43,12 @@ static int	check_element_type_bonus(char *line, int *texture_count,
 		(*color_count)++;
 		return (0);
 	}
-	if (is_map_line(line) && *texture_count == 4 && *color_count == 2)
+	if (is_map_line(line) && *texture_count == 4)
 		return (1);
 	if (!is_texture_identifier(line) && !is_color_identifier(line)
 		&& !is_empty_line(line))
 	{
-		if (*texture_count < 4 || *color_count < 2)
+		if (*texture_count < 4)
 			return (-1);
 		return (1);
 	}
@@ -74,7 +76,7 @@ static int	count_elements_bonus(char **lines, int line_count,
 			return (i);
 		if (result == -1)
 		{
-			printf("Error: Map found before all elements are defined\n");
+			printf("Error: Map found before all textures are defined\n");
 			return (-1);
 		}
 		i++;
