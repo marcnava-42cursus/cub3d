@@ -52,6 +52,12 @@ void	window_free(t_game *game)
 		mlx_delete_image(game->mlx, game->double_buffer[CURRENT]);
 	if (game->crosshair)
 		mlx_delete_image(game->mlx, game->crosshair);
+#ifdef BONUS
+	if (game->config_modal)
+		mlx_delete_image(game->mlx, game->config_modal);
+	if (game->config_quit_label)
+		mlx_delete_image(game->mlx, game->config_quit_label);
+#endif
 	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);
 }

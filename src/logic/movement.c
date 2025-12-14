@@ -249,6 +249,13 @@ void	update_game_loop(void *param)
 	if (!game)
 		return ;
 	update_delta_time(game);
+#ifdef BONUS
+	if (is_config_modal_open(game))
+	{
+		update_config_modal(game);
+		return ;
+	}
+#endif
 	refresh_key_states(game);
 	if (game->delta_time <= 0.0)
 		return ;
@@ -318,6 +325,7 @@ void	init_movement_system(t_game *game)
 	print_controls();
 	init_crosshair(game);
 	mlx_key_hook(game->mlx, key_hook, game);
+	mlx_mouse_hook(game->mlx, mouse_hook, game);
 	mlx_cursor_hook(game->mlx, cursor_hook, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	mlx_loop_hook(game->mlx, update_game_loop, game);

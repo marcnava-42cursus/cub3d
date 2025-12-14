@@ -231,6 +231,20 @@ typedef struct s_game
 	// Estado de UI
 	bool		map_2d_visible;
 
+# ifdef BONUS
+	// Config modal UI (prototype)
+	bool		config_modal_open;
+	bool		config_modal_attached;
+	mlx_image_t	*config_modal;
+	int32_t		config_quit_x;
+	int32_t		config_quit_y;
+	int32_t		config_quit_w;
+	int32_t		config_quit_h;
+	bool		config_quit_hover;
+	double		config_quit_hold_time;
+	mlx_image_t	*config_quit_label;
+# endif
+
 	// Debug overlay
 	mlx_image_t	*crosshair;
 }	t_game;

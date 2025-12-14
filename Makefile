@@ -132,6 +132,7 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/floors.c \
 				$(SRCPATH)/render/world_map.c \
 				$(SRCPATH)/_bonus/inventory.c \
+				$(SRCPATH)/_bonus/config_modal_bonus.c \
 				$(SRCPATH)/_bonus/state_swapper.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)

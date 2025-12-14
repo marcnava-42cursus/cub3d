@@ -27,6 +27,18 @@ void	refresh_key_states(t_game *game)
 {
 	if (!game || !game->mlx)
 		return ;
+#ifdef BONUS
+	if (is_config_modal_open(game))
+	{
+		game->key_w_pressed = false;
+		game->key_s_pressed = false;
+		game->key_a_pressed = false;
+		game->key_d_pressed = false;
+		game->key_left_pressed = false;
+		game->key_right_pressed = false;
+		return ;
+	}
+#endif
 	game->key_w_pressed = mlx_is_key_down(game->mlx, MLX_KEY_W);
 	game->key_s_pressed = mlx_is_key_down(game->mlx, MLX_KEY_S);
 	game->key_a_pressed = mlx_is_key_down(game->mlx, MLX_KEY_A);
@@ -52,18 +64,48 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 	game = (t_game *)param;
 	if (!game)
 		return ;
+#ifdef BONUS
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	{
+		toggle_config_modal(game);
+		return ;
+	}
+	if (is_config_modal_open(game))
+		return ;
+#else
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
 		printf("\n");
 		mlx_close_window(game->mlx);
 	}
-	else if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+	else
+#endif
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		toggle_map_overlay(game);
 #ifdef BONUS
 	else if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
 		place_breakable_block(game);
 	else if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
 		test_break_wall_in_front(game);
+#endif
+}
+
+void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
+			void *param)
+{
+	t_game	*game;
+
+	(void)button;
+	(void)action;
+	(void)mods;
+	game = (t_game *)param;
+	if (!game || !game->mlx)
+		return ;
+#ifdef BONUS
+	if (!is_config_modal_open(game))
+		return ;
+	if (button != MLX_MOUSE_BUTTON_LEFT || action != MLX_PRESS)
+		return ;
 #endif
 }
 
@@ -90,6 +132,10 @@ void	cursor_hook(double xpos, double ypos, void *param)
 	game = (t_game *)param;
 	if (!game)
 		return ;
+#ifdef BONUS
+	if (is_config_modal_open(game))
+		return ;
+#endif
 	if (!game->mouse_initialized)
 	{
 		game->last_mouse_x = xpos;
@@ -119,6 +165,10 @@ bool	process_mouse_rotation(t_game *game)
 {
 	float	rotation_amount;
 
+#ifdef BONUS
+	if (is_config_modal_open(game))
+		return (false);
+#endif
 	if (!game || game->mouse_delta_accumulated == 0.0f)
 		return (false);
 	rotation_amount = game->mouse_delta_accumulated * game->mouse_sensitivity;

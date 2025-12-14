@@ -43,6 +43,8 @@ typedef struct s_game t_game;
 // Input
 void	refresh_key_states(t_game *game);
 void	key_hook(mlx_key_data_t keydata, void *param);
+void	mouse_hook(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
 void	cursor_hook(double xpos, double ypos, void *param);
 bool	process_mouse_rotation(t_game *game);
 
@@ -72,6 +74,12 @@ void	attempt_move_bonus(t_game *game, float step_x, float step_y);
 bool	player_has_block(const t_player *player);
 bool	store_block_in_inventory(t_player *player, char block);
 char	consume_inventory_block(t_player *player);
+
+// Config modal UI (prototype)
+void	set_config_modal_visible(t_game *game, bool visible);
+void	toggle_config_modal(t_game *game);
+bool	is_config_modal_open(const t_game *game);
+void	update_config_modal(t_game *game);
 # endif
 
 // Debug / Terminal Output
