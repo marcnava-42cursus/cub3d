@@ -1,3 +1,7 @@
+*.md
+
+!README.md
+
 cub3D
 cub3D_bonus
 

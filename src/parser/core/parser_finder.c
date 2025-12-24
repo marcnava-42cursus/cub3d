@@ -12,11 +12,29 @@
 
 #include "parser.h"
 
+static int	is_standard_texture(const char *line)
+{
+	char	*trimmed;
+	int		result;
+
+	trimmed = trim_whitespace((char *)line);
+	if (!trimmed || ft_strlen(trimmed) < 3)
+		return (0);
+	result = (ft_strncmp(trimmed, "NO ", 3) == 0
+			|| ft_strncmp(trimmed, "SO ", 3) == 0
+			|| ft_strncmp(trimmed, "WE ", 3) == 0
+			|| ft_strncmp(trimmed, "EA ", 3) == 0);
+	return (result);
+}
+
 static int	check_element_type(char *line, int *texture_count, int *color_count)
 {
+	if (is_link_identifier(line))
+		return (0);
 	if (is_texture_identifier(line))
 	{
-		(*texture_count)++;
+		if (is_standard_texture(line))
+			(*texture_count)++;
 		return (0);
 	}
 	if (is_color_identifier(line))
@@ -24,12 +42,12 @@ static int	check_element_type(char *line, int *texture_count, int *color_count)
 		(*color_count)++;
 		return (0);
 	}
-	if (is_map_line(line) && *texture_count == 4 && *color_count == 2)
+	if (is_map_line(line) && *texture_count == 4)
 		return (1);
 	if (!is_texture_identifier(line) && !is_color_identifier(line)
 		&& !is_empty_line(line))
 	{
-		if (*texture_count < 4 || *color_count < 2)
+		if (*texture_count < 4)
 			return (-1);
 		return (1);
 	}
@@ -57,7 +75,7 @@ static int	count_elements(char **lines, int line_count,
 			return (i);
 		if (result == -1)
 		{
-			printf("Error: Map found before all elements are defined\n");
+			printf("Error: Map found before all textures are defined\n");
 			return (-1);
 		}
 		i++;

@@ -6,48 +6,40 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 15:29:27 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+static int	is_valid_map_char(char c);
+
 int	is_map_line(const char *line)
 {
 	int	i;
+	int	has_map_char;
 
 	if (!line || ft_strlen(line) == 0)
 		return (0);
+	has_map_char = 0;
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != '0' && line[i] != '1' && line[i] != '2'
-			&& line[i] != 'N' && line[i] != 'S'
-			&& line[i] != 'E' && line[i] != 'W'
-			&& line[i] != ' ' && line[i] != '\n')
+		if (line[i] != ' ' && line[i] != '\n'
+			&& line[i] != '\t' && line[i] != '\r')
 		{
-			return (0);
+			if (!is_valid_map_char(line[i]))
+				return (0);
+			has_map_char = 1;
 		}
 		i++;
 	}
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '0' || line[i] == '1' || line[i] == '2'
-			|| line[i] == 'N' || line[i] == 'S'
-			|| line[i] == 'E' || line[i] == 'W')
-		{
-			return (1);
-		}
-		i++;
-	}
-	return (0);
+	return (has_map_char);
 }
 
 static int	is_valid_map_char(char c)
 {
-	return (c == '0' || c == '1' || c == '2' || c == 'N'
-		|| c == 'S' || c == 'E' || c == 'W' || c == ' ');
+	return (c >= 33 && c <= 126);
 }
 
 int	validate_map_characters(t_map *map)
@@ -61,7 +53,8 @@ int	validate_map_characters(t_map *map)
 		x = 0;
 		while (x < (int)ft_strlen(map->grid[y]))
 		{
-			if (!is_valid_map_char(map->grid[y][x]))
+			if (!is_valid_map_char(map->grid[y][x])
+				&& map->grid[y][x] != ' ')
 			{
 				printf("Error: Invalid character '%c' at position (%d, %d)\n",
 					map->grid[y][x], x, y);

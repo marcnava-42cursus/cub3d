@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/03 01:50:22 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 15:23:53 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ void	init_cub_data(t_cub_data *data)
 	data->player.angle = 0.0f;
 	data->player.orientation = 0;
 	data->player.inventory = '2';
-
-	data->player.textures.left_hand_path = "./assets/textures/player/test_hand.xpm42";
-	data->player.textures.left_thumb_path = "./assets/textures/player/test_thumb.xpm42";
-	data->player.textures.weapon_path = "./assets/textures/player/test_weapon.xpm42";
-	data->player.textures.left_hand = mlx_load_xpm42(data->player.textures.left_hand_path);
-	data->player.textures.left_thumb = mlx_load_xpm42(data->player.textures.left_thumb_path);
-	data->player.textures.weapon = mlx_load_xpm42(data->player.textures.weapon_path);
-	data->floors = NULL;
-	data->current_floor = NULL;
-	data->floor_count = 0;
+	data->player.textures.left_hand_path
+		= "./assets/textures/player/test_hand.xpm42";
+	data->player.textures.left_thumb_path
+		= "./assets/textures/player/test_thumb.xpm42";
+	data->player.textures.weapon_path
+		= "./assets/textures/player/test_weapon.xpm42";
+	data->player.textures.left_hand = mlx_load_xpm42(
+			data->player.textures.left_hand_path);
+	data->player.textures.left_thumb = mlx_load_xpm42(
+			data->player.textures.left_thumb_path);
+	data->player.textures.weapon = mlx_load_xpm42(
+			data->player.textures.weapon_path);
 	data->player_floor_index = -1;
-	data->player_floor_path = NULL;
-	data->elevator_id_count = 0;
 	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
 	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
 	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));

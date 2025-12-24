@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 12:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/02 20:30:45 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:45:39 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,4 +274,3 @@ void	init_crosshair(t_game *game)
 	draw_crosshair(game);
 	mlx_image_to_window(game->mlx, game->crosshair, 0, 0);
 }
-

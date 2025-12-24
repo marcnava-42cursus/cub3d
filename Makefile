@@ -58,6 +58,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/textures/texture_setter.c \
 				$(SRCPATH)/parser/utils/string_utils.c \
 				$(SRCPATH)/parser/utils/file_utils.c \
+				$(SRCPATH)/parser/utils/link_utils.c \
 				$(SRCPATH)/parser/utils/validation_utils.c \
 				$(SRCPATH)/parser/utils/memory_utils.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
@@ -90,16 +91,16 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/core/parser_init.c \
 				$(SRCPATH)/parser/core/parser_orchestrator.c \
-				$(SRCPATH)/_bonus/link_utils_bonus.c \
-				$(SRCPATH)/_bonus/floor_manager_bonus.c \
-				$(SRCPATH)/_bonus/parser_finder_bonus.c \
-				$(SRCPATH)/_bonus/map_validation_bonus.c \
-				$(SRCPATH)/_bonus/texture_parser_bonus.c \
+				$(SRCPATH)/_bonus/parser/link_utils_bonus.c \
+				$(SRCPATH)/_bonus/parser/floor_manager_bonus.c \
+				$(SRCPATH)/_bonus/parser/core/parser_finder_bonus.c \
+				$(SRCPATH)/_bonus/parser/map/map_validation_bonus.c \
+				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
 				$(SRCPATH)/_bonus/raycast_bonus.c \
 				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/render/texture_mapping.c \
-				$(SRCPATH)/_bonus/collision_bonus.c \
+				$(SRCPATH)/_bonus/logic/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \
 				$(SRCPATH)/parser/colors/color_validation.c \
@@ -108,6 +109,7 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/textures/texture_extraction.c \
 				$(SRCPATH)/parser/utils/string_utils.c \
 				$(SRCPATH)/parser/utils/file_utils.c \
+				$(SRCPATH)/parser/utils/link_utils.c \
 				$(SRCPATH)/parser/utils/validation_utils.c \
 				$(SRCPATH)/parser/utils/memory_utils.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
@@ -120,9 +122,9 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/outlines.c \
 				$(SRCPATH)/render/window.c \
 				$(SRCPATH)/render/utils.c \
-				$(SRCPATH)/render/map_2d.c \
-				$(SRCPATH)/logic/movement.c \
-				$(SRCPATH)/logic/input.c \
+				$(SRCPATH)/_bonus/render/map_2d_bonus.c \
+				$(SRCPATH)/_bonus/logic/movement_bonus.c \
+				$(SRCPATH)/_bonus/logic/input_bonus.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
@@ -130,10 +132,10 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
-				$(SRCPATH)/render/world_map.c \
-				$(SRCPATH)/_bonus/inventory.c \
-				$(SRCPATH)/_bonus/config_modal_bonus.c \
-				$(SRCPATH)/_bonus/state_swapper.c
+				$(SRCPATH)/_bonus/render/world_map_bonus.c \
+				$(SRCPATH)/_bonus/logic/inventory.c \
+				$(SRCPATH)/_bonus/logic/config_modal_bonus.c \
+				$(SRCPATH)/_bonus/logic/state_swapper.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_BONUS)/%.o)

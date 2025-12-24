@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/03 02:37:19 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:53:24 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,11 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 
 // Bonus version
 # ifdef BONUS
+
 t_rayhit	raycast_world_bonus(const t_map *map, vertex_t start, float angle,
 				float max_distance);
 #  define raycast_world raycast_world_bonus
+
 # endif
 
 /*--------------------------------- WALLS.C ----------------------------------*/
@@ -108,9 +110,12 @@ void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
 void	paint_horizontal_line_texture(unsigned int y, unsigned int x, mlx_image_t *img,
 		xpm_t *texture, int tex_y, float tex_x);
+
 # ifdef BONUS
+
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
+
 # endif
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);

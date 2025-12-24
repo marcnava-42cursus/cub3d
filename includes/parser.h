@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 20:42:52 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 15:04:54 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <math.h>
+
 # include "structs.h"
 # include "libft.h"
 
@@ -49,6 +50,8 @@ int		is_map_line(const char *line);
 int		find_player_position(t_map *map, t_player *player);
 int		is_map_closed(t_map *map);
 int		process_file_data(char **lines, int line_count, t_cub_data *data);
+int		is_link_identifier(const char *line);
+int		parse_link_line(const char *line, t_cub_data *data);
 
 // Utilidades
 void	free_cub_data(t_cub_data *data);
@@ -73,6 +76,7 @@ void	print_cub_data(const t_cub_data *data);
 
 // Bonus functions
 # ifdef BONUS
+
 int		validate_map_bonus(t_map *map, t_player *player);
 int		validate_map_characters_bonus(t_map *map);
 int		is_map_closed_bonus(t_map *map);
@@ -93,6 +97,7 @@ int		build_floor_graph_bonus(const char *path, t_cub_data *data);
 #  define is_texture_identifier is_texture_identifier_bonus
 #  define parse_texture_line parse_texture_line_bonus
 #  define find_map_start find_map_start_bonus
+
 # endif
 
 #endif

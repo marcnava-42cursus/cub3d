@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 15:30:15 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,19 +89,15 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 
 	map_end = start_line;
 	i = start_line;
-	while (lines[i])
+	while (lines[i++])
 	{
 		if (!is_empty_line(lines[i]) && is_map_line(lines[i]))
 			map_end = i;
-		i++;
 	}
 	data->map.height = map_end - start_line + 1;
 	data->map.width = calculate_map_width(lines, start_line, map_end);
 	if (data->map.height <= 0 || data->map.width <= 0)
-	{
-		printf("Error: Invalid map dimensions\n");
-		return (0);
-	}
+		return (printf("Error: Invalid map dimensions\n"), 0);
 	if (!allocate_map_grid(data))
 		return (0);
 	i = 0;

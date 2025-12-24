@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   movement_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/10 01:14:21 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 18:57:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ static void	handle_movement_rendering(t_game *game)
  *
  * @param param Void pointer to game structure (casted internally)
  */
-void	update_game_loop(void *param)
+void	update_game_loop_bonus(void *param)
 {
 	t_game	*game;
 	bool	moved;
@@ -249,6 +249,11 @@ void	update_game_loop(void *param)
 	if (!game)
 		return ;
 	update_delta_time(game);
+	if (is_config_modal_open(game))
+	{
+		update_config_modal(game);
+		return ;
+	}
 	refresh_key_states(game);
 	if (game->delta_time <= 0.0)
 		return ;
@@ -297,7 +302,7 @@ static void	init_player_angle(t_game *game)
  *
  * @param game Pointer to the game structure
  */
-void	init_movement_system(t_game *game)
+void	init_movement_system_bonus(t_game *game)
 {
 	if (!game)
 		return ;
@@ -321,5 +326,5 @@ void	init_movement_system(t_game *game)
 	mlx_mouse_hook(game->mlx, mouse_hook, game);
 	mlx_cursor_hook(game->mlx, cursor_hook, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
-	mlx_loop_hook(game->mlx, update_game_loop, game);
+	mlx_loop_hook(game->mlx, update_game_loop_bonus, game);
 }

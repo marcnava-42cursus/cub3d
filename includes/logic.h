@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/02 20:32:08 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:54:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,33 @@ bool	collides_with_wall(t_game *game, float x, float y);
 void	attempt_move(t_game *game, float step_x, float step_y);
 
 # ifdef BONUS
+
 bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
 bool	collides_with_wall_bonus(t_game *game, float x, float y);
 void	attempt_move_bonus(t_game *game, float step_x, float step_y);
 #  define is_cell_blocking is_cell_blocking_bonus
 #  define collides_with_wall collides_with_wall_bonus
 #  define attempt_move attempt_move_bonus
+
+// Input bonus
+void	refresh_key_states_bonus(t_game *game);
+void	key_hook_bonus(mlx_key_data_t keydata, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
+void	cursor_hook_bonus(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_bonus(t_game *game);
+
+// Movement bonus
+void	update_game_loop_bonus(void *param);
+void	init_movement_system_bonus(t_game *game);
+
+#  define refresh_key_states refresh_key_states_bonus
+#  define key_hook key_hook_bonus
+#  define mouse_hook mouse_hook_bonus
+#  define cursor_hook cursor_hook_bonus
+#  define process_mouse_rotation process_mouse_rotation_bonus
+#  define update_game_loop update_game_loop_bonus
+#  define init_movement_system init_movement_system_bonus
 
 // Inventory
 bool	player_has_block(const t_player *player);
@@ -80,6 +101,7 @@ void	set_config_modal_visible(t_game *game, bool visible);
 void	toggle_config_modal(t_game *game);
 bool	is_config_modal_open(const t_game *game);
 void	update_config_modal(t_game *game);
+
 # endif
 
 // Debug / Terminal Output
@@ -91,11 +113,13 @@ void	handle_debug_map_update(t_game *game, int grid_x, int grid_y);
 // Debug / On-Screen Display
 void	init_crosshair(t_game *game);
 
-#ifdef BONUS
+# ifdef BONUS
+
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
 void	place_breakable_block(t_game *game);
-#endif
+
+# endif
 
 // Loop / Update
 void	update_player_position(t_game *game);

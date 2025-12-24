@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   input_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,21 +12,20 @@
 
 #include "logic.h"
 
-/**
- * @brief Refreshes the state of all movement and rotation keys
- *
- * This function polls the current state of all keys used for player
- * movement and rotation, updating the game's key state flags.
- * It also handles the ESC key for closing the window.
- *
- * Called every frame in the game loop.
- *
- * @param game Pointer to the game structure
- */
-void	refresh_key_states(t_game *game)
+void	refresh_key_states_bonus(t_game *game)
 {
 	if (!game || !game->mlx)
 		return ;
+	if (is_config_modal_open(game))
+	{
+		game->key_w_pressed = false;
+		game->key_s_pressed = false;
+		game->key_a_pressed = false;
+		game->key_d_pressed = false;
+		game->key_left_pressed = false;
+		game->key_right_pressed = false;
+		return ;
+	}
 	game->key_w_pressed = mlx_is_key_down(game->mlx, MLX_KEY_W);
 	game->key_s_pressed = mlx_is_key_down(game->mlx, MLX_KEY_S);
 	game->key_a_pressed = mlx_is_key_down(game->mlx, MLX_KEY_A);
@@ -35,17 +34,7 @@ void	refresh_key_states(t_game *game)
 	game->key_right_pressed = mlx_is_key_down(game->mlx, MLX_KEY_RIGHT);
 }
 
-/**
- * @brief Main key event handler for single-press actions
- *
- * This function handles keys that trigger one-time actions (like toggling
- * the map overlay) rather than continuous actions (like movement).
- * It's called by MLX whenever a key event occurs.
- *
- * @param keydata MLX key event data structure
- * @param param Void pointer to the game structure (casted internally)
- */
-void	key_hook(mlx_key_data_t keydata, void *param)
+void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;
 
@@ -54,12 +43,20 @@ void	key_hook(mlx_key_data_t keydata, void *param)
 		return ;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
-		printf("\n");
-		mlx_close_window(game->mlx);
+		toggle_config_modal(game);
+		return ;
 	}
+	if (is_config_modal_open(game))
+		return ;
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+		toggle_map_overlay(game);
+	else if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+		place_breakable_block(game);
+	else if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
+		test_break_wall_in_front(game);
 }
 
-void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
+void	mouse_hook_bonus(mouse_key_t button, action_t action, modifier_key_t mods,
 			void *param)
 {
 	t_game	*game;
@@ -70,23 +67,13 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
 	game = (t_game *)param;
 	if (!game || !game->mlx)
 		return ;
+	if (!is_config_modal_open(game))
+		return ;
+	if (button != MLX_MOUSE_BUTTON_LEFT || action != MLX_PRESS)
+		return ;
 }
 
-/**
- * @brief Callback for mouse cursor movement
- *
- * This function accumulates mouse movement delta without applying rotation.
- * The accumulated delta is processed once per frame in the game loop to
- * ensure smooth, synchronized rendering with keyboard movement.
- *
- * Multiple cursor events between frames are accumulated to prevent
- * desynchronization between input and rendering.
- *
- * @param xpos Current X position of the cursor
- * @param ypos Current Y position of the cursor (unused)
- * @param param Void pointer to the game structure (casted internally)
- */
-void	cursor_hook(double xpos, double ypos, void *param)
+void	cursor_hook_bonus(double xpos, double ypos, void *param)
 {
 	t_game	*game;
 	double	delta_x;
@@ -94,6 +81,8 @@ void	cursor_hook(double xpos, double ypos, void *param)
 	(void)ypos;
 	game = (t_game *)param;
 	if (!game)
+		return ;
+	if (is_config_modal_open(game))
 		return ;
 	if (!game->mouse_initialized)
 	{
@@ -110,20 +99,12 @@ void	cursor_hook(double xpos, double ypos, void *param)
 		game->mouse_delta_accumulated = -MAX_MOUSE_DELTA;
 }
 
-/**
- * @brief Processes accumulated mouse movement and applies rotation
- *
- * This function is called once per frame to apply all accumulated mouse
- * movement as rotation. This ensures smooth synchronized rotation with
- * keyboard movement.
- *
- * @param game Pointer to the game structure
- * @return bool True if the mouse rotated the camera
- */
-bool	process_mouse_rotation(t_game *game)
+bool	process_mouse_rotation_bonus(t_game *game)
 {
 	float	rotation_amount;
 
+	if (is_config_modal_open(game))
+		return (false);
 	if (!game || game->mouse_delta_accumulated == 0.0f)
 		return (false);
 	rotation_amount = game->mouse_delta_accumulated * game->mouse_sensitivity;

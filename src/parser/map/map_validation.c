@@ -6,11 +6,52 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 20:30:52 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:42:24 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+static int	check_border_integrity(t_map *map, int x, int y)
+{
+	if (y == 0 || y == map->height - 1 || x == 0
+		|| x == (int)ft_strlen(map->grid[y]) - 1)
+	{
+		if (map->grid[y][x] != '1')
+		{
+			printf("Error: Map not closed at border (%d, %d)\n", x, y);
+			return (0);
+		}
+	}
+	return (1);
+}
+
+static int	check_neighbor_integrity(t_map *map, int x, int y)
+{
+	if ((y > 0 && x < (int)ft_strlen(map->grid[y - 1])
+			&& map->grid[y - 1][x] == ' ')
+		|| (y < map->height - 1 && x < (int)ft_strlen(map->grid[y + 1])
+			&& map->grid[y + 1][x] == ' ')
+		|| (x > 0 && map->grid[y][x - 1] == ' ')
+		|| (x < (int)ft_strlen(map->grid[y]) - 1
+			&& map->grid[y][x + 1] == ' '))
+	{
+		printf("Error: Map not closed - space adjacent at (%d, %d)\n", x, y);
+		return (0);
+	}
+	return (1);
+}
+
+static int	is_walkable_char(char c)
+{
+	if (c == '0')
+		return (1);
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	return (0);
+}
 
 int	is_map_closed(t_map *map)
 {
@@ -25,57 +66,12 @@ int	is_map_closed(t_map *map)
 		while (x < (int)ft_strlen(map->grid[y]))
 		{
 			c = map->grid[y][x];
-			if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
+			if (is_walkable_char(c))
 			{
-				if (y == 0 || y == map->height - 1)
-				{
-					if (c != '1')
-					{
-						printf("Error: Map not closed at border (%d, %d)\n",
-							x, y);
-						return (0);
-					}
-				}
-				if (x == 0 || x == (int)ft_strlen(map->grid[y]) - 1)
-				{
-					if (c != '1')
-					{
-						printf("Error: Map not closed at border (%d, %d)\n",
-							x, y);
-						return (0);
-					}
-				}
-				if (y > 0 && x < (int)ft_strlen(map->grid[y - 1])
-					&& map->grid[y - 1][x] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
+				if (!check_border_integrity(map, x, y))
 					return (0);
-				}
-				if (y < map->height - 1 && x < (int)ft_strlen(map->grid[y + 1])
-					&& map->grid[y + 1][x] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
+				if (!check_neighbor_integrity(map, x, y))
 					return (0);
-				}
-				if (x > 0 && map->grid[y][x - 1] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
-					return (0);
-				}
-				if (x < (int)ft_strlen(map->grid[y]) - 1
-					&& map->grid[y][x + 1] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
-					return (0);
-				}
 			}
 			x++;
 		}

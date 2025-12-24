@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/03 18:56:31 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:42:53 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,33 @@ static void	free_texture_path(char **texture_path)
 	}
 }
 
+static void	free_floor_list(t_floor *head)
+{
+	t_floor	*current;
+	t_floor	*next;
+
+	current = head;
+	while (current)
+	{
+		next = current->next;
+		free_textures(&current->textures);
+		free_texture_path(&current->up_path);
+		free_texture_path(&current->down_path);
+		if (current->map.grid)
+			free_map(&(current->map));
+		free_texture_path(&current->path);
+		free(current);
+		current = next;
+	}
+}
+
 void	free_cub_data(t_cub_data *data)
 {
 	if (!data)
 		return ;
 	if (data->floors)
 	{
-		t_floor	*current;
-		t_floor	*next;
-
-		current = data->floors;
-		while (current)
-		{
-			next = current->next;
-			free_textures(&current->textures);
-			free_texture_path(&current->up_path);
-			free_texture_path(&current->down_path);
-			if (current->map.grid)
-				free_map(&(current->map));
-			free_texture_path(&current->path);
-			free(current);
-			current = next;
-		}
+		free_floor_list(data->floors);
 		data->map.grid = NULL;
 	}
 	else

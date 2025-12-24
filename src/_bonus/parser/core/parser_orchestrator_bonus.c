@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_orchestrator.c                              :+:      :+:    :+:   */
+/*   parser_orchestrator_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 15:27:33 by marcnava         ###   ########.fr       */
+/*   Created: 2025/12/23 15:12:38 by marcnava          #+#    #+#             */
+/*   Updated: 2025/12/23 15:20:07 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,40 +16,77 @@ void	init_cub_data(t_cub_data *data);
 void	init_cub_data_parser_only(t_cub_data *data);
 int		process_file_data(char **lines, int line_count, t_cub_data *data);
 
-static int	parse_elements(char **lines, int map_start, t_cub_data *data)
+static char	*extract_link_path_bonus(const char *line, size_t id_len)
 {
-	int	i;
+	char	*path_start;
 
-	i = 0;
-	while (i < map_start)
+	if (!line)
+		return (NULL);
+	path_start = (char *)line + id_len;
+	while (*path_start == ' ' || *path_start == '\t')
+		path_start++;
+	if (*path_start == '\0')
+		return (NULL);
+	return (ft_strdup(path_start));
+}
+
+static int	store_link_path_bonus(char **slot, char *path, const char *label)
+{
+	if (*slot)
 	{
-		if (is_empty_line(lines[i]))
-		{
-			i++;
-			continue ;
-		}
-		if (is_link_identifier(lines[i]))
-		{
-			if (!parse_link_line(lines[i], data))
-				return (0);
-		}
-		else if (is_texture_identifier(lines[i]))
-		{
-			if (!parse_texture_line(lines[i], &data->textures))
-				return (0);
-		}
-		else if (is_color_identifier(lines[i]))
-		{
-			if (!parse_color_line(lines[i], &data->floor_color,
-					&data->ceiling_color))
-				return (0);
-		}
-		i++;
+		printf("Error: Duplicate %s definition\n", label);
+		free(path);
+		return (0);
 	}
+	*slot = path;
 	return (1);
 }
 
-static void	apply_default_colors(t_cub_data *data)
+static int	parse_link_line_bonus(const char *line, t_cub_data *data)
+{
+	char	*path;
+	size_t	id_len;
+	char	**target;
+	const char	*label;
+	char	*trimmed;
+
+	target = NULL;
+	label = "";
+	trimmed = trim_whitespace((char *)line);
+	if (!trimmed)
+		return (0);
+	if (ft_strncmp(trimmed, "UP", 2) == 0
+		&& (trimmed[2] == '\0' || trimmed[2] == ' '))
+	{
+		id_len = 2;
+		target = &data->up_path;
+		label = "UP";
+	}
+	else if (ft_strncmp(trimmed, "DOWN", 4) == 0
+		&& (trimmed[4] == '\0' || trimmed[4] == ' '))
+	{
+		id_len = 4;
+		target = &data->down_path;
+		label = "DOWN";
+	}
+	if (!target)
+		return (0);
+	path = extract_link_path_bonus(trimmed, id_len);
+	if (!path || *path == '\0')
+	{
+		free(path);
+		return (1);
+	}
+	if (!validate_file_extension(path))
+	{
+		printf("Error: %s path must be a .cub file\n", label);
+		free(path);
+		return (0);
+	}
+	return (store_link_path_bonus(target, path, label));
+}
+
+static void	apply_default_colors_bonus(t_cub_data *data)
 {
 	if (data->floor_color.r == -1)
 	{
@@ -65,6 +102,40 @@ static void	apply_default_colors(t_cub_data *data)
 	}
 }
 
+static int	parse_elements(char **lines, int map_start, t_cub_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < map_start)
+	{
+		if (is_empty_line(lines[i]))
+		{
+			i++;
+			continue ;
+		}
+		if (is_link_identifier_bonus(lines[i]))
+		{
+			if (!parse_link_line_bonus(lines[i], data))
+				return (0);
+		}
+		else
+		if (is_texture_identifier(lines[i]))
+		{
+			if (!parse_texture_line(lines[i], &data->textures))
+				return (0);
+		}
+		else if (is_color_identifier(lines[i]))
+		{
+			if (!parse_color_line(lines[i], &data->floor_color,
+					&data->ceiling_color))
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 static int	validate_parsed_data(const t_cub_data *data)
 {
 	if (!data->textures.north_path || !data->textures.south_path
@@ -75,7 +146,7 @@ static int	validate_parsed_data(const t_cub_data *data)
 	return (1);
 }
 
-int	process_file_data(char **lines, int line_count, t_cub_data *data)
+int	process_file_data_bonus(char **lines, int line_count, t_cub_data *data)
 {
 	int	map_start;
 
@@ -90,7 +161,7 @@ int	process_file_data(char **lines, int line_count, t_cub_data *data)
 		printf("Error: Failed parsing elements (textures/colors/links) before map\n");
 		return (0);
 	}
-	apply_default_colors(data);
+	apply_default_colors_bonus(data);
 	if (!parse_map_section(lines, map_start, data))
 	{
 		printf("Error: Failed parsing map section\n");
@@ -130,13 +201,8 @@ int	parse_cub_file(const char *filename, t_cub_data *data)
 		free_lines(lines, line_count);
 		return (0);
 	}
-#ifdef BONUS
 	if (!build_floor_graph_bonus(filename, data))
-	{
-		free_lines(lines, line_count);
 		return (0);
-	}
-#endif
 	free_lines(lines, line_count);
 	return (1);
 }
