@@ -178,7 +178,7 @@ int	process_file_data_bonus(char **lines, int line_count, t_cub_data *data)
 	return (1);
 }
 
-int	parse_cub_file(const char *filename, t_cub_data *data)
+int	parse_cub_file_bonus(const char *filename, t_cub_data *data)
 {
 	char	**lines;
 	int		line_count;
@@ -195,7 +195,7 @@ int	parse_cub_file(const char *filename, t_cub_data *data)
 		printf("Error: Could not read file %s\n", filename);
 		return (0);
 	}
-	if (!process_file_data(lines, line_count, data))
+	if (!process_file_data_bonus(lines, line_count, data))
 	{
 		free_cub_data(data);
 		free_lines(lines, line_count);

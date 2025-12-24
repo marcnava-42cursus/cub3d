@@ -211,7 +211,7 @@ static int	parse_floor_file_bonus(const char *path, int index,
 		free(canonical);
 		return (0);
 	}
-	if (!process_file_data(lines, line_count, &tmp))
+	if (!process_file_data_bonus(lines, line_count, &tmp))
 	{
 		free_lines(lines, line_count);
 		free(canonical);

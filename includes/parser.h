@@ -87,6 +87,7 @@ int		parse_texture_line_bonus(const char *line, t_textures *textures);
 int		find_map_start_bonus(char **lines, int line_count);
 int		is_link_identifier_bonus(const char *line);
 int		build_floor_graph_bonus(const char *path, t_cub_data *data);
+int		process_file_data_bonus(char **lines, int line_count, t_cub_data *data);
 
 // Remap functions to bonus versions
 #  define validate_map validate_map_bonus

@@ -116,6 +116,10 @@ void	paint_horizontal_line_texture(unsigned int y, unsigned int x, mlx_image_t *
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
 
+void	render_player_dynamic_bonus(t_game *game);
+void	render_map_2d_initial_bonus(t_game *game);
+void	toggle_map_overlay_bonus(t_game *game);
+
 # endif
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);

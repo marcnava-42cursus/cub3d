@@ -88,9 +88,9 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/world_map.c
 
 # Bonus sources - replace standard parser files with bonus versions
-SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
+SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/parser/core/parser_init.c \
-				$(SRCPATH)/parser/core/parser_orchestrator.c \
+				$(SRCPATH)/_bonus/parser/core/parser_orchestrator_bonus.c \
 				$(SRCPATH)/_bonus/parser/link_utils_bonus.c \
 				$(SRCPATH)/_bonus/parser/floor_manager_bonus.c \
 				$(SRCPATH)/_bonus/parser/core/parser_finder_bonus.c \
@@ -120,7 +120,7 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/double_buffer.c \
 				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/outlines.c \
-				$(SRCPATH)/render/window.c \
+				$(SRCPATH)/_bonus/render/window_bonus.c \
 				$(SRCPATH)/render/utils.c \
 				$(SRCPATH)/_bonus/render/map_2d_bonus.c \
 				$(SRCPATH)/_bonus/logic/movement_bonus.c \
