@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/03 02:37:19 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/26 14:04:20 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,9 @@ void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 				float max_distance);
 
-// Bonus version
-# ifdef BONUS
-t_rayhit	raycast_world_bonus(const t_map *map, vertex_t start, float angle,
-				float max_distance);
-#  define raycast_world raycast_world_bonus
-# endif
+/*-------------------------------- RAYHIT.C ----------------------------------*/
+void	init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
+		float angle);
 
 /*--------------------------------- WALLS.C ----------------------------------*/
 void	render_walls(t_game *game, t_rayhit *rayhits);
@@ -103,7 +100,7 @@ void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
-		int original_y[2], mlx_image_t *img, t_textures *textures);
+		 mlx_image_t *img, t_textures *textures);
 void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
 void	paint_horizontal_line_texture(unsigned int y, unsigned int x, mlx_image_t *img,

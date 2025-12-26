@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/12/03 02:39:39 by marcnava         ###   ########.fr        #
+#    Updated: 2025/12/26 14:10:03 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/double_buffer.c \
 				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/raycast.c \
+				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/texture_mapping.c \
 				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/render/outlines.c \
@@ -93,7 +94,6 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/_bonus/parser_finder_bonus.c \
 				$(SRCPATH)/_bonus/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/texture_parser_bonus.c \
-				$(SRCPATH)/_bonus/raycast_bonus.c \
 				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/render/texture_mapping.c \
@@ -111,6 +111,8 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
 				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
+				$(SRCPATH)/render/raycast.c \
+				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \
 				$(SRCPATH)/render/bresenham.c \
 				$(SRCPATH)/render/double_buffer.c \
