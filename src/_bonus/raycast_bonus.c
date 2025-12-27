@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   raycast_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 12:06:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/20 22:22:09 by ivmirand         ###   ########.fr       */
+/*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
+/*   Updated: 2025/11/13 20:03:33 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,27 @@ static void set_ray_direction_and_coords(vertex_t *direction, float angle, verte
 			direction->x = -1e-8f;
 		else
 			direction->x = 1e-8f;
-	}	
+	}
 	if (fabsf(direction->y) < 1e-8f)
 	{
 		if (direction->y < 0)
 			direction->y = -1e-8f;
 		else
 			direction->y = 1e-8f;
-	}	
+	}
 	ray_coords[0] = (int)floorf(start.x / WORLDMAP_TILE_SIZE);
 	ray_coords[1] = (int)floorf(start.y / WORLDMAP_TILE_SIZE);
 	if (direction->x > 0.0f)
 		ray_coords[2] = 1;
 	else
-		ray_coords[2] = -1;	
+		ray_coords[2] = -1;
 	if (direction->y > 0.0f)
 		ray_coords[3] = 1;
 	else
-		ray_coords[3] = -1;	
+		ray_coords[3] = -1;
 }
 
-static bool	read_cell(const t_map *map, int x, int y)
+static bool	read_cell_bonus(const t_map *map, int x, int y)
 {
 	const char	*row;
 	char		cell;
@@ -58,6 +58,9 @@ static bool	read_cell(const t_map *map, int x, int y)
 		return (false);
 	cell = row[x];
 	if (cell == '1' || cell == '2' || cell == ' ' || cell == '\0')
+		return (false);
+	// Block ray for both uppercase AND lowercase special chars (for rendering)
+	if (ft_isalpha(cell) && cell != 'N' && cell != 'S' && cell != 'E' && cell != 'W')
 		return (false);
 	return (true);
 }
@@ -80,11 +83,7 @@ static void	set_rayhit_face(t_rayhit *rayhit, int ray_coords[4])
 	}
 }
 
-//ray_coords[0] = ray's X coord in grid space (int map_x)
-//ray_coords[1] = ray's Y coord in grid space (int map_y)
-//ray_coords[2] = increment or decrement X in grid space depending on direction (int step_x)
-//ray_coords[3] = increment or decrement Y in grid space depending on direction (int step_y)
-t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
+t_rayhit	raycast_world_bonus(const t_map *map, vertex_t start, float angle,
 		float max_distance)
 {
 	t_rayhit	rayhit;
@@ -95,7 +94,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 	int			ray_coords[4];
 	int			row_len;
 	float		t;
-	
+
 	rayhit.hit = false;
 	rayhit.cell_x = -1;
 	rayhit.cell_y = -1;
@@ -107,7 +106,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 	if (!map || !map->grid || map->height <= 0)
 		return (rayhit);
 	set_ray_direction_and_coords(&direction, angle, start, ray_coords);
-	if (!read_cell(map, ray_coords[0], ray_coords[1]))
+	if (!read_cell_bonus(map, ray_coords[0], ray_coords[1]))
 	{
 		rayhit.hit = true;
 		rayhit.cell_x = ray_coords[0];
@@ -170,7 +169,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 			rayhit.distance = t;
 			return (rayhit);
 		}
-		if (!read_cell(map, ray_coords[0], ray_coords[1]))
+		if (!read_cell_bonus(map, ray_coords[0], ray_coords[1]))
 		{
 			set_rayhit_face(&rayhit, ray_coords);
 			rayhit.hit = true;
@@ -182,12 +181,5 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 			return (rayhit);
 		}
 	}
-	// if no hit
-	rayhit.hit = false;
-	rayhit.distance = fminf(t, max_distance);
-	rayhit.position.x = start.x + direction.x * rayhit.distance;
-	rayhit.position.y = start.y + direction.y * rayhit.distance;
-	rayhit.cell_x = ray_coords[0];
-	rayhit.cell_y = ray_coords[1];
 	return (rayhit);
 }

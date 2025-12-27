@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/26 10:41:35 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/03 02:33:18 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,6 @@ typedef struct s_rayhit
 	bool			hit;
 	int				cell_x;
 	int				cell_y;
-	int				step_x;
-	int				step_y;
 	int				side;
 	t_orientation	face;
 	vertex_t		position;
