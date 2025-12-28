@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:23:22 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 21:16:21 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 21:34:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ vertex_t	rotate_point(float x, float y, float angle)
 // Convert world coordinates to rotated minimap coordinates
 vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world)
 {
-	float	world_offset[2];
+	float		world_offset[2];
 	vertex_t	rotated_offset;
 	vertex_t	minimap_vertex;
 	float		scale;
