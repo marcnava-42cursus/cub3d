@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast_utils.c                                    :+:      :+:    :+:   */
+/*   rayhit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 09:00:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/26 14:01:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 12:01:55 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,26 @@ static void	set_ray_direction(vertex_t *direction, float angle)
 static void	set_ray_steps(t_rayhit *rayhit, vertex_t *direction, vertex_t start)
 {
 	rayhit->hit = true;
-	rayhit->cell_x = (int)floorf(start.x / WORLDMAP_TILE_SIZE);
-	rayhit->cell_y = (int)floorf(start.y / WORLDMAP_TILE_SIZE);
+	rayhit->cell[X] = (int)floorf(start.x / WORLDMAP_TILE_SIZE);
+	rayhit->cell[Y] = (int)floorf(start.y / WORLDMAP_TILE_SIZE);
 	if (direction->x > 0.0f)
-		rayhit->step_x = 1;
+		rayhit->step[X] = 1;
 	else
-		rayhit->step_x = -1;
+		rayhit->step[X] = -1;
 	if (direction->y > 0.0f)
-		rayhit->step_y = 1;
+		rayhit->step[Y] = 1;
 	else
-		rayhit->step_y = -1;
+		rayhit->step[Y] = -1;
 }
 
 void	init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 		float angle)
 {
 	rayhit->hit = false;
-	rayhit->cell_x = -1;
-	rayhit->cell_y = -1;
-	rayhit->step_x = -1;
-	rayhit->step_y = -1;
+	rayhit->cell[X] = -1;
+	rayhit->cell[Y] = -1;
+	rayhit->step[X] = -1;
+	rayhit->step[Y] = -1;
 	rayhit->side = -1;
 	rayhit->position = start;
 	rayhit->distance = 0.0f;

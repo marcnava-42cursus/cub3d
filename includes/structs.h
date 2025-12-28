@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/26 10:41:35 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 12:03:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ typedef enum e_render_order
 	CURRENT = 0,
 	NEXT = 1
 }	t_render_order;
+
+// Coordinate identifier for coordinate or dimensional arrays
+typedef enum e_coord
+{
+	X = 0,
+	Y = 1,
+	Z = 2,
+	U = 3,
+	V = 4,
+	W = 5
+}	t_coord;
 
 // Estructura para colores RGB
 typedef struct s_color
@@ -81,6 +92,17 @@ typedef struct s_player_textures
 	xpm_t	*right_hand;
 	xpm_t	*weapon;
 }	t_player_textures;
+
+typedef struct s_atlas
+{
+	char  			*xpm_path;
+	xpm_t 			*xpm;
+	unsigned int	frame_width;
+	unsigned int	frame_height;
+	unsigned int	max_frames;
+	unsigned int	total_frames;
+	unsigned int	current_frame;
+} t_atlas;
 
 // Estructura para la posición del jugador
 typedef struct s_player
@@ -135,16 +157,14 @@ typedef struct s_minimap
 
 typedef struct s_rayhit
 {
-	bool			hit;
-	int				cell_x;
-	int				cell_y;
-	int				step_x;
-	int				step_y;
-	int				side;
-	t_orientation	face;
 	vertex_t		position;
-	float			distance;
+	t_orientation	face;
+	int				cell[2];
+	int				step[2];
 	int				wall_bounds[2];
+	float			distance;
+	int				side;
+	bool			hit;
 }	t_rayhit;
 
 // Estructura principal del juego que contiene TODOS los datos

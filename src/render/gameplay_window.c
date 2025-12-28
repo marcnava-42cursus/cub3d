@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/03 02:32:44 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/28 12:05:26 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 		rayhits[i] = cast_ray_for_column(&game->cub_data, i, buffer_width);
 		i++;
 	}
-	render_floors(game, rayhits);
+	render_floors(game);
 	render_walls(game, rayhits);
 	render_player_overlay(game);
 	free(rayhits);

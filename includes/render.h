@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/26 14:04:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 12:04:16 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # define MAX_WINDOW_HEIGHT 1080
 # define MINIMAP_TILE_SIZE 32
 # define MINIMAP_PLAYER_SIZE 16
-# define MINIMAP_RADIUS 4
-# define MINIMAP_RAYS 120
+# define MINIMAP_TILE_RADIUS 4
+# define MINIMAP_RAYS 15
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
 # define HAND_TEXTURE_WIDTH 192
@@ -38,7 +38,7 @@
 # define MAX_RENDER_DISTANCE 2000.0f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
-# define MINIMAP_DIAMETER (2.0f * MINIMAP_RADIUS + 1.0f)
+# define MINIMAP_DIAMETER (2.0f * MINIMAP_TILE_RADIUS + 1.0f)
 # define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH)
@@ -75,10 +75,21 @@ void	render_double_buffer(t_game *game);
 /*-------------------------------- MINIMAP.C ---------------------------------*/
 void	minimap_init(t_game *game);
 void	render_minimap_bg(t_minimap *minimap);
+void	minimap_free(mlx_t *mlx, t_minimap *minimap);
+
+/*------------------------- MINIMAP_PLAYER_VISION.C --------------------------*/
+void	render_minimap_player_vision(t_minimap *minimap);
+
+/*----------------------------- MINIMAP_TILE.C -------------------------------*/
 void	render_minimap_tiles(t_map *map, t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
-void	render_minimap_player_vision(t_minimap *minimap);
-void	minimap_free(mlx_t *mlx, t_minimap *minimap);
+
+/*----------------------------- MINIMAP_UTILS.C ------------------------------*/
+bool		is_inside_minimap_circle(int x, int y);
+vertex_t	rotate_point(vertex_t point, float angle);
+void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
+				int color);
+vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
@@ -92,7 +103,7 @@ void	init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 void	render_walls(t_game *game, t_rayhit *rayhits);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
-void	render_floors(t_game *game, t_rayhit *rayhits);
+void	render_floors(t_game *game);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/26 13:56:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 11:17:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static bool	find_neighbor_edge(t_rayhit *current, t_rayhit *neighbor)
 	float	distance_threshold;
 
 	distance_threshold = fmaxf(8.0f, current->distance * 0.03f);
-	if (!neighbor->hit || current->cell_x != neighbor->cell_x
-		|| current->cell_y != neighbor->cell_y
+	if (!neighbor->hit || current->cell[0] != neighbor->cell[0]
+		|| current->cell[1] != neighbor->cell[1]
 		|| current->side != neighbor->side
 		|| fabsf(current->distance - neighbor->distance) > distance_threshold)
 		return (true);
@@ -44,8 +44,7 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 	if (x < img->width - 1)
 	{
 		right = rayhits[x + 1];
-		if (!is_edge)
-			is_edge = find_neighbor_edge(&current, &right);
+		if (!is_edge) is_edge = find_neighbor_edge(&current, &right);
 	}
 	return (is_edge);
 }
@@ -104,28 +103,29 @@ static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit, mlx_image_t *img
 	save_pixel_to_image(img, (unsigned int)x, slice_bounds[1], GREEN);
 }
 
-void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
+void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
 {
 	unsigned int	i;
-	int				center_cell_x;
-	int				center_cell_y;
+	int				center_cell[2];
 	int				center_face;
 
 	i = 0;
-	center_cell_x = rayhits[img->width / 2].cell_x;
-	center_cell_y = rayhits[img->width / 2].cell_y;
+	center_cell[0] = rayhits[img->width / 2].cell[0];
+	center_cell[1] = rayhits[img->width / 2].cell[1];
 	center_face = rayhits[img->width / 2].face;
 	while (i < img->width && i < MAX_WINDOW_WIDTH)
 	{
-		if (rayhits[i].cell_x == center_cell_x
-			&& rayhits[i].cell_y == center_cell_y
+		if (rayhits[i].cell[0] == center_cell[0]
+			&& rayhits[i].cell[1] == center_cell[1]
 			&& rayhits[i].face == center_face
-			&& rayhits[i].distance <= 300.0f)
+			&& rayhits[img->width / 2].distance <= 300.0f)
+			
 		{
 			if (is_raycast_edge(rayhits, i, img))
 				draw_vertical_outline(i, rayhits[i], img);
 			else
 				draw_top_and_bottom_outline(i, rayhits[i], img);
+	
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/03 02:40:08 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/28 11:00:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 	texture = NULL;
 	color = WHITE;
 
-	if (rayhit.hit && rayhit.cell_y >= 0 && rayhit.cell_y < map->height
-		&& rayhit.cell_x >= 0 && rayhit.cell_x < (int)ft_strlen(map->grid[rayhit.cell_y]))
+	if (rayhit.hit && rayhit.cell[1] >= 0 && rayhit.cell[1] < map->height
+		&& rayhit.cell[0] >= 0 && rayhit.cell[0] < (int)ft_strlen(map->grid[rayhit.cell[1]]))
 	{
-		cell = map->grid[rayhit.cell_y][rayhit.cell_x];
+		cell = map->grid[rayhit.cell[1]][rayhit.cell[0]];
 
 		if (cell != '1' && textures->custom)
 			texture = get_custom_texture(textures->custom, cell, rayhit.face);
