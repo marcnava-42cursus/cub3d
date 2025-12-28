@@ -6,22 +6,19 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:47:44 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 10:26:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 21:21:51 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static bool	is_minimap_wall(char tile)
-{
-	return (tile == '1' || tile == '2');
-}
-
 static uint32_t	get_minimap_wall_color(char tile)
 {
+	if (tile == '1')
+		return (WHITE);
 	if (tile == '2')
 		return (ORANGE);
-	return (WHITE);
+	return (0);
 }
 
 static void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
@@ -44,54 +41,64 @@ static void	render_minimap_tile(mlx_image_t *tile, int tile_size, int color)
 
 void	render_minimap_tiles(t_map *map, t_minimap *minimap)
 {
-	int			pixel_x;
-	int			pixel_y;
-	vertex_t	world_offset;
+	int			pixel[2];
+	int			world[2];
+	int			tile[2];
 	vertex_t	rotate;
-	vertex_t	screen_pos;
-	size_t		row_len;
-	char		tile;
-	uint32_t	tile_color;
+	vertex_t	scrn_pos;
+	int			tile_color;
 
 	// Render tiles by sampling world space in a rotated grid
-	for (int world_y = minimap->player->y - MINIMAP_TILE_RADIUS; world_y <= minimap->player->y + MINIMAP_TILE_RADIUS; world_y++)
+	world[Y] = minimap->player->y - MINIMAP_TILE_RADIUS;
+	while (world[Y] <= minimap->player->y + MINIMAP_TILE_RADIUS)
 	{
-		if (world_y < 0 || world_y >= map->height || !map->grid[world_y])
-			continue ;
-		row_len = ft_strlen(map->grid[world_y]);
-		for (int world_x = minimap->player->x - MINIMAP_TILE_RADIUS; world_x <= minimap->player->x + MINIMAP_TILE_RADIUS; world_x++)
+		if (world[Y] < 0 || world[Y] >= map->height || !map->grid[world[Y]])
 		{
-			if (world_x < 0 || (size_t)world_x >= row_len)
+			world[Y]++;
+			continue ;
+		}
+		world[X] = minimap->player->x - MINIMAP_TILE_RADIUS;
+		while (world[X] <= minimap->player->x + MINIMAP_TILE_RADIUS)
+		{
+			if (world[X] < 0 || world[X] >= (int)ft_strlen(map->grid[world[Y]]))
+			{
+				world[X]++;
 				continue ;
-			tile = map->grid[world_y][world_x];
-			if (!is_minimap_wall(tile))
+			}
+			tile_color = get_minimap_wall_color(map->grid[world[Y]][world[X]]);
+			if (tile_color == 0)
+			{
+				world[X]++;
 				continue ;
-			tile_color = get_minimap_wall_color(tile);
-			// Calculate offset from tile center to tile center
-			world_offset.x = (world_x - minimap->player->x + 0.5f)
-				* MINIMAP_TILE_SIZE;
-			world_offset.y = (world_y - minimap->player->y + 0.5f)
-				* MINIMAP_TILE_SIZE;
-			rotate = rotate_point(world_offset,
+			}
+			rotate = rotate_point(
+					(world[X] - minimap->player->x + 0.5f) * MINIMAP_TILE_SIZE,
+					(world[Y] - minimap->player->y + 0.5f) * MINIMAP_TILE_SIZE,
 					-(minimap->player->angle + FT_PI / 2));
 			// Convert to screen position (subtract half tile size to center the tile)
-			screen_pos.x = MINIMAP_WIDTH / 2 + rotate.x - MINIMAP_TILE_SIZE / 2;
-			screen_pos.y = MINIMAP_HEIGHT / 2 + rotate.y - MINIMAP_TILE_SIZE / 2;
+			scrn_pos.x = MINIMAP_WIDTH / 2 + rotate.x - MINIMAP_TILE_SIZE / 2;
+			scrn_pos.y = MINIMAP_HEIGHT / 2 + rotate.y - MINIMAP_TILE_SIZE / 2;
 			// Draw the tile (as a filled rectangle) if it's inside the circle
-			for (int tile_y = 0; tile_y < MINIMAP_TILE_SIZE; tile_y++)
+			tile[Y] = 0;
+			while (tile[Y] < MINIMAP_TILE_SIZE)
 			{
-				for (int tile_x = 0; tile_x < MINIMAP_TILE_SIZE; tile_x++)
+				tile[X] = 0;
+				while (tile[X] < MINIMAP_TILE_SIZE)
 				{
-					pixel_x = (int)(screen_pos.x + tile_x);
-					pixel_y = (int)(screen_pos.y + tile_y);
-					if (pixel_x >= 0 && pixel_x < (int)minimap->bg->width &&
-						pixel_y >= 0 && pixel_y < (int)minimap->bg->height &&
-						is_inside_minimap_circle(pixel_x, pixel_y))
-						save_pixel_to_image(minimap->bg, pixel_x, pixel_y,
+					pixel[X] = (int)(scrn_pos.x + tile[X]);
+					pixel[Y] = (int)(scrn_pos.y + tile[Y]);
+					if (pixel[X] >= 0 && pixel[X] < (int)minimap->bg->width
+						&& pixel[Y] >= 0 && pixel[Y] < (int)minimap->bg->height
+						&& is_inside_minimap_circle(pixel))
+						save_pixel_to_image(minimap->bg, pixel[X], pixel[Y],
 							tile_color);
+					tile[X]++;
 				}
+				tile[Y]++;
 			}
+			world[X]++;
 		}
+		world[Y]++;
 	}
 }
 

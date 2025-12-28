@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 12:04:16 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 21:18:26 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define MAX_RENDER_DISTANCE 2000.0f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
+# define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)
+# define ASPECT_SCALE (CURRENT_ASPECT_RATIO / BASE_ASPECT_RATIO)
 # define MINIMAP_DIAMETER (2.0f * MINIMAP_TILE_RADIUS + 1.0f)
 # define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
 # define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
@@ -68,6 +70,8 @@ void	render_bg(t_game* game);
 
 /*------------------------------- BRESENHAM.C --------------------------------*/
 void	bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img, int color);
+void	bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
+			int color);
 
 /*----------------------------- DOUBLE_BUFFER.C ------------------------------*/
 void	render_double_buffer(t_game *game);
@@ -85,10 +89,8 @@ void	render_minimap_tiles(t_map *map, t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
 
 /*----------------------------- MINIMAP_UTILS.C ------------------------------*/
-bool		is_inside_minimap_circle(int x, int y);
-vertex_t	rotate_point(vertex_t point, float angle);
-void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
-				int color);
+bool		is_inside_minimap_circle(int coord[2]);
+vertex_t	rotate_point(float x, float y, float angle);
 vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
@@ -111,14 +113,15 @@ void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
-		 mlx_image_t *img, t_textures *textures);
+			mlx_image_t *img, t_textures *textures);
 void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
-void	paint_horizontal_line_texture(unsigned int y, unsigned int x, mlx_image_t *img,
-		xpm_t *texture, int tex_y, float tex_x);
+void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
+			mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x);
 # ifdef BONUS
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
-		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
+			int original_y[2], mlx_image_t *img,
+			t_textures *textures, const t_map *map);
 # endif
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);
@@ -128,13 +131,14 @@ void	window_free(t_game *game);
 void	render_gameplay_window(t_game *game, unsigned int buffer_width);
 
 /*--------------------------------- UTILS.C ----------------------------------*/
+void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
+			unsigned int color);
 int		t_color_to_int(t_color *color, int alpha);
 int		clamp(int value, int min, int max);
 float	normalize_angle(float angle);
 void 	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
 			uint32_t color);
-void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
-			unsigned int color);
+void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	world_map_init(t_game *game);

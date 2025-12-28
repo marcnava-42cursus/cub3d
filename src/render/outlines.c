@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 11:17:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 20:09:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 	if (x < img->width - 1)
 	{
 		right = rayhits[x + 1];
-		if (!is_edge) is_edge = find_neighbor_edge(&current, &right);
+		if (!is_edge)
+			is_edge = find_neighbor_edge(&current, &right);
 	}
 	return (is_edge);
 }
@@ -55,39 +56,29 @@ static void	draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
 	int			slice_bounds[2];
 	float		wall_height;
 	float		dist_to_proj_plane;
-	float		current_aspect_ratio;
-	float		aspect_scale;
 
 	if (!rayhit.hit)
 		return ;
-	current_aspect_ratio = (float)img->width / (float)img->height;
-	aspect_scale = current_aspect_ratio / BASE_ASPECT_RATIO;
 	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
-	wall_height = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
+	wall_height = WORLDMAP_TILE_SIZE * (1.25f + ASPECT_SCALE);
 	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
 	paint_vertical_line_color((unsigned int)x, slice_bounds, img, GREEN);
 }
 
-static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit, mlx_image_t *img)
+static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit,
+		mlx_image_t *img)
 {
 	int			slice_height;
 	int			slice_bounds[2];
 	float		wall_height;
 	float		dist_to_proj_plane;
-	float		current_aspect_ratio;
-	float		aspect_scale;
 
 	if (!rayhit.hit)
 		return ;
-	// Use the same perspective calculation as in walls.c
-	// Calculate dynamic aspect ratio scaling to match walls.c
-	current_aspect_ratio = (float)img->width / (float)img->height;
-	aspect_scale = current_aspect_ratio / BASE_ASPECT_RATIO;
 	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
-	// Dynamic scaling with taller base
-	wall_height = WORLDMAP_TILE_SIZE * (1.25f + aspect_scale * 0.5f);
+	wall_height = WORLDMAP_TILE_SIZE * (1.25f + ASPECT_SCALE);
 	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
@@ -103,29 +94,27 @@ static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit, mlx_image_t *img
 	save_pixel_to_image(img, (unsigned int)x, slice_bounds[1], GREEN);
 }
 
-void add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
+void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
 {
 	unsigned int	i;
 	int				center_cell[2];
 	int				center_face;
 
 	i = 0;
-	center_cell[0] = rayhits[img->width / 2].cell[0];
-	center_cell[1] = rayhits[img->width / 2].cell[1];
+	center_cell[X] = rayhits[img->width / 2].cell[X];
+	center_cell[Y] = rayhits[img->width / 2].cell[Y];
 	center_face = rayhits[img->width / 2].face;
 	while (i < img->width && i < MAX_WINDOW_WIDTH)
 	{
-		if (rayhits[i].cell[0] == center_cell[0]
-			&& rayhits[i].cell[1] == center_cell[1]
+		if (rayhits[i].cell[X] == center_cell[0]
+			&& rayhits[i].cell[Y] == center_cell[1]
 			&& rayhits[i].face == center_face
 			&& rayhits[img->width / 2].distance <= 300.0f)
-			
 		{
 			if (is_raycast_edge(rayhits, i, img))
 				draw_vertical_outline(i, rayhits[i], img);
 			else
 				draw_top_and_bottom_outline(i, rayhits[i], img);
-	
 		}
 		i++;
 	}

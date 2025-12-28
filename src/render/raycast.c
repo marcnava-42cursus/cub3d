@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:06:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 11:59:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 13:15:17 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static bool	read_cell(const t_map *map, int cell[2])
 	char		cell_char;
 
 	if (!map || !map->grid || map->height <= 0 || cell[Y] < 0
-			|| cell[Y] >= map->height)
+		|| cell[Y] >= map->height)
 		return (false);
 	row = map->grid[cell[Y]];
 	if (!row)
@@ -89,7 +89,7 @@ static bool	read_cell(const t_map *map, int cell[2])
 		return (false);
 	cell_char = row[cell[X]];
 	if (cell_char == '1' || cell_char == '2' || cell_char == ' '
-			|| cell_char == '\0')
+		|| cell_char == '\0')
 		return (false);
 	return (true);
 }

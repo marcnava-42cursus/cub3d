@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 11:23:30 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 11:47:29 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 12:49:13 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	set_max_frames(t_atlas *atlas)
 	unsigned int	x_frames;
 	unsigned int	y_frames;
 
-	x_frames = atlas->xpm->texture.width / atlas->frame_width;	
+	x_frames = atlas->xpm->texture.width / atlas->frame_width;
 	y_frames = atlas->xpm->texture.height / atlas->frame_height;
 	atlas->max_frames = x_frames * y_frames;
 }

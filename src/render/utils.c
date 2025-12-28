@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/02 08:47:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 13:58:22 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,10 @@ void	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
 		save_pixel_to_image(img, x, (unsigned int)current_y, color);
 		current_y++;
 	}
+}
+
+void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color)
+{
+	if ((unsigned int)x < img->width && (unsigned int)y < img->height)
+		save_pixel_to_image(img, x, y, color);
 }
