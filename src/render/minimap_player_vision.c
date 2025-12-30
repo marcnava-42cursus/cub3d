@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 21:31:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 21:29:34 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/30 20:22:50 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
 		if (pixel[Y] < 0 || pixel[Y] >= (int)img->height)
 		{
 			pixel[Y]++;
-			continue;
+			continue ;
 		}
 		// Calculate intersection points for this scanline
 		if (v3.y != v1.y)
@@ -87,7 +87,7 @@ static void	fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
 		// Ensure left <= right
 		if (x_left > x_right)
 		{
-			temp_float = x_left; 
+			temp_float = x_left;
 			x_left = x_right;
 			x_right = temp_float;
 		}
@@ -96,7 +96,7 @@ static void	fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
 		while (pixel[X] <= (int)x_right)
 		{
 			if (is_inside_minimap_circle(pixel))
-				safe_put_pixel(img, pixel[X], pixel[Y], GREEN);
+				safe_put_pixel(img, pixel[X], pixel[Y], MEDIUM_GREY);
 			pixel[X]++;
 		}
 		pixel[Y]++;
@@ -115,7 +115,7 @@ void	render_minimap_player_vision(t_minimap *minimap)
 	vertex_t	ray_endpoints[32];
 
 	ft_bzero(minimap->player_vision->pixels, minimap->player_vision->width
-			* minimap->player_vision->height * 4);
+		* minimap->player_vision->height * 4);
 	player_position.x = (minimap->player->x) * WORLDMAP_TILE_SIZE;
 	player_position.y = (minimap->player->y) * WORLDMAP_TILE_SIZE;
 	player_to_minimap = world_to_minimap_vertex(minimap, player_position);
@@ -133,7 +133,7 @@ void	render_minimap_player_vision(t_minimap *minimap)
 	i = 0;
 	while (i < MINIMAP_RAYS - 1)
 	{
-		fill_triangle_scanline(minimap->player_vision, player_to_minimap, 
+		fill_triangle_scanline(minimap->player_vision, player_to_minimap,
 			ray_endpoints[i], ray_endpoints[i + 1]);
 		i++;
 	}
@@ -141,7 +141,7 @@ void	render_minimap_player_vision(t_minimap *minimap)
 	while (i < MINIMAP_RAYS)
 	{
 		bresenham_clipped(&player_to_minimap, &ray_endpoints[i],
-			minimap->player_vision, GREEN);
+			minimap->player_vision, MEDIUM_GREY);
 		i++;
 	}
 }

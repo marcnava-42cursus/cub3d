@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/28 11:01:44 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/30 19:37:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	place_breakable_block(t_game *game)
 		printf("Inventory is empty, cannot place a block\n");
 		return ;
 	}
-	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
-	start.y = (game->cub_data.player.y + 0.2f) * WORLDMAP_TILE_SIZE;
+	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
 			game->cub_data.player.angle, 300.0f);
 	if (!hit.hit)
@@ -160,8 +160,8 @@ void	test_break_wall_in_front(t_game *game)
 	if (!game)
 		return ;
 	cell_changed = false;
-	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
-	start.y = (game->cub_data.player.y + 0.2f)* WORLDMAP_TILE_SIZE;
+	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
 			game->cub_data.player.angle, 300.0f);
 	if (hit.hit)

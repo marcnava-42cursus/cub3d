@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/28 13:31:19 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/30 19:16:38 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	find_player_position(t_map *map, t_player *player)
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
 				player_count++;
-				player->x = (float)x + 0.5f;
-				player->y = (float)y + 0.5f;
+				player->x = (float)x;
+				player->y = (float)y;
 				player->orientation = (t_orientation)c;
 				if (player->orientation == NORTH)
 					player->angle = 3.0f * (FT_PI / 2);

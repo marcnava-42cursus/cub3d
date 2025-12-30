@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 17:32:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 21:21:49 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/30 20:17:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	render_double_buffer(t_game *game)
 	game->double_buffer[CURRENT]->pixels = temp_pixels;
 	render_minimap_bg(&game->minimap);
 	render_minimap_player_vision(&game->minimap);
-	render_minimap_tiles(&game->cub_data.map, &game->minimap);
+	render_minimap_walls(&game->minimap);
 	render_minimap_player(&game->minimap);
 }

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 21:18:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/30 20:18:53 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 void	render_minimap_player_vision(t_minimap *minimap);
 
 /*----------------------------- MINIMAP_TILE.C -------------------------------*/
-void	render_minimap_tiles(t_map *map, t_minimap *minimap);
+void	render_minimap_walls(t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
 
 /*----------------------------- MINIMAP_UTILS.C ------------------------------*/
@@ -134,7 +134,6 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width);
 void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 			unsigned int color);
 int		t_color_to_int(t_color *color, int alpha);
-int		clamp(int value, int min, int max);
 float	normalize_angle(float angle);
 void 	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
 			uint32_t color);

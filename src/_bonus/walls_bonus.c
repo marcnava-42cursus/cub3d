@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/03 02:36:32 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/30 19:38:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static t_rayhit	cast_ray_for_column(t_cub_data *cub_data, int x, int image_width
 	camera_x = 2.0f * x / (float)image_width - 1.0f;
 	ray_angle = cub_data->player.angle
 		+ atanf(camera_x * tanf(PLAYER_FOV / 2.0f));
-	player_position.x = ((float)cub_data->player.x + 0.2f) * WORLDMAP_TILE_SIZE;
-	player_position.y = ((float)cub_data->player.y + 0.2f) * WORLDMAP_TILE_SIZE;
+	player_position.x = ((float)cub_data->player.x) * WORLDMAP_TILE_SIZE;
+	player_position.y = ((float)cub_data->player.y) * WORLDMAP_TILE_SIZE;
 	rayhit = raycast_world(&cub_data->map, player_position, ray_angle,
 			MAX_DIST);
 	fisheye_correction(&rayhit, camera_x);

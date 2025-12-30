@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 13:58:22 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/30 20:18:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,6 @@ void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 int	t_color_to_int(t_color *color, int alpha)
 {
 	return (color->r << 24 | color->g << 16 | color->b << 8 | alpha);
-}
-
-int	clamp(int value, int min, int max)
-{
-	if (value < min)
-		return (min);
-	else if (value > max)
-		return (max);
-	else
-		return (value);
 }
 
 float	normalize_angle(float angle)
