@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/28 12:03:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/01 17:01:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,25 @@ typedef struct s_atlas
 {
 	char  			*xpm_path;
 	xpm_t 			*xpm;
+	unsigned int	max_frame[2];
+	unsigned int	current_frame[2];
 	unsigned int	frame_width;
 	unsigned int	frame_height;
-	unsigned int	max_frames;
 	unsigned int	total_frames;
-	unsigned int	current_frame;
 } t_atlas;
+
+typedef struct s_anim
+{
+	const unsigned int	*frames;
+	const unsigned int	*holds;
+	unsigned int		hold_left;
+	unsigned int		count;
+	unsigned int		i;
+	float				time;
+	float				spf;
+	bool				loop;
+	bool				finished;
+}	t_anim;
 
 // Estructura para la posición del jugador
 typedef struct s_player

@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/12/30 18:58:15 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/01 21:57:43 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,7 +95,6 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/_bonus/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/texture_parser_bonus.c \
 				$(SRCPATH)/render/walls.c \
-				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/render/texture_mapping.c \
 				$(SRCPATH)/_bonus/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
@@ -118,6 +117,7 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/double_buffer.c \
 				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/minimap_player_vision.c \
+				$(SRCPATH)/render/scanline_fill.c \
 				$(SRCPATH)/render/minimap_tile.c \
 				$(SRCPATH)/render/minimap_utils.c \
 				$(SRCPATH)/render/outlines.c \

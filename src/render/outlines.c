@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 20:09:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/01 21:55:26 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 	return (is_edge);
 }
 
-static void	draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
+static void	draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img,
+		int color)
 {
 	int			slice_height;
 	int			slice_bounds[2];
@@ -64,11 +65,11 @@ static void	draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img)
 	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
-	paint_vertical_line_color((unsigned int)x, slice_bounds, img, GREEN);
+	paint_vertical_line_color((unsigned int)x, slice_bounds, img, color);
 }
 
 static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit,
-		mlx_image_t *img)
+		mlx_image_t *img, int color)
 {
 	int			slice_height;
 	int			slice_bounds[2];
@@ -90,31 +91,33 @@ static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit,
 		slice_bounds[0] = 0;
 	if (slice_bounds[0] >= slice_bounds[1])
 		return ;
-	save_pixel_to_image(img, (unsigned int)x, slice_bounds[0], GREEN);
-	save_pixel_to_image(img, (unsigned int)x, slice_bounds[1], GREEN);
+	save_pixel_to_image(img, (unsigned int)x, slice_bounds[0], color);
+	save_pixel_to_image(img, (unsigned int)x, slice_bounds[1], color);
 }
 
-void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img)
+void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map)
 {
 	unsigned int	i;
-	int				center_cell[2];
-	int				center_face;
+	int				c_cell[2];
+	int				c_face;
+	int				color;
 
 	i = 0;
-	center_cell[X] = rayhits[img->width / 2].cell[X];
-	center_cell[Y] = rayhits[img->width / 2].cell[Y];
-	center_face = rayhits[img->width / 2].face;
+	c_cell[X] = rh[img->width / 2].cell[X];
+	c_cell[Y] = rh[img->width / 2].cell[Y];
+	c_face = rh[img->width / 2].face;
+	color = GREEN;
+	if (map->grid[c_cell[Y]][c_cell[X]] == '1')
+		color = RED;
 	while (i < img->width && i < MAX_WINDOW_WIDTH)
 	{
-		if (rayhits[i].cell[X] == center_cell[0]
-			&& rayhits[i].cell[Y] == center_cell[1]
-			&& rayhits[i].face == center_face
-			&& rayhits[img->width / 2].distance <= 300.0f)
+		if (rh[i].cell[X] == c_cell[X] && rh[i].cell[Y] == c_cell[Y]
+			&& rh[i].face == c_face && rh[img->width / 2].distance <= 300.0f)
 		{
-			if (is_raycast_edge(rayhits, i, img))
-				draw_vertical_outline(i, rayhits[i], img);
+			if (is_raycast_edge(rh, i, img))
+				draw_vertical_outline(i, rh[i], img, color);
 			else
-				draw_top_and_bottom_outline(i, rayhits[i], img);
+				draw_top_and_bottom_outline(i, rh[i], img, color);
 		}
 		i++;
 	}

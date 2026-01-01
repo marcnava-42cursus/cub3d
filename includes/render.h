@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/30 20:18:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/01 21:57:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
 # include "libft.h"
-//# include "animation.h"
+# include "animation.h"
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
@@ -61,6 +61,7 @@
 # define DARK_GREY 0x333333FF
 # define BLACK 0x000000FF
 # define ORANGE 0xFF7F00FF
+# define TRANSPARENT_BLUE 0x0000FF44
 
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
@@ -83,6 +84,10 @@ void	minimap_free(mlx_t *mlx, t_minimap *minimap);
 
 /*------------------------- MINIMAP_PLAYER_VISION.C --------------------------*/
 void	render_minimap_player_vision(t_minimap *minimap);
+
+/*----------------------------- SCANLINE_FILL.C ------------------------------*/
+void	fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
+		vertex_t v3);
 
 /*----------------------------- MINIMAP_TILE.C -------------------------------*/
 void	render_minimap_walls(t_minimap *minimap);
@@ -108,7 +113,7 @@ void	render_walls(t_game *game, t_rayhit *rayhits);
 void	render_floors(t_game *game);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
-void	add_wall_outlines(t_rayhit *rayhits, mlx_image_t *img);
+void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);

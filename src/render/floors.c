@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/30 20:15:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/01 17:21:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,6 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 			& (xpm->texture.width - 1);
 		t[Y] = (int)((tile[Y] - floorf(tile[Y])) * xpm->texture.height)
 			& (xpm->texture.height - 1);
-		if (t[X] < 0)
-			t[X] %= xpm->texture.width;
-		if (t[X] >= 0)
-			t[X] %= xpm->texture.width;
-		if (t[Y] < 0)
-			t[Y] %= xpm->texture.height;
-		if (t[Y] >= 0)
-			t[Y] %= xpm->texture.height;
 		paint_horizontal_line_texture(y, x, img, xpm, t[Y], t[X]);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
