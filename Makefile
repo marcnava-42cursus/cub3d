@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/01 21:57:43 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/03 12:49:36 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -110,6 +110,7 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
 				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
+				$(SRCPATH)/render/texture_atlas.c \
 				$(SRCPATH)/render/raycast.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \

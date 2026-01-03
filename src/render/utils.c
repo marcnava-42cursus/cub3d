@@ -6,22 +6,26 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/30 20:18:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/03 11:57:13 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
 void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
-			unsigned int color)
+			uint32_t color)
 {
-	unsigned char	*pixelstart;
+	uint8_t			*pixelstart;
+	unsigned int	bpp;
 
-	pixelstart = &image->pixels[(y * image->width + x) * sizeof(unsigned int)];
-	*(pixelstart++) = (unsigned short)(color >> 24);
-	*(pixelstart++) = (unsigned short)(color >> 16);
-	*(pixelstart++) = (unsigned short)(color >> 8);
-	*(pixelstart++) = (unsigned short)(color & 255);
+	if ((color & 0xFFu) == 0)
+		return ;
+	bpp = 4;
+	pixelstart = &image->pixels[(y * image->width + x) * bpp];
+	pixelstart[0] = (color >> 24) & 0xFF;
+	pixelstart[1] = (color >> 16) & 0xFF;
+	pixelstart[2] = (color >> 8) & 0xFF;
+	pixelstart[3] = color & 0xFF;
 }
 
 int	t_color_to_int(t_color *color, int alpha)

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/01 17:01:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/03 11:53:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ typedef enum e_coord
 {
 	X = 0,
 	Y = 1,
-	Z = 2,
-	U = 3,
-	V = 4,
+	U = 2,
+	V = 3,
+	Z = 4,
 	W = 5
 }	t_coord;
 
@@ -80,22 +80,9 @@ typedef struct s_textures
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
 
-//Player texture collection
-typedef struct s_player_textures
-{
-	char	*left_hand_path;
-	char	*left_thumb_path;
-	char	*right_hand_path;
-	char	*weapon_path;
-	xpm_t	*left_hand;
-	xpm_t	*left_thumb;
-	xpm_t	*right_hand;
-	xpm_t	*weapon;
-}	t_player_textures;
 
 typedef struct s_atlas
 {
-	char  			*xpm_path;
 	xpm_t 			*xpm;
 	unsigned int	max_frame[2];
 	unsigned int	current_frame[2];
@@ -103,6 +90,15 @@ typedef struct s_atlas
 	unsigned int	frame_height;
 	unsigned int	total_frames;
 } t_atlas;
+
+//Player texture collection
+typedef struct s_player_textures
+{
+	t_atlas	left_hand;
+	t_atlas	left_thumb;
+	t_atlas	right_hand;
+	t_atlas	weapon;
+}	t_player_textures;
 
 typedef struct s_anim
 {

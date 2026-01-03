@@ -6,11 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/03 18:56:31 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/02 13:00:53 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+//temporary
+#include "render.h"
 
 void	free_map(t_map *map)
 {
@@ -50,6 +52,9 @@ void	free_cub_data(t_cub_data *data)
 	free_texture_path(&data->textures.east_path);
 	free_textures(&data->textures);
 	free_map(&data->map);
+	atlas_free(&data->player.textures.left_hand);
+	atlas_free(&data->player.textures.left_thumb);
+	atlas_free(&data->player.textures.weapon);
 }
 
 void	free_lines(char **lines, int line_count)
