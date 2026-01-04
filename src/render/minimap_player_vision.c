@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 21:31:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/02 00:31:07 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 14:58:52 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	render_minimap_player_vision(t_minimap *minimap)
 {
 	vertex_t	player_position;
 	vertex_t	player_to_minimap;
-	int			i;
 	vertex_t	ray_endpoints[16];
 
 	ft_bzero(minimap->player_vision->pixels, minimap->player_vision->width

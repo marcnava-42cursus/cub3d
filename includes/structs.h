@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/03 11:53:10 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 15:12:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ typedef struct s_player_textures
 
 typedef struct s_anim
 {
+	t_atlas				*atlas;
+	unsigned int		current_frame[2];
 	const unsigned int	*frames;
 	const unsigned int	*holds;
 	unsigned int		hold_left;

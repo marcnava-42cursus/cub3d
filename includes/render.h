@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/03 12:51:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 15:39:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
 # include "libft.h"
-# include "animation.h"
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
@@ -68,9 +67,9 @@
 
 /*----------------------------- TEXTURE_ATLAS.C ------------------------------*/
 void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-			int coord_x, int coord_y);
+			int coord[2], int current_frame[2]);
 void	paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-		int coord_x, int coord_y);
+		int coord[2], int current_frame[2]);
 void	atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
 			unsigned int frame_height);
 void	atlas_free(t_atlas *atlas);

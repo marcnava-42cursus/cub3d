@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/01 21:55:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:59:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 	return (is_edge);
 }
 
-static void	draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img,
-		int color)
+static void	draw_vertical_outline(unsigned int x, t_rayhit rayhit,
+		mlx_image_t *img, int color)
 {
 	int			slice_height;
 	int			slice_bounds[2];
@@ -68,7 +68,7 @@ static void	draw_vertical_outline(int x, t_rayhit rayhit, mlx_image_t *img,
 	paint_vertical_line_color((unsigned int)x, slice_bounds, img, color);
 }
 
-static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit,
+static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
 		mlx_image_t *img, int color)
 {
 	int			slice_height;
@@ -86,20 +86,20 @@ static void	draw_top_and_bottom_outline(int x, t_rayhit rayhit,
 	if (x >= img->width)
 		return ;
 	if (slice_bounds[1] >= (int)img->height)
-		slice_bounds[1] = (int)img->height - 1;
+		return ;
 	if (slice_bounds[0] < 0)
-		slice_bounds[0] = 0;
+		return ;
 	if (slice_bounds[0] >= slice_bounds[1])
 		return ;
-	save_pixel_to_image(img, (unsigned int)x, slice_bounds[0], color);
-	save_pixel_to_image(img, (unsigned int)x, slice_bounds[1], color);
+	save_pixel_to_image(img, x, slice_bounds[0], color);
+	save_pixel_to_image(img, x, slice_bounds[1], color);
 }
 
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map)
 {
 	unsigned int	i;
 	int				c_cell[2];
-	int				c_face;
+	t_orientation	c_face;
 	int				color;
 
 	i = 0;

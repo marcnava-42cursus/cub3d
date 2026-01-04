@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/02 13:00:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 14:53:01 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_cub_data(t_cub_data *data)
 
 	data->player.inventory = '2';
 	atlas_init(&data->player.textures.left_hand,
-			"./assets/textures/player/test_hand.xpm42",
+			"./assets/textures/player/test_hand_atlas.xpm42",
 			HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
 	atlas_init(&data->player.textures.left_thumb,
 			"./assets/textures/player/test_thumb.xpm42",

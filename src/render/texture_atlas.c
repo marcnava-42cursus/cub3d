@@ -6,14 +6,14 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 11:23:30 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/03 11:59:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:59:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
 void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-		int coord_x, int coord_y)
+		int coord[2], int current_frame[2])
 {
 	uint8_t			*pxl_start;
 	uint8_t			*row;
@@ -24,8 +24,8 @@ void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 	if (!atlas || !atlas->xpm)
 		return ;
 	stride = atlas->xpm->texture.width * atlas->xpm->texture.bytes_per_pixel;
-	pixel[Y] = atlas->current_frame[Y] * atlas->frame_height;
-	pixel[X] = atlas->current_frame[X] * atlas->frame_width;
+	pixel[Y] = current_frame[Y] * atlas->frame_height;
+	pixel[X] = current_frame[X] * atlas->frame_width;
 	pxl_start = &atlas->xpm->texture.pixels[pixel[Y] * stride + pixel[X]
 		* atlas->xpm->texture.bytes_per_pixel];
 	pixel[Y] = 0;
@@ -38,7 +38,7 @@ void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 			uint8_t	*p = row + pixel[X] * atlas->xpm->texture.bytes_per_pixel;
 			color = ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16)
 				| ((uint32_t)p[2] << 8) | (uint32_t)p[3];
-			save_pixel_to_image(img, coord_x + pixel[X], coord_y + pixel[Y],
+			save_pixel_to_image(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
 				color);
 			pixel[X]++;
 		}
@@ -47,7 +47,7 @@ void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 }
 
 void	paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-		int coord_x, int coord_y)
+		int coord[2], int current_frame[2])
 {
 	uint8_t			*pxl_start;
 	uint8_t			*row;
@@ -59,42 +59,28 @@ void	paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 	if (!atlas || !atlas->xpm)
 		return ;
 	stride = atlas->xpm->texture.width * atlas->xpm->texture.bytes_per_pixel;
-	pixel[Y] = atlas->current_frame[Y] * atlas->frame_height;
-	pixel[X] = atlas->current_frame[X] * atlas->frame_width;
+	pixel[Y] = current_frame[Y] * atlas->frame_height;
+	pixel[X] = current_frame[X] * atlas->frame_width;
 	pxl_start = &atlas->xpm->texture.pixels[pixel[Y] * stride + pixel[X]
 		* atlas->xpm->texture.bytes_per_pixel];
 	pixel[Y] = 0;
 	while (pixel[Y] < atlas->frame_height)
 	{
 		row = pxl_start + pixel[Y] * stride;
-		horiflip = atlas->xpm->texture.width - 1;
+		horiflip = atlas->frame_width - 1;
 		pixel[X] = 0;
 		while (horiflip >= 0 && pixel[X] < atlas->frame_width)
 		{
 			uint8_t	*p = row + horiflip * atlas->xpm->texture.bytes_per_pixel;
 			color = ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16)
 				| ((uint32_t)p[2] << 8) | (uint32_t)p[3];
-			save_pixel_to_image(img, coord_x + pixel[X], coord_y + pixel[Y],
+			save_pixel_to_image(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
 				color);
 			horiflip--;
 			pixel[X]++;
 		}
 		pixel[Y]++;
 	}
-}
-
-void	get_next_frame(t_atlas *atlas, int increment)
-{
-	unsigned int	x;
-	unsigned int	y;
-
-	x = atlas->current_frame[X] + increment;
-	y = atlas->current_frame[Y];
-	y += x / atlas->max_frame[X];
-	x %= atlas->max_frame[X];
-	y %= atlas->max_frame[Y];
-	atlas->current_frame[X] = x;
-	atlas->current_frame[Y] = y;
 }
 
 void	atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
@@ -105,11 +91,7 @@ void	atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
 	atlas->frame_height = frame_height;
 	atlas->max_frame[X] = atlas->xpm->texture.width / atlas->frame_width;
 	atlas->max_frame[Y] = atlas->xpm->texture.height / atlas->frame_height;
-	atlas->current_frame[X] = 0;
-	atlas->current_frame[Y] = 0;
 	atlas->total_frames = atlas->max_frame[X] * atlas->max_frame[Y];
-	atlas->current_frame[X] = 0;
-	atlas->current_frame[Y] = 0;
 }
 
 void	atlas_free(t_atlas *atlas)
