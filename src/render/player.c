@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 18:01:17 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:10:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
 	int	coord[2];
 	int	current_frame[2];
 
-	coord[X] = buffer_x_center + HAND_TEXTURE_WIDTH; 
+	coord[X] = buffer_x_center + HAND_TEXTURE_WIDTH;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
 	current_frame[X] = 2;
 	current_frame[Y] = 1;
@@ -75,7 +75,7 @@ void	render_player_overlay(t_game *game)
 	textures = &player->textures;
 	render_left_hand(buffer, buffer_x_center, &textures->hand, player);
 	render_weapon(buffer, buffer_x_center, &textures->weapon, player);
-	//paint_current_frame_to_image(buffer, &textures->thumb, hand_thumb,
-	//	current_frame);
 	render_right_hand(buffer, buffer_x_center, &textures->hand);
 }
+//paint_current_frame_to_image(buffer, &textures->thumb, hand_thumb,
+//	current_frame);
