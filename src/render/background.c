@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:12:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/02 09:13:21 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:33:01 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,87 +14,32 @@
 
 static void	render_bg_color(t_game *game, int sky, int ground)
 {
-	unsigned int	x;
-	unsigned int	y;
+	unsigned int	pixel[2];
 
-	y = 0;
-	while (y < game->double_buffer[NEXT]->height / 2)
+	pixel[Y] = 0;
+	while (pixel[Y] < game->double_buffer[NEXT]->height / 2)
 	{
-		x = 0;
-		while (x < game->double_buffer[NEXT]->width)
+		pixel[X] = 0;
+		while (pixel[X] < game->double_buffer[NEXT]->width)
 		{
-			save_pixel_to_image(game->double_buffer[NEXT], x, y, sky);
-			x++;
+			save_pixel_to_image(game->double_buffer[NEXT], pixel[X], pixel[Y],
+				sky);
+			pixel[X]++;
 		}
-		y++;
+		pixel[Y]++;
 	}
-	while (y < game->double_buffer[NEXT]->height)
+	while (pixel[X] < game->double_buffer[NEXT]->height)
 	{
-		x = 0;
-		while (x < game->double_buffer[NEXT]->width)
+		pixel[X] = 0;
+		while (pixel[X] < game->double_buffer[NEXT]->width)
 		{
-			save_pixel_to_image(game->double_buffer[NEXT], x, y, ground);
-			x++;
+			save_pixel_to_image(game->double_buffer[NEXT], pixel[X], pixel[Y],
+				ground);
+			pixel[X]++;
 		}
-		y++;
+		pixel[Y]++;
 	}
 }
-
-//static void	render_atmospheric_perspective(t_game *game)
-//{
-//	unsigned int	x;
-//	unsigned int	y;
-//	mlx_image_t	*atmos_buf;
-//
-//	atmos_buf = game->double_buffer[NEXT];
-//	y = atmos_buf->height / 6;
-//	while (y < atmos_buf->height / 3)
-//	{
-//		x = 0;
-//		while (x < atmos_buf->width)
-//		{
-//			if (x % 8 == 0 && y % 8 == 0)
-//				save_pixel_to_image(atmos_buf, x, y, WHITE);
-//			x++;
-//		}
-//		y++;
-//	}
-//	while (y < atmos_buf->height / 2)
-//	{
-//		x = 0;
-//		while (x < atmos_buf->width)
-//		{
-//			if (x % 4 == 0 && y % 4 == 0)
-//				save_pixel_to_image(atmos_buf, x, y, WHITE);
-//			x++;
-//		}
-//		y++;
-//	}
-//	while (y < atmos_buf->height - (atmos_buf->height / 3))
-//		y++;
-//	while (y < atmos_buf->height - (atmos_buf->height / 6))
-//	{
-//		x = 0;
-//		while (x < atmos_buf->width)
-//		{
-//			if (x % 3 == 0 && y % 3 == 0)
-//				save_pixel_to_image(atmos_buf, x, y, BLACK);
-//			x++;
-//		}
-//		y++;
-//	}
-//	while (y < atmos_buf->height)
-//	{
-//		x = 0;
-//		while (x < atmos_buf->width)
-//		{
-//			if (x % 2 == 0 && y % 2 == 0)
-//				save_pixel_to_image(atmos_buf, x, y, BLACK);
-//			x++;
-//		}
-//		y++;
-//	}
-//}
 
 void	render_bg(t_game *game)
 {
@@ -105,4 +50,3 @@ void	render_bg(t_game *game)
 	ground = t_color_to_int(&game->cub_data.floor_color, 255);
 	render_bg_color(game, sky, ground);
 }
-//render_atmospheric_perspective(game);

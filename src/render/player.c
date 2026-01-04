@@ -6,44 +6,76 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 16:56:43 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 18:01:17 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
+static void	render_left_hand(mlx_image_t *buffer, int buffer_x_center,
+		t_atlas *atlas, t_player *player)
+{
+	int	coord[2];
+	int	current_frame[2];
+
+	coord[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 2;
+	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
+	if (player->inventory)
+	{
+		current_frame[X] = 0;
+		current_frame[Y] = 0;
+	}
+	else
+	{
+		current_frame[X] = 2;
+		current_frame[Y] = 1;
+	}
+	paint_current_frame_to_image(buffer, atlas, coord, current_frame);
+}
+
+static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
+		t_atlas *atlas, t_player *player)
+{
+	int	coord[2];
+	int	current_frame[2];
+
+	if (!player->inventory)
+		return ;
+	coord[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 1.7;
+	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT
+		- WEAPON_TEXTURE_HEIGHT * 0.5f;
+	current_frame[X] = 0;
+	current_frame[Y] = 0;
+	paint_current_frame_to_image(buffer, atlas, coord, current_frame);
+}
+
+static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
+		t_atlas *atlas)
+{
+	int	coord[2];
+	int	current_frame[2];
+
+	coord[X] = buffer_x_center + HAND_TEXTURE_WIDTH; 
+	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
+	current_frame[X] = 2;
+	current_frame[Y] = 1;
+	paint_hori_flip_current_frame_to_image(buffer, atlas, coord, current_frame);
+}
+
 void	render_player_overlay(t_game *game)
 {
 	mlx_image_t			*buffer;
 	int					buffer_x_center;
-	int					hand_thumb[2];
-	int					current_frame[2] = {0,0};
-	int					rh_frame[2] = {2,1};
-	int					weapon[2];
-	int					flip_hand_thumb[2];
+	t_player			*player;
 	t_player_textures	*textures;
 
 	buffer = game->double_buffer[NEXT];
-	textures = &game->cub_data.player.textures;
 	buffer_x_center = buffer->width / 2;
-	hand_thumb[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 2;
-	hand_thumb[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
-	weapon[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 1.7;
-	weapon[Y] = buffer_x_center - HAND_TEXTURE_WIDTH - WEAPON_TEXTURE_HEIGHT * 0.5f;
-	flip_hand_thumb[X] = buffer_x_center + HAND_TEXTURE_WIDTH; 
-	flip_hand_thumb[Y] = hand_thumb[Y];
-	if (game->cub_data.player.inventory)
-	{
-		paint_current_frame_to_image(buffer, &textures->left_hand, hand_thumb, 
-			current_frame);
-		paint_current_frame_to_image(buffer, &textures->weapon, weapon,
-				current_frame);
-	}
-	else
-		paint_current_frame_to_image(buffer, &textures->left_hand, hand_thumb, 
-			rh_frame);
-	//paint_current_frame_to_image(buffer, &textures->left_thumb, hand_thumb,
+	player = &game->cub_data.player;
+	textures = &player->textures;
+	render_left_hand(buffer, buffer_x_center, &textures->hand, player);
+	render_weapon(buffer, buffer_x_center, &textures->weapon, player);
+	//paint_current_frame_to_image(buffer, &textures->thumb, hand_thumb,
 	//	current_frame);
-	paint_hori_flip_current_frame_to_image(buffer, &textures->left_hand,
-			flip_hand_thumb, rh_frame);
+	render_right_hand(buffer, buffer_x_center, &textures->hand);
 }

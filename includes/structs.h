@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/04 15:12:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 17:58:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,8 @@ typedef struct s_atlas
 //Player texture collection
 typedef struct s_player_textures
 {
-	t_atlas	left_hand;
-	t_atlas	left_thumb;
-	t_atlas	right_hand;
+	t_atlas	hand;
+	t_atlas	thumb;
 	t_atlas	weapon;
 }	t_player_textures;
 
