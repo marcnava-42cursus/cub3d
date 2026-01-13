@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:36:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/31 04:48:46 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:30:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int	load_map_textures(t_game *game)
 		game->textures_2d.player_north ? "Yes" : "No",
 		game->textures_2d.player_south ? "Yes" : "No",
 		game->textures_2d.player_east ? "Yes" : "No",
-		game->textures_2d.west ? "Yes" : "No");
+		game->textures_2d.player_west ? "Yes" : "No");
 	
 	// Si no se pudieron cargar sprites direccionales, crearlos programáticamente
 	if (!game->textures_2d.player_north || !game->textures_2d.player_south ||
