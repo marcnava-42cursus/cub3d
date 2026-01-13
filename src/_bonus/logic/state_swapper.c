@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/02 19:38:32 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/06 14:11:42 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ void	place_breakable_block(t_game *game)
  *
  * This function casts a ray from the player's position in the direction
  * they're facing. If the ray hits a wall ('1'), it changes it to floor ('0').
- * After breaking the wall, it forces a re-render to show the change immediately.
+ * After breaking the wall, it forces a re-render to show the change
+ * immediately.
  *
  * @param game Game state structure
  */
@@ -161,7 +162,7 @@ void	test_break_wall_in_front(t_game *game)
 		return ;
 	cell_changed = false;
 	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
-	start.y = (game->cub_data.player.y + 0.2f)* WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y + 0.2f) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
 			game->cub_data.player.angle, 300.0f);
 	if (hit.hit)
@@ -177,7 +178,8 @@ void	test_break_wall_in_front(t_game *game)
 				printf("Breakable block stored in inventory!\n");
 		}
 		else if (cell == 'D' || cell == 'd')
-			cell_changed = modify_interactive_cell(game, hit.cell_x, hit.cell_y);
+			cell_changed = modify_interactive_cell(game, hit.cell_x,
+					hit.cell_y);
 		else
 			printf("Cannot break cell '%c'\n", cell);
 	}

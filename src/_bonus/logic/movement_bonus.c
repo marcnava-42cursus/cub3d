@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/24 10:50:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/06 14:26:45 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ void	render_player_dynamic_bonus(t_game *game);
 void	render_map_2d_initial_bonus(t_game *game);
 void	refresh_key_states_bonus(t_game *game);
 void	key_hook_bonus(mlx_key_data_t keydata, void *param);
-void	mouse_hook_bonus(mouse_key_t button, action_t action, modifier_key_t mods, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
 void	cursor_hook_bonus(double xpos, double ypos, void *param);
 bool	process_mouse_rotation_bonus(t_game *game);
 
 static int	is_elevator_char_logic(char c)
 {
 	const char	*set = "!\"·$%&/()=?¿";
-	int		i;
+	int			i;
 
 	i = 0;
-
 	while (set[i])
 	{
 		if (set[i] == c)
@@ -40,10 +40,9 @@ static int	is_elevator_char_logic(char c)
 
 static int	find_elevator_slot(t_cub_data *data, char id)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-
 	while (i < data->elevator_id_count)
 	{
 		if (data->elevator_ids[i] == id)
@@ -55,12 +54,11 @@ static int	find_elevator_slot(t_cub_data *data, char id)
 
 static int	get_elevator_coords(const t_floor *floor, char id, int *x, int *y)
 {
-	int		i;
+	int	i;
 
 	if (!floor)
 		return (0);
 	i = 0;
-
 	while (i < floor->elevator_count)
 	{
 		if (floor->elevator_ids[i] == id)
@@ -77,8 +75,8 @@ static int	get_elevator_coords(const t_floor *floor, char id, int *x, int *y)
 static bool	switch_floor(t_game *game, char id)
 {
 	int		slot;
-	t_floor		*from;
-	t_floor		*to;
+	t_floor	*from;
+	t_floor	*to;
 	int		tx;
 	int		ty;
 	double	now;
@@ -88,7 +86,6 @@ static bool	switch_floor(t_game *game, char id)
 	slot = find_elevator_slot(&game->cub_data, id);
 	if (slot < 0)
 		return (false);
-
 	now = mlx_get_time();
 	from = game->cub_data.current_floor;
 	to = game->cub_data.elevator_floor_a[slot];
@@ -96,18 +93,15 @@ static bool	switch_floor(t_game *game, char id)
 		to = game->cub_data.elevator_floor_b[slot];
 	if (!to || to == from)
 		return (false);
-
 	if (!get_elevator_coords(to, id, &tx, &ty))
 	{
 		printf("Error: Elevator '%c' missing target coords in %s\n",
 			id, to->path);
 		return (false);
 	}
-
 	game->cub_data.textures = to->textures;
 	game->cub_data.floor_color = to->floor_color;
 	game->cub_data.ceiling_color = to->ceiling_color;
-
 	if (!to->textures_loaded)
 	{
 		if (!load_textures(&game->cub_data.textures))
@@ -118,24 +112,19 @@ static bool	switch_floor(t_game *game, char id)
 		to->textures = game->cub_data.textures;
 		to->textures_loaded = true;
 	}
-
 	game->cub_data.current_floor = to;
 	game->cub_data.map = to->map;
 	game->cub_data.player_floor_index = to->index;
-
 	if (game->cub_data.player_floor_path)
 		free(game->cub_data.player_floor_path);
 	game->cub_data.player_floor_path = ft_strdup(to->path);
-
 	game->cub_data.player.x = (float)tx + 0.5f;
 	game->cub_data.player.y = (float)ty + 0.5f;
-
 	game->last_grid_x = (int)tx;
 	game->last_grid_y = (int)ty;
 	game->last_teleport_time = now;
 	game->last_teleport_id = id;
 	game->movement_lock_until = now + 1.0;
-
 	printf("Elevator '%c': moved to floor %s (index %d) at (%d, %d)\n",
 		id, to->path, to->index, tx, ty);
 	return (true);
@@ -172,7 +161,6 @@ static bool	process_movement_input(t_game *game)
 	if (!game)
 		return (false);
 	moved = false;
-
 	if (game->key_w_pressed)
 	{
 		move_forward(game, true);
@@ -218,25 +206,23 @@ static bool	process_movement_input(t_game *game)
  */
 static void	handle_movement_rendering(t_game *game)
 {
-	int	current_grid_x;
-	int	current_grid_y;
+	int		current_grid_x;
+	int		current_grid_y;
 	char	cell;
 	double	now;
 
 	if (!game)
 		return ;
-
 	now = mlx_get_time();
 	current_grid_x = (int)floor(game->cub_data.player.x);
 	current_grid_y = (int)floor(game->cub_data.player.y);
 	cell = ' ';
-
 	if (game->cub_data.map.grid && current_grid_y >= 0
 		&& current_grid_y < game->cub_data.map.height
 		&& current_grid_x >= 0
-		&& current_grid_x < (int)ft_strlen(game->cub_data.map.grid[current_grid_y]))
+		&& current_grid_x < (int)ft_strlen(
+			game->cub_data.map.grid[current_grid_y]))
 		cell = game->cub_data.map.grid[current_grid_y][current_grid_x];
-
 	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until)
 	{
 		if (switch_floor(game, cell))
@@ -245,10 +231,8 @@ static void	handle_movement_rendering(t_game *game)
 			current_grid_y = (int)floor(game->cub_data.player.y);
 		}
 	}
-
 	if (game->map_2d_visible)
 		update_player_position(game);
-
 	render_double_buffer(game);
 	handle_debug_map_update(game, current_grid_x, current_grid_y);
 }
@@ -275,23 +259,17 @@ void	update_game_loop_bonus(void *param)
 	game = (t_game *)param;
 	if (!game)
 		return ;
-
 	update_delta_time(game);
-
 	if (is_config_modal_open(game))
 	{
 		update_config_modal(game);
 		return ;
 	}
-
 	refresh_key_states_bonus(game);
-
 	if (game->delta_time <= 0.0)
 		return ;
-
 	moved = process_movement_input(game);
 	mouse_rotated = process_mouse_rotation_bonus(game);
-
 	if (moved || mouse_rotated)
 		handle_movement_rendering(game);
 }
@@ -308,7 +286,6 @@ static void	init_player_angle(t_game *game)
 {
 	if (!game)
 		return ;
-
 	if (game->cub_data.player.orientation == NORTH)
 		game->cub_data.player.angle = -FT_PI / 2.0f;
 	else if (game->cub_data.player.orientation == SOUTH)
@@ -340,10 +317,8 @@ void	init_movement_system_bonus(t_game *game)
 {
 	if (!game)
 		return ;
-
 	init_player_angle(game);
 	init_player_parameters(game);
-
 	game->movement_lock_until = 0.0;
 	game->last_teleport_time = -10.0;
 	game->last_teleport_id = '\0';
@@ -354,12 +329,10 @@ void	init_movement_system_bonus(t_game *game)
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
-
 	render_map_2d_initial_bonus(game);
 	print_map_2d(game);
 	print_controls();
 	init_crosshair(game);
-
 	mlx_key_hook(game->mlx, key_hook_bonus, game);
 	mlx_mouse_hook(game->mlx, mouse_hook_bonus, game);
 	mlx_cursor_hook(game->mlx, cursor_hook_bonus, game);

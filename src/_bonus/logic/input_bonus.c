@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 13:55:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/06 14:09:18 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logic.h"
+#include "config_modal_bonus.h"
 
 void	refresh_key_states_bonus(t_game *game)
 {
@@ -47,7 +47,10 @@ void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 		return ;
 	}
 	if (is_config_modal_open(game))
+	{
+		config_modal_handle_key(game, keydata);
 		return ;
+	}
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 		toggle_map_overlay_bonus(game);
 	else if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
@@ -56,13 +59,14 @@ void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 		test_break_wall_in_front(game);
 }
 
-void	mouse_hook_bonus(mouse_key_t button, action_t action, modifier_key_t mods,
-			void *param)
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param)
 {
 	t_game	*game;
+	int32_t	mouse_x;
+	int32_t	mouse_y;
+	int		index;
 
-	(void)button;
-	(void)action;
 	(void)mods;
 	game = (t_game *)param;
 	if (!game || !game->mlx)
@@ -71,12 +75,16 @@ void	mouse_hook_bonus(mouse_key_t button, action_t action, modifier_key_t mods,
 		return ;
 	if (button != MLX_MOUSE_BUTTON_LEFT || action != MLX_PRESS)
 		return ;
+	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
+	index = config_option_from_pos(game, mouse_x, mouse_y);
+	if (index < 0)
+		return ;
+	config_option_toggle(game, index);
 }
 
 void	cursor_hook_bonus(double xpos, double ypos, void *param)
 {
 	t_game	*game;
-	double	delta_x;
 
 	(void)ypos;
 	game = (t_game *)param;
@@ -84,31 +92,32 @@ void	cursor_hook_bonus(double xpos, double ypos, void *param)
 		return ;
 	if (is_config_modal_open(game))
 		return ;
-	if (!game->mouse_initialized)
-	{
-		game->last_mouse_x = xpos;
-		game->mouse_initialized = true;
-		return ;
-	}
-	delta_x = xpos - game->last_mouse_x;
-	game->last_mouse_x = xpos;
-	game->mouse_delta_accumulated += (float)delta_x;
-	if (game->mouse_delta_accumulated > MAX_MOUSE_DELTA)
-		game->mouse_delta_accumulated = MAX_MOUSE_DELTA;
-	else if (game->mouse_delta_accumulated < -MAX_MOUSE_DELTA)
-		game->mouse_delta_accumulated = -MAX_MOUSE_DELTA;
+	(void)xpos;
 }
 
 bool	process_mouse_rotation_bonus(t_game *game)
 {
+	int32_t	mouse_x;
+	int32_t	mouse_y;
+	float	delta_x;
 	float	rotation_amount;
 
-	if (is_config_modal_open(game))
+	if (is_config_modal_open(game) || !game || !game->mlx)
 		return (false);
-	if (!game || game->mouse_delta_accumulated == 0.0f)
+	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
+	if (!game->mouse_initialized)
+	{
+		game->last_mouse_x = mouse_x;
+		game->mouse_initialized = true;
 		return (false);
-	rotation_amount = game->mouse_delta_accumulated * game->mouse_sensitivity;
-	game->mouse_delta_accumulated = 0.0f;
+	}
+	delta_x = (float)(mouse_x - game->last_mouse_x);
+	game->last_mouse_x = mouse_x;
+	if (delta_x > MAX_MOUSE_DELTA)
+		delta_x = MAX_MOUSE_DELTA;
+	else if (delta_x < -MAX_MOUSE_DELTA)
+		delta_x = -MAX_MOUSE_DELTA;
+	rotation_amount = delta_x * game->mouse_sensitivity;
 	game->cub_data.player.angle += rotation_amount;
 	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 	return (true);
