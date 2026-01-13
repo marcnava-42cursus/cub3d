@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 12:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/22 18:45:39 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:19:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,11 +169,11 @@ void	print_player_position_inline(t_game *game, int grid_x, int grid_y)
 			game->cub_data.player.angle, 1000.0f);
 	if (hit.hit)
 	{
-		block_char = get_cell_char(&game->cub_data.map, hit.cell_x, hit.cell_y);
+		block_char = get_cell_char(&game->cub_data.map, hit.cell[0], hit.cell[1]);
 		printf("Player: (%.2f, %.2f) - Grid: (%d, %d) - Angle: %.2f - Looking at: %c (%d, %d)\r",
 			game->cub_data.player.x, game->cub_data.player.y,
 			grid_x, grid_y, game->cub_data.player.angle,
-			block_char, hit.cell_x, hit.cell_y);
+			block_char, hit.cell[0], hit.cell[1]);
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/02 19:38:32 by marcnava         ###   ########.fr       */
+/*   Updated: 2025/12/30 19:37:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	place_breakable_block(t_game *game)
 		printf("Inventory is empty, cannot place a block\n");
 		return ;
 	}
-	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
-	start.y = (game->cub_data.player.y + 0.2f) * WORLDMAP_TILE_SIZE;
+	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
 			game->cub_data.player.angle, 300.0f);
 	if (!hit.hit)
@@ -116,11 +116,11 @@ void	place_breakable_block(t_game *game)
 		printf("No wall in front to attach block\n");
 		return ;
 	}
-	if (hit.cell_y < 0 || hit.cell_y >= game->cub_data.map.height
-		|| hit.cell_x < 0
-		|| hit.cell_x >= (int)ft_strlen(game->cub_data.map.grid[hit.cell_y]))
+	if (hit.cell[1] < 0 || hit.cell[1] >= game->cub_data.map.height
+		|| hit.cell[0] < 0
+		|| hit.cell[0] >= (int)ft_strlen(game->cub_data.map.grid[hit.cell[1]]))
 		return ;
-	cell = game->cub_data.map.grid[hit.cell_y][hit.cell_x];
+	cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];
 	if (cell != '1' && cell != '2')
 	{
 		printf("Cannot place block on cell '%c'\n", cell);
@@ -160,24 +160,24 @@ void	test_break_wall_in_front(t_game *game)
 	if (!game)
 		return ;
 	cell_changed = false;
-	start.x = (game->cub_data.player.x + 0.2f) * WORLDMAP_TILE_SIZE;
-	start.y = (game->cub_data.player.y + 0.2f)* WORLDMAP_TILE_SIZE;
+	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
+	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
 			game->cub_data.player.angle, 300.0f);
 	if (hit.hit)
 	{
-		cell = game->cub_data.map.grid[hit.cell_y][hit.cell_x];
+		cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];
 		printf("Looking at cell (%d, %d) with character '%c'\n",
-			hit.cell_x, hit.cell_y, cell);
+			hit.cell[0], hit.cell[1], cell);
 		if (cell == '2')
 		{
 			cell_changed = modify_interactive_cell(game,
-					hit.cell_x, hit.cell_y);
+					hit.cell[0], hit.cell[1]);
 			if (cell_changed)
 				printf("Breakable block stored in inventory!\n");
 		}
 		else if (cell == 'D' || cell == 'd')
-			cell_changed = modify_interactive_cell(game, hit.cell_x, hit.cell_y);
+			cell_changed = modify_interactive_cell(game, hit.cell[0], hit.cell[1]);
 		else
 			printf("Cannot break cell '%c'\n", cell);
 	}

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 20:20:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:25:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static void	set_player_orientation(t_player *player, char c)
 
 static void	set_player_pos(t_player *player, int x, int y, char c)
 {
-	player->x = (float)x + 0.5f;
-	player->y = (float)y + 0.5f;
+	player->x = (float)x;
+	player->y = (float)y;
 	set_player_orientation(player, c);
 }
 

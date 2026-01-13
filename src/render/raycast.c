@@ -6,188 +6,118 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:06:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/09/20 22:22:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 13:15:17 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void set_ray_direction_and_coords(vertex_t *direction, float angle, vertex_t start, int ray_coords[4])
-{
-	direction->x = cosf(angle);
-	direction->y = sinf(angle);
-	if (fabsf(direction->x) < 1e-8f)
-	{
-		if (direction->x < 0)
-			direction->x = -1e-8f;
-		else
-			direction->x = 1e-8f;
-	}	
-	if (fabsf(direction->y) < 1e-8f)
-	{
-		if (direction->y < 0)
-			direction->y = -1e-8f;
-		else
-			direction->y = 1e-8f;
-	}	
-	ray_coords[0] = (int)floorf(start.x / WORLDMAP_TILE_SIZE);
-	ray_coords[1] = (int)floorf(start.y / WORLDMAP_TILE_SIZE);
-	if (direction->x > 0.0f)
-		ray_coords[2] = 1;
-	else
-		ray_coords[2] = -1;	
-	if (direction->y > 0.0f)
-		ray_coords[3] = 1;
-	else
-		ray_coords[3] = -1;	
-}
-
-static bool	read_cell(const t_map *map, int x, int y)
-{
-	const char	*row;
-	char		cell;
-	int			len;
-
-	if (!map || !map->grid || y < 0 || y >= map->height)
-		return (false);
-	row = map->grid[y];
-	if (!row)
-		return (false);
-	len = (int)strlen(row);
-	if (x < 0 || x >= len)
-		return (false);
-	cell = row[x];
-	if (cell == '1' || cell == '2' || cell == ' ' || cell == '\0')
-		return (false);
-	return (true);
-}
-
-static void	set_rayhit_face(t_rayhit *rayhit, int ray_coords[4])
+static t_rayhit	*set_successful_rayhit(t_rayhit *rayhit, vertex_t *start,
+		vertex_t *direction, float t)
 {
 	if (rayhit->side == 0)
 	{
-		if (ray_coords[2] > 0)
+		if (rayhit->step[X] > 0)
 			rayhit->face = WEST;
 		else
 			rayhit->face = EAST;
 	}
 	else
 	{
-		if (ray_coords[3] > 0)
+		if (rayhit->step[Y] > 0)
 			rayhit->face = SOUTH;
 		else
 			rayhit->face = NORTH;
 	}
+	rayhit->hit = true;
+	rayhit->position.x = start->x + direction->x * t;
+	rayhit->position.y = start->y + direction->y * t;
+	rayhit->distance = t;
+	return (rayhit);
 }
 
-//ray_coords[0] = ray's X coord in grid space (int map_x)
-//ray_coords[1] = ray's Y coord in grid space (int map_y)
-//ray_coords[2] = increment or decrement X in grid space depending on direction (int step_x)
-//ray_coords[3] = increment or decrement Y in grid space depending on direction (int step_y)
+static float	get_t(t_rayhit *rayhit, vertex_t *t_max, vertex_t direction)
+{
+	float	t;
+
+	if (t_max->x < t_max->y)
+	{
+		rayhit->cell[X] += rayhit->step[X];
+		t = t_max->x;
+		t_max->x += fabsf(WORLDMAP_TILE_SIZE / direction.x);
+		rayhit->side = 0;
+	}
+	else
+	{
+		rayhit->cell[Y] += rayhit->step[Y];
+		t = t_max->y;
+		t_max->y += fabsf(WORLDMAP_TILE_SIZE / direction.y);
+		rayhit->side = 1;
+	}
+	return (t);
+}
+
+static void	init_t_max(t_rayhit *rayhit, vertex_t *t_max, vertex_t start,
+		vertex_t direction)
+{
+	vertex_t	next_grid;
+
+	if (rayhit->step[X] > 0)
+		next_grid.x = (rayhit->cell[X] + 1) * WORLDMAP_TILE_SIZE;
+	else
+		next_grid.x = rayhit->cell[X] * WORLDMAP_TILE_SIZE;
+	if (rayhit->step[Y] > 0)
+		next_grid.y = (rayhit->cell[Y] + 1) * WORLDMAP_TILE_SIZE;
+	else
+		next_grid.y = rayhit->cell[Y] * WORLDMAP_TILE_SIZE;
+	t_max->x = (next_grid.x - start.x) / direction.x;
+	t_max->y = (next_grid.y - start.y) / direction.y;
+}
+
+static bool	read_cell(const t_map *map, int cell[2])
+{
+	const char	*row;
+	char		cell_char;
+
+	if (!map || !map->grid || map->height <= 0 || cell[Y] < 0
+		|| cell[Y] >= map->height)
+		return (false);
+	row = map->grid[cell[Y]];
+	if (!row)
+		return (false);
+	if (cell[X] < 0 || cell[X] >= (int)ft_strlen(row))
+		return (false);
+	cell_char = row[cell[X]];
+	if (cell_char == '1' || cell_char == '2' || cell_char == ' '
+		|| cell_char == '\0')
+		return (false);
+	return (true);
+}
+
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 		float max_distance)
 {
 	t_rayhit	rayhit;
 	vertex_t	direction;
-	vertex_t	delta_distance;
-	vertex_t	next_grid;
-	vertex_t 	t_max;
-	int			ray_coords[4];
-	int			row_len;
+	vertex_t	t_max;
 	float		t;
-	
-	rayhit.hit = false;
-	rayhit.cell_x = -1;
-	rayhit.cell_y = -1;
-	rayhit.side = -1;
-	rayhit.position = start;
-	rayhit.distance = 0.0f;
-	rayhit.face = NORTH;
 
-	if (!map || !map->grid || map->height <= 0)
+	init_rayhit(&rayhit, start, &direction, angle);
+	if (!read_cell(map, rayhit.cell))
 		return (rayhit);
-	set_ray_direction_and_coords(&direction, angle, start, ray_coords);
-	if (!read_cell(map, ray_coords[0], ray_coords[1]))
-	{
-		rayhit.hit = true;
-		rayhit.cell_x = ray_coords[0];
-		rayhit.cell_y = ray_coords[1];
-		return (rayhit);
-	}
-
-	if (ray_coords[2] > 0)
-		next_grid.x = (ray_coords[0] + 1) * WORLDMAP_TILE_SIZE;
-	else
-		next_grid.x = ray_coords[0] * WORLDMAP_TILE_SIZE;
-	if (ray_coords[3] > 0)
-		next_grid.y = (ray_coords[1] + 1) * WORLDMAP_TILE_SIZE;
-	else
-		next_grid.y = ray_coords[1] * WORLDMAP_TILE_SIZE;
-
-	t_max.x = (next_grid.x - start.x) / direction.x;
-	t_max.y = (next_grid.y - start.y) / direction.y;
-	delta_distance.x = fabsf(WORLDMAP_TILE_SIZE / direction.x);
-	delta_distance.y = fabsf(WORLDMAP_TILE_SIZE / direction.y);
-
-	t = 0.0f;
+	init_t_max(&rayhit, &t_max, start, direction);
 	while (t <= max_distance)
 	{
-		if (t_max.x < t_max.y)
-		{
-			ray_coords[0] += ray_coords[2];
-			t = t_max.x;
-			t_max.x += delta_distance.x;
-			rayhit.side = 0;
-		}
-		else
-		{
-			ray_coords[1] += ray_coords[3];
-			t = t_max.y;
-			t_max.y += delta_distance.y;
-			rayhit.side = 1;
-		}
-		if (ray_coords[1] < 0 || ray_coords[1] >= map->height
-			|| !map->grid[ray_coords[1]])
-		{
-			set_rayhit_face(&rayhit, ray_coords);
-			rayhit.hit = true;
-			rayhit.cell_x = ray_coords[0];
-			rayhit.cell_y = ray_coords[1];
-			rayhit.position.x = start.x + direction.x * t;
-			rayhit.position.y = start.y + direction.y * t;
-			rayhit.distance = t;
-			return (rayhit);
-		}
-		row_len = (int)strlen(map->grid[ray_coords[1]]);
-		if (ray_coords[0] < 0 || ray_coords[0] >= row_len)
-		{
-			set_rayhit_face(&rayhit, ray_coords);
-			rayhit.hit = true;
-			rayhit.cell_x = ray_coords[0];
-			rayhit.cell_y = ray_coords[1];
-			rayhit.position.x = start.x + direction.x * t;
-			rayhit.position.y = start.y + direction.y * t;
-			rayhit.distance = t;
-			return (rayhit);
-		}
-		if (!read_cell(map, ray_coords[0], ray_coords[1]))
-		{
-			set_rayhit_face(&rayhit, ray_coords);
-			rayhit.hit = true;
-			rayhit.cell_x = ray_coords[0];
-			rayhit.cell_y = ray_coords[1];
-			rayhit.position.x = start.x + direction.x * t;
-			rayhit.position.y = start.y + direction.y * t;
-			rayhit.distance = t;
-			return (rayhit);
-		}
+		t = get_t(&rayhit, &t_max, direction);
+		if (rayhit.cell[Y] < 0 || rayhit.cell[Y] >= map->height
+			|| !map->grid[rayhit.cell[Y]] || rayhit.cell[X] < 0
+			|| rayhit.cell[X] >= (int)ft_strlen(map->grid[rayhit.cell[Y]])
+			|| !read_cell(map, rayhit.cell))
+			return (*set_successful_rayhit(&rayhit, &start, &direction, t));
 	}
-	// if no hit
 	rayhit.hit = false;
 	rayhit.distance = fminf(t, max_distance);
 	rayhit.position.x = start.x + direction.x * rayhit.distance;
 	rayhit.position.y = start.y + direction.y * rayhit.distance;
-	rayhit.cell_x = ray_coords[0];
-	rayhit.cell_y = ray_coords[1];
 	return (rayhit);
 }

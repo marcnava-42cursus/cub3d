@@ -6,19 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:29:18 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/02 16:15:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/28 20:40:15 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color)
-{
-	if ((unsigned int)x < img->width && (unsigned int)y < img->height)
-		save_pixel_to_image(img, x, y, color);
-}
-
-static int	calc_distance(int *d_x, int *d_y, vertex_t start, vertex_t end)
+static int	calc_increment(int *d_x, int *d_y, vertex_t start, vertex_t end)
 {
 	*d_x = end.x - start.x;
 	*d_y = end.y - start.y;
@@ -49,7 +43,7 @@ static void	paint_low(vertex_t start, vertex_t end, mlx_image_t *img, int color)
 	int			steps;
 	vertex_t	vtx;
 
-	yi = calc_distance((int *)&distance.x, (int *)&distance.y, start, end);
+	yi = calc_increment((int *)&distance.x, (int *)&distance.y, start, end);
 	bresenham = (2 * distance.y) - distance.x;
 	vtx = start;
 	vtx.v = fabsf(end.x - start.x);
@@ -78,7 +72,7 @@ static void	paint_high(vertex_t start, vertex_t end, mlx_image_t *img,
 	int			steps;
 	vertex_t	vtx;
 
-	xi = calc_distance((int *)&distance.x, (int *)&distance.y, start, end);
+	xi = calc_increment((int *)&distance.x, (int *)&distance.y, start, end);
 	bresenham = (2 * distance.x) - distance.y;
 	vtx = start;
 	vtx.v = fabsf(end.y - start.y);
@@ -117,6 +111,53 @@ void	bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img, int color)
 				paint_high(*end, *start, img, color);
 			else
 				paint_high(*start, *end, img, color);
+		}
+	}
+}
+
+// Clipped version of bresenham that only draws within the circle
+// Use normal bresenham but check each pixel
+void	bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
+		int color)
+{
+	int	b_start[2];
+	int	b_end[2];
+	int	dist[2];
+	int	step[2];
+	int	bresenham;
+	int	bresenham_times_two;
+
+	b_start[X] = (int)start->x;
+	b_start[Y] = (int)start->y;
+	b_end[X] = (int)end->x;
+	b_end[Y] = (int)end->y;
+	dist[X] = abs(b_end[X] - b_start[X]);
+	dist[Y] = abs(b_end[Y] - b_start[Y]);
+	if (b_start[X] < b_end[X])
+		step[X] = 1;
+	else
+		step[X] = -1;
+	if (b_start[Y] < b_end[Y])
+		step[Y] = 1;
+	else
+		step[Y] = -1;
+	bresenham = dist[X] - dist[Y];
+	while (true)
+	{
+		if (is_inside_minimap_circle(b_start))
+			safe_put_pixel(img, b_start[X], b_start[Y], color);
+		if (b_start[X] == b_end[X] && b_start[Y] == b_end[Y])
+			break ;
+		bresenham_times_two = bresenham * 2;
+		if (-dist[Y] < bresenham_times_two)
+		{
+			bresenham -= dist[Y];
+			b_start[X] += step[X];
+		}
+		if (dist[X] > bresenham_times_two)
+		{
+			bresenham += dist[X];
+			b_start[Y] += step[Y];
 		}
 	}
 }

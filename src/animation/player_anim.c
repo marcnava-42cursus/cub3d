@@ -6,38 +6,16 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:16:11 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/10/31 02:07:31 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/04 15:44:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "animation.h"
 
-void	idle_right_hand(t_game *game, int[2] start_pos, xpm_t **frames)
+void	init_empty_left_hand(t_game *game, int start_pos[2], xpm_t **frames)
 {
-	static current_pos = start_pos;
-}
+	t_atlas *left_hand_atlas;
 
-void	idle_left_hand(t_game *game, int[2] start_pos, xpm_t **frames)
-{
-	static current_pos = start_pos;
-}
-
-void	walk_right_hand(t_game *game, int[2] start_pos, xpm_t **frames)
-{
-	static current_pos = start_pos;
-}
-
-void	walk_left_hand(t_game *game, int[2] start_pos, xpm_t **frames)
-{
-	static current_pos = start_pos;
-}
-
-void	cast_right_hand(t_game *game, int[2] start_pos, xpm_t **frames)
-{
-	static current_pos = start_pos;
-}
-
-void	cast_left_hand(t_game *game, int[2] start_pos, xpm_t **frames)
-{
-	static current_pos = start_pos;
+	left_hand_atlas = &game->cub_data.player.textures.left_hand;
+	anim_init();
 }

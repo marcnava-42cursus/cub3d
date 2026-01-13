@@ -6,11 +6,33 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/03 01:17:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/03 12:51:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
+
+static int	get_tex_x(t_rayhit rayhit, t_textures *textures, xpm_t **texture)
+{
+	float	wall_x;
+
+	if (rayhit.face == NORTH)
+		*texture = textures->north;
+	else if (rayhit.face == SOUTH)
+		*texture = textures->south;
+	else if (rayhit.face == EAST)
+		*texture = textures->east;
+	else if (rayhit.face == WEST)
+		*texture = textures->west;
+	else
+		*texture = NULL;
+	if (rayhit.side == 0)
+		wall_x = rayhit.position.y / WORLDMAP_TILE_SIZE;
+	else
+		wall_x = rayhit.position.x / WORLDMAP_TILE_SIZE;
+	wall_x = wall_x - floorf(wall_x);
+	return ((int)(wall_x * (float)(*texture)->texture.width));
+}
 
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 {
@@ -70,43 +92,26 @@ void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
 }
 
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
-		int original_y[2], mlx_image_t *img, t_textures *textures)
+		mlx_image_t *img, t_textures *textures)
 {
-	uint32_t	color;
 	xpm_t		*texture;
 	int			tex_x;
 	int			original_line_height;
-	float		wall_x;
 	float		step;
 	float		tex_offset;
 
-	if (rayhit.face == NORTH)
-		texture = textures->north;
-	else if (rayhit.face == SOUTH)
-		texture = textures->south;
-	else if (rayhit.face == EAST)
-		texture = textures->east;
-	else if (rayhit.face == WEST)
-		texture = textures->west;
-	else
-		texture = NULL;
 	if (x >= img->width)
 		return ;
 	if (y[1] >= (int)img->height)
 		y[1] = (int)img->height - 1;
 	if (y[0] >= y[1])
 		return ;
-	if (rayhit.side == 0)
-		wall_x = rayhit.position.y / WORLDMAP_TILE_SIZE;
-	else
-		wall_x = rayhit.position.x / WORLDMAP_TILE_SIZE;
-	wall_x = wall_x - floorf(wall_x);
-	tex_x = (int)(wall_x * (float)texture->texture.width);
+	tex_x = get_tex_x(rayhit, textures, &texture);
 	if ((rayhit.side == 0 && rayhit.face == NORTH)
 		|| (rayhit.side == 1 && rayhit.face == WEST))
 		tex_x = texture->texture.width - tex_x - 1;
-	original_line_height = original_y[1] - original_y[0] + 1;
+	original_line_height = rayhit.wall_bounds[1] - rayhit.wall_bounds[0] + 1;
 	step = (float)texture->texture.height / (float)original_line_height;
-	tex_offset = (y[0] - original_y[0]) * step;
+	tex_offset = (y[0] - rayhit.wall_bounds[0]) * step;
 	paint_vertical_line_texture(x, y, img, texture, tex_x, tex_offset, step);
 }

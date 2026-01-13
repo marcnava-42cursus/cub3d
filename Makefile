@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2025/12/03 02:39:39 by marcnava         ###   ########.fr        #
+#    Updated: 2026/01/13 15:01:08 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,6 +69,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/double_buffer.c \
 				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/raycast.c \
+				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/texture_mapping.c \
 				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/render/outlines.c \
@@ -98,7 +99,6 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
 				$(SRCPATH)/_bonus/raycast_bonus.c \
 				$(SRCPATH)/render/walls.c \
-				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/render/texture_mapping.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
@@ -115,10 +115,18 @@ SRCS_BONUS	:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
 				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
+				$(SRCPATH)/render/texture_atlas.c \
+				$(SRCPATH)/render/texture_atlas_utils.c \
+				$(SRCPATH)/render/raycast.c \
+				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \
 				$(SRCPATH)/render/bresenham.c \
 				$(SRCPATH)/render/double_buffer.c \
 				$(SRCPATH)/render/minimap.c \
+				$(SRCPATH)/render/minimap_player_vision.c \
+				$(SRCPATH)/render/scanline_fill.c \
+				$(SRCPATH)/render/minimap_tile.c \
+				$(SRCPATH)/render/minimap_utils.c \
 				$(SRCPATH)/render/outlines.c \
 				$(SRCPATH)/render/window.c \
 				$(SRCPATH)/render/utils.c \
