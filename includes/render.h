@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 18:07:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/13 13:28:20 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,22 @@
 # define TILE_SIZE 64
 
 /*----------------------------- TEXTURE_ATLAS.C ------------------------------*/
-void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-			int coord[2], int current_frame[2]);
-void	paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-		int coord[2], int current_frame[2]);
-void	atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
-			unsigned int frame_height);
-void	atlas_free(t_atlas *atlas);
+void		paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
+				int coord[2], int current_frame[2]);
+void		paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
+				int coord[2], int current_frame[2]);
+void		atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
+				unsigned int frame_height);
+void		atlas_free(t_atlas *atlas);
 
 /*-------------------------- TEXTURE_ATLAS_UTILS.C ---------------------------*/
-uint8_t	*get_pixel_start(unsigned int stride, int current_frame[2],
-		t_atlas *atlas);
+uint8_t		*get_pixel_start(unsigned int stride, int current_frame[2],
+			t_atlas *atlas);
 uint32_t	get_corrected_color_from_pixel(uint8_t *row, unsigned int x,
-		t_atlas *atlas);
+			t_atlas *atlas);
 
 /*------------------------------ BACKGROUND.C --------------------------------*/
-void	render_bg(t_game* game);
+void		render_bg(t_game* game);
 
 /*------------------------------- BRESENHAM.C --------------------------------*/
 void	bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img, int color);
