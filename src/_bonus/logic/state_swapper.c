@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 16:53:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/13 17:52:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	place_breakable_block(t_game *game)
 		return ;
 	game->cub_data.map.grid[target_y][target_x] = cell;
 	printf("Placed breakable block at (%d, %d)\n", target_x, target_y);
-	render_double_buffer(game);
+	//render_double_buffer(game);
 }
 
 /**

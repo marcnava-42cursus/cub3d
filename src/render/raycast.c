@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:06:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 13:15:17 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/13 17:52:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
 	vertex_t	t_max;
 	float		t;
 
+	t = 0.0f;
 	init_rayhit(&rayhit, start, &direction, angle);
 	if (!read_cell(map, rayhit.cell))
 		return (rayhit);
