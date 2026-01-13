@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:36:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/13 15:30:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:53:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,54 +16,123 @@
 #include <string.h>
 #include "libft.h"
 
+// Modal constants matching config_modal_bonus.c
+# define MAP_MODAL_BG_COLOR 0x000000C0
+# define MAP_MODAL_PANEL_COLOR 0x1E1E1ED0
+# define MAP_MODAL_BORDER_COLOR 0xCCCCCCFF
+# define MAP_MODAL_BORDER_THICKNESS 2
+
 // Forward declarations
 static void	create_directional_sprites(t_game *game);
 static void	create_directional_sprite(mlx_image_t *img, uint32_t color, int direction);
 static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow_color);
 
-// Función para crear sprites direccionales programáticamente
+// --- Drawing Helpers ---
+
+static void	draw_rect(mlx_image_t *img, int x, int y, int w, int h,
+		uint32_t color)
+{
+	int		yy;
+	int		xx;
+	uint8_t	r;
+	uint8_t	g;
+	uint8_t	b;
+	uint8_t	a;
+	uint8_t	*row;
+
+	if (!img || w <= 0 || h <= 0)
+		return ;
+	if (x < 0)
+	{
+		w += x;
+		x = 0;
+	}
+	if (y < 0)
+	{
+		h += y;
+		y = 0;
+	}
+	if (x >= (int)img->width || y >= (int)img->height)
+		return ;
+	if (x + w > (int)img->width)
+		w = (int)img->width - x;
+	if (y + h > (int)img->height)
+		h = (int)img->height - y;
+	if (w <= 0 || h <= 0)
+		return ;
+	r = (uint8_t)(color >> 24);
+	g = (uint8_t)(color >> 16);
+	b = (uint8_t)(color >> 8);
+	a = (uint8_t)(color & 0xFF);
+	yy = 0;
+	while (yy < h)
+	{
+		row = &img->pixels[((y + yy) * img->width + x) * 4];
+		xx = 0;
+		while (xx < w)
+		{
+			row[0] = r;
+			row[1] = g;
+			row[2] = b;
+			row[3] = a;
+			row += 4;
+			xx++;
+		}
+		yy++;
+	}
+}
+
+static void	draw_border(mlx_image_t *img, int x, int y, int w, int h,
+		int thickness, uint32_t color)
+{
+	if (thickness <= 0)
+		return ;
+	draw_rect(img, x, y, w, thickness, color);
+	draw_rect(img, x, y + h - thickness, w, thickness, color);
+	draw_rect(img, x, y, thickness, h, color);
+	draw_rect(img, x + w - thickness, y, thickness, h, color);
+}
+
+// --- Directional Sprites ---
+
 static void	create_directional_sprites(t_game *game)
 {
 	uint32_t	size = TILE_SIZE;
 	
-	// Crear sprites direccionales con diferentes colores/formas
 	if (!game->textures_2d.player_north)
 	{
 		game->textures_2d.player_north = mlx_new_image(game->mlx, size, size);
-		create_directional_sprite(game->textures_2d.player_north, 0xFF00FFFF, 0); // Magenta, flecha arriba
+		create_directional_sprite(game->textures_2d.player_north, 0xFF00FFFF, 0);
 	}
 	if (!game->textures_2d.player_south)
 	{
 		game->textures_2d.player_south = mlx_new_image(game->mlx, size, size);
-		create_directional_sprite(game->textures_2d.player_south, 0x00FFFFFF, 1); // Cian, flecha abajo
+		create_directional_sprite(game->textures_2d.player_south, 0x00FFFFFF, 1);
 	}
 	if (!game->textures_2d.player_east)
 	{
 		game->textures_2d.player_east = mlx_new_image(game->mlx, size, size);
-		create_directional_sprite(game->textures_2d.player_east, 0xFFFF00FF, 2); // Amarillo, flecha derecha
+		create_directional_sprite(game->textures_2d.player_east, 0xFFFF00FF, 2);
 	}
 	if (!game->textures_2d.player_west)
 	{
 		game->textures_2d.player_west = mlx_new_image(game->mlx, size, size);
-		create_directional_sprite(game->textures_2d.player_west, 0xFF8000FF, 3); // Naranja, flecha izquierda
+		create_directional_sprite(game->textures_2d.player_west, 0xFF8000FF, 3);
 	}
 }
 
-// Función para crear un sprite direccional con una flecha
 static void	create_directional_sprite(mlx_image_t *img, uint32_t color, int direction)
 {
 	int		x, y;
 	int		size = img->width;
 	int		center = size / 2;
 	
-	// Limpiar la imagen (transparente)
 	for (y = 0; y < size; y++)
 	{
 		for (x = 0; x < size; x++)
 			mlx_put_pixel(img, x, y, 0x00000000);
 	}
 	
-	// Dibujar círculo base
 	for (y = 0; y < size; y++)
 	{
 		for (x = 0; x < size; x++)
@@ -74,24 +143,20 @@ static void	create_directional_sprite(mlx_image_t *img, uint32_t color, int dire
 				mlx_put_pixel(img, x, y, color);
 		}
 	}
-	
-	// Dibujar flecha según la dirección
-	draw_arrow_on_sprite(img, direction, 0x000000FF); // Flecha negra
+	draw_arrow_on_sprite(img, direction, 0x000000FF);
 }
 
-// Función para dibujar una flecha en el sprite
 static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow_color)
 {
 	int		size = img->width;
 	int		center = size / 2;
 	int		arrow_size = size / 4;
 	
-	// Dibujar línea principal de la flecha
 	for (int i = 0; i < arrow_size; i++)
 	{
 		switch (direction)
 		{
-			case 0: // Norte (arriba)
+			case 0:
 				mlx_put_pixel(img, center, center - i, arrow_color);
 				if (i > arrow_size/2)
 				{
@@ -99,7 +164,7 @@ static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow
 					mlx_put_pixel(img, center + (i - arrow_size/2), center - i, arrow_color);
 				}
 				break;
-			case 1: // Sur (abajo)
+			case 1:
 				mlx_put_pixel(img, center, center + i, arrow_color);
 				if (i > arrow_size/2)
 				{
@@ -107,7 +172,7 @@ static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow
 					mlx_put_pixel(img, center + (i - arrow_size/2), center + i, arrow_color);
 				}
 				break;
-			case 2: // Este (derecha)
+			case 2:
 				mlx_put_pixel(img, center + i, center, arrow_color);
 				if (i > arrow_size/2)
 				{
@@ -115,7 +180,7 @@ static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow
 					mlx_put_pixel(img, center + i, center + (i - arrow_size/2), arrow_color);
 				}
 				break;
-			case 3: // Oeste (izquierda)
+			case 3:
 				mlx_put_pixel(img, center - i, center, arrow_color);
 				if (i > arrow_size/2)
 				{
@@ -127,26 +192,7 @@ static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow
 	}
 }
 
-/**
- * @deprecated
- */
-static void	fill_image_color(mlx_image_t *image, uint32_t color)
-{
-	uint32_t	x;
-	uint32_t	y;
-	
-	y = 0;
-	while (y < image->height)
-	{
-		x = 0;
-		while (x < image->width)
-		{
-			mlx_put_pixel(image, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
+// --- Texture Loading ---
 
 static int	load_texture(t_game *game, const char *path, mlx_image_t **texture)
 {
@@ -162,7 +208,7 @@ static int	load_texture(t_game *game, const char *path, mlx_image_t **texture)
 	return (1);
 }
 
-int	load_map_textures(t_game *game)
+int	load_map_textures_bonus(t_game *game)
 {
 	if (!load_texture(game, "assets/img/block.png", &game->textures_2d.wall))
 	{
@@ -175,20 +221,17 @@ int	load_map_textures(t_game *game)
 		return (0);
 	}
 	
-	// Cargar sprite principal del jugador (fallback)
 	if (!load_texture(game, "assets/img/player.png", &game->textures_2d.player))
 	{
 		printf("Error: Could not load player texture\n");
 		return (0);
 	}
 	
-	// Intentar cargar sprites direccionales (opcional)
 	game->textures_2d.player_north = NULL;
 	game->textures_2d.player_south = NULL;
 	game->textures_2d.player_east = NULL;
 	game->textures_2d.player_west = NULL;
 	
-	// Si existen sprites direccionales, cargarlos
 	load_texture(game, "assets/img/player_north.png", &game->textures_2d.player_north);
 	load_texture(game, "assets/img/player_south.png", &game->textures_2d.player_south);
 	load_texture(game, "assets/img/player_east.png", &game->textures_2d.player_east);
@@ -200,7 +243,6 @@ int	load_map_textures(t_game *game)
 		game->textures_2d.player_east ? "Yes" : "No",
 		game->textures_2d.player_west ? "Yes" : "No");
 	
-	// Si no se pudieron cargar sprites direccionales, crearlos programáticamente
 	if (!game->textures_2d.player_north || !game->textures_2d.player_south ||
 		!game->textures_2d.player_east || !game->textures_2d.player_west)
 	{
@@ -211,7 +253,7 @@ int	load_map_textures(t_game *game)
 	return (1);
 }
 
-void	free_map_textures(t_game *game)
+void	free_map_textures_bonus(t_game *game)
 {
 	if (game->textures_2d.wall)
 		mlx_delete_image(game->mlx, game->textures_2d.wall);
@@ -229,33 +271,90 @@ void	free_map_textures(t_game *game)
 		mlx_delete_image(game->mlx, game->textures_2d.player_west);
 }
 
-// Función para copiar una textura a una capa específica
+// --- Rendering ---
+
+static void	get_map_panel_bounds(int *x, int *y, int *w, int *h)
+{
+	int	panel_w = (int)(MAX_WINDOW_WIDTH * 0.70f);
+	int	panel_h = (int)(MAX_WINDOW_HEIGHT * 0.70f);
+	
+	*x = (MAX_WINDOW_WIDTH - panel_w) / 2;
+	*y = (MAX_WINDOW_HEIGHT - panel_h) / 2;
+	*w = panel_w;
+	*h = panel_h;
+}
+
+static void	get_map_offset(t_game *game, int *offset_x, int *offset_y)
+{
+	int	panel_x, panel_y, panel_w, panel_h;
+	int	map_w_pixels, map_h_pixels;
+
+	get_map_panel_bounds(&panel_x, &panel_y, &panel_w, &panel_h);
+	map_w_pixels = game->cub_data.map.width * TILE_SIZE;
+	map_h_pixels = game->cub_data.map.height * TILE_SIZE;
+
+	// Center the map in the panel
+	*offset_x = panel_x + (panel_w - map_w_pixels) / 2;
+	*offset_y = panel_y + (panel_h - map_h_pixels) / 2;
+}
+
 static void	copy_texture_to_layer(mlx_image_t *layer, mlx_image_t *texture, int x, int y)
 {
 	int		tex_x, tex_y;
 	uint32_t	pixel;
 	int		layer_x, layer_y;
+	int		panel_x, panel_y, panel_w, panel_h;
 
-	for (tex_y = 0; tex_y < (int)texture->height && y + tex_y < (int)layer->height; tex_y++)
+	// Clipping against modal panel
+	get_map_panel_bounds(&panel_x, &panel_y, &panel_w, &panel_h);
+
+	for (tex_y = 0; tex_y < (int)texture->height; tex_y++)
 	{
-		for (tex_x = 0; tex_x < (int)texture->width && x + tex_x < (int)layer->width; tex_x++)
+		for (tex_x = 0; tex_x < (int)texture->width; tex_x++)
 		{
 			layer_x = x + tex_x;
 			layer_y = y + tex_y;
+
+			// Basic bounds checking against image
+			if (layer_x < 0 || layer_x >= (int)layer->width ||
+				layer_y < 0 || layer_y >= (int)layer->height)
+				continue;
+
+			// Clipping against panel area to keep map inside
+			if (layer_x < panel_x || layer_x >= panel_x + panel_w ||
+				layer_y < panel_y || layer_y >= panel_y + panel_h)
+				continue;
+
 			pixel = ((uint32_t*)texture->pixels)[tex_y * texture->width + tex_x];
-			((uint32_t*)layer->pixels)[layer_y * layer->width + layer_x] = pixel;
+			if (pixel != 0) // Simple transparency check if alpha is 0
+				((uint32_t*)layer->pixels)[layer_y * layer->width + layer_x] = pixel;
 		}
 	}
 }
 
 static void	draw_tile_to_layer(t_game *game, int x, int y, mlx_image_t *texture)
 {
-	int		screen_x;
-	int		screen_y;
+	int	screen_x;
+	int	screen_y;
+	int	offset_x, offset_y;
 
-	screen_x = x * TILE_SIZE;
-	screen_y = y * TILE_SIZE;
+	get_map_offset(game, &offset_x, &offset_y);
+	screen_x = offset_x + x * TILE_SIZE;
+	screen_y = offset_y + y * TILE_SIZE;
 	copy_texture_to_layer(game->map_layer, texture, screen_x, screen_y);
+}
+
+static void	render_map_modal_background(t_game *game)
+{
+	int	panel_x, panel_y, panel_w, panel_h;
+	
+	// Draw full screen semi-transparent background
+	draw_rect(game->map_layer, 0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, MAP_MODAL_BG_COLOR);
+
+	// Draw panel
+	get_map_panel_bounds(&panel_x, &panel_y, &panel_w, &panel_h);
+	draw_rect(game->map_layer, panel_x, panel_y, panel_w, panel_h, MAP_MODAL_PANEL_COLOR);
+	draw_border(game->map_layer, panel_x, panel_y, panel_w, panel_h, MAP_MODAL_BORDER_THICKNESS, MAP_MODAL_BORDER_COLOR);
 }
 
 static void	render_map_tiles(t_game *game)
@@ -264,6 +363,10 @@ static void	render_map_tiles(t_game *game)
 	int		x;
 	char	tile;
 
+	// First, draw the modal background
+	render_map_modal_background(game);
+
+	// Then draw the tiles
 	y = 0;
 	while (y < game->cub_data.map.height)
 	{
@@ -282,7 +385,6 @@ static void	render_map_tiles(t_game *game)
 	}
 }
 
-// Función para limpiar la capa del jugador
 static void	clear_player_layer(t_game *game)
 {
 	unsigned int	total_pixels;
@@ -292,7 +394,7 @@ static void	clear_player_layer(t_game *game)
 	total_pixels = game->player_layer->width * game->player_layer->height;
 	pixels = (uint32_t*)game->player_layer->pixels;
 	for (i = 0; i < total_pixels; i++)
-		pixels[i] = 0x00000000; // Transparente
+		pixels[i] = 0x00000000;
 }
 
 static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
@@ -312,11 +414,15 @@ static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
 	uint32_t	*dst_pixels;
 	int			x;
 	int			y;
+	int			panel_x, panel_y, panel_w, panel_h;
 
 	texture = game->textures_2d.player;
 	layer = game->player_layer;
 	if (!texture || !layer)
 		return ;
+	
+	get_map_panel_bounds(&panel_x, &panel_y, &panel_w, &panel_h);
+
 	angle = game->cub_data.player.angle + (float)FT_PI_2;
 	cos_a = cosf(angle);
 	sin_a = sinf(angle);
@@ -357,6 +463,15 @@ static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
 				x++;
 				continue ;
 			}
+			
+			// Clipping against panel area
+			if (dest_x < panel_x || dest_x >= panel_x + panel_w ||
+						dest_y < panel_y || dest_y >= panel_y + panel_h)
+			{
+				x++;
+				continue;
+			}
+
 			rel_x = (float)x - (float)center_x;
 			rel_y = (float)y - (float)center_y;
 			src_rel_x = rel_x * cos_a + rel_y * sin_a;
@@ -387,57 +502,46 @@ static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
 
 static void	render_player(t_game *game)
 {
-	int		player_x;
-	int		player_y;
+	int	player_x;
+	int	player_y;
+	int	offset_x, offset_y;
 
-	// Limpiar la capa anterior del jugador
 	clear_player_layer(game);
 
-	// Convertir coordenadas flotantes a posición en pantalla
-	player_x = (int)(game->cub_data.player.x * TILE_SIZE) - TILE_SIZE/2;
-	player_y = (int)(game->cub_data.player.y * TILE_SIZE) - TILE_SIZE/2;
+	get_map_offset(game, &offset_x, &offset_y);
+	
+	// Convertir coordenadas flotantes a posición en pantalla + offset
+	player_x = offset_x + (int)(game->cub_data.player.x * TILE_SIZE) - TILE_SIZE/2;
+	player_y = offset_y + (int)(game->cub_data.player.y * TILE_SIZE) - TILE_SIZE/2;
 
-	// Dibujar la textura rotada del jugador en tiempo real
 	draw_rotated_player(game, player_x, player_y);
 }
 
-void	render_map_2d(t_game *game)
+void	render_map_2d_bonus(t_game *game)
 {
-	// Renderizar mapa en su capa
 	render_map_tiles(game);
-
-	// Renderizar jugador en su capa
 	render_player(game);
 }
 
-// Función para renderizado inicial completo
-void	render_map_2d_initial(t_game *game)
+void	render_map_2d_initial_bonus(t_game *game)
 {
-	// Renderizar todo el mapa por primera vez en su capa
 	render_map_tiles(game);
-
-	// Renderizar jugador inicial en su capa
 	render_player(game);
 }
 
-// Renderizar solo los tiles del mapa (se llama una sola vez)
-void	render_map_tiles_static(t_game *game)
+void	render_map_tiles_static_bonus(t_game *game)
 {
 	render_map_tiles(game);
 }
 
-// Renderizar solo el jugador (se llama cada vez que se mueve)
-void	render_player_dynamic(t_game *game)
+void	render_player_dynamic_bonus(t_game *game)
 {
-	// Solo renderizar si la posición o ángulo han cambiado significativamente
 	if (game->cub_data.player.x != game->last_player_x ||
 		game->cub_data.player.y != game->last_player_y ||
 		game->cub_data.player.angle != game->last_player_angle)
 	{
-		// Actualizar el jugador en su capa
 		render_player(game);
 		
-		// Actualizar variables de seguimiento
 		game->last_player_x = game->cub_data.player.x;
 		game->last_player_y = game->cub_data.player.y;
 		game->last_player_angle = game->cub_data.player.angle;

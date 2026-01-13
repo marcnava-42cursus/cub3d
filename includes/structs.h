@@ -212,6 +212,16 @@ typedef struct s_rayhit
 	bool			hit;
 }	t_rayhit;
 
+# ifdef BONUS
+typedef struct s_config_options
+{
+	bool	crosshair;
+	bool	minimap;
+	bool	fullscreen;
+	int		selected;
+}	t_config_options;
+# endif
+
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
@@ -267,6 +277,7 @@ typedef struct s_game
 	// Config modal UI (prototype)
 	bool		config_modal_open;
 	bool		config_modal_attached;
+	int			config_current_tab; // 0 = Settings, 1 = Controls
 	mlx_image_t	*config_modal;
 	int32_t		config_quit_x;
 	int32_t		config_quit_y;
@@ -275,6 +286,12 @@ typedef struct s_game
 	bool		config_quit_hover;
 	double		config_quit_hold_time;
 	mlx_image_t	*config_quit_label;
+	mlx_image_t	*config_option_labels[3];
+	int			config_panel_x;
+	int			config_panel_y;
+	int			config_panel_w;
+	int			config_panel_h;
+	t_config_options	config_options;
 # endif
 
 	// Debug overlay

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/22 18:54:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/06 13:03:50 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,38 @@
 # define DIR_DOWN 'v'
 # define DIR_LEFT '<'
 # define DIR_UP '^'
+
+# ifdef BONUS
+// Modal defines
+#  define CONFIG_MODAL_BG_COLOR 0x000000C0
+#  define CONFIG_MODAL_PANEL_COLOR 0x1E1E1ED0
+#  define CONFIG_MODAL_BORDER_COLOR 0xCCCCCCFF
+#  define CONFIG_MODAL_BORDER_THICKNESS 2
+
+#  define TAB_HEIGHT 40
+#  define TAB_INACTIVE_COLOR 0x333333FF
+#  define TAB_ACTIVE_COLOR 0x1E1E1ED0
+#  define TAB_BORDER_COLOR 0x999999FF
+#  define TAB_SELECTED_BORDER_COLOR 0xFFFFFFFF
+#  define TAB_SELECTED_BORDER_THICKNESS 3
+
+#  define CONFIG_MODAL_QUIT_TEXT "QUIT (Q)"
+#  define CONFIG_MODAL_QUIT_BTN_COLOR 0x555555FF
+#  define CONFIG_MODAL_QUIT_BTN_HOVER_COLOR 0x444444FF
+#  define CONFIG_MODAL_QUIT_BTN_MARGIN 24
+#  define CONFIG_MODAL_QUIT_BTN_W 160
+#  define CONFIG_MODAL_QUIT_BTN_H 52
+#  define CONFIG_MODAL_QUIT_HOLD_SECONDS 1.2
+#  define CONFIG_MODAL_QUIT_PROGRESS_COLOR 0xB33000FF
+#  define CONFIG_MODAL_QUIT_PROGRESS_THICKNESS 4
+
+#  define ICON_COLOR 0xFFFFFFFF
+#  define CONFIG_MODAL_OPTION_TOP 80
+#  define CONFIG_MODAL_OPTION_LEFT 32
+#  define CONFIG_MODAL_OPTION_RIGHT 32
+#  define CONFIG_MODAL_OPTION_LINE 40
+#  define CONFIG_MODAL_OPTION_BOX 22
+# endif
 
 typedef struct s_game t_game;
 
@@ -101,6 +133,7 @@ void	set_config_modal_visible(t_game *game, bool visible);
 void	toggle_config_modal(t_game *game);
 bool	is_config_modal_open(const t_game *game);
 void	update_config_modal(t_game *game);
+void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata);
 
 # endif
 

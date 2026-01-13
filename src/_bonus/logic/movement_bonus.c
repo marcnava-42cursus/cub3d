@@ -6,12 +6,22 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 18:57:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/06 14:26:45 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
 #include "parser.h"
+
+// Prototypes for bonus functions used
+void	render_player_dynamic_bonus(t_game *game);
+void	render_map_2d_initial_bonus(t_game *game);
+void	refresh_key_states_bonus(t_game *game);
+void	key_hook_bonus(mlx_key_data_t keydata, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
+void	cursor_hook_bonus(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_bonus(t_game *game);
 
 static int	is_elevator_char_logic(char c)
 {
@@ -132,7 +142,7 @@ void	update_player_position(t_game *game)
 	if (!game)
 		return ;
 	if (game->map_2d_visible)
-		render_player_dynamic(game);
+		render_player_dynamic_bonus(game);
 }
 
 /**
@@ -196,8 +206,8 @@ static bool	process_movement_input(t_game *game)
  */
 static void	handle_movement_rendering(t_game *game)
 {
-	int	current_grid_x;
-	int	current_grid_y;
+	int		current_grid_x;
+	int		current_grid_y;
 	char	cell;
 	double	now;
 
@@ -210,7 +220,8 @@ static void	handle_movement_rendering(t_game *game)
 	if (game->cub_data.map.grid && current_grid_y >= 0
 		&& current_grid_y < game->cub_data.map.height
 		&& current_grid_x >= 0
-		&& current_grid_x < (int)ft_strlen(game->cub_data.map.grid[current_grid_y]))
+		&& current_grid_x < (int)ft_strlen(
+			game->cub_data.map.grid[current_grid_y]))
 		cell = game->cub_data.map.grid[current_grid_y][current_grid_x];
 	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until)
 	{
@@ -254,11 +265,11 @@ void	update_game_loop_bonus(void *param)
 		update_config_modal(game);
 		return ;
 	}
-	refresh_key_states(game);
+	refresh_key_states_bonus(game);
 	if (game->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
-	mouse_rotated = process_mouse_rotation(game);
+	mouse_rotated = process_mouse_rotation_bonus(game);
 	if (moved || mouse_rotated)
 		handle_movement_rendering(game);
 }
@@ -318,13 +329,13 @@ void	init_movement_system_bonus(t_game *game)
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
-	render_map_2d_initial(game);
+	render_map_2d_initial_bonus(game);
 	print_map_2d(game);
 	print_controls();
 	init_crosshair(game);
-	mlx_key_hook(game->mlx, key_hook, game);
-	mlx_mouse_hook(game->mlx, mouse_hook, game);
-	mlx_cursor_hook(game->mlx, cursor_hook, game);
+	mlx_key_hook(game->mlx, key_hook_bonus, game);
+	mlx_mouse_hook(game->mlx, mouse_hook_bonus, game);
+	mlx_cursor_hook(game->mlx, cursor_hook_bonus, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	mlx_loop_hook(game->mlx, update_game_loop_bonus, game);
 }

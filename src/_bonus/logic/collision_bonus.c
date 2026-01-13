@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/13 20:02:21 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/06 14:12:51 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ bool	collides_with_wall_bonus(t_game *game, float x, float y)
 	i = 0;
 	while (i < 4)
 	{
-		if (is_cell_blocking_bonus(game, (int)floorf(sx[i]), (int)floorf(sy[i])))
+		if (is_cell_blocking_bonus(game, (int)floorf(sx[i]),
+				(int)floorf(sy[i])))
 			return (true);
 		i++;
 	}

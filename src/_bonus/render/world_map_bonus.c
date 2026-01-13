@@ -6,11 +6,14 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 09:02:52 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/02 09:23:55 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/24 10:25:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
+
+// Prototype for the bonus renderer
+void	render_map_2d_initial_bonus(t_game *game);
 
 static void	clear_image(mlx_image_t *img)
 {
@@ -38,7 +41,7 @@ static void	set_image_enabled(mlx_image_t *img, bool enabled)
 	}
 }
 
-bool	world_map_init(t_game *game)
+bool	world_map_init_bonus(t_game *game)
 {
 	game->map_layer = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
@@ -61,7 +64,7 @@ bool	world_map_init(t_game *game)
 	return (true);
 }
 
-void	set_map_overlay_visible(t_game *game, bool visible)
+void	set_map_overlay_visible_bonus(t_game *game, bool visible)
 {
 	if (!game || !game->mlx)
 		return ;
@@ -79,7 +82,7 @@ void	set_map_overlay_visible(t_game *game, bool visible)
 		}
 		set_image_enabled(game->map_layer, true);
 		set_image_enabled(game->player_layer, true);
-		render_map_2d_initial(game);
+		render_map_2d_initial_bonus(game);
 	}
 	else
 	{
@@ -89,9 +92,9 @@ void	set_map_overlay_visible(t_game *game, bool visible)
 	game->map_2d_visible = visible;
 }
 
-void	toggle_map_overlay(t_game *game)
+void	toggle_map_overlay_bonus(t_game *game)
 {
 	if (!game)
 		return ;
-	set_map_overlay_visible(game, !game->map_2d_visible);
+	set_map_overlay_visible_bonus(game, !game->map_2d_visible);
 }

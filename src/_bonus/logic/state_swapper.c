@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/30 19:37:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:53:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ void	place_breakable_block(t_game *game)
  *
  * This function casts a ray from the player's position in the direction
  * they're facing. If the ray hits a wall ('1'), it changes it to floor ('0').
- * After breaking the wall, it forces a re-render to show the change immediately.
+ * After breaking the wall, it forces a re-render to show the change
+ * immediately.
  *
  * @param game Game state structure
  */
@@ -177,7 +178,7 @@ void	test_break_wall_in_front(t_game *game)
 				printf("Breakable block stored in inventory!\n");
 		}
 		else if (cell == 'D' || cell == 'd')
-			cell_changed = modify_interactive_cell(game, hit.cell[0], hit.cell[1]);
+			cell_changed = modify_interactive_cell(game, hit.cell[X], hit.cell[Y]);
 		else
 			printf("Cannot break cell '%c'\n", cell);
 	}

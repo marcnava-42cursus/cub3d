@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.c                                           :+:      :+:    :+:   */
+/*   window_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/02 09:11:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2025/12/24 10:35:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-bool	window_init(t_game *game)
+// Prototypes
+bool	world_map_init_bonus(t_game *game);
+void	free_map_textures_bonus(t_game *game);
+void	minimap_init(t_game *game); // Shared
+void	minimap_free(mlx_t *mlx, t_minimap *minimap); // Shared
+
+bool	window_init_bonus(t_game *game)
 {
 	int	monitor_width;
 	int	monitor_height;
@@ -33,15 +39,15 @@ bool	window_init(t_game *game)
 	mlx_image_to_window(game->mlx, game->double_buffer[NEXT], 0, 0);
 	mlx_image_to_window(game->mlx, game->double_buffer[CURRENT], 0, 0);
 	game->resolution_scale = 0.5f;
-	if (!world_map_init(game))
+	if (!world_map_init_bonus(game))
 		return (false);
 	minimap_init(game);
 	return (true);
 }
 
-void	window_free(t_game *game)
+void	window_free_bonus(t_game *game)
 {
-	free_map_textures(game);
+	free_map_textures_bonus(game);
 	if (game->map_layer)
 		mlx_delete_image(game->mlx, game->map_layer);
 	if (game->player_layer)
@@ -52,6 +58,13 @@ void	window_free(t_game *game)
 		mlx_delete_image(game->mlx, game->double_buffer[CURRENT]);
 	if (game->crosshair)
 		mlx_delete_image(game->mlx, game->crosshair);
+
+	// Bonus specific cleanup
+	if (game->config_modal)
+		mlx_delete_image(game->mlx, game->config_modal);
+	if (game->config_quit_label)
+		mlx_delete_image(game->mlx, game->config_quit_label);
+
 	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);
 }
