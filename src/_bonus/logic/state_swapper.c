@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 17:52:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:20:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	place_breakable_block(t_game *game)
 	if (cell == '\0')
 		return ;
 	game->cub_data.map.grid[target_y][target_x] = cell;
+	game->cub_data.player.state = STATE_THROW;
 	printf("Placed breakable block at (%d, %d)\n", target_x, target_y);
 	//render_double_buffer(game);
 }
@@ -175,7 +176,10 @@ void	test_break_wall_in_front(t_game *game)
 			cell_changed = modify_interactive_cell(game,
 					hit.cell[0], hit.cell[1]);
 			if (cell_changed)
+			{
 				printf("Breakable block stored in inventory!\n");
+				game->cub_data.player.state = STATE_TAKE;
+			}
 		}
 		else if (cell == 'D' || cell == 'd')
 			cell_changed = modify_interactive_cell(game, hit.cell[X], hit.cell[Y]);
@@ -184,6 +188,6 @@ void	test_break_wall_in_front(t_game *game)
 	}
 	else
 		printf("No wall in front\n");
-	if (cell_changed)
-		render_double_buffer(game);
+	//if (cell_changed)
+	//	render_double_buffer(game);
 }

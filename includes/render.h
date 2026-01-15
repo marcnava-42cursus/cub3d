@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/13 15:09:07 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 15:47:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,29 @@
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
 
+// Render order for gameplay buffers
+typedef enum e_render_order
+{
+	CURRENT = 0,
+	NEXT = 1
+}	t_render_order;
+
+// Coordinate identifier for coordinate or dimensional arrays
+typedef enum e_coord
+{
+	X = 0,
+	Y = 1,
+	U = 2,
+	V = 3,
+	Z = 4,
+	W = 5
+}	t_coord;
+
 /*----------------------------- TEXTURE_ATLAS.C ------------------------------*/
 void		paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-				int coord[2], int current_frame[2]);
-void		paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-				int coord[2], int current_frame[2]);
+				int coord[2], unsigned int current_frame[2]);
+void		paint_hori_flip_current_frame_to_image(mlx_image_t *img,
+				t_atlas *atlas, int coord[2], unsigned int current_frame[2]);
 void		atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
 				unsigned int frame_height);
 void		atlas_free(t_atlas *atlas);

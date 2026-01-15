@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 15:17:19 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:18:30 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,12 @@ typedef enum e_orientation
 	WEST = 'W'
 }	t_orientation;
 
-// Render order for gameplay buffers
-typedef enum e_render_order
+typedef enum e_player_state
 {
-	CURRENT = 0,
-	NEXT = 1
-}	t_render_order;
-
-// Coordinate identifier for coordinate or dimensional arrays
-typedef enum e_coord
-{
-	X = 0,
-	Y = 1,
-	U = 2,
-	V = 3,
-	Z = 4,
-	W = 5
-}	t_coord;
+	STATE_NONE = 0,
+	STATE_THROW = 1,
+	STATE_TAKE = 2
+}	t_player_state;
 
 // Estructura para colores RGB
 typedef struct s_color
@@ -123,6 +112,9 @@ typedef struct s_player
 	char				inventory;
 	t_orientation		orientation;
 	t_player_textures	textures;
+	t_anim				*anims;
+	int					current_anim;
+	t_player_state		state;
 }	t_player;
 
 // Estructura para el mapa

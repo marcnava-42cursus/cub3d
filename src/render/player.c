@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/13 18:21:51 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:49:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,18 @@ static void	render_left_hand(mlx_image_t *buffer, int buffer_x_center,
 		t_atlas *atlas, t_player *player)
 {
 	int	coord[2];
-	int	current_frame[2];
 
 	coord[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 2;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
-	if (player->inventory)
-	{
-		current_frame[X] = 0;
-		current_frame[Y] = 0;
-	}
-	else
-	{
-		current_frame[X] = 2;
-		current_frame[Y] = 1;
-	}
-	paint_current_frame_to_image(buffer, atlas, coord, current_frame);
+	paint_current_frame_to_image(buffer, atlas, coord,
+			player->anims[player->current_anim].current_frame);
 }
 
 static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
 		t_atlas *atlas, t_player *player)
 {
-	int	coord[2];
-	int	current_frame[2];
+	int				coord[2];
+	unsigned int	current_frame[2];
 
 	if (!player->inventory)
 		return ;
@@ -52,8 +42,8 @@ static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
 static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
 		t_atlas *atlas)
 {
-	int	coord[2];
-	int	current_frame[2];
+	int				coord[2];
+	unsigned int	current_frame[2];
 
 	coord[X] = buffer_x_center + HAND_TEXTURE_WIDTH;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
