@@ -6,14 +6,23 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 13:28:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 15:14:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:27:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "animation.h"
 
+static void	set_frame_from_id(t_anim *anim, unsigned int id)
+{
+	unsigned int	width;
+
+	width = anim->atlas->max_frame[X];
+	anim->current_frame[X] = id % width;
+	anim->current_frame[Y] = id / width;
+}
+
 void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
-		const unsigned int *holds, bool loop)
+		const unsigned int *holds, unsigned int count, bool loop)
 {
 	anim->atlas = atlas;
 	anim->current_frame[X] = 0;
@@ -21,50 +30,49 @@ void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
 	anim->frames = frames;
 	anim->holds = holds;
 	anim->hold_left = anim->holds[0];
-	anim->count = 0;
+	anim->count = count;
 	anim->i = 0;
 	anim->time = 0.0f;
 	anim->spf = 1.0f / FPS;
 	anim->loop = loop;	
-	anim->finished = true;
+	anim->finished = false;
 }
 
-void	get_next_frame(t_anim *anim, int increment)
+void	anim_start(t_anim *anim)
 {
-	unsigned int	x;
-	unsigned int	y;
+	if (!anim || anim->count == 0)
+		return ;
 
-	x = anim->current_frame[X] + increment;
-	y = anim->current_frame[Y];
-	y += x / anim->atlas->max_frame[X];
-	x %= anim->atlas->max_frame[X];
-	y %= anim->atlas->max_frame[Y];
-	anim->current_frame[X] = x;
-	anim->current_frame[Y] = y;
+	anim->i = 0;
+	anim->time = 0.0f;
+	anim->finished = false;
+	anim->hold_left = anim->holds[0];
+	set_frame_from_id(anim, anim->frames[0]);
 }
 
-void	anim_update(t_anim *anim, float delta_time)
+bool	anim_update(t_anim *anim, float delta_time)
 {
 	if (anim->finished)
-		return ;
+		return (true);
 	anim->time += delta_time;
 	while (anim->time >= anim->spf)
 	{
 		anim->time -= anim->spf;
-		if (anim->hold_left > 0)
-			anim->hold_left--;
-		if (anim->hold_left == 0)
+		if (anim->hold_left > 1)
 		{
-			if (anim->i + i < anim_count)
-				anim->i++;
-			else if (anim->loop)
-				anim->i = 0;
-			else {
-				anim->finished = true;
-				break;
-			}
+			anim->hold_left--;
+			continue ;
+		}
+		if (anim->i + 1 < anim->count)
+			anim->i++;
+		else if (anim->loop)
+			anim->i = 0;
+		else {
+			anim->finished = true;
+			return (true);
 		}
 		anim->hold_left = anim->holds[anim->i];
-		get_next_frame(anim, anim->frames[anim->i]);
+		set_frame_from_id(anim, anim->frames[anim->i]);
 	}
+	return (anim->finished);
 }

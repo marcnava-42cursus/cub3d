@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:20:30 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 16:15:11 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 11:45:20 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "structs.h"
 # include "parser.h"
 # include "render.h"
+# include "animation.h"
 # include "logic.h"
 
 // Funciones principales del juego

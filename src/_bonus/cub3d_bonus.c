@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/24 10:40:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:39:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ int	init_game_bonus(t_game *game, const char *map_file)
 	return (1);
 }
 
+static void render_loop(void *param)
+{
+	t_game *game = (t_game *)param;
+
+	update_player_anims(&game->cub_data.player, game->mlx->delta_time);	
+	render_double_buffer(game);
+}
+
 int	run_game_bonus(t_game *game)
 {
 	printf("Game initialized successfully (BONUS)!\n");
@@ -88,9 +96,8 @@ int	run_game_bonus(t_game *game)
     set_map_overlay_visible_bonus(game, false);
 
 	// Iniciar loop de MLX
-	render_double_buffer(game);
+	mlx_loop_hook(game->mlx, render_loop, (void *)game);
 	mlx_loop(game->mlx);
-
 	return (1);
 }
 

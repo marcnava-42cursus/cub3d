@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/13 15:01:43 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:22:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,22 @@
 
 # define FPS 12.0f
 
+typedef enum e_player_anim
+{
+	ANIM_EMPTY = 0,
+	ANIM_TAKE = 1,
+	ANIM_HOLD = 2,
+	ANIM_THROW = 3
+}	t_player_anim;
+
 /*-------------------------------- ANIM.C ------------------------------------*/
-void	get_next_frame(t_anim *anim, int increment);
-void	anim_update(t_anim *anim, float delta_time);
-void	anim_init(t_anim *anim, const unsigned int *frames,
-			const unsigned int *holds, bool loop, unsigned int fps);
+void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
+		const unsigned int *holds, unsigned int count, bool loop);
+void	anim_start(t_anim *anim);
+bool	anim_update(t_anim *anim, float delta_time);
 
 /*----------------------------- PLAYER_ANIM.C --------------------------------*/
-void	init_empty_left_hand(t_game *game, int start_pos[2], xpm_t **frames);
+void	init_player_anims(t_player *player);
+void	update_player_anims(t_player *player, float delta_time);
+void	free_player_anims(t_player *player);
 #endif

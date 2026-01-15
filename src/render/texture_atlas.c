@@ -6,14 +6,14 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 11:23:30 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 18:07:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 13:43:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
 void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-		int coord[2], int current_frame[2])
+		int coord[2], unsigned int current_frame[2])
 {
 	uint8_t			*pixel_start;
 	uint8_t			*row;
@@ -40,7 +40,7 @@ void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 }
 
 void	paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-		int coord[2], int current_frame[2])
+		int coord[2], unsigned int current_frame[2])
 {
 	uint8_t			*pixel_start;
 	uint8_t			*row;

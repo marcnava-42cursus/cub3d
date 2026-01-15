@@ -6,13 +6,14 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 15:26:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 11:49:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 //temporary
 #include "render.h"
+#include "animation.h"
 
 void	free_map(t_map *map)
 {
@@ -86,6 +87,7 @@ void	free_cub_data(t_cub_data *data)
 	atlas_free(&data->player.textures.hand);
 	atlas_free(&data->player.textures.thumb);
 	atlas_free(&data->player.textures.weapon);
+	free_player_anims(&data->player);
 }
 
 void	free_lines(char **lines, int line_count)

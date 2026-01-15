@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 14:26:45 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:03:20 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ static void	handle_movement_rendering(t_game *game)
 	}
 	if (game->map_2d_visible)
 		update_player_position(game);
-	render_double_buffer(game);
+	//render_double_buffer(game);
 	handle_debug_map_update(game, current_grid_x, current_grid_y);
 }
 
