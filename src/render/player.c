@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 13:49:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:01:16 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
 	int				coord[2];
 	unsigned int	current_frame[2];
 
-	if (!player->inventory)
+	if (player->state != STATE_HOLD || !player->inventory)
 		return ;
 	coord[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 1.7;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:16:11 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 16:43:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:06:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	init_player_anims(t_player *player)
 {
 	static const unsigned int	empty_frames[1] = {5};
 	static const unsigned int	empty_holds[1] = {1};
-	static const unsigned int	take_frames[3] =  {4, 6, 8};
-	static const unsigned int	take_holds[3] =  {1, 1, 1};
+	static const unsigned int	take_frames[4] =  {4, 6, 7, 8};
+	static const unsigned int	take_holds[4] =  {2, 1, 4, 1};
 	static const unsigned int	hold_frames[1] = {0};
 	static const unsigned int	hold_holds[1] = {1};
 	static const unsigned int	throw_frames[3] = {1, 2, 3};
@@ -51,18 +51,20 @@ void	update_player_anims(t_player *player, float delta_time)
 
 	finished = anim_update(&player->anims[player->current_anim], delta_time);
 	if (finished)
-		player->state = STATE_NONE;
+	{
+		if (player->inventory)
+			player->state = STATE_HOLD;
+		else
+			player->state = STATE_EMPTY;
+	}
 	if (player->state == STATE_THROW)
 		set_player_anim(player, ANIM_THROW);
 	else if (player->state == STATE_TAKE)
 		set_player_anim(player, ANIM_TAKE);
+	else if (player->state == STATE_HOLD)
+		set_player_anim(player, ANIM_HOLD);
 	else
-	{
-		if (player->inventory)
-			set_player_anim(player, ANIM_HOLD);
-		else
-			set_player_anim(player, ANIM_EMPTY);
-	}
+		set_player_anim(player, ANIM_EMPTY);
 }
 
 void	free_player_anims(t_player *player)

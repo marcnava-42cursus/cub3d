@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 16:18:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:13:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ typedef enum e_orientation
 
 typedef enum e_player_state
 {
-	STATE_NONE = 0,
+	STATE_EMPTY = 0,
 	STATE_THROW = 1,
-	STATE_TAKE = 2
+	STATE_TAKE = 2,
+	STATE_HOLD = 3
 }	t_player_state;
 
 // Estructura para colores RGB

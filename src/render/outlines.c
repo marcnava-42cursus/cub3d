@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 16:59:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:44:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,10 @@ static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
 	if (x >= img->width)
 		return ;
-	if (slice_bounds[1] >= (int)img->height)
-		return ;
-	if (slice_bounds[0] < 0)
-		return ;
-	if (slice_bounds[0] >= slice_bounds[1])
-		return ;
-	save_pixel_to_image(img, x, slice_bounds[0], color);
-	save_pixel_to_image(img, x, slice_bounds[1], color);
+	if (slice_bounds[0] >= 0)
+		save_pixel_to_image(img, x, slice_bounds[0], color);
+	if (slice_bounds[1] < (int)img->height)
+		save_pixel_to_image(img, x, slice_bounds[1], color);
 }
 
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map)
