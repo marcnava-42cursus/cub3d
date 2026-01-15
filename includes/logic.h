@@ -18,7 +18,6 @@
 # include "render.h"
 
 # define TWO_PI (2.0f * FT_PI)
-# define MAX_DELTA_TIME 0.05
 # define MAX_MOUSE_DELTA 100.0f
 
 /* Terminal control codes */
@@ -81,7 +80,6 @@ void	cursor_hook(double xpos, double ypos, void *param);
 bool	process_mouse_rotation(t_game *game);
 
 // Timing
-void	update_delta_time(t_game *game);
 void	init_player_parameters(t_game *game);
 
 // Movement

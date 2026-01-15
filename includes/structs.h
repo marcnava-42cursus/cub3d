@@ -240,9 +240,7 @@ typedef struct s_game
 	float		last_player_angle;
 	int			last_grid_x;
 	int			last_grid_y;
-	// Timing y parámetros de movimiento
-	double		last_frame_time;
-	double		delta_time;
+	// Parámetros de movimiento
 	float		move_speed;
 	float		rot_speed;
 	float		player_radius;

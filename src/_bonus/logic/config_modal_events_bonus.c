@@ -77,7 +77,7 @@ void	update_config_modal(t_game *game)
 	game->config_quit_hover = is_quit_hovered(game, mouse_x, mouse_y);
 	holding_q = mlx_is_key_down(game->mlx, MLX_KEY_Q);
 	if (holding_q)
-		game->config_quit_hold_time += game->delta_time;
+		game->config_quit_hold_time += game->mlx->delta_time;
 	else
 		game->config_quit_hold_time = 0.0;
 	if (game->config_quit_hold_time >= CONFIG_MODAL_QUIT_HOLD_SECONDS)

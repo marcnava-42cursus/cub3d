@@ -27,10 +27,10 @@ void	rotate_player(t_game *game, bool right)
 	float	direction;
 	float	rotation_delta;
 
-	if (!game)
+	if (!game || !game->mlx)
 		return ;
 	direction = right ? 1.0f : -1.0f;
-	rotation_delta = game->rot_speed * (float)game->delta_time * direction;
+	rotation_delta = game->rot_speed * (float)game->mlx->delta_time * direction;
 	game->cub_data.player.angle += rotation_delta;
 	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 }

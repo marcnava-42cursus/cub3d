@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/10 01:14:21 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:12:07 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,6 @@ static void	handle_movement_rendering(t_game *game)
 	}
 	if (game->map_2d_visible)
 		update_player_position(game);
-	render_double_buffer(game);
 	handle_debug_map_update(game, current_grid_x, current_grid_y);
 }
 
@@ -231,10 +230,10 @@ static void	handle_movement_rendering(t_game *game)
  *
  * This function is called every frame by MLX and serves as the central
  * coordinator for the game loop. It:
- * 1. Updates delta time (from timing.c)
+ * 1. Uses MLX delta time for frame-independent movement
  * 2. Refreshes key states (from input.c)
  * 3. Processes movement input (delegates to move.c and rotation.c)
- * 4. Processes accumulated mouse rotation
+ * 4. Processes mouse rotation
  * 5. Updates rendering if movement occurred
  *
  * @param param Void pointer to game structure (casted internally)
@@ -246,11 +245,10 @@ void	update_game_loop(void *param)
 	bool	mouse_rotated;
 
 	game = (t_game *)param;
-	if (!game)
+	if (!game || !game->mlx)
 		return ;
-	update_delta_time(game);
 	refresh_key_states(game);
-	if (game->delta_time <= 0.0)
+	if (game->mlx->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
 	mouse_rotated = process_mouse_rotation(game);

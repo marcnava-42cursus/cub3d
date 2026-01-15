@@ -242,10 +242,10 @@ static void	handle_movement_rendering(t_game *game)
  *
  * This function is called every frame by MLX and serves as the central
  * coordinator for the game loop. It:
- * 1. Updates delta time (from timing.c)
+ * 1. Uses MLX delta time for frame-independent movement
  * 2. Refreshes key states (from input.c)
  * 3. Processes movement input (delegates to move.c and rotation.c)
- * 4. Processes accumulated mouse rotation
+ * 4. Processes mouse rotation
  * 5. Updates rendering if movement occurred
  *
  * @param param Void pointer to game structure (casted internally)
@@ -257,16 +257,15 @@ void	update_game_loop_bonus(void *param)
 	bool	mouse_rotated;
 
 	game = (t_game *)param;
-	if (!game)
+	if (!game || !game->mlx)
 		return ;
-	update_delta_time(game);
 	if (is_config_modal_open(game))
 	{
 		update_config_modal(game);
 		return ;
 	}
 	refresh_key_states_bonus(game);
-	if (game->delta_time <= 0.0)
+	if (game->mlx->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
 	mouse_rotated = process_mouse_rotation_bonus(game);

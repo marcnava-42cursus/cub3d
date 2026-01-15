@@ -29,10 +29,10 @@ void	move_forward(t_game *game, bool forward)
 	float	direction;
 	float	speed;
 
-	if (!game)
+	if (!game || !game->mlx)
 		return ;
 	direction = forward ? 1.0f : -1.0f;
-	speed = game->move_speed * (float)game->delta_time * direction;
+	speed = game->move_speed * (float)game->mlx->delta_time * direction;
 	new_x = cosf(game->cub_data.player.angle) * speed;
 	new_y = sinf(game->cub_data.player.angle) * speed;
 	attempt_move(game, new_x, new_y);
@@ -56,11 +56,11 @@ void	move_strafe(t_game *game, bool right)
 	float	direction;
 	float	speed;
 
-	if (!game)
+	if (!game || !game->mlx)
 		return ;
 	direction = right ? 1.0f : -1.0f;
 	strafe_angle = game->cub_data.player.angle + FT_PI_2 * direction;
-	speed = game->move_speed * (float)game->delta_time;
+	speed = game->move_speed * (float)game->mlx->delta_time;
 	new_x = cosf(strafe_angle) * speed;
 	new_y = sinf(strafe_angle) * speed;
 	attempt_move(game, new_x, new_y);
