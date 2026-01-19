@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 14:09:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:02:04 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	mouse_hook_bonus(mouse_key_t button, action_t action,
 void	cursor_hook_bonus(double xpos, double ypos, void *param)
 {
 	t_game	*game;
+	double	delta_x;
 
 	(void)ypos;
 	game = (t_game *)param;
@@ -92,32 +93,40 @@ void	cursor_hook_bonus(double xpos, double ypos, void *param)
 		return ;
 	if (is_config_modal_open(game))
 		return ;
-	(void)xpos;
+	if (!game->mlx)
+		return ;
+	if (!game->mouse_initialized)
+	{
+		game->last_mouse_x = xpos;
+		game->mouse_initialized = true;
+		return ;
+	}
+	delta_x = xpos - game->last_mouse_x;
+	game->last_mouse_x = xpos;
+	game->mouse_delta_accumulated += (float)delta_x * game->mouse_sensitivity;
 }
 
 bool	process_mouse_rotation_bonus(t_game *game)
 {
-	int32_t	mouse_x;
-	int32_t	mouse_y;
-	float	delta_x;
 	float	rotation_amount;
+	float	smoothing;
 
-	if (is_config_modal_open(game) || !game || !game->mlx)
+	if (is_config_modal_open(game) || !game)
 		return (false);
-	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
-	if (!game->mouse_initialized)
+	if (game->mouse_delta_accumulated == 0.0f)
+		return (false);
+	if (!game->mlx || game->mlx->delta_time <= 0.0)
+		return (false);
+	smoothing = MOUSE_SMOOTHING * (float)game->mlx->delta_time;
+	if (smoothing > 1.0f)
+		smoothing = 1.0f;
+	rotation_amount = game->mouse_delta_accumulated * smoothing;
+	game->mouse_delta_accumulated -= rotation_amount;
+	if (rotation_amount > -EPSILON && rotation_amount < EPSILON)
 	{
-		game->last_mouse_x = mouse_x;
-		game->mouse_initialized = true;
+		game->mouse_delta_accumulated = 0.0f;
 		return (false);
 	}
-	delta_x = (float)(mouse_x - game->last_mouse_x);
-	game->last_mouse_x = mouse_x;
-	if (delta_x > MAX_MOUSE_DELTA)
-		delta_x = MAX_MOUSE_DELTA;
-	else if (delta_x < -MAX_MOUSE_DELTA)
-		delta_x = -MAX_MOUSE_DELTA;
-	rotation_amount = delta_x * game->mouse_sensitivity;
 	game->cub_data.player.angle += rotation_amount;
 	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 	return (true);

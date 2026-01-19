@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 16:03:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:03:36 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,7 +323,7 @@ void	init_movement_system_bonus(t_game *game)
 	game->last_teleport_id = '\0';
 	game->mouse_initialized = false;
 	game->mouse_delta_accumulated = 0.0f;
-	game->mouse_sensitivity = 0.001f;
+	game->mouse_sensitivity = 0.005f;
 	game->last_mouse_x = 0.0;
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;

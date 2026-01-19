@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 13:03:50 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:02:40 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include "render.h"
 
 # define TWO_PI (2.0f * FT_PI)
-# define MAX_MOUSE_DELTA 100.0f
+# define MOUSE_SMOOTHING 10.0f
+# define EPSILON 0.0f
 
 /* Terminal control codes */
 # define ANSI_CLEAR_SCREEN "\033[2J\033[H"

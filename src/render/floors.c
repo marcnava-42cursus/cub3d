@@ -49,16 +49,75 @@ static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
 	return (floor_and_steps);
 }
 
+static xpm_t	*find_custom_floor_texture(t_custom_texture *custom, char cell)
+{
+	t_custom_texture	*current;
+	char				id[3];
+	char				faces[4];
+	int					i;
+
+	if (!custom)
+		return (NULL);
+	faces[0] = 'N';
+	faces[1] = 'S';
+	faces[2] = 'E';
+	faces[3] = 'W';
+	i = 0;
+	while (i < 4)
+	{
+		id[0] = cell;
+		id[1] = faces[i];
+		id[2] = '\0';
+		current = custom;
+		while (current)
+		{
+			if (current->texture && ft_strcmp(current->id, id) == 0)
+				return (current->texture);
+			current = current->next;
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+static xpm_t	*get_floor_texture(const t_map *map, t_textures *textures,
+		float world_x, float world_y)
+{
+	int		cell_x;
+	int		cell_y;
+	char	cell;
+	xpm_t	*custom;
+
+	if (!textures)
+		return (NULL);
+	cell_x = (int)floorf(world_x);
+	cell_y = (int)floorf(world_y);
+	if (!map || !map->grid || cell_y < 0 || cell_y >= map->height)
+		return (textures->north);
+	if (cell_x < 0 || cell_x >= (int)ft_strlen(map->grid[cell_y]))
+		return (textures->north);
+	cell = map->grid[cell_y][cell_x];
+	custom = find_custom_floor_texture(textures->custom, cell);
+	if (custom)
+		return (custom);
+	return (textures->north);
+}
+
 static void	render_floor_fill(unsigned int y, mlx_image_t *img,
-		xpm_t *xpm, vertex_t floor_and_steps)
+		const t_map *map, t_textures *textures, vertex_t floor_and_steps)
 {
 	unsigned int	x;
 	float			tile[2];
 	int				t[2];
+	xpm_t			*xpm;
 
 	x = 0;
 	while (x < img->width)
 	{
+		xpm = get_floor_texture(map, textures, floor_and_steps.x,
+				floor_and_steps.y);
+		if (!xpm)
+			return ;
 		tile[X] = floor_and_steps.x;
 		tile[Y] = floor_and_steps.y;
 		t[X] = (int)((tile[X] - floorf(tile[X])) * xpm->texture.width)
@@ -85,8 +144,8 @@ void	render_floors(t_game *game)
 	{
 		floor_and_steps = get_floor_ray_steps(&game->cub_data.player, ray_dir,
 				game->double_buffer[NEXT], i);
-		render_floor_fill(i, game->double_buffer[NEXT],
-			game->cub_data.textures.north, floor_and_steps);
+		render_floor_fill(i, game->double_buffer[NEXT], &game->cub_data.map,
+			&game->cub_data.textures, floor_and_steps);
 		i++;
 	}
 	free(ray_dir);

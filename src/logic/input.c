@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 13:55:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:00:41 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
 /**
  * @brief Callback for mouse cursor movement
  *
- * Mouse input is sampled once per frame in the game loop to avoid
- * accumulating OS-level cursor events and causing jitter.
+ * Mouse input accumulates deltas from cursor events and is applied
+ * once per frame with smoothing to reduce jitter on slow frames.
  *
  * @param xpos Current X position of the cursor
  * @param ypos Current Y position of the cursor (unused)
@@ -84,45 +84,53 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
  */
 void	cursor_hook(double xpos, double ypos, void *param)
 {
+	t_game	*game;
+	double	delta_x;
+
 	(void)ypos;
-	(void)xpos;
-	(void)param;
+	game = (t_game *)param;
+	if (!game || !game->mlx)
+		return ;
+	if (!game->mouse_initialized)
+	{
+		game->last_mouse_x = xpos;
+		game->mouse_initialized = true;
+		return ;
+	}
+	delta_x = xpos - game->last_mouse_x;
+	game->last_mouse_x = xpos;
+	game->mouse_delta_accumulated += (float)delta_x * game->mouse_sensitivity;
 }
 
 /**
- * @brief Processes per-frame mouse movement and applies rotation
+ * @brief Processes accumulated mouse movement and applies rotation
  *
- * This function is called once per frame to apply mouse movement as
- * rotation, keeping input synced with keyboard movement.
+ * This function is called once per frame to apply all accumulated mouse
+ * movement as rotation. This ensures smooth synchronized rotation with
+ * keyboard movement.
  *
  * @param game Pointer to the game structure
  * @return bool True if the mouse rotated the camera
  */
 bool	process_mouse_rotation(t_game *game)
 {
-	int32_t	mouse_x;
-	int32_t	mouse_y;
-	float	delta_x;
 	float	rotation_amount;
+	float	smoothing;
 
-	if (!game || !game->mlx)
+	if (!game || !game->mlx || game->mouse_delta_accumulated == 0.0f)
 		return (false);
-	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
-	if (!game->mouse_initialized)
+	if (game->mlx->delta_time <= 0.0)
+		return (false);
+	smoothing = MOUSE_SMOOTHING * (float)game->mlx->delta_time;
+	if (smoothing > 1.0f)
+		smoothing = 1.0f;
+	rotation_amount = game->mouse_delta_accumulated * smoothing;
+	game->mouse_delta_accumulated -= rotation_amount;
+	if (rotation_amount > -EPSILON && rotation_amount < EPSILON)
 	{
-		game->last_mouse_x = mouse_x;
-		game->mouse_initialized = true;
+		game->mouse_delta_accumulated = 0.0f;
 		return (false);
 	}
-	delta_x = (float)(mouse_x - game->last_mouse_x);
-	game->last_mouse_x = mouse_x;
-	if (delta_x > MAX_MOUSE_DELTA)
-		delta_x = MAX_MOUSE_DELTA;
-	else if (delta_x < -MAX_MOUSE_DELTA)
-		delta_x = -MAX_MOUSE_DELTA;
-	if (delta_x == 0.0f)
-		return (false);
-	rotation_amount = delta_x * game->mouse_sensitivity;
 	game->cub_data.player.angle += rotation_amount;
 	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 	return (true);

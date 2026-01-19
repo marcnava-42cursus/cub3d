@@ -2,6 +2,14 @@ NO ./assets/textures/floors/f3.xpm42
 SO ./assets/textures/floors/f3.xpm42
 WE ./assets/textures/floors/f3.xpm42
 EA ./assets/textures/floors/f3.xpm42
+"N ./assets/textures/floors/f2.xpm42
+"S ./assets/textures/floors/f2.xpm42
+"W ./assets/textures/floors/f2.xpm42
+"E ./assets/textures/floors/f2.xpm42
+$N ./assets/textures/floors/f4.xpm42
+$S ./assets/textures/floors/f4.xpm42
+$W ./assets/textures/floors/f4.xpm42
+$E ./assets/textures/floors/f4.xpm42
 
 UP ./maps/floors/f4.cub
 DOWN ./maps/floors/f2.cub
