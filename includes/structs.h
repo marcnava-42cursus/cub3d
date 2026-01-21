@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 18:13:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/15 20:54:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,10 @@ typedef struct s_player
 	char				inventory;
 	t_orientation		orientation;
 	t_player_textures	textures;
-	t_anim				*anims;
-	int					current_anim;
+	t_anim				*left_hand_anims;
+	t_anim				*right_hand_anims;
+	int					current_left_hand_anim;
+	int					current_right_hand_anim;
 	t_player_state		state;
 }	t_player;
 

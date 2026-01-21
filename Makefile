@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/15 11:51:07 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/15 20:39:31 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -151,6 +151,8 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/config_modal_options_state_bonus.c \
 				$(SRCPATH)/_bonus/logic/state_swapper.c \
 				$(SRCPATH)/animation/anim.c \
+				$(SRCPATH)/animation/player_left_hand_anims.c \
+				$(SRCPATH)/animation/player_right_hand_anims.c \
 				$(SRCPATH)/animation/player_anim.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
