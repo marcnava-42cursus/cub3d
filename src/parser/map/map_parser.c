@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 static int	calculate_map_width(char **lines, int start, int end)
 {

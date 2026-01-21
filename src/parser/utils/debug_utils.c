@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 static void	print_colors(const t_cub_data *data)
 {

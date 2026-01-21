@@ -20,8 +20,27 @@
 # include <string.h>
 # include <math.h>
 
-# include "structs.h"
 # include "libft.h"
+
+// Estructura para colores RGB
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+// Estructura para el mapa
+typedef struct s_map
+{
+	char	**grid;
+	int		width;
+	int		height;
+}	t_map;
+
+typedef struct s_cub_data	t_cub_data;
+typedef struct s_textures	t_textures;
+typedef struct s_player	t_player;
 
 // Parser principal
 int		parse_cub_file(const char *filename, t_cub_data *data);

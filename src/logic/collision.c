@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "structs.h"
 
 bool	is_cell_blocking(t_game *game, int cell_x, int cell_y)
 {

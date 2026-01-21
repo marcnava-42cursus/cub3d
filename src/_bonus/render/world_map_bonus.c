@@ -27,7 +27,7 @@ static void	clear_image(mlx_image_t *img)
 	}
 }
 
-static void	set_image_enabled(mlx_image_t *img, bool enabled)
+static void	map_set_image_enabled(mlx_image_t *img, bool enabled)
 {
 	size_t	i;
 
@@ -80,14 +80,14 @@ void	set_map_overlay_visible_bonus(t_game *game, bool visible)
 			if (mlx_image_to_window(game->mlx, game->player_layer, 0, 0) >= 0)
 				game->player_layer_attached = true;
 		}
-		set_image_enabled(game->map_layer, true);
-		set_image_enabled(game->player_layer, true);
+		map_set_image_enabled(game->map_layer, true);
+		map_set_image_enabled(game->player_layer, true);
 		render_map_2d_initial_bonus(game);
 	}
 	else
 	{
-		set_image_enabled(game->map_layer, false);
-		set_image_enabled(game->player_layer, false);
+		map_set_image_enabled(game->map_layer, false);
+		map_set_image_enabled(game->player_layer, false);
 	}
 	game->map_2d_visible = visible;
 }

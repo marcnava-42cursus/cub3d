@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config_modal_bonus.h"
+#include "config_bonus.h"
+#include "structs.h"
+#include "logic.h"
 
 static bool	is_quit_hovered(t_game *game, int32_t mouse_x, int32_t mouse_y)
 {
@@ -68,6 +70,7 @@ void	update_config_modal(t_game *game)
 	int32_t	mouse_x;
 	int32_t	mouse_y;
 	bool	holding_q;
+	bool	dragging;
 
 	if (!game || !game->mlx || !game->config_modal_open)
 		return ;
@@ -85,6 +88,13 @@ void	update_config_modal(t_game *game)
 		mlx_close_window(game->mlx);
 		return ;
 	}
+	dragging = config_option_drag_update(game, mouse_x, mouse_y,
+			mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT));
+	if (dragging)
+	{
+		draw_modal_layout(game);
+		return ;
+	}
 	render_quit_button(game);
 }
 
@@ -94,22 +104,41 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 		return ;
 	if (keydata.action != MLX_PRESS)
 		return ;
+	if (config_controls_handle_key(game, keydata))
+		return ;
 	if (keydata.key == MLX_KEY_LEFT && game->config_current_tab > 0)
 	{
 		game->config_current_tab--;
+		config_controls_cancel_rebind();
 		draw_modal_layout(game);
 	}
 	else if (keydata.key == MLX_KEY_RIGHT && game->config_current_tab < 1)
 	{
 		game->config_current_tab++;
+		config_controls_cancel_rebind();
 		draw_modal_layout(game);
 	}
 	if (game->config_current_tab != 0)
+	{
+		if (keydata.key == MLX_KEY_UP)
+			config_controls_select(game, -1);
+		else if (keydata.key == MLX_KEY_DOWN)
+			config_controls_select(game, 1);
+		else if (keydata.key == MLX_KEY_ENTER
+			|| keydata.key == MLX_KEY_KP_ENTER
+			|| keydata.key == MLX_KEY_SPACE)
+			config_controls_begin_rebind(game);
 		return ;
+	}
 	if (keydata.key == MLX_KEY_UP)
 		config_option_select(game, -1);
 	else if (keydata.key == MLX_KEY_DOWN)
 		config_option_select(game, 1);
-	else if (keydata.key == MLX_KEY_ENTER || keydata.key == MLX_KEY_KP_ENTER)
+	else if (keydata.key == MLX_KEY_ENTER || keydata.key == MLX_KEY_KP_ENTER
+		|| keydata.key == MLX_KEY_SPACE)
 		config_option_toggle(game, game->config_options.selected);
+	else if (keydata.key == MLX_KEY_A)
+		config_option_adjust(game, -1);
+	else if (keydata.key == MLX_KEY_D)
+		config_option_adjust(game, 1);
 }

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "config_bonus.h"
 #include <string.h>
 
 // Prototypes for bonus functions
@@ -35,6 +36,7 @@ void	cleanup_game_bonus(t_game *game)
 
 int	init_game_bonus(t_game *game, const char *map_file)
 {
+	config_options_init(game);
 	// Parsear el archivo .cub (Bonus)
 	if (!parse_cub_file_bonus(map_file, &game->cub_data))
 	{
@@ -55,20 +57,10 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		game->cub_data.current_floor->textures_loaded = true;
 	}
 
-	// Mostrar datos parseados (para debugging)
-	print_cub_data(&game->cub_data);
-
 	// Inicializar ventana MLX (Bonus version)
 	if (!window_init_bonus(game))
 	{
 		printf("Error: Failed to initialize window\n");
-		return (0);
-	}
-
-	// Cargar texturas 2D (Bonus)
-	if (!load_map_textures_bonus(game))
-	{
-		printf("Error: Failed to load textures\n");
 		return (0);
 	}
 
@@ -85,15 +77,8 @@ static void render_loop(void *param)
 
 int	run_game_bonus(t_game *game)
 {
-	printf("Game initialized successfully (BONUS)!\n");
-	printf("Map size: %dx%d\n", game->cub_data.map.width, game->cub_data.map.height);
-	printf("Player at (%.2f, %.2f) facing %c\n", 
-		game->cub_data.player.x, game->cub_data.player.y, game->cub_data.player.orientation);
-
     // Inicializar sistema de movimiento (Bonus)
     init_movement_system_bonus(game);
-    // Por defecto, mantener oculto el overlay 2D; tecla 'M' lo alterna
-    set_map_overlay_visible_bonus(game, false);
 
 	// Iniciar loop de MLX
 	mlx_loop_hook(game->mlx, render_loop, (void *)game);

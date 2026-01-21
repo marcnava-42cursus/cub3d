@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 static char	*find_path_start(char *trimmed, const char *identifier)
 {

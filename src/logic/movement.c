@@ -6,11 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 16:46:29 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:11:03 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "render.h"
+#include "structs.h"
 #include "parser.h"
 
 static int	is_elevator_char_logic(char c)
@@ -196,8 +198,8 @@ static bool	process_movement_input(t_game *game)
  */
 static void	handle_movement_rendering(t_game *game)
 {
-	int	current_grid_x;
-	int	current_grid_y;
+	int		current_grid_x;
+	int		current_grid_y;
 	char	cell;
 	double	now;
 
@@ -210,7 +212,8 @@ static void	handle_movement_rendering(t_game *game)
 	if (game->cub_data.map.grid && current_grid_y >= 0
 		&& current_grid_y < game->cub_data.map.height
 		&& current_grid_x >= 0
-		&& current_grid_x < (int)ft_strlen(game->cub_data.map.grid[current_grid_y]))
+		&& current_grid_x < (int)ft_strlen(
+			game->cub_data.map.grid[current_grid_y]))
 		cell = game->cub_data.map.grid[current_grid_y][current_grid_x];
 	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until)
 	{
@@ -222,7 +225,6 @@ static void	handle_movement_rendering(t_game *game)
 	}
 	if (game->map_2d_visible)
 		update_player_position(game);
-	handle_debug_map_update(game, current_grid_x, current_grid_y);
 }
 
 /**
@@ -311,9 +313,6 @@ void	init_movement_system(t_game *game)
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
-	render_map_2d_initial(game);
-	print_map_2d(game);
-	print_controls();
 	init_crosshair(game);
 	mlx_key_hook(game->mlx, key_hook, game);
 	mlx_mouse_hook(game->mlx, mouse_hook, game);

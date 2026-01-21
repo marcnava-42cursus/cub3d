@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 static void	print_path(char *orientation, char *path)
 {

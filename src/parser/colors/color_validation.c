@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 int	validate_rgb_values(int r, int g, int b)
 {

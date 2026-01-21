@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config_modal_bonus.h"
+#include "config_bonus.h"
+#include "structs.h"
+#include "logic.h"
 
 void	draw_border(mlx_image_t *img, t_border border)
 {
@@ -28,6 +30,29 @@ void	draw_border(mlx_image_t *img, t_border border)
 	draw_rect(img, rect, border.color);
 	rect.x = border.area.x + border.area.w - border.thickness;
 	draw_rect(img, rect, border.color);
+}
+
+void	draw_bevel_border(mlx_image_t *img, t_border border, uint32_t light,
+			uint32_t dark)
+{
+	t_rect	rect;
+
+	if (border.thickness <= 0)
+		return ;
+	rect = border.area;
+	rect.h = border.thickness;
+	draw_rect(img, rect, light);
+	rect = border.area;
+	rect.w = border.thickness;
+	draw_rect(img, rect, light);
+	rect = border.area;
+	rect.y = border.area.y + border.area.h - border.thickness;
+	rect.h = border.thickness;
+	draw_rect(img, rect, dark);
+	rect = border.area;
+	rect.x = border.area.x + border.area.w - border.thickness;
+	rect.w = border.thickness;
+	draw_rect(img, rect, dark);
 }
 
 static void	draw_progress_edge(mlx_image_t *img, t_border border, int edge,

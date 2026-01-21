@@ -35,9 +35,6 @@ int	init_game(t_game *game, const char *map_file)
 		game->cub_data.current_floor->textures_loaded = true;
 	}
 
-	// Mostrar datos parseados (para debugging)
-	print_cub_data(&game->cub_data);
-
 	// Inicializar ventana MLX
 	if (!window_init(game))
 	{
@@ -71,16 +68,8 @@ void	cleanup_game(t_game *game)
 
 int	run_game(t_game *game)
 {
-	// Por ahora solo muestra que el parsing fue exitoso
-	printf("Game initialized successfully!\n");
-	printf("Map size: %dx%d\n", game->cub_data.map.width, game->cub_data.map.height);
-	printf("Player at (%.2f, %.2f) facing %c\n", 
-		game->cub_data.player.x, game->cub_data.player.y, game->cub_data.player.orientation);
-
     // Inicializar sistema de movimiento
     init_movement_system(game);
-    // Por defecto, mantener oculto el overlay 2D; tecla 'M' lo alterna
-    set_map_overlay_visible(game, false);
 
 	// Iniciar loop de MLX
 	// Aquí iría el game loop principal

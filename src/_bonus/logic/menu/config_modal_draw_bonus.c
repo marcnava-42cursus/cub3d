@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config_modal_bonus.h"
+#include "config_bonus.h"
+#include "structs.h"
+#include "logic.h"
 
 t_rect	rect_make(int x, int y, int w, int h)
 {
@@ -88,6 +90,43 @@ void	draw_rect(mlx_image_t *img, t_rect rect, uint32_t color)
 	yy = 0;
 	while (yy < rect.h)
 	{
+		row = &img->pixels[((rect.y + yy) * img->width + rect.x) * 4];
+		fill_row(row, channels, rect.w);
+		yy++;
+	}
+}
+
+void	draw_vertical_gradient(mlx_image_t *img, t_rect rect,
+			uint32_t top_color, uint32_t bottom_color)
+{
+	int		yy;
+	float	t;
+	uint8_t	channels[4];
+	uint8_t	top[4];
+	uint8_t	bot[4];
+	uint8_t	*row;
+
+	if (!clamp_rect(img, &rect))
+		return ;
+	top[0] = (uint8_t)(top_color >> 24);
+	top[1] = (uint8_t)(top_color >> 16);
+	top[2] = (uint8_t)(top_color >> 8);
+	top[3] = (uint8_t)top_color;
+	bot[0] = (uint8_t)(bottom_color >> 24);
+	bot[1] = (uint8_t)(bottom_color >> 16);
+	bot[2] = (uint8_t)(bottom_color >> 8);
+	bot[3] = (uint8_t)bottom_color;
+	yy = 0;
+	while (yy < rect.h)
+	{
+		if (rect.h == 1)
+			t = 0.0f;
+		else
+			t = (float)yy / (float)(rect.h - 1);
+		channels[0] = (uint8_t)(top[0] + (bot[0] - top[0]) * t);
+		channels[1] = (uint8_t)(top[1] + (bot[1] - top[1]) * t);
+		channels[2] = (uint8_t)(top[2] + (bot[2] - top[2]) * t);
+		channels[3] = (uint8_t)(top[3] + (bot[3] - top[3]) * t);
 		row = &img->pixels[((rect.y + yy) * img->width + rect.x) * 4];
 		fill_row(row, channels, rect.w);
 		yy++;

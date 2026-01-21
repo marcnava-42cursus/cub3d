@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config_modal_bonus.h"
+#include "config_bonus.h"
+#include "render.h"
+#include "structs.h"
+#include "logic.h"
 
 static bool	ensure_config_modal_ready(t_game *game)
 {
@@ -70,6 +73,8 @@ void	set_config_modal_visible(t_game *game, bool visible)
 	game->config_modal_open = false;
 	clear_input_state(game);
 	hide_settings_options(game);
+	hide_controls_options(game);
+	config_controls_cancel_rebind();
 	set_image_enabled(game->config_modal, false);
 	set_image_enabled(game->config_quit_label, false);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);

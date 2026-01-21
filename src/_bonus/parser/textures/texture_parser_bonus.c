@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 int	is_texture_identifier_bonus(const char *line)
 {

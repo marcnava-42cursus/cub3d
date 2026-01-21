@@ -6,11 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 12:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 15:19:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:13:49 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "render.h"
+#include "structs.h"
 
 /**
  * @brief Gets the character representing player direction based on angle
@@ -169,7 +171,8 @@ void	print_player_position_inline(t_game *game, int grid_x, int grid_y)
 			game->cub_data.player.angle, 1000.0f);
 	if (hit.hit)
 	{
-		block_char = get_cell_char(&game->cub_data.map, hit.cell[0], hit.cell[1]);
+		block_char = get_cell_char(&game->cub_data.map,
+				hit.cell[0], hit.cell[1]);
 		printf("Player: (%.2f, %.2f) - Grid: (%d, %d) - Angle: %.2f - Looking at: %c (%d, %d)\r",
 			game->cub_data.player.x, game->cub_data.player.y,
 			grid_x, grid_y, game->cub_data.player.angle,

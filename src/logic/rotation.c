@@ -6,11 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/02 21:34:52 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:10:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "structs.h"
+#include "render.h"
 
 /**
  * @brief Rotates the player's camera view left or right
@@ -27,9 +29,11 @@ void	rotate_player(t_game *game, bool right)
 	float	direction;
 	float	rotation_delta;
 
+	direction = -1.0f;
 	if (!game || !game->mlx)
 		return ;
-	direction = right ? 1.0f : -1.0f;
+	if (right)
+		direction = 1.0f;
 	rotation_delta = game->rot_speed * (float)game->mlx->delta_time * direction;
 	game->cub_data.player.angle += rotation_delta;
 	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);

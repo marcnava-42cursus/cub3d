@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 //temporary
 #include "render.h"
 #include "animation.h"

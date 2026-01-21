@@ -13,9 +13,25 @@
 #ifndef LOGIC_H
 # define LOGIC_H
 
-# include "structs.h"
+# include <stdbool.h>
+# include "MLX42/MLX42.h"
 # include "libft.h"
-# include "render.h"
+
+// Orientaciones del jugador
+typedef enum e_orientation
+{
+	NORTH = 'N',
+	SOUTH = 'S',
+	EAST = 'E',
+	WEST = 'W'
+}	t_orientation;
+
+typedef enum e_player_state
+{
+	STATE_NONE = 0,
+	STATE_THROW = 1,
+	STATE_TAKE = 2
+}	t_player_state;
 
 # define TWO_PI (2.0f * FT_PI)
 # define MOUSE_SMOOTHING 10.0f
@@ -38,39 +54,8 @@
 # define DIR_LEFT '<'
 # define DIR_UP '^'
 
-# ifdef BONUS
-// Modal defines
-#  define CONFIG_MODAL_BG_COLOR 0x000000C0
-#  define CONFIG_MODAL_PANEL_COLOR 0x1E1E1ED0
-#  define CONFIG_MODAL_BORDER_COLOR 0xCCCCCCFF
-#  define CONFIG_MODAL_BORDER_THICKNESS 2
-
-#  define TAB_HEIGHT 40
-#  define TAB_INACTIVE_COLOR 0x333333FF
-#  define TAB_ACTIVE_COLOR 0x1E1E1ED0
-#  define TAB_BORDER_COLOR 0x999999FF
-#  define TAB_SELECTED_BORDER_COLOR 0xFFFFFFFF
-#  define TAB_SELECTED_BORDER_THICKNESS 3
-
-#  define CONFIG_MODAL_QUIT_TEXT "QUIT (Q)"
-#  define CONFIG_MODAL_QUIT_BTN_COLOR 0x555555FF
-#  define CONFIG_MODAL_QUIT_BTN_HOVER_COLOR 0x444444FF
-#  define CONFIG_MODAL_QUIT_BTN_MARGIN 24
-#  define CONFIG_MODAL_QUIT_BTN_W 160
-#  define CONFIG_MODAL_QUIT_BTN_H 52
-#  define CONFIG_MODAL_QUIT_HOLD_SECONDS 1.2
-#  define CONFIG_MODAL_QUIT_PROGRESS_COLOR 0xB33000FF
-#  define CONFIG_MODAL_QUIT_PROGRESS_THICKNESS 4
-
-#  define ICON_COLOR 0xFFFFFFFF
-#  define CONFIG_MODAL_OPTION_TOP 80
-#  define CONFIG_MODAL_OPTION_LEFT 32
-#  define CONFIG_MODAL_OPTION_RIGHT 32
-#  define CONFIG_MODAL_OPTION_LINE 40
-#  define CONFIG_MODAL_OPTION_BOX 22
-# endif
-
 typedef struct s_game t_game;
+typedef struct s_player t_player;
 
 // Input
 void	refresh_key_states(t_game *game);

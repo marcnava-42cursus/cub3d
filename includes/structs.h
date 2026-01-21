@@ -15,33 +15,12 @@
 
 # include "MLX42/MLX42.h"
 # include "MLX42/MLX42_Int.h"
+# include "logic.h"
+# include "parser.h"
 
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
 
-// Orientaciones del jugador
-typedef enum e_orientation
-{
-	NORTH = 'N',
-	SOUTH = 'S',
-	EAST = 'E',
-	WEST = 'W'
-}	t_orientation;
-
-typedef enum e_player_state
-{
-	STATE_NONE = 0,
-	STATE_THROW = 1,
-	STATE_TAKE = 2
-}	t_player_state;
-
-// Estructura para colores RGB
-typedef struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
 
 // Forward declaration for custom texture entries
 typedef struct s_custom_texture	t_custom_texture;
@@ -116,14 +95,6 @@ typedef struct s_player
 	int					current_anim;
 	t_player_state		state;
 }	t_player;
-
-// Estructura para el mapa
-typedef struct s_map
-{
-	char	**grid;
-	int		width;
-	int		height;
-}	t_map;
 
 // Floor node for bonus multi-level maps
 typedef struct s_floor
@@ -205,13 +176,7 @@ typedef struct s_rayhit
 }	t_rayhit;
 
 # ifdef BONUS
-typedef struct s_config_options
-{
-	bool	crosshair;
-	bool	minimap;
-	bool	fullscreen;
-	int		selected;
-}	t_config_options;
+#  include "config_bonus.h"
 # endif
 
 // Estructura principal del juego que contiene TODOS los datos

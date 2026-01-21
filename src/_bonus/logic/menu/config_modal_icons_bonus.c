@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config_modal_bonus.h"
+#include "config_bonus.h"
+#include "structs.h"
+#include "logic.h"
 
 static void	draw_gear_ring(mlx_image_t *img, t_icon icon, int outer, int inner)
 {
@@ -39,12 +41,14 @@ void	draw_settings_icon(mlx_image_t *img, t_icon icon)
 	int	outer;
 	int	inner;
 	int	tooth;
+	int	core;
 
 	if (!img || icon.size <= 0)
 		return ;
 	outer = icon.size / 2;
 	inner = icon.size / 4;
 	tooth = outer / 2;
+	core = inner / 2;
 	draw_gear_ring(img, icon, outer, inner);
 	draw_rect(img, rect_make(icon.cx - tooth / 2, icon.cy - outer - 2,
 			tooth, icon.size / 4), icon.color);
@@ -54,6 +58,8 @@ void	draw_settings_icon(mlx_image_t *img, t_icon icon)
 			icon.size / 4, tooth), icon.color);
 	draw_rect(img, rect_make(icon.cx + outer - 2, icon.cy - tooth / 2,
 			icon.size / 4, tooth), icon.color);
+	draw_rect(img, rect_make(icon.cx - core / 2, icon.cy - core / 2,
+			core, core), icon.color);
 }
 
 void	draw_controls_icon(mlx_image_t *img, t_icon icon)
@@ -72,8 +78,18 @@ void	draw_controls_icon(mlx_image_t *img, t_icon icon)
 	pad_size = h / 3;
 	btn = h / 5;
 	draw_rect(img, body, icon.color);
+	draw_rect(img, rect_make(body.x - w / 6, body.y + h / 4,
+			w / 6, h / 2), icon.color);
+	draw_rect(img, rect_make(body.x + w, body.y + h / 4,
+			w / 6, h / 2), icon.color);
 	draw_rect(img, rect_make(body.x + w / 4 - pad_size / 2,
 			body.y + h / 2 - pad_size / 2, pad_size, pad_size), 0x000000FF);
+	draw_rect(img, rect_make(body.x + w / 4 - pad_size / 2,
+			body.y + h / 2 - pad_size / 6, pad_size, pad_size / 3),
+		0x000000FF);
+	draw_rect(img, rect_make(body.x + w / 4 - pad_size / 6,
+			body.y + h / 2 - pad_size / 2, pad_size / 3, pad_size),
+		0x000000FF);
 	draw_rect(img, rect_make(body.x + 3 * w / 4, body.y + h / 2 - btn,
 			btn, btn), 0x000000FF);
 	draw_rect(img, rect_make(body.x + 3 * w / 4 - btn * 3 / 2,

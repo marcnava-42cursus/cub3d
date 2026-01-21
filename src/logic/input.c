@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "structs.h"
 
 /**
  * @brief Refreshes the state of all movement and rotation keys

@@ -6,11 +6,12 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 15:27:33 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:06:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 void	init_cub_data(t_cub_data *data);
 void	init_cub_data_parser_only(t_cub_data *data);
@@ -87,7 +88,8 @@ int	process_file_data(char **lines, int line_count, t_cub_data *data)
 	}
 	if (!parse_elements(lines, map_start, data))
 	{
-		printf("Error: Failed parsing elements (textures/colors/links) before map\n");
+		printf("Error: Failed parsing elements ");
+		printf("(textures/colors/links) before map\n");
 		return (0);
 	}
 	apply_default_colors(data);

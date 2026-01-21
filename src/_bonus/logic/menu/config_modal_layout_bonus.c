@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "config_modal_bonus.h"
+#include "config_bonus.h"
+#include "structs.h"
+#include "logic.h"
 
 static void	draw_tab_icons(t_game *game, t_rect panel, int tab_w)
 {
@@ -19,10 +21,15 @@ static void	draw_tab_icons(t_game *game, t_rect panel, int tab_w)
 	icon.cx = panel.x + tab_w / 2;
 	icon.cy = panel.y + TAB_HEIGHT / 2;
 	icon.size = 24;
-	icon.color = ICON_COLOR;
+	icon.color = CONFIG_MODAL_MUTED_TEXT_COLOR;
+	if (game->config_current_tab == 0)
+		icon.color = CONFIG_MODAL_ACCENT_COLOR;
 	draw_settings_icon(game->config_modal, icon);
 	icon.cx = panel.x + tab_w + tab_w / 2;
 	icon.size = 32;
+	icon.color = CONFIG_MODAL_MUTED_TEXT_COLOR;
+	if (game->config_current_tab == 1)
+		icon.color = CONFIG_MODAL_ACCENT_COLOR;
 	draw_controls_icon(game->config_modal, icon);
 }
 
@@ -32,6 +39,7 @@ static void	draw_tabs(t_game *game, t_rect panel)
 	int			i;
 	uint32_t	color;
 	t_border	border;
+	t_rect		indicator;
 
 	tab_w = panel.w / 2;
 	i = 0;
@@ -46,6 +54,13 @@ static void	draw_tabs(t_game *game, t_rect panel)
 				tab_w, TAB_HEIGHT);
 		draw_rect(game->config_modal, border.area, color);
 		draw_border(game->config_modal, border);
+		if (game->config_current_tab == i)
+		{
+			indicator = rect_make(border.area.x,
+					border.area.y + TAB_HEIGHT - 3, tab_w, 3);
+			draw_rect(game->config_modal, indicator,
+				CONFIG_MODAL_ACCENT_COLOR);
+		}
 		i++;
 	}
 	draw_tab_icons(game, panel, tab_w);
@@ -95,6 +110,7 @@ static t_rect	build_panel_rect(t_game *game)
 void	draw_modal_layout(t_game *game)
 {
 	t_rect		panel;
+	t_rect		body;
 	t_border	border;
 
 	if (!game || !game->config_modal)
@@ -103,17 +119,27 @@ void	draw_modal_layout(t_game *game)
 	draw_rect(game->config_modal, rect_make(0, 0,
 			(int)game->config_modal->width, (int)game->config_modal->height),
 		CONFIG_MODAL_BG_COLOR);
-	draw_rect(game->config_modal, rect_make(panel.x, panel.y + TAB_HEIGHT,
-			panel.w, panel.h - TAB_HEIGHT), CONFIG_MODAL_PANEL_COLOR);
-	border.area = rect_make(panel.x, panel.y + TAB_HEIGHT,
+	draw_vertical_gradient(game->config_modal, panel,
+		CONFIG_MODAL_PANEL_TOP_COLOR, CONFIG_MODAL_PANEL_BOTTOM_COLOR);
+	body = rect_make(panel.x, panel.y + TAB_HEIGHT,
 			panel.w, panel.h - TAB_HEIGHT);
+	draw_rect(game->config_modal, body, CONFIG_MODAL_PANEL_COLOR);
+	border.area = panel;
 	border.thickness = CONFIG_MODAL_BORDER_THICKNESS;
-	border.color = CONFIG_MODAL_BORDER_COLOR;
-	draw_border(game->config_modal, border);
+	draw_bevel_border(game->config_modal, border,
+		CONFIG_MODAL_CARD_BORDER_LIGHT, CONFIG_MODAL_CARD_BORDER_DARK);
 	draw_tabs(game, panel);
+	draw_rect(game->config_modal, rect_make(panel.x,
+			panel.y + TAB_HEIGHT - 1, panel.w, 1), TAB_BORDER_COLOR);
 	if (game->config_current_tab == 0)
+	{
 		draw_settings_options(game, panel);
+		hide_controls_options(game);
+	}
 	else
+	{
 		hide_settings_options(game);
+		draw_controls_options(game, panel);
+	}
 	draw_quit_section(game, panel);
 }

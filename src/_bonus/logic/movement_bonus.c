@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "render.h"
+#include "structs.h"
 #include "parser.h"
 
 // Prototypes for bonus functions used
@@ -233,8 +235,6 @@ static void	handle_movement_rendering(t_game *game)
 	}
 	if (game->map_2d_visible)
 		update_player_position(game);
-	//render_double_buffer(game);
-	handle_debug_map_update(game, current_grid_x, current_grid_y);
 }
 
 /**
@@ -328,9 +328,6 @@ void	init_movement_system_bonus(t_game *game)
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
-	render_map_2d_initial_bonus(game);
-	print_map_2d(game);
-	print_controls();
 	init_crosshair(game);
 	mlx_key_hook(game->mlx, key_hook_bonus, game);
 	mlx_mouse_hook(game->mlx, mouse_hook_bonus, game);

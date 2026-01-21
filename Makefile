@@ -141,14 +141,14 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/render/floors.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \
 				$(SRCPATH)/_bonus/logic/inventory.c \
-				$(SRCPATH)/_bonus/logic/config_modal_draw_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_border_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_icons_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_layout_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_visibility_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_events_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_options_bonus.c \
-				$(SRCPATH)/_bonus/logic/config_modal_options_state_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_draw_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_border_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_icons_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_layout_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_visibility_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_events_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_options_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_options_state_bonus.c \
 				$(SRCPATH)/_bonus/logic/state_swapper.c \
 				$(SRCPATH)/animation/anim.c \
 				$(SRCPATH)/animation/player_anim.c

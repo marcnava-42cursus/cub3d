@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "structs.h"
 
 void	init_player_parameters(t_game *game)
 {

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 static int	check_border_integrity(t_map *map, int x, int y)
 {

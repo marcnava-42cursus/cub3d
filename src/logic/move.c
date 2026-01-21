@@ -6,11 +6,12 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/02 20:32:59 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/19 20:13:21 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
+#include "structs.h"
 
 /**
  * @brief Moves the player forward or backward in the direction they're facing
@@ -29,9 +30,11 @@ void	move_forward(t_game *game, bool forward)
 	float	direction;
 	float	speed;
 
+	direction = -1.0f;
 	if (!game || !game->mlx)
 		return ;
-	direction = forward ? 1.0f : -1.0f;
+	if (forward)
+		direction = 1.0f;
 	speed = game->move_speed * (float)game->mlx->delta_time * direction;
 	new_x = cosf(game->cub_data.player.angle) * speed;
 	new_y = sinf(game->cub_data.player.angle) * speed;
@@ -56,9 +59,11 @@ void	move_strafe(t_game *game, bool right)
 	float	direction;
 	float	speed;
 
+	direction = -1.0f;
 	if (!game || !game->mlx)
 		return ;
-	direction = right ? 1.0f : -1.0f;
+	if (right)
+		direction = 1.0f;
 	strafe_angle = game->cub_data.player.angle + FT_PI_2 * direction;
 	speed = game->move_speed * (float)game->mlx->delta_time;
 	new_x = cosf(strafe_angle) * speed;

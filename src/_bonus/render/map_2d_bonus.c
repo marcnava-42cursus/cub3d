@@ -29,7 +29,7 @@ static void	draw_arrow_on_sprite(mlx_image_t *img, int direction, uint32_t arrow
 
 // --- Drawing Helpers ---
 
-static void	draw_rect(mlx_image_t *img, int x, int y, int w, int h,
+static void	map_draw_rect(mlx_image_t *img, int x, int y, int w, int h,
 		uint32_t color)
 {
 	int		yy;
@@ -82,15 +82,15 @@ static void	draw_rect(mlx_image_t *img, int x, int y, int w, int h,
 	}
 }
 
-static void	draw_border(mlx_image_t *img, int x, int y, int w, int h,
+static void	map_draw_border(mlx_image_t *img, int x, int y, int w, int h,
 		int thickness, uint32_t color)
 {
 	if (thickness <= 0)
 		return ;
-	draw_rect(img, x, y, w, thickness, color);
-	draw_rect(img, x, y + h - thickness, w, thickness, color);
-	draw_rect(img, x, y, thickness, h, color);
-	draw_rect(img, x + w - thickness, y, thickness, h, color);
+	map_draw_rect(img, x, y, w, thickness, color);
+	map_draw_rect(img, x, y + h - thickness, w, thickness, color);
+	map_draw_rect(img, x, y, thickness, h, color);
+	map_draw_rect(img, x + w - thickness, y, thickness, h, color);
 }
 
 // --- Directional Sprites ---
@@ -349,12 +349,12 @@ static void	render_map_modal_background(t_game *game)
 	int	panel_x, panel_y, panel_w, panel_h;
 	
 	// Draw full screen semi-transparent background
-	draw_rect(game->map_layer, 0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, MAP_MODAL_BG_COLOR);
+	map_draw_rect(game->map_layer, 0, 0, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, MAP_MODAL_BG_COLOR);
 
 	// Draw panel
 	get_map_panel_bounds(&panel_x, &panel_y, &panel_w, &panel_h);
-	draw_rect(game->map_layer, panel_x, panel_y, panel_w, panel_h, MAP_MODAL_PANEL_COLOR);
-	draw_border(game->map_layer, panel_x, panel_y, panel_w, panel_h, MAP_MODAL_BORDER_THICKNESS, MAP_MODAL_BORDER_COLOR);
+	map_draw_rect(game->map_layer, panel_x, panel_y, panel_w, panel_h, MAP_MODAL_PANEL_COLOR);
+	map_draw_border(game->map_layer, panel_x, panel_y, panel_w, panel_h, MAP_MODAL_BORDER_THICKNESS, MAP_MODAL_BORDER_COLOR);
 }
 
 static void	render_map_tiles(t_game *game)

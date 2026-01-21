@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "structs.h"
 
 void	init_cub_data(t_cub_data *data);
 void	init_cub_data_parser_only(t_cub_data *data);
