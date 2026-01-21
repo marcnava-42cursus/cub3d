@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 16:18:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/21 19:58:56 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "MLX42/MLX42_Int.h"
 # include "logic.h"
 # include "parser.h"
+# include "config_bonus.h"
+
 
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
@@ -175,10 +177,6 @@ typedef struct s_rayhit
 	bool			hit;
 }	t_rayhit;
 
-# ifdef BONUS
-#  include "config_bonus.h"
-# endif
-
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
@@ -228,26 +226,8 @@ typedef struct s_game
 	// Estado de UI
 	bool		map_2d_visible;
 
-# ifdef BONUS
-	// Config modal UI (prototype)
-	bool		config_modal_open;
-	bool		config_modal_attached;
-	int			config_current_tab; // 0 = Settings, 1 = Controls
-	mlx_image_t	*config_modal;
-	int32_t		config_quit_x;
-	int32_t		config_quit_y;
-	int32_t		config_quit_w;
-	int32_t		config_quit_h;
-	bool		config_quit_hover;
-	double		config_quit_hold_time;
-	mlx_image_t	*config_quit_label;
-	mlx_image_t	*config_option_labels[3];
-	int			config_panel_x;
-	int			config_panel_y;
-	int			config_panel_w;
-	int			config_panel_h;
-	t_config_options	config_options;
-# endif
+	// Config modal UI
+	t_menu_state	menu;
 
 	// Debug overlay
 	mlx_image_t	*crosshair;

@@ -60,10 +60,10 @@ void	window_free_bonus(t_game *game)
 		mlx_delete_image(game->mlx, game->crosshair);
 
 	// Bonus specific cleanup
-	if (game->config_modal)
-		mlx_delete_image(game->mlx, game->config_modal);
-	if (game->config_quit_label)
-		mlx_delete_image(game->mlx, game->config_quit_label);
+	if (game->menu.modal)
+		mlx_delete_image(game->mlx, game->menu.modal);
+	if (game->menu.quit_label)
+		mlx_delete_image(game->mlx, game->menu.quit_label);
 
 	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);

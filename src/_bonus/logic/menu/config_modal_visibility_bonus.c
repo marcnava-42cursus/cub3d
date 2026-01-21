@@ -19,24 +19,24 @@ static bool	ensure_config_modal_ready(t_game *game)
 {
 	if (!game || !game->mlx)
 		return (false);
-	game->config_quit_w = CONFIG_MODAL_QUIT_BTN_W;
-	game->config_quit_h = CONFIG_MODAL_QUIT_BTN_H;
-	game->config_quit_hover = false;
-	game->config_quit_hold_time = 0.0;
-	game->config_current_tab = 0;
+	game->menu.quit_w = CONFIG_MODAL_QUIT_BTN_W;
+	game->menu.quit_h = CONFIG_MODAL_QUIT_BTN_H;
+	game->menu.quit_hover = false;
+	game->menu.quit_hold_time = 0.0;
+	game->menu.current_tab = 0;
 	config_options_reset(game);
-	if (!game->config_modal)
+	if (!game->menu.modal)
 	{
-		game->config_modal = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
+		game->menu.modal = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 				MAX_WINDOW_HEIGHT);
-		if (!game->config_modal)
+		if (!game->menu.modal)
 			return (false);
 	}
-	if (!game->config_modal_attached)
+	if (!game->menu.attached)
 	{
-		if (mlx_image_to_window(game->mlx, game->config_modal, 0, 0) < 0)
+		if (mlx_image_to_window(game->mlx, game->menu.modal, 0, 0) < 0)
 			return (false);
-		game->config_modal_attached = true;
+		game->menu.attached = true;
 	}
 	draw_modal_layout(game);
 	return (true);
@@ -64,19 +64,19 @@ void	set_config_modal_visible(t_game *game, bool visible)
 	{
 		if (!ensure_config_modal_ready(game))
 			return ;
-		set_image_enabled(game->config_modal, true);
-		game->config_modal_open = true;
+		set_image_enabled(game->menu.modal, true);
+		game->menu.open = true;
 		clear_input_state(game);
 		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 		return ;
 	}
-	game->config_modal_open = false;
+	game->menu.open = false;
 	clear_input_state(game);
 	hide_settings_options(game);
 	hide_controls_options(game);
-	config_controls_cancel_rebind();
-	set_image_enabled(game->config_modal, false);
-	set_image_enabled(game->config_quit_label, false);
+	config_controls_cancel_rebind(game);
+	set_image_enabled(game->menu.modal, false);
+	set_image_enabled(game->menu.quit_label, false);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 }
 
@@ -84,12 +84,12 @@ void	toggle_config_modal(t_game *game)
 {
 	if (!game)
 		return ;
-	set_config_modal_visible(game, !game->config_modal_open);
+	set_config_modal_visible(game, !game->menu.open);
 }
 
 bool	is_config_modal_open(const t_game *game)
 {
 	if (!game)
 		return (false);
-	return (game->config_modal_open);
+	return (game->menu.open);
 }

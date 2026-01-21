@@ -140,6 +140,56 @@ typedef struct s_config_options
 	int		selected;
 }	t_config_options;
 
+typedef struct s_menu_labels
+{
+	mlx_image_t	*settings_labels[CONFIG_MODAL_OPTION_COUNT];
+	mlx_image_t	*controls_labels[CONFIG_MODAL_CONTROL_COUNT];
+	mlx_image_t	*controls_key_labels[CONFIG_MODAL_CONTROL_COUNT];
+	mlx_image_t	*settings_sections[2];
+	mlx_image_t	*controls_header;
+	mlx_image_t	*controls_prompt;
+	mlx_image_t	*slider_value_labels[CONFIG_MODAL_SLIDER_COUNT];
+	char		slider_value_cache[CONFIG_MODAL_SLIDER_COUNT]
+		[CONFIG_MODAL_SLIDER_VALUE_LEN];
+	char		controls_key_cache[CONFIG_MODAL_CONTROL_COUNT]
+		[CONFIG_MODAL_KEY_LABEL_LEN];
+}	t_menu_labels;
+
+typedef struct s_menu_state
+{
+	bool		open;
+	bool		attached;
+	int			current_tab;
+	mlx_image_t	*modal;
+	int32_t		quit_x;
+	int32_t		quit_y;
+	int32_t		quit_w;
+	int32_t		quit_h;
+	bool		quit_hover;
+	double		quit_hold_time;
+	mlx_image_t	*quit_label;
+	t_config_options	options;
+	int			pending_slider_index;
+	int			pending_slider_value;
+	int			slider_drag_index;
+	int			controls_selected;
+	bool		controls_rebinding;
+	int			controls_rebind_target;
+	char		controls_key_text[CONFIG_MODAL_CONTROL_COUNT]
+		[CONFIG_MODAL_KEY_LABEL_LEN];
+	t_menu_labels	labels;
+}	t_menu_state;
+
+typedef struct s_menu_layout
+{
+	t_rect	panel;
+	t_rect	body;
+	t_rect	content;
+	t_rect	left;
+	t_rect	right;
+	int		slider_w;
+}	t_menu_layout;
+
 t_rect	rect_make(int x, int y, int w, int h);
 void	set_image_enabled(mlx_image_t *img, bool enabled);
 void	draw_rect(mlx_image_t *img, t_rect rect, uint32_t color);
@@ -152,6 +202,19 @@ void	draw_vertical_gradient(mlx_image_t *img, t_rect rect,
 			uint32_t top_color, uint32_t bottom_color);
 void	draw_settings_icon(mlx_image_t *img, t_icon icon);
 void	draw_controls_icon(mlx_image_t *img, t_icon icon);
+void	disable_label_group(mlx_image_t **labels, size_t count);
+bool	update_label_text(t_game *game, mlx_image_t **label, char *cache,
+			size_t cache_size, const char *text);
+bool	ensure_settings_labels(t_game *game);
+bool	ensure_controls_labels(t_game *game);
+void	draw_card(t_game *game, t_rect card);
+void	draw_row_highlight(t_game *game, t_rect card, int row_y);
+void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
+			bool selected);
+void	draw_slider(t_game *game, t_rect track, int value, bool selected);
+int		menu_layout_row_y(t_rect card, int index);
+t_rect	menu_layout_slider_rect(t_menu_layout layout, int row_y);
+t_menu_layout	menu_layout_build(t_menu_state *menu);
 void	render_quit_button(t_game *game);
 void	draw_modal_layout(t_game *game);
 void	draw_settings_options(t_game *game, t_rect panel);
@@ -166,16 +229,21 @@ void	config_option_select(t_game *game, int delta);
 int		config_option_from_pos(t_game *game, int32_t mx, int32_t my);
 bool	config_option_toggle_state(t_game *game, int index);
 int		config_option_slider_value(t_game *game, int index);
+int		config_option_slider_raw(t_game *game, int slider);
+void	config_option_set_slider_raw(t_game *game, int slider, int value);
+void	config_option_set_slider_percent(t_game *game, int slider,
+			int percent);
+void	config_option_step_slider(t_game *game, int slider, int delta);
 void	config_option_slider_text(t_game *game, int index, char *buffer,
 			size_t buffer_size);
 bool	config_option_drag_update(t_game *game, int32_t mx, int32_t my,
 			bool mouse_down);
 void	config_controls_select(t_game *game, int delta);
 void	config_controls_begin_rebind(t_game *game);
-void	config_controls_cancel_rebind(void);
+void	config_controls_cancel_rebind(t_game *game);
 bool	config_controls_handle_key(t_game *game, mlx_key_data_t keydata);
-int		config_controls_selected(void);
-bool	config_controls_is_rebinding(void);
-const char	*config_controls_key_text(int index);
+int		config_controls_selected(t_game *game);
+bool	config_controls_is_rebinding(t_game *game);
+const char	*config_controls_key_text(t_game *game, int index);
 
 #endif
