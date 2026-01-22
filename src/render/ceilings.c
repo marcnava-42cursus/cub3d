@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   floors.c                                           :+:      :+:    :+:   */
+/*   ceilings.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:24:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:55:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	get_ray_dir(float angle, float ray_dir[4])
 	ray_dir[V] = player_dir[Y] + camera_plane[Y];
 }
 
-static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
+static vertex_t	get_ceiling_ray_steps(t_player *player, float ray_dir[4],
 		mlx_image_t *img, int y)
 {
 	vertex_t	floor_and_steps;
@@ -37,7 +37,7 @@ static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
 	float		dist_to_proj_plane;
 
 	center = 0.5f * img->height;
-	p = y - center;
+	p = center - y;
 	if (p == 0.0f)
 		p = 1.0f;
 	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
@@ -49,77 +49,18 @@ static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
 	return (floor_and_steps);
 }
 
-static xpm_t	*find_custom_floor_texture(t_custom_texture *custom, char cell)
-{
-	t_custom_texture	*current;
-	char				id[3];
-	char				faces[4];
-	int					i;
-
-	if (!custom)
-		return (NULL);
-	faces[0] = 'N';
-	faces[1] = 'S';
-	faces[2] = 'E';
-	faces[3] = 'W';
-	i = 0;
-	while (i < 4)
-	{
-		id[0] = cell;
-		id[1] = faces[i];
-		id[2] = '\0';
-		current = custom;
-		while (current)
-		{
-			if (current->texture && ft_strcmp(current->id, id) == 0)
-				return (current->texture);
-			current = current->next;
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-static xpm_t	*get_floor_texture(const t_map *map, t_textures *textures,
-		float world_x, float world_y)
-{
-	int		cell_x;
-	int		cell_y;
-	char	cell;
-	xpm_t	*custom;
-
-	if (!textures)
-		return (NULL);
-	cell_x = (int)floorf(world_x);
-	cell_y = (int)floorf(world_y);
-	if (!map || !map->grid || cell_y < 0 || cell_y >= map->height)
-		return (textures->north);
-	if (cell_x < 0 || cell_x >= (int)ft_strlen(map->grid[cell_y]))
-		return (textures->north);
-	cell = map->grid[cell_y][cell_x];
-	custom = find_custom_floor_texture(textures->custom, cell);
-	if (custom)
-		return (custom);
-	return (textures->north);
-}
-
-static void	render_floor_fill(unsigned int y, mlx_image_t *img,
-		const t_map *map, t_textures *textures, vertex_t floor_and_steps)
+static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
+		xpm_t *xpm, vertex_t floor_and_steps)
 {
 	unsigned int	x;
 	float			f[2];
 	int				t[2];
-	xpm_t			*xpm;
 
 	x = 0;
 	while (x < img->width)
 	{
-		xpm = get_floor_texture(map, textures, floor_and_steps.x,
-				floor_and_steps.y);
-		if (!xpm)
-			return ;
-		f[X] = floor_and_steps.x - floorf(floor_and_steps.x);
-		f[Y] = floor_and_steps.y - floorf(floor_and_steps.y);
+		f[X] = floor_and_steps.x - floor(floor_and_steps.x);
+		f[Y] = floor_and_steps.y - floor(floor_and_steps.y);
 		t[X] = (int)(f[X] * xpm->texture.width);
 		t[Y] = (int)(f[Y] * xpm->texture.height);
 		if (t[X] < 0)
@@ -137,20 +78,20 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 	}
 }
 
-void	render_floors(t_game *game)
+void	render_ceilings(t_game *game)
 {
 	unsigned int	i;
 	float			ray_dir[4];
 	vertex_t		floor_and_steps;
 
-	i = game->double_buffer[NEXT]->height / 2 + 1;
+	i = 0;
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
-	while (i < game->double_buffer[NEXT]->height)
+	while (i < game->double_buffer[NEXT]->height / 2)
 	{
-		floor_and_steps = get_floor_ray_steps(&game->cub_data.player, ray_dir,
+		floor_and_steps = get_ceiling_ray_steps(&game->cub_data.player, ray_dir,
 				game->double_buffer[NEXT], i);
-		render_floor_fill(i, game->double_buffer[NEXT], &game->cub_data.map,
-			&game->cub_data.textures, floor_and_steps);
+		render_ceiling_fill(i, game->double_buffer[NEXT],
+			game->cub_data.textures.north, floor_and_steps);
 		i++;
 	}
 }

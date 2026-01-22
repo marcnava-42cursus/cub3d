@@ -27,6 +27,7 @@ void	init_cub_data(t_cub_data *data)
 	data->player.orientation = 0;
 	data->player.inventory = '2';
 	data->player_floor_index = -1;
+	data->player.state = STATE_HOLD;
 	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
 	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
 	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));
@@ -58,6 +59,7 @@ void	init_cub_data_parser_only(t_cub_data *data)
 	data->player_floor_index = -1;
 	data->player_floor_path = NULL;
 	data->elevator_id_count = 0;
+	data->player.state = STATE_HOLD;
 	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
 	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
 	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));

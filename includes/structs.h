@@ -18,11 +18,8 @@
 # include "logic.h"
 # include "parser.h"
 # include "config_bonus.h"
-
-
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
-
 
 // Forward declaration for custom texture entries
 typedef struct s_custom_texture	t_custom_texture;
@@ -93,8 +90,10 @@ typedef struct s_player
 	char				inventory;
 	t_orientation		orientation;
 	t_player_textures	textures;
-	t_anim				*anims;
-	int					current_anim;
+	t_anim				*left_hand_anims;
+	t_anim				*right_hand_anims;
+	int					current_left_hand_anim;
+	int					current_right_hand_anim;
 	t_player_state		state;
 }	t_player;
 

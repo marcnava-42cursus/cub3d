@@ -28,9 +28,10 @@ typedef enum e_orientation
 
 typedef enum e_player_state
 {
-	STATE_NONE = 0,
+	STATE_EMPTY = 0,
 	STATE_THROW = 1,
-	STATE_TAKE = 2
+	STATE_TAKE = 2,
+	STATE_HOLD = 3
 }	t_player_state;
 
 # ifdef BONUS

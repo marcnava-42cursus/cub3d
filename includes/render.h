@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 15:47:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:41:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,9 @@ void	render_walls(t_game *game, t_rayhit *rayhits);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
 void	render_floors(t_game *game);
+
+/*------------------------------- CEILINGS.C ---------------------------------*/
+void	render_ceilings(t_game *game);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map);

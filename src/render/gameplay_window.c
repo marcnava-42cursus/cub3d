@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/03 11:05:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:40:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 		i++;
 	}
 	render_floors(game);
+	render_ceilings(game);
 	render_walls(game, rayhits);
 	render_player_overlay(game);
 	free(rayhits);
