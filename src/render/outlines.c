@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 18:44:11 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:15:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,12 @@ static void	draw_vertical_outline(unsigned int x, t_rayhit rayhit,
 {
 	int			slice_height;
 	int			slice_bounds[2];
-	float		wall_height;
 	float		dist_to_proj_plane;
 
 	if (!rayhit.hit)
 		return ;
-	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
-	wall_height = WORLDMAP_TILE_SIZE * (1.25f + ASPECT_SCALE);
-	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
+	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
+	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane / rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
 	paint_vertical_line_color((unsigned int)x, slice_bounds, img, color);
@@ -73,14 +71,12 @@ static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
 {
 	int			slice_height;
 	int			slice_bounds[2];
-	float		wall_height;
 	float		dist_to_proj_plane;
 
 	if (!rayhit.hit)
 		return ;
-	dist_to_proj_plane = (float)img->height / (2.0f * tanf(PLAYER_FOV / 2.0f));
-	wall_height = WORLDMAP_TILE_SIZE * (1.25f + ASPECT_SCALE);
-	slice_height = (int)(wall_height * dist_to_proj_plane / rayhit.distance);
+	dist_to_proj_plane = (float)img->width / (2.0f * tanf(PLAYER_FOV / 2.0f));
+	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane / rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
 	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
 	if (x >= img->width)

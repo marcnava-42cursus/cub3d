@@ -6,14 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:16:11 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 21:00:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:19:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "animation.h"
 
-void	set_player_anim(t_player *player, t_anim *anim_ptr, int *current_anim,
-			int new_anim)
+void	set_player_anim(t_anim *anim_ptr, int *current_anim, int new_anim)
 {
 	if (*current_anim == new_anim)
 		return ;

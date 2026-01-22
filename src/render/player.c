@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 20:57:51 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:18:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
 		t_atlas *atlas, t_player *player)
 {
 	int				coord[2];
-	unsigned int	current_frame[2];
 
 	coord[X] = buffer_x_center + HAND_TEXTURE_WIDTH;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;

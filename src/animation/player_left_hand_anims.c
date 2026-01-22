@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 21:01:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:19:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_player_left_hand_anims(t_player *player)
 	static const unsigned int	hold_frames[1] = {0};
 	static const unsigned int	hold_holds[1] = {1};
 	static const unsigned int	throw_frames[3] = {1, 2, 3};
-	static const unsigned int	throw_holds[3] = {1, 1, 4};
+	static const unsigned int	throw_holds[3] = {2, 1, 3};
 
 	player->left_hand_anims = ft_calloc(4, sizeof(t_anim));
 	if (!player->left_hand_anims) 
@@ -52,15 +52,15 @@ void	update_player_left_hand_anims(t_player *player, float delta_time)
 			player->state = STATE_EMPTY;
 	}
 	if (player->state == STATE_THROW)
-		set_player_anim(player, player->left_hand_anims,
+		set_player_anim(player->left_hand_anims,
 				&player->current_left_hand_anim, ANIM_THROW);
 	else if (player->state == STATE_TAKE)
-		set_player_anim(player, player->left_hand_anims,
+		set_player_anim(player->left_hand_anims,
 				&player->current_left_hand_anim, ANIM_TAKE);
 	else if (player->state == STATE_HOLD)
-		set_player_anim(player, player->left_hand_anims,
+		set_player_anim(player->left_hand_anims,
 				&player->current_left_hand_anim, ANIM_HOLD);
 	else
-		set_player_anim(player, player->left_hand_anims, 
+		set_player_anim(player->left_hand_anims, 
 				&player->current_left_hand_anim, ANIM_EMPTY);
 }

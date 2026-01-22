@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 21:01:39 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:19:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	anim_start(t_anim *anim);
 bool	anim_update(t_anim *anim, float delta_time);
 
 /*----------------------------- PLAYER_ANIM.C --------------------------------*/
-void	set_player_anim(t_player *player, t_anim *anim_ptr, int *current_anim,
-			int new_anim);
+void	set_player_anim(t_anim *anim_ptr, int *current_anim, int new_anim);
 void	init_player_anims(t_player *player);
 void	update_player_anims(t_player *player, float delta_time);
 void	free_player_anims(t_player *player);

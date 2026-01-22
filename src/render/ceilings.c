@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   floors.c                                           :+:      :+:    :+:   */
+/*   ceilings.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:24:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:55:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	get_ray_dir(float angle, float ray_dir[4])
 	ray_dir[V] = player_dir[Y] + camera_plane[Y];
 }
 
-static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
+static vertex_t	get_ceiling_ray_steps(t_player *player, float ray_dir[4],
 		mlx_image_t *img, int y)
 {
 	vertex_t	floor_and_steps;
@@ -37,7 +37,7 @@ static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
 	float		dist_to_proj_plane;
 
 	center = 0.5f * img->height;
-	p = y - center;
+	p = center - y;
 	if (p == 0.0f)
 		p = 1.0f;
 	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
@@ -49,7 +49,7 @@ static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
 	return (floor_and_steps);
 }
 
-static void	render_floor_fill(unsigned int y, mlx_image_t *img,
+static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
 		xpm_t *xpm, vertex_t floor_and_steps)
 {
 	unsigned int	x;
@@ -78,19 +78,19 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 	}
 }
 
-void	render_floors(t_game *game)
+void	render_ceilings(t_game *game)
 {
 	unsigned int	i;
 	float			ray_dir[4];
 	vertex_t		floor_and_steps;
 
-	i = game->double_buffer[NEXT]->height / 2 + 1;
+	i = 0;
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
-	while (i < game->double_buffer[NEXT]->height)
+	while (i < game->double_buffer[NEXT]->height / 2)
 	{
-		floor_and_steps = get_floor_ray_steps(&game->cub_data.player, ray_dir,
+		floor_and_steps = get_ceiling_ray_steps(&game->cub_data.player, ray_dir,
 				game->double_buffer[NEXT], i);
-		render_floor_fill(i, game->double_buffer[NEXT],
+		render_ceiling_fill(i, game->double_buffer[NEXT],
 			game->cub_data.textures.north, floor_and_steps);
 		i++;
 	}
