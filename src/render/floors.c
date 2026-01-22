@@ -118,8 +118,8 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 				floor_and_steps.y);
 		if (!xpm)
 			return ;
-		f[X] = floor_and_steps.x - floorf(floor_and_steps.x);
-		f[Y] = floor_and_steps.y - floorf(floor_and_steps.y);
+		f[X] = floor_and_steps.x - floor(floor_and_steps.x);
+		f[Y] = floor_and_steps.y - floor(floor_and_steps.y);
 		t[X] = (int)(f[X] * xpm->texture.width);
 		t[Y] = (int)(f[Y] * xpm->texture.height);
 		if (t[X] < 0)
