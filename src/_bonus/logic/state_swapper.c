@@ -30,13 +30,6 @@ static bool	modify_interactive_cell(t_game *game, int x, int y)
 	if (x < 0 || x >= (int)ft_strlen(game->cub_data.map.grid[y]))
 		return (false);
 	cell = &game->cub_data.map.grid[y][x];
-	if (*cell == '2')
-	{
-		if (!store_block_in_inventory(&game->cub_data.player, *cell))
-			return (false);
-		*cell = '0';
-		return (true);
-	}
 	if (*cell == 'D')
 	{
 		*cell = 'd';
@@ -101,6 +94,8 @@ void	place_breakable_block(t_game *game)
 	if (!game)
 		return ;
 	printf("Attempting to place block\n");
+	if (orb_projectile_is_active(game))
+		return ;
 	if (!player_has_block(&game->cub_data.player))
 		return ;
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
@@ -123,7 +118,11 @@ void	place_breakable_block(t_game *game)
 	cell = consume_inventory_block(&game->cub_data.player);
 	if (cell == '\0')
 		return ;
-	game->cub_data.map.grid[target_y][target_x] = cell;
+	if (!orb_projectile_start_place(game, target_x, target_y, cell))
+	{
+		store_block_in_inventory(&game->cub_data.player, cell);
+		return ;
+	}
 	game->cub_data.player.state = STATE_THROW;
 	printf("Placed block at (%d, %d)\n", target_x, target_y);
 	//render_double_buffer(game);
@@ -159,8 +158,15 @@ void	test_break_wall_in_front(t_game *game)
 		cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];
 		if (cell == '2')
 		{
-			cell_changed = modify_interactive_cell(game,
-					hit.cell[0], hit.cell[1]);
+			if (orb_projectile_is_active(game))
+				return ;
+			if (player_has_block(&game->cub_data.player))
+				return ;
+			game->cub_data.map.grid[hit.cell[1]][hit.cell[0]] = '0';
+			cell_changed = orb_projectile_start_take(game,
+					hit.cell[0], hit.cell[1], cell);
+			if (!cell_changed)
+				game->cub_data.map.grid[hit.cell[1]][hit.cell[0]] = cell;
 			if (cell_changed)
 			{
 				printf("Broke block at (%d, %d)\n", hit.cell[0], hit.cell[1]);

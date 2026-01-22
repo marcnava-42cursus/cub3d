@@ -70,9 +70,13 @@ int	init_game_bonus(t_game *game, const char *map_file)
 static void render_loop(void *param)
 {
 	t_game *game = (t_game *)param;
+	bool	orb_moved;
 
-	update_player_anims(&game->cub_data.player, game->mlx->delta_time);	
+	orb_moved = orb_projectile_update(game, game->mlx->delta_time);
+	update_player_anims(&game->cub_data.player, game->mlx->delta_time);
 	render_double_buffer(game);
+	if (orb_moved && game->map_2d_visible)
+		render_player_dynamic_bonus(game);
 }
 
 int	run_game_bonus(t_game *game)

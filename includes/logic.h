@@ -33,6 +33,35 @@ typedef enum e_player_state
 	STATE_TAKE = 2
 }	t_player_state;
 
+# ifdef BONUS
+typedef enum e_orb_mode
+{
+	ORB_MODE_NONE = 0,
+	ORB_MODE_TAKE = 1,
+	ORB_MODE_PLACE = 2
+}	t_orb_mode;
+
+typedef struct s_orb_projectile
+{
+	bool		active;
+	t_orb_mode	mode;
+	float		x;
+	float		y;
+	float		target_x;
+	float		target_y;
+	float		speed;
+	char		payload;
+	int			target_cell_x;
+	int			target_cell_y;
+	bool		needs_redraw;
+	float		last_draw_x;
+	float		last_draw_y;
+	bool		last_draw_active;
+}	t_orb_projectile;
+
+#  define ORB_PROJECTILE_DEFAULT_SPEED 6.0f
+# endif
+
 # define TWO_PI (2.0f * FT_PI)
 # define MOUSE_SMOOTHING 10.0f
 # define EPSILON 0.0f
@@ -111,6 +140,17 @@ void	init_movement_system_bonus(t_game *game);
 bool	player_has_block(const t_player *player);
 bool	store_block_in_inventory(t_player *player, char block);
 char	consume_inventory_block(t_player *player);
+
+// Orb projectile
+void	init_orb_projectile_bonus(t_game *game);
+bool	orb_projectile_is_active(const t_game *game);
+bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
+			char block);
+bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
+			char block);
+bool	orb_projectile_update(t_game *game, float delta_time);
+bool	orb_projectile_needs_redraw(const t_game *game);
+void	orb_projectile_mark_drawn(t_game *game);
 
 // Config modal UI (prototype)
 void	set_config_modal_visible(t_game *game, bool visible);

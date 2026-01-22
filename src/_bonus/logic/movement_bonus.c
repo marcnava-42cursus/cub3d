@@ -318,6 +318,7 @@ void	init_movement_system_bonus(t_game *game)
 		return ;
 	init_player_angle(game);
 	init_player_parameters(game);
+	init_orb_projectile_bonus(game);
 	game->movement_lock_until = 0.0;
 	game->last_teleport_time = -10.0;
 	game->last_teleport_id = '\0';

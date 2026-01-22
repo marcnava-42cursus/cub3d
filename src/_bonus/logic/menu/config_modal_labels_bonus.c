@@ -58,6 +58,7 @@ bool	ensure_settings_labels(t_game *game)
 	text[CONFIG_OPTION_GAME_SPEED] = "Game speed";
 	text[CONFIG_OPTION_FPS_LIMIT] = "FPS limit";
 	text[CONFIG_OPTION_MOUSE_SENS] = "Mouse sensitivity";
+	text[CONFIG_OPTION_PROJECTILE_SPEED] = "Projectile speed";
 	if (!menu->labels.settings_sections[0])
 		menu->labels.settings_sections[0] = mlx_put_string(
 				game->mlx, "DISPLAY", 0, 0);

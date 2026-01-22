@@ -32,6 +32,7 @@ void	config_options_init(t_game *game)
 	menu->options.game_speed = 70;
 	menu->options.fps_limit_index = 2;
 	menu->options.mouse_sens = 50;
+	menu->options.projectile_speed = 50;
 	menu->options.selected = 0;
 	menu->pending_slider_index = -1;
 	menu->pending_slider_value = -1;

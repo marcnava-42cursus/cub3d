@@ -124,6 +124,9 @@ void	fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
 /*----------------------------- MINIMAP_TILE.C -------------------------------*/
 void	render_minimap_walls(t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
+# ifdef BONUS
+void	render_minimap_orb(t_game *game);
+# endif
 
 /*----------------------------- MINIMAP_UTILS.C ------------------------------*/
 bool		is_inside_minimap_circle(int coord[2]);

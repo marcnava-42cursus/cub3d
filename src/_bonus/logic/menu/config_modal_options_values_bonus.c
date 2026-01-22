@@ -25,6 +25,8 @@ int	config_option_slider_raw(t_game *game, int slider)
 		return (game->menu.options.fps_limit_index);
 	if (slider == CONFIG_SLIDER_MOUSE_SENS)
 		return (game->menu.options.mouse_sens);
+	if (slider == CONFIG_SLIDER_PROJECTILE_SPEED)
+		return (game->menu.options.projectile_speed);
 	return (0);
 }
 
@@ -38,6 +40,8 @@ void	config_option_set_slider_raw(t_game *game, int slider, int value)
 		game->menu.options.fps_limit_index = value;
 	else if (slider == CONFIG_SLIDER_MOUSE_SENS)
 		game->menu.options.mouse_sens = value;
+	else if (slider == CONFIG_SLIDER_PROJECTILE_SPEED)
+		game->menu.options.projectile_speed = value;
 }
 
 bool	config_option_toggle_state(t_game *game, int index)

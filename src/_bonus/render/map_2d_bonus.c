@@ -21,6 +21,7 @@
 # define MAP_MODAL_PANEL_COLOR 0x1E1E1ED0
 # define MAP_MODAL_BORDER_COLOR 0xCCCCCCFF
 # define MAP_MODAL_BORDER_THICKNESS 2
+# define ORB_MINIMAP_COLOR 0xFF00FFFF
 
 // Forward declarations
 static void	create_directional_sprites(t_game *game);
@@ -500,6 +501,26 @@ static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
 	}
 }
 
+static void	draw_orb_minimap(t_game *game)
+{
+	int	offset_x;
+	int	offset_y;
+	int	orb_size;
+	int	screen_x;
+	int	screen_y;
+
+	if (!game || !game->orb.active)
+		return ;
+	get_map_offset(game, &offset_x, &offset_y);
+	orb_size = TILE_SIZE / 6;
+	if (orb_size < 4)
+		orb_size = 4;
+	screen_x = offset_x + (int)roundf(game->orb.x * TILE_SIZE) - orb_size / 2;
+	screen_y = offset_y + (int)roundf(game->orb.y * TILE_SIZE) - orb_size / 2;
+	map_draw_rect(game->player_layer, screen_x, screen_y,
+		orb_size, orb_size, ORB_MINIMAP_COLOR);
+}
+
 static void	render_player(t_game *game)
 {
 	int	player_x;
@@ -515,18 +536,21 @@ static void	render_player(t_game *game)
 	player_y = offset_y + (int)(game->cub_data.player.y * TILE_SIZE) - TILE_SIZE/2;
 
 	draw_rotated_player(game, player_x, player_y);
+	draw_orb_minimap(game);
 }
 
 void	render_map_2d_bonus(t_game *game)
 {
 	render_map_tiles(game);
 	render_player(game);
+	orb_projectile_mark_drawn(game);
 }
 
 void	render_map_2d_initial_bonus(t_game *game)
 {
 	render_map_tiles(game);
 	render_player(game);
+	orb_projectile_mark_drawn(game);
 }
 
 void	render_map_tiles_static_bonus(t_game *game)
@@ -536,14 +560,20 @@ void	render_map_tiles_static_bonus(t_game *game)
 
 void	render_player_dynamic_bonus(t_game *game)
 {
-	if (game->cub_data.player.x != game->last_player_x ||
-		game->cub_data.player.y != game->last_player_y ||
-		game->cub_data.player.angle != game->last_player_angle)
+	bool	player_changed;
+	bool	orb_changed;
+
+	player_changed = (game->cub_data.player.x != game->last_player_x ||
+			game->cub_data.player.y != game->last_player_y ||
+			game->cub_data.player.angle != game->last_player_angle);
+	orb_changed = orb_projectile_needs_redraw(game);
+	if (player_changed || orb_changed)
 	{
 		render_player(game);
 		
 		game->last_player_x = game->cub_data.player.x;
 		game->last_player_y = game->cub_data.player.y;
 		game->last_player_angle = game->cub_data.player.angle;
+		orb_projectile_mark_drawn(game);
 	}
 }

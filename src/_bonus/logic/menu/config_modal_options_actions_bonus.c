@@ -93,6 +93,8 @@ void	config_option_toggle(t_game *game, int index)
 			name = "Game Speed";
 		else if (index == CONFIG_OPTION_FPS_LIMIT)
 			name = "FPS Limit";
+		else if (index == CONFIG_OPTION_PROJECTILE_SPEED)
+			name = "Projectile Speed";
 		else
 			name = "Mouse Sensitivity";
 		config_option_slider_text(game, index, value_text,

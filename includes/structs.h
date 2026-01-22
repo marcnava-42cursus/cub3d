@@ -223,6 +223,10 @@ typedef struct s_game
 	float		resolution_scale;
 	t_minimap	minimap;
 
+# ifdef BONUS
+	t_orb_projectile	orb;
+# endif
+
 	// Estado de UI
 	bool		map_2d_visible;
 

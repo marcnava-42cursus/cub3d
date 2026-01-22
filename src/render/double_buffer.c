@@ -29,5 +29,8 @@ void	render_double_buffer(t_game *game)
 	render_minimap_bg(&game->minimap);
 	render_minimap_player_vision(&game->minimap);
 	render_minimap_walls(&game->minimap);
+#ifdef BONUS
+	render_minimap_orb(game);
+#endif
 	render_minimap_player(&game->minimap);
 }

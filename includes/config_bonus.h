@@ -50,7 +50,7 @@ typedef struct s_game t_game;
 # define CONFIG_MODAL_OPTION_BOX 22
 
 # define CONFIG_MODAL_TOGGLE_COUNT 4
-# define CONFIG_MODAL_SLIDER_COUNT 3
+# define CONFIG_MODAL_SLIDER_COUNT 4
 # define CONFIG_MODAL_OPTION_COUNT (CONFIG_MODAL_TOGGLE_COUNT \
 		+ CONFIG_MODAL_SLIDER_COUNT)
 # define CONFIG_MODAL_CONTROL_COUNT 10
@@ -62,6 +62,7 @@ typedef struct s_game t_game;
 # define CONFIG_OPTION_GAME_SPEED 4
 # define CONFIG_OPTION_FPS_LIMIT 5
 # define CONFIG_OPTION_MOUSE_SENS 6
+# define CONFIG_OPTION_PROJECTILE_SPEED 7
 
 # define CONFIG_MODAL_CONTENT_PADDING 28
 # define CONFIG_MODAL_COLUMN_GAP 26
@@ -86,6 +87,7 @@ typedef struct s_game t_game;
 # define CONFIG_SLIDER_GAME_SPEED 0
 # define CONFIG_SLIDER_FPS_LIMIT 1
 # define CONFIG_SLIDER_MOUSE_SENS 2
+# define CONFIG_SLIDER_PROJECTILE_SPEED 3
 
 # define CONFIG_MODAL_TEXT_COLOR 0xF2F0E6FF
 # define CONFIG_MODAL_MUTED_TEXT_COLOR 0xA0A0A0FF
@@ -137,6 +139,7 @@ typedef struct s_config_options
 	int		game_speed;
 	int		fps_limit_index;
 	int		mouse_sens;
+	int		projectile_speed;
 	int		selected;
 }	t_config_options;
 
