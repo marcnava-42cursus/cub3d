@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 11:22:52 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:47:24 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	get_tex_x(t_rayhit rayhit, t_textures *textures, xpm_t **texture)
 	return ((int)(wall_x * (float)(*texture)->texture.width));
 }
 
-uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
+uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos, unsigned int alpha)
 {
 	int			tex_y;
 	int			pixel_index;
@@ -56,7 +56,7 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 			pixel_color = (pixels[pixel_index] << 24)
 				| (pixels[pixel_index + 1] << 16)
 				| (pixels[pixel_index + 2] << 8)
-				| pixels[pixel_index + 3];
+				| alpha;
 			return (pixel_color);
 		}
 	}
@@ -65,7 +65,7 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 
 // Textured vertical line painter - y[0] is start and y[1] is end
 void	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-		xpm_t *texture, int tex_x, float tex_pos, float tex_step)
+		xpm_t *texture, int tex_x, float tex_pos, float tex_step, unsigned int alpha)
 {
 	int			current_y;
 	float		current_tex_pos;
@@ -75,7 +75,7 @@ void	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 	current_tex_pos = tex_pos;
 	while (current_y <= y[1])
 	{
-		pixel_color = sample_texture_pixel(texture, tex_x, current_tex_pos);
+		pixel_color = sample_texture_pixel(texture, tex_x, current_tex_pos, alpha);
 		save_pixel_to_image(img, x, (unsigned int)current_y, pixel_color);
 		current_y++;
 		current_tex_pos += tex_step;
@@ -87,7 +87,7 @@ void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
 {
 	uint32_t	pixel_color;
 
-	pixel_color = sample_texture_pixel(texture, tex_x, tex_y);
+	pixel_color = sample_texture_pixel(texture, tex_x, tex_y, 255);
 	save_pixel_to_image(img, x, y, pixel_color);
 }
 
@@ -99,6 +99,8 @@ void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 	int			original_line_height;
 	float		step;
 	float		tex_offset;
+	unsigned int			alpha;
+	//float					fog;
 
 	if (x >= img->width)
 		return ;
@@ -113,5 +115,13 @@ void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 	original_line_height = rayhit.wall_bounds[1] - rayhit.wall_bounds[0] + 1;
 	step = (float)texture->texture.height / (float)original_line_height;
 	tex_offset = (y[0] - rayhit.wall_bounds[0]) * step;
-	paint_vertical_line_texture(x, y, img, texture, tex_x, tex_offset, step);
+	//fog = rayhit.distance - 400.0f / MAX_RENDER_DISTANCE - 400.0f;
+	//if (fog < 0.0f)
+	//	fog = 0.0f;
+	//if (fog > 1.0f)
+	//	fog = 1.0f;
+	//fog = fog * fog;
+	//alpha = (unsigned int)((1.0 - fog) * 255.0f);
+	alpha = 255;
+	paint_vertical_line_texture(x, y, img, texture, tex_x, tex_offset, step, alpha);
 }

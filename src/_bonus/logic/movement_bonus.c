@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 18:03:36 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:26:30 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,16 @@ static bool	process_movement_input(t_game *game)
 	if (game->key_right_pressed)
 	{
 		rotate_player(game, true);
+		moved = true;
+	}
+	if (game->key_up_pressed)
+	{
+		pitch_player(game, true);
+		moved = true;
+	}
+	if (game->key_down_pressed)
+	{
+		pitch_player(game, false);
 		moved = true;
 	}
 	return (moved);

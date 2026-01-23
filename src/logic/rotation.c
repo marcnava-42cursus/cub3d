@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/19 20:10:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:03:52 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,25 @@ void	rotate_player(t_game *game, bool right)
 	rotation_delta = game->rot_speed * (float)game->mlx->delta_time * direction;
 	game->cub_data.player.angle += rotation_delta;
 	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
+}
+
+void	pitch_player(t_game *game, bool up)
+{
+	float	direction;
+	float	rotation_delta;
+	float	max_pitch;
+
+	direction = -1.0f;
+	if (!game || !game->mlx)
+		return ;
+	if (up)
+		direction = 1.0f;
+	rotation_delta = 600.0f * (float)game->mlx->delta_time * direction;
+	game->cub_data.player.pitch += rotation_delta;
+	// this height / 2 is wrong but it stops crash with pitch
+	max_pitch = (game->double_buffer[NEXT]->height / 2) * 0.35f;
+	if (game->cub_data.player.pitch > max_pitch)
+		game->cub_data.player.pitch = max_pitch;
+	if (game->cub_data.player.pitch < -max_pitch)
+		game->cub_data.player.pitch = -max_pitch;
 }

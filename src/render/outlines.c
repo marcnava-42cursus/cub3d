@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:15:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:02:24 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,34 +51,38 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 }
 
 static void	draw_vertical_outline(unsigned int x, t_rayhit rayhit,
-		mlx_image_t *img, int color)
+		mlx_image_t *img, int color, t_player *player)
 {
 	int			slice_height;
 	int			slice_bounds[2];
 	float		dist_to_proj_plane;
+	float		center;
 
 	if (!rayhit.hit)
 		return ;
 	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
 	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane / rayhit.distance);
-	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
-	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
+	center = img->height * 0.5f + player->pitch;
+	slice_bounds[0] = -slice_height / 2 + center;
+	slice_bounds[1] = slice_height / 2 + center;
 	paint_vertical_line_color((unsigned int)x, slice_bounds, img, color);
 }
 
 static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
-		mlx_image_t *img, int color)
+		mlx_image_t *img, int color, t_player *player)
 {
 	int			slice_height;
 	int			slice_bounds[2];
 	float		dist_to_proj_plane;
+	float		center;
 
 	if (!rayhit.hit)
 		return ;
 	dist_to_proj_plane = (float)img->width / (2.0f * tanf(PLAYER_FOV / 2.0f));
 	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane / rayhit.distance);
-	slice_bounds[0] = -slice_height / 2 + (int)img->height / 2;
-	slice_bounds[1] = slice_height / 2 + (int)img->height / 2;
+	center = img->height * 0.5f + player->pitch;
+	slice_bounds[0] = -slice_height / 2 + center;
+	slice_bounds[1] = slice_height / 2 + center;
 	if (x >= img->width)
 		return ;
 	if (slice_bounds[0] >= 0)
@@ -87,7 +91,8 @@ static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
 		save_pixel_to_image(img, x, slice_bounds[1], color);
 }
 
-void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map)
+void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
+		t_player * player)
 {
 	unsigned int	i;
 	int				c_cell[2];
@@ -107,9 +112,9 @@ void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map)
 			&& rh[i].face == c_face && rh[img->width / 2].distance <= 300.0f)
 		{
 			if (is_raycast_edge(rh, i, img))
-				draw_vertical_outline(i, rh[i], img, color);
+				draw_vertical_outline(i, rh[i], img, color, player);
 			else
-				draw_top_and_bottom_outline(i, rh[i], img, color);
+				draw_top_and_bottom_outline(i, rh[i], img, color, player);
 		}
 		i++;
 	}

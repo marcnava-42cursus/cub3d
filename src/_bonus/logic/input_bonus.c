@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 18:02:04 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:25:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	refresh_key_states_bonus(t_game *game)
 	game->key_d_pressed = mlx_is_key_down(game->mlx, MLX_KEY_D);
 	game->key_left_pressed = mlx_is_key_down(game->mlx, MLX_KEY_LEFT);
 	game->key_right_pressed = mlx_is_key_down(game->mlx, MLX_KEY_RIGHT);
+	game->key_up_pressed = mlx_is_key_down(game->mlx, MLX_KEY_UP);
+	game->key_down_pressed = mlx_is_key_down(game->mlx, MLX_KEY_DOWN);
 }
 
 void	key_hook_bonus(mlx_key_data_t keydata, void *param)

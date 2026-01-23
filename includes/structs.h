@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 19:58:56 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:10:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_player
 	float				x;
 	float				y;
 	float				angle;
+	float				pitch;
 	char				inventory;
 	t_orientation		orientation;
 	t_player_textures	textures;
@@ -211,6 +212,8 @@ typedef struct s_game
 	bool		key_d_pressed;
 	bool		key_left_pressed;
 	bool		key_right_pressed;
+	bool		key_up_pressed;
+	bool		key_down_pressed;
 	// Variables de control de mouse
 	double		last_mouse_x;
 	bool		mouse_initialized;

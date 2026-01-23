@@ -6,12 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 18:00:41 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:25:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
 #include "structs.h"
+#include "render.h"
 
 /**
  * @brief Refreshes the state of all movement and rotation keys

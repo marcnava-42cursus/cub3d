@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:24:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 02:48:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,13 @@ static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
 	float		row_distance;
 	float		dist_to_proj_plane;
 
-	center = 0.5f * img->height;
+	center = 0.5f * img->height + player->pitch;
+	if (center < 1.0f)
+		center = 1.0f;
+	if (center > img->height - 2.0f)
+		center = img->height - 2.0f;
 	p = y - center;
-	if (p == 0.0f)
+	if (p < 1.0f) 
 		p = 1.0f;
 	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
 	row_distance = dist_to_proj_plane * 0.5f / p;
@@ -139,11 +143,17 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 
 void	render_floors(t_game *game)
 {
-	unsigned int	i;
+	int	i;
 	float			ray_dir[4];
 	vertex_t		floor_and_steps;
+	float			center;
 
-	i = game->double_buffer[NEXT]->height / 2 + 1;
+	center = game->double_buffer[NEXT]->height * 0.5f + game->cub_data.player.pitch;
+	if (center < 1.0f)
+		center = 1.0f;
+	if (center > game->double_buffer[NEXT]->height - 2.0f)
+		center = game->double_buffer[NEXT]->height - 2.0f;
+	i = (int)center + 1;
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
 	while (i < game->double_buffer[NEXT]->height)
 	{

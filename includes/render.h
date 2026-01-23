@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:41:18 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 03:33:26 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,14 +151,15 @@ void	render_floors(t_game *game);
 void	render_ceilings(t_game *game);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
-void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map);
+void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
+		t_player *player);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
-uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
+uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos, unsigned int alpha);
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 			mlx_image_t *img, t_textures *textures);
 void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-			xpm_t *texture, int tex_x, float tex_pos, float tex_step);
+			xpm_t *texture, int tex_x, float tex_pos, float tex_step, unsigned int alpha);
 void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
 			mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x);
 

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 18:02:40 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:13:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	init_player_parameters(t_game *game);
 void	move_forward(t_game *game, bool forward);
 void	move_strafe(t_game *game, bool right);
 void	rotate_player(t_game *game, bool right);
+void	pitch_player(t_game *game, bool up);
 
 // Collision
 bool	is_cell_blocking(t_game *game, int cell_x, int cell_y);
