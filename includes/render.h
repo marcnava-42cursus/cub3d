@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 03:33:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:57:47 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,17 +142,20 @@ void	init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 		float angle);
 
 /*--------------------------------- WALLS.C ----------------------------------*/
-void	render_walls(t_game *game, t_rayhit *rayhits);
-
-/*-------------------------------- FLOORS.C ----------------------------------*/
-void	render_floors(t_game *game);
-
-/*------------------------------- CEILINGS.C ---------------------------------*/
-void	render_ceilings(t_game *game);
+void	render_walls(t_game *game, t_rayhit *rayhits, float center);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
-		t_player *player);
+		float center);
+
+/*-------------------------------- FLOORS.C ----------------------------------*/
+float	*render_floors(t_game *game, float center, float ray_dir[4]);
+
+/*------------------------------- CEILINGS.C ---------------------------------*/
+void	render_ceilings(t_game *game, float center, float ray_dir[4]);
+
+/*--------------------------------- ORB.C ----------------------------------*/
+void	render_orb(t_game *game, t_rayhit *rayhits,  float center, float ray_dir[4]);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos, unsigned int alpha);
@@ -185,6 +188,7 @@ void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 			uint32_t color);
 int		t_color_to_int(t_color *color, int alpha);
 float	normalize_angle(float angle);
+float	clamp(float value, float min, float max);
 void 	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
 			uint32_t color);
 void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);

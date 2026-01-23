@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/22 17:39:07 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/23 15:49:30 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -140,6 +140,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
 				$(SRCPATH)/render/ceilings.c \
+				$(SRCPATH)/render/orb.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \
 				$(SRCPATH)/_bonus/logic/inventory.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_draw_base_bonus.c \

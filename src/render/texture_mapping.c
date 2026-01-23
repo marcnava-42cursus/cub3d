@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 03:47:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 20:45:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos, unsigned
 			* texture->texture.bytes_per_pixel))
 		{
 			pixels = texture->texture.pixels;
+			if (alpha == 255)
+				alpha = pixels[pixel_index + 3];
 			pixel_color = (pixels[pixel_index] << 24)
 				| (pixels[pixel_index + 1] << 16)
 				| (pixels[pixel_index + 2] << 8)
@@ -116,10 +118,7 @@ void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 	step = (float)texture->texture.height / (float)original_line_height;
 	tex_offset = (y[0] - rayhit.wall_bounds[0]) * step;
 	//fog = rayhit.distance - 400.0f / MAX_RENDER_DISTANCE - 400.0f;
-	//if (fog < 0.0f)
-	//	fog = 0.0f;
-	//if (fog > 1.0f)
-	//	fog = 1.0f;
+	//fog = clamp(fog, 0.0f, 1.0f);
 	//fog = fog * fog;
 	//alpha = (unsigned int)((1.0 - fog) * 255.0f);
 	alpha = 255;

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/03 11:57:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 10:31:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ float	normalize_angle(float angle)
 	while (angle <= -FT_PI)
 		angle += TAU;
 	return (angle);
+}
+
+float	clamp(float value, float min, float max)
+{
+	if (value < min)
+		value = min;
+	if (value > max)
+		value = max;
+	return (value);
 }
 
 // Simple solid color vertical line painter - y[0] is start and y[1] is end

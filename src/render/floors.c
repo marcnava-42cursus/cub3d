@@ -6,41 +6,20 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 02:48:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:07:47 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	get_ray_dir(float angle, float ray_dir[4])
-{
-	float			player_dir[2];
-	float			camera_plane[2];
-
-	player_dir[X] = cosf(angle);
-	player_dir[Y] = sinf(angle);
-	camera_plane[X] = -player_dir[Y] * tanf(PLAYER_FOV / 2.0f);
-	camera_plane[Y] = player_dir[X] * tanf(PLAYER_FOV / 2.0f);
-	ray_dir[X] = player_dir[X] - camera_plane[X];
-	ray_dir[Y] = player_dir[Y] - camera_plane[Y];
-	ray_dir[U] = player_dir[X] + camera_plane[X];
-	ray_dir[V] = player_dir[Y] + camera_plane[Y];
-}
-
 static vertex_t	get_floor_ray_steps(t_player *player, float ray_dir[4],
-		mlx_image_t *img, int y)
+		mlx_image_t *img, int y, float center)
 {
 	vertex_t	floor_and_steps;
-	float		center;
 	float		p;
 	float		row_distance;
 	float		dist_to_proj_plane;
 
-	center = 0.5f * img->height + player->pitch;
-	if (center < 1.0f)
-		center = 1.0f;
-	if (center > img->height - 2.0f)
-		center = img->height - 2.0f;
 	p = y - center;
 	if (p < 1.0f) 
 		p = 1.0f;
@@ -126,14 +105,8 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 		f[Y] = floor_and_steps.y - floor(floor_and_steps.y);
 		t[X] = (int)(f[X] * xpm->texture.width);
 		t[Y] = (int)(f[Y] * xpm->texture.height);
-		if (t[X] < 0)
-			t[X] = 0;
-		if (t[X] >= (int)xpm->texture.width)
-			t[X] = xpm->texture.width - 1;
-		if (t[Y] < 0)
-			t[Y] = 0;
-		if (t[Y] >= (int)xpm->texture.height)
-			t[Y] = xpm->texture.height - 1;
+		t[X] = (int)clamp((float)t[X], 0.0f, xpm->texture.width - 1); 
+		t[Y] = (int)clamp((float)t[Y], 0.0f, xpm->texture.height - 1); 
 		paint_horizontal_line_texture(y, x, img, xpm, t[Y], t[X]);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
@@ -141,26 +114,19 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 	}
 }
 
-void	render_floors(t_game *game)
+float	*render_floors(t_game *game, float center, float ray_dir[4])
 {
 	int	i;
-	float			ray_dir[4];
 	vertex_t		floor_and_steps;
-	float			center;
 
-	center = game->double_buffer[NEXT]->height * 0.5f + game->cub_data.player.pitch;
-	if (center < 1.0f)
-		center = 1.0f;
-	if (center > game->double_buffer[NEXT]->height - 2.0f)
-		center = game->double_buffer[NEXT]->height - 2.0f;
 	i = (int)center + 1;
-	get_ray_dir(game->cub_data.player.angle, ray_dir);
 	while (i < game->double_buffer[NEXT]->height)
 	{
 		floor_and_steps = get_floor_ray_steps(&game->cub_data.player, ray_dir,
-				game->double_buffer[NEXT], i);
+				game->double_buffer[NEXT], i, center);
 		render_floor_fill(i, game->double_buffer[NEXT], &game->cub_data.map,
 			&game->cub_data.textures, floor_and_steps);
 		i++;
 	}
+	return (ray_dir);
 }
