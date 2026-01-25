@@ -6,13 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 10:28:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/25 23:51:32 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	build_wall_bounds(t_rayhit *rayhit, mlx_image_t *img, t_player * player, float center)
+static void	build_wall_bounds(t_rayhit *rayhit, mlx_image_t *img, float center)
 {
 	int			slice_height;
 	float		dist_to_proj_plane;
@@ -24,13 +24,13 @@ static void	build_wall_bounds(t_rayhit *rayhit, mlx_image_t *img, t_player * pla
 }
 
 static void	render_wall_fill(t_rayhit *rayhit, unsigned int x, mlx_image_t *img,
-		t_textures *textures, t_player *player, float center)
+		t_textures *textures, float center)
 {
 	int			screen_bounds[2];
 
 	if (!rayhit->hit)
 		return ;
-	build_wall_bounds(rayhit, img, player, center);
+	build_wall_bounds(rayhit, img, center);
 	screen_bounds[0] = rayhit->wall_bounds[0];
 	screen_bounds[1] = rayhit->wall_bounds[1];
 	if (screen_bounds[0] < 0)
@@ -54,7 +54,7 @@ void	render_walls(t_game *game, t_rayhit *rayhits, float center)
 	while (i < game->double_buffer[NEXT]->width)
 	{
 		render_wall_fill(&rayhits[i], i, game->double_buffer[NEXT],
-			&game->cub_data.textures, &game->cub_data.player, center);
+			&game->cub_data.textures, center);
 		i++;
 	}
 	add_wall_outlines(rayhits, game->double_buffer[NEXT], &game->cub_data.map,

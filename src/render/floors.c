@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 16:07:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/25 23:55:55 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static xpm_t	*get_floor_texture(const t_map *map, t_textures *textures,
 }
 
 static void	render_floor_fill(unsigned int y, mlx_image_t *img,
-		const t_map *map, t_textures *textures, vertex_t floor_and_steps)
+		const t_map *map, t_textures *textures, vertex_t floor_and_steps, float fog)
 {
 	unsigned int	x;
 	float			f[2];
@@ -107,7 +107,7 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 		t[Y] = (int)(f[Y] * xpm->texture.height);
 		t[X] = (int)clamp((float)t[X], 0.0f, xpm->texture.width - 1); 
 		t[Y] = (int)clamp((float)t[Y], 0.0f, xpm->texture.height - 1); 
-		paint_horizontal_line_texture(y, x, img, xpm, t[Y], t[X]);
+		paint_horizontal_line_texture(y, x, img, xpm, t[Y], t[X], fog);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
 		x++;
@@ -116,16 +116,23 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 
 float	*render_floors(t_game *game, float center, float ray_dir[4])
 {
-	int	i;
+	unsigned int	i;
 	vertex_t		floor_and_steps;
+	float			dist[2];
+	float			fog;
 
-	i = (int)center + 1;
+	i = (unsigned int)center + 1;
 	while (i < game->double_buffer[NEXT]->height)
 	{
 		floor_and_steps = get_floor_ray_steps(&game->cub_data.player, ray_dir,
 				game->double_buffer[NEXT], i, center);
+		dist[X] = (floor_and_steps.x - game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
+		dist[Y] = (floor_and_steps.y - game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
+		fog = sqrtf(dist[X] * dist[X] + dist[Y] * dist[Y]);
+		fog = fog_factor(fog);
+		fog = fog * fog;
 		render_floor_fill(i, game->double_buffer[NEXT], &game->cub_data.map,
-			&game->cub_data.textures, floor_and_steps);
+			&game->cub_data.textures, floor_and_steps, fog);
 		i++;
 	}
 	return (ray_dir);

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 16:57:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/26 00:07:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 # define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_RENDER_DISTANCE 2000.0f
+# define FOG_TILE_START 0.5f
+# define FOG_TILE_END 4.5f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)
@@ -61,6 +63,7 @@
 # define BLACK 0x000000FF
 # define ORANGE 0xFF7F00FF
 # define TRANSPARENT_BLUE 0x0000FF44
+# define FOG_COLOR DARK_GREY
 
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
@@ -154,17 +157,22 @@ float	*render_floors(t_game *game, float center, float ray_dir[4]);
 /*------------------------------- CEILINGS.C ---------------------------------*/
 void	render_ceilings(t_game *game, float center, float ray_dir[4]);
 
-/*--------------------------------- ORB.C ----------------------------------*/
-void	render_orb(t_game *game, t_rayhit *rayhits,  float center, float ray_dir[4]);
+/*---------------------------------- ORB.C -----------------------------------*/
+void	render_orb(t_game *game, t_rayhit *rayhits,  float center,
+		float ray_dir[4]);
+
+/*---------------------------------- FOG.C -----------------------------------*/
+float	fog_factor(float distance);
+uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
-uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos, unsigned int alpha);
+uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 			mlx_image_t *img, t_textures *textures);
 void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-			xpm_t *texture, int tex_x, float tex_pos, float tex_step, unsigned int alpha);
+			xpm_t *texture, int tex_x, float tex_pos, float tex_step, float fog);
 void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
-			mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x);
+			mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x, float fog);
 
 # ifdef BONUS
 
