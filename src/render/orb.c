@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/26 00:09:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/26 00:48:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	render_orb(t_game *game, t_rayhit *rayhits, float center, float ray_dir[4])
 {
 	int				i;
-	int				rel[2];
-	int				cam[2];
+	float			rel[2];
+	float			cam[2];
 	float			dir[2];
 	float			plane[2];
 	float			inv_det;
