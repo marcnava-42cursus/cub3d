@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:53:54 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/24 15:20:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/26 01:16:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t)
 	color_new[0] = rgba_color_1[0] + (rgba_color_2[0] - rgba_color_1[0]) * t;	
 	color_new[1] = rgba_color_1[1] + (rgba_color_2[1] - rgba_color_1[1]) * t;	
 	color_new[2] = rgba_color_1[2] + (rgba_color_2[2] - rgba_color_1[2]) * t;	
-	color_new[3] = rgba_color_1[3] + (rgba_color_2[3] - rgba_color_1[3]) * t;	
+	//shouldn't lerp the alpha values
+	color_new[3] = rgba_color_1[3] /* + (rgba_color_2[3] - rgba_color_1[3]) * t*/;	
 	return ((color_new[0] << 24)
 		| (color_new[1] << 16)
 		| (color_new[2] << 8)
