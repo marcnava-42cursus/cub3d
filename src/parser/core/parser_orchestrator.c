@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/19 20:06:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/27 17:57:42 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,22 @@ static int	parse_elements(char **lines, int map_start, t_cub_data *data)
 			i++;
 			continue ;
 		}
-		if (is_link_identifier(lines[i]))
-		{
-			if (!parse_link_line(lines[i], data))
-				return (0);
-		}
-		else if (is_texture_identifier(lines[i]))
-		{
-			if (!parse_texture_line(lines[i], &data->textures))
-				return (0);
-		}
-		else if (is_color_identifier(lines[i]))
-		{
-			if (!parse_color_line(lines[i], &data->floor_color,
-					&data->ceiling_color))
-				return (0);
-		}
+		if (is_link_identifier(lines[i])
+			&& !parse_link_line(lines[i], data))
+			return (0);
+		if (is_texture_identifier(lines[i])
+			&& !parse_texture_line(lines[i], &data->textures))
+			return (0);
+		if (is_color_identifier(lines[i])
+			&& !parse_color_line(lines[i], &data->floor_color,
+				&data->ceiling_color))
+			return (0);
 		i++;
 	}
 	return (1);
 }
 
-static void	apply_default_colors(t_cub_data *data)
+static int	finalize_parsed_data(t_cub_data *data)
 {
 	if (data->floor_color.r == -1)
 	{
@@ -64,10 +58,6 @@ static void	apply_default_colors(t_cub_data *data)
 		data->ceiling_color.g = 170;
 		data->ceiling_color.b = 255;
 	}
-}
-
-static int	validate_parsed_data(const t_cub_data *data)
-{
 	if (!data->textures.north_path || !data->textures.south_path
 		|| !data->textures.west_path || !data->textures.east_path)
 		return (0);
@@ -76,36 +66,26 @@ static int	validate_parsed_data(const t_cub_data *data)
 	return (1);
 }
 
+static int	error_message(const char *message)
+{
+	printf("%s\n", message);
+	return (0);
+}
+
 int	process_file_data(char **lines, int line_count, t_cub_data *data)
 {
 	int	map_start;
 
 	map_start = find_map_start(lines, line_count);
 	if (map_start == -1)
-	{
-		printf("Error: Map section not found\n");
-		return (0);
-	}
+		return (error_message("Error: Map section not found"));
 	if (!parse_elements(lines, map_start, data))
-	{
-		printf("Error: Failed parsing elements ");
-		printf("(textures/colors/links) before map\n");
-		return (0);
-	}
-	apply_default_colors(data);
+		return (error_message("Error: Failed parsing elements before map"));
 	if (!parse_map_section(lines, map_start, data))
-	{
-		printf("Error: Failed parsing map section\n");
-		return (0);
-	}
-	if (!validate_parsed_data(data))
-	{
-		printf(
-			"%s Parsed data invalid (missing textures"
-			"/map/player)\n",
-			"Error: ");
-		return (0);
-	}
+		return (error_message("Error: Failed parsing map section"));
+	if (!finalize_parsed_data(data))
+		return (error_message(
+				"Error: Parsed data invalid (missing textures/map/player)"));
 	return (1);
 }
 
@@ -132,13 +112,6 @@ int	parse_cub_file(const char *filename, t_cub_data *data)
 		free_lines(lines, line_count);
 		return (0);
 	}
-#ifdef BONUS
-	if (!build_floor_graph_bonus(filename, data))
-	{
-		free_lines(lines, line_count);
-		return (0);
-	}
-#endif
 	free_lines(lines, line_count);
 	return (1);
 }

@@ -31,21 +31,16 @@ int	is_texture_identifier(const char *line)
 	return (result);
 }
 
-static int	validate_texture_id(const char *identifier)
-{
-	if (!ft_isalpha(identifier[1])
-		|| (!ft_isalpha(identifier[0]) && !ft_isdigit(identifier[0])))
-	{
-		printf("Error: Invalid texture identifier: %s\n", identifier);
-		return (0);
-	}
-	return (1);
-}
-
 static char	*get_validated_path(const char *line, const char *identifier)
 {
 	char	*path;
 
+	if (!ft_isalpha(identifier[1])
+		|| (!ft_isalpha(identifier[0]) && !ft_isdigit(identifier[0])))
+	{
+		printf("Error: Invalid texture identifier: %s\n", identifier);
+		return (NULL);
+	}
 	path = extract_texture_path(line, identifier);
 	if (!path)
 	{
@@ -61,23 +56,34 @@ static char	*get_validated_path(const char *line, const char *identifier)
 	return (path);
 }
 
+static t_custom_texture	*find_custom_tail(t_custom_texture *head,
+		const char *id)
+{
+	t_custom_texture	*current;
+
+	current = head;
+	while (current && current->next)
+	{
+		if (ft_strcmp(current->id, id) == 0)
+			return (NULL);
+		current = current->next;
+	}
+	if (current && ft_strcmp(current->id, id) == 0)
+		return (NULL);
+	return (current);
+}
+
 static int	add_custom_texture(t_textures *textures, const char *id, char *path)
 {
 	t_custom_texture	*new;
 	t_custom_texture	*current;
 
-	current = textures->custom;
-	while (current)
+	current = find_custom_tail(textures->custom, id);
+	if (textures->custom && !current)
 	{
-		if (ft_strcmp(current->id, id) == 0)
-		{
-			printf("Error: Duplicate texture identifier: %s\n", id);
-			free(path);
-			return (0);
-		}
-		if (!current->next)
-			break ;
-		current = current->next;
+		printf("Error: Duplicate texture identifier: %s\n", id);
+		free(path);
+		return (0);
 	}
 	new = malloc(sizeof(t_custom_texture));
 	if (!new)

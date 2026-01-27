@@ -29,7 +29,6 @@ int	run_game(t_game *game);
 
 // Sistema de movimiento
 void	init_movement_system(t_game *game);
-void	print_map_2d(t_game *game);
 void	move_forward(t_game *game, bool forward);
 void	move_strafe(t_game *game, bool right);
 void	rotate_player(t_game *game, bool right);

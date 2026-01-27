@@ -14,14 +14,6 @@
 #include "structs.h"
 #include <stdlib.h>
 
-typedef struct s_fps_overlay
-{
-	mlx_image_t	*label;
-	double		accum;
-	int			frames;
-	double		last_time;
-} 	t_fps_overlay;
-
 static t_fps_overlay	g_fps;
 
 static void	build_fps_text(char *buffer, size_t size, int fps)
@@ -57,6 +49,8 @@ void	fps_overlay_update(t_game *game)
 	double	dt;
 	double	fps;
 
+	if (!FPS_OVERLAY_ENABLED)
+		return ;
 	if (!game || !game->mlx)
 		return ;
 	now = mlx_get_time();

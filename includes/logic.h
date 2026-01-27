@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 02:05:23 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/27 17:58:35 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ typedef enum e_player_state
 	STATE_TAKE = 2,
 	STATE_HOLD = 3
 }	t_player_state;
+
+typedef struct s_fps_overlay
+{
+	mlx_image_t	*label;
+	double		accum;
+	int			frames;
+	double		last_time;
+} 	t_fps_overlay;
 
 # ifdef BONUS
 typedef enum e_orb_mode
@@ -70,22 +78,11 @@ typedef struct s_orb_projectile
 # define MOUSE_SMOOTHING 10.0f
 # define EPSILON 0.0f
 
-/* Terminal control codes */
-# define ANSI_CLEAR_SCREEN "\033[2J\033[H"
-
-/* Angle thresholds for player direction display (in radians) */
-# define ANGLE_RIGHT_MIN (-FT_PI / 4.0f)
-# define ANGLE_RIGHT_MAX (FT_PI / 4.0f)
-# define ANGLE_DOWN_MIN (FT_PI / 4.0f)
-# define ANGLE_DOWN_MAX (3.0f * FT_PI / 4.0f)
-# define ANGLE_LEFT_MIN (3.0f * FT_PI / 4.0f)
-# define ANGLE_LEFT_MAX (-3.0f * FT_PI / 4.0f)
-
-/* Player direction symbols */
-# define DIR_RIGHT '>'
-# define DIR_DOWN 'v'
-# define DIR_LEFT '<'
-# define DIR_UP '^'
+# ifdef DEBUG_FPS
+#  define FPS_OVERLAY_ENABLED 1
+# else
+#  define FPS_OVERLAY_ENABLED 0
+# endif
 
 typedef struct s_game t_game;
 typedef struct s_player t_player;
@@ -163,24 +160,12 @@ void	toggle_config_modal(t_game *game);
 bool	is_config_modal_open(const t_game *game);
 void	update_config_modal(t_game *game);
 void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata);
-void	fps_overlay_update(t_game *game);
 
 # endif
-
-// Debug / Terminal Output
-void	print_controls(void);
-void	print_map_2d(t_game *game);
-void	print_player_position_inline(t_game *game, int grid_x, int grid_y);
-void	handle_debug_map_update(t_game *game, int grid_x, int grid_y);
 
 // Debug / On-Screen Display
 void	init_crosshair(t_game *game);
-
-# ifndef BONUS
-#  ifdef DEBUG_FPS
 void	fps_overlay_update(t_game *game);
-#  endif
-# endif
 
 # ifdef BONUS
 
@@ -192,6 +177,7 @@ void	place_breakable_block(t_game *game);
 
 // Loop / Update
 void	update_player_position(t_game *game);
+void	movement_handle_elevator(t_game *game);
 void	update_game_loop(void *param);
 void	init_movement_system(t_game *game);
 

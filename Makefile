@@ -88,12 +88,13 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/window.c \
 				$(SRCPATH)/render/utils.c \
 				$(SRCPATH)/logic/movement.c \
+				$(SRCPATH)/logic/movement_init.c \
+				$(SRCPATH)/logic/movement_elevator.c \
 				$(SRCPATH)/logic/input.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/collision.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
-				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/logic/fps_overlay.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
 				$(SRCPATH)/render/gameplay_window.c 
@@ -144,7 +145,6 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
-				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
 				$(SRCPATH)/render/player.c \

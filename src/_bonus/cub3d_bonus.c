@@ -63,6 +63,11 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		printf("Error: Failed to initialize window\n");
 		return (0);
 	}
+	if (!load_map_textures_bonus(game))
+	{
+		printf("Error: Failed to load 2D map textures\n");
+		return (0);
+	}
 
 	return (1);
 }

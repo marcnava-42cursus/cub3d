@@ -15,13 +15,6 @@
 #include "logic.h"
 #include <stdlib.h>
 
-typedef struct s_fps_overlay
-{
-	mlx_image_t	*label;
-	double		accum;
-	int			frames;
-}	t_fps_overlay;
-
 static t_fps_overlay	g_fps;
 
 static void	hide_fps_label(void)
@@ -66,7 +59,6 @@ void	fps_overlay_update(t_game *game)
 	double	now;
 	double	dt;
 	double	fps;
-	static double	last_time = 0.0;
 
 	if (!game || !game->mlx)
 		return ;
@@ -76,10 +68,10 @@ void	fps_overlay_update(t_game *game)
 		return ;
 	}
 	now = mlx_get_time();
-	if (last_time <= 0.0)
-		last_time = now;
-	dt = now - last_time;
-	last_time = now;
+	if (g_fps.last_time <= 0.0)
+		g_fps.last_time = now;
+	dt = now - g_fps.last_time;
+	g_fps.last_time = now;
 	if (dt <= 0.0)
 		return ;
 	g_fps.accum += dt;

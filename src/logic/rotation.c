@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 05:12:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 17:59:43 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ void	pitch_player(t_game *game, bool up)
 		direction = 1.0f;
 	rotation_delta = 600.0f * (float)game->mlx->delta_time * direction;
 	game->cub_data.player.pitch += rotation_delta;
-	// this height / 2 is wrong but it stops crash with pitch
 	max_pitch = game->double_buffer[NEXT]->height * 0.35f;
-	game->cub_data.player.pitch =
-		clamp(game->cub_data.player.pitch, -max_pitch, max_pitch);
+	game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+			-max_pitch, max_pitch);
 }
