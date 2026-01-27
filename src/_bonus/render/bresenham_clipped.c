@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:29:18 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 17:15:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 17:31:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	paint_high(vertex_t start, vertex_t end, mlx_image_t *img,
 	}
 }
 
-static int	init_bresenham(int start_end[4], int dist_step[4])
+static int	init_bresenham(int start_end[4], int dist_step[4], vertex_t *start, vertex_t *end)
 {
 	start_end[X] = (int)start->x;
 	start_end[Y] = (int)start->y;
@@ -100,11 +100,11 @@ static int	init_bresenham(int start_end[4], int dist_step[4])
 	start_end[V] = (int)end->y;
 	dist_step[X] = abs(start_end[U] - start_end[X]);
 	dist_step[Y] = abs(start_end[V] - start_end[Y]);
-	if (b_start[X] < b_end[X])
+	if (start_end[X] < start_end[U])
 		dist_step[U] = 1;
 	else
 		dist_step[U] = -1;
-	if (b_start[Y] < b_end[Y])
+	if (start_end[X] < start_end[V])
 		dist_step[V] = 1;
 	else
 		dist_step[V] = -1;
