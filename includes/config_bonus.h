@@ -234,6 +234,7 @@ bool	config_option_toggle_state(t_game *game, int index);
 int		config_option_slider_value(t_game *game, int index);
 int		config_option_slider_raw(t_game *game, int slider);
 void	config_option_set_slider_raw(t_game *game, int slider, int value);
+int		config_fps_limit_value(int index);
 void	config_option_set_slider_percent(t_game *game, int slider,
 			int percent);
 void	config_option_step_slider(t_game *game, int slider, int delta);

@@ -15,6 +15,15 @@
 #include "logic.h"
 #include <stdio.h>
 
+int	config_fps_limit_value(int index)
+{
+	static const int	limits[6] = {10, 30, 60, 120, 240, -1};
+
+	if (index < 0 || index >= (int)(sizeof(limits) / sizeof(limits[0])))
+		return (-1);
+	return (limits[index]);
+}
+
 int	config_option_slider_raw(t_game *game, int slider)
 {
 	if (!game)
@@ -80,7 +89,6 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 	int	slider;
 	int	value;
 	int	raw;
-	int	fps_limits[6];
 
 	if (!buffer || buffer_size == 0)
 		return ;
@@ -92,17 +100,11 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 	raw = config_option_slider_raw(game, slider);
 	if (slider == CONFIG_SLIDER_FPS_LIMIT)
 	{
-		fps_limits[0] = 10;
-		fps_limits[1] = 30;
-		fps_limits[2] = 60;
-		fps_limits[3] = 120;
-		fps_limits[4] = 240;
-		fps_limits[5] = -1;
 		if (raw < 0)
 			raw = 0;
 		if (raw > 5)
 			raw = 5;
-		value = fps_limits[raw];
+		value = config_fps_limit_value(raw);
 		if (value < 0)
 			snprintf(buffer, buffer_size, "UNLIMITED");
 		else

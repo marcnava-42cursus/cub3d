@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 16:20:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 02:04:59 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	place_breakable_block(t_game *game)
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
-			game->cub_data.player.angle, 300.0f);
+			game->cub_data.player.angle, PLACE_BLOCK_DISTANCE * WORLDMAP_TILE_SIZE);
 	if (!hit.hit)
 		return ;
 	if (hit.cell[1] < 0 || hit.cell[1] >= game->cub_data.map.height
@@ -152,7 +152,7 @@ void	test_break_wall_in_front(t_game *game)
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
-			game->cub_data.player.angle, 300.0f);
+			game->cub_data.player.angle, BREAK_BLOCK_DISTANCE * WORLDMAP_TILE_SIZE);
 	if (hit.hit)
 	{
 		cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];

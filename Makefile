@@ -162,6 +162,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_options_actions_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_options_mouse_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_options_init_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_fps_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_state_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_rebind_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_query_bonus.c \

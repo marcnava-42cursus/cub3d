@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/23 01:26:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 03:09:44 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,11 @@ void	update_game_loop_bonus(void *param)
 	t_game	*game;
 	bool	moved;
 	bool	mouse_rotated;
+	double	min_step;
+	int		fps_limit;
+	double	now;
+	static double	next_tick = 0.0;
+	static int		last_limit = -2;
 
 	game = (t_game *)param;
 	if (!game || !game->mlx)
@@ -274,7 +279,28 @@ void	update_game_loop_bonus(void *param)
 		update_config_modal(game);
 		return ;
 	}
+	fps_limit = config_fps_limit_value(game->menu.options.fps_limit_index);
+	if (fps_limit != last_limit)
+	{
+		next_tick = 0.0;
+		last_limit = fps_limit;
+	}
+	if (fps_limit > 0)
+	{
+		now = mlx_get_time();
+		min_step = 1.0 / (double)fps_limit;
+		if (next_tick <= 0.0)
+			next_tick = now + min_step;
+		if (now < next_tick)
+			return ;
+		next_tick += min_step;
+		while (now >= next_tick)
+			next_tick += min_step;
+	}
+	else
+		next_tick = 0.0;
 	refresh_key_states_bonus(game);
+	fps_overlay_update(game);
 	if (game->mlx->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
