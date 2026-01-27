@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 04:06:06 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 05:09:19 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,5 @@ void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 	step = (float)texture->texture.height / (float)original_line_height;
 	tex_offset = (y[0] - rayhit.wall_bounds[0]) * step;
 	fog = fog_factor(rayhit.distance);
-	fog = fog * fog;
 	paint_vertical_line_texture(x, y, img, texture, textures->fog, tex_x, tex_offset, step, fog);
 }

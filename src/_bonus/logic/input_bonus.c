@@ -112,19 +112,13 @@ void	cursor_hook_bonus(double xpos, double ypos, void *param)
 bool	process_mouse_rotation_bonus(t_game *game)
 {
 	float	rotation_amount;
-	float	smoothing;
 
 	if (is_config_modal_open(game) || !game)
 		return (false);
 	if (game->mouse_delta_accumulated == 0.0f)
 		return (false);
-	if (!game->mlx || game->mlx->delta_time <= 0.0)
-		return (false);
-	smoothing = MOUSE_SMOOTHING * (float)game->mlx->delta_time;
-	if (smoothing > 1.0f)
-		smoothing = 1.0f;
-	rotation_amount = game->mouse_delta_accumulated * smoothing;
-	game->mouse_delta_accumulated -= rotation_amount;
+	rotation_amount = game->mouse_delta_accumulated;
+	game->mouse_delta_accumulated = 0.0f;
 	if (rotation_amount > -EPSILON && rotation_amount < EPSILON)
 	{
 		game->mouse_delta_accumulated = 0.0f;

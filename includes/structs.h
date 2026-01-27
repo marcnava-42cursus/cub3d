@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 03:43:59 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 05:16:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "logic.h"
 # include "parser.h"
 # include "config_bonus.h"
+
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
 

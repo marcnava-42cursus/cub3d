@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/23 01:13:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 02:05:23 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <stdbool.h>
 # include "MLX42/MLX42.h"
 # include "libft.h"
+
+# define BREAK_BLOCK_DISTANCE 4
+# define PLACE_BLOCK_DISTANCE 20
 
 // Orientaciones del jugador
 typedef enum e_orientation
@@ -160,6 +163,7 @@ void	toggle_config_modal(t_game *game);
 bool	is_config_modal_open(const t_game *game);
 void	update_config_modal(t_game *game);
 void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata);
+void	fps_overlay_update(t_game *game);
 
 # endif
 

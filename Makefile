@@ -83,6 +83,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/logic/debug_map.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
 				$(SRCPATH)/render/gameplay_window.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
@@ -162,6 +163,8 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_options_actions_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_options_mouse_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_options_init_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_fps_bonus.c \
+				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_state_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_rebind_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_query_bonus.c \

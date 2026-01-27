@@ -27,6 +27,8 @@ static bool	*toggle_value_ptr(t_game *game, int index)
 		return (&game->menu.options.minimap);
 	if (index == CONFIG_OPTION_FULLSCREEN)
 		return (&game->menu.options.fullscreen);
+	if (index == CONFIG_OPTION_DEBUG_MODE)
+		return (&game->menu.options.debug_mode);
 	return (NULL);
 }
 
@@ -70,10 +72,14 @@ void	config_option_toggle(t_game *game, int index)
 			name = "Crosshair";
 		else if (index == CONFIG_OPTION_MINIMAP)
 			name = "Minimap";
+		else if (index == CONFIG_OPTION_DEBUG_MODE)
+			name = "Debug Mode";
 		else
 			name = "Fullscreen";
 		*toggle = !(*toggle);
-		if (toggle)
+		if (index == CONFIG_OPTION_CROSSHAIR && game->crosshair)
+			set_image_enabled(game->crosshair, *toggle);
+		if (*toggle)
 			printf("Config: %s ON\n", name);
 		else
 			printf("Config: %s OFF\n", name);
