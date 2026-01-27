@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 12:44:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:56:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 	t_rayhit		*rayhits;
 	float			center;
 	float			ray_dir[4];
+	float			dist_to_proj_plane;
 
 	render_bg(game);
 	rayhits = ft_calloc(buffer_width, sizeof(t_rayhit));
@@ -85,12 +86,13 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 		rayhits[i] = cast_ray_for_column(&game->cub_data, i, buffer_width);
 		i++;
 	}
+	dist_to_proj_plane = (buffer_width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
 	center = calculate_center(game->double_buffer[NEXT]->height,
 			game->cub_data.player.pitch);
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
 	render_floors(game, center, ray_dir);
 	render_ceilings(game, center, ray_dir);
-	render_walls(game, rayhits, center);
+	render_walls(game, rayhits, center, dist_to_proj_plane);
 	render_orb(game, rayhits, center, ray_dir);
 	render_player_overlay(game);
 	free(rayhits);

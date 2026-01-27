@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 01:46:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/30 19:03:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:13:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ void	render_minimap_bg(t_minimap *minimap)
 
 	ft_bzero(minimap->bg->pixels, minimap->bg->width * minimap->bg->height * 4);
 	pixel[Y] = 0;
-	while (pixel[Y] < minimap->bg->height)
+	while (pixel[Y] < (int)minimap->bg->height)
 	{
 		pixel[X] = 0;
-		while (pixel[X] < minimap->bg->width)
+		while (pixel[X] < (int)minimap->bg->width)
 		{
-			if (is_inside_minimap_circle(pixel))
+			if (is_inside_minimap_circle(pixel[X], pixel[Y]))
 				save_pixel_to_image(minimap->bg, pixel[X], pixel[Y], DARK_GREY);
 			pixel[X]++;
 		}

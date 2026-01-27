@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:47:44 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 12:56:01 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:13:58 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	render_minimap_walls(t_minimap *minimap)
 		pixel[X] = 0;
 		while (pixel[X] < (int)minimap->bg->width)
 		{
-			if (is_inside_minimap_circle(pixel))
+			if (is_inside_minimap_circle(pixel[X], pixel[Y]))
 			{
 				d[X] = (float)pixel[X] - (MINIMAP_WIDTH / 2.0f);
 				d[Y] = (float)pixel[Y] - (MINIMAP_HEIGHT / 2.0f);

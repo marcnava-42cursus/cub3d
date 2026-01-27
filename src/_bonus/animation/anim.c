@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 13:28:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 13:27:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:16:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
 	anim->i = 0;
 	anim->time = 0.0f;
 	anim->spf = 1.0f / FPS;
-	anim->loop = loop;	
+	anim->loop = loop;
 	anim->finished = false;
 }
 
@@ -42,7 +42,6 @@ void	anim_start(t_anim *anim)
 {
 	if (!anim || anim->count == 0)
 		return ;
-
 	anim->i = 0;
 	anim->time = 0.0f;
 	anim->finished = false;
@@ -67,7 +66,8 @@ bool	anim_update(t_anim *anim, float delta_time)
 			anim->i++;
 		else if (anim->loop)
 			anim->i = 0;
-		else {
+		else
+		{
 			anim->finished = true;
 			return (true);
 		}

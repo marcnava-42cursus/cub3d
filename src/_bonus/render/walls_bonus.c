@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 15:02:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 18:35:49 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,12 @@ static void	render_wall_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
 	rayhit->wall_bounds[1] = screen_bounds[1];
 }
 
-void	render_walls(t_game *game, t_rayhit *rayhits, float center)
+void	render_walls(t_game *game, t_rayhit *rayhits, float center,
+		float dist_to_proj_plane)
 {
 	unsigned int	i;
-	float			dist_to_proj_plane;
 
 	i = 0;
-	dist_to_proj_plane = (game->double_buffer[NEXT]->width * 0.5f)
-		/ tanf(PLAYER_FOV / 2.0f);
 	while (i < (unsigned int)game->double_buffer[NEXT]->width)
 	{
 		render_wall_fill(game, &rayhits[i], i, center, dist_to_proj_plane);

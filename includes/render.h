@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 15:07:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:11:38 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	render_minimap_walls(t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
 
 /*----------------------------- MINIMAP_UTILS.C ------------------------------*/
-bool		is_inside_minimap_circle(int coord[2]);
+bool		is_inside_minimap_circle(int coord_x, int coord_y);
 vertex_t	rotate_point(float x, float y, float angle);
 vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world);
 
@@ -142,14 +142,15 @@ void	init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 		float angle);
 
 /*--------------------------------- WALLS.C ----------------------------------*/
-void	render_walls(t_game *game, t_rayhit *rayhits, float center);
+void	render_walls(t_game *game, t_rayhit *rayhits, float center,
+		float dist_to_proj_plane);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
 		float center, float dist_to_proj_plane);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
-float	*render_floors(t_game *game, float center, float ray_dir[4]);
+void	render_floors(t_game *game, float center, float ray_dir[4]);
 
 /*------------------------------- CEILINGS.C ---------------------------------*/
 void	render_ceilings(t_game *game, float center, float ray_dir[4]);

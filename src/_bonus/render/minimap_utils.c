@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:23:22 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/28 21:34:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:10:38 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-bool	is_inside_minimap_circle(int coord[2])
+bool	is_inside_minimap_circle(int coord_x, int coord_y)
 {
 	int	center[2];
 	int	d[2];
@@ -20,8 +20,8 @@ bool	is_inside_minimap_circle(int coord[2])
 
 	center[X] = MINIMAP_WIDTH / 2;
 	center[Y] = MINIMAP_HEIGHT / 2;
-	d[X] = coord[X] - center[X];
-	d[Y] = coord[Y] - center[Y];
+	d[X] = coord_x - center[X];
+	d[Y] = coord_y - center[Y];
 	radius = (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE) / 2;
 	return (d[X] * d[X] + d[Y] * d[Y] <= radius * radius);
 }

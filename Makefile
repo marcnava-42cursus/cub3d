@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/27 16:57:19 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/27 19:02:05 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,19 +111,20 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/texture_atlas.c \
 				$(SRCPATH)/render/texture_atlas_utils.c \
+				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/raycast.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \
+				$(SRCPATH)/render/scanline_fill.c \
+				$(SRCPATH)/render/utils.c \
 				$(SRCPATH)/_bonus/render/bresenham_clipped.c \
 				$(SRCPATH)/_bonus/render/double_buffer_bonus.c \
-				$(SRCPATH)/render/minimap.c \
-				$(SRCPATH)/render/minimap_player_vision.c \
-				$(SRCPATH)/render/scanline_fill.c \
-				$(SRCPATH)/render/minimap_tile.c \
-				$(SRCPATH)/render/minimap_utils.c \
-				$(SRCPATH)/render/outlines.c \
+				$(SRCPATH)/_bonus/render/minimap.c \
+				$(SRCPATH)/_bonus/render/minimap_player_vision.c \
+				$(SRCPATH)/_bonus/render/minimap_tile.c \
+				$(SRCPATH)/_bonus/render/minimap_utils.c \
+				$(SRCPATH)/_bonus/render/outlines.c \
 				$(SRCPATH)/_bonus/render/window_bonus.c \
-				$(SRCPATH)/render/utils.c \
 				$(SRCPATH)/_bonus/render/map_2d_bonus.c \
 				$(SRCPATH)/_bonus/logic/movement_bonus.c \
 				$(SRCPATH)/_bonus/logic/input_bonus.c \
@@ -133,11 +134,10 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
-				$(SRCPATH)/render/player.c \
-				$(SRCPATH)/render/floors.c \
-				$(SRCPATH)/render/ceilings.c \
-				$(SRCPATH)/render/orb.c \
-				$(SRCPATH)/render/fog.c \
+				$(SRCPATH)/_bonus/render/floors.c \
+				$(SRCPATH)/_bonus/render/ceilings.c \
+				$(SRCPATH)/_bonus/render/orb.c \
+				$(SRCPATH)/_bonus/render/fog.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \
 				$(SRCPATH)/_bonus/logic/inventory.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_draw_base_bonus.c \
@@ -167,10 +167,10 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_state_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
-				$(SRCPATH)/animation/anim.c \
-				$(SRCPATH)/animation/player_left_hand_anims.c \
-				$(SRCPATH)/animation/player_right_hand_anims.c \
-				$(SRCPATH)/animation/player_anim.c
+				$(SRCPATH)/_bonus/animation/anim.c \
+				$(SRCPATH)/_bonus/animation/player_left_hand_anims.c \
+				$(SRCPATH)/_bonus/animation/player_right_hand_anims.c \
+				$(SRCPATH)/_bonus/animation/player_anim.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_BONUS)/%.o)
