@@ -65,6 +65,8 @@ bool	config_option_toggle_state(t_game *game, int index)
 		return (game->menu.options.minimap);
 	if (index == CONFIG_OPTION_FULLSCREEN)
 		return (game->menu.options.fullscreen);
+	if (index == CONFIG_OPTION_DEBUG_MODE)
+		return (game->menu.options.debug_mode);
 	return (false);
 }
 

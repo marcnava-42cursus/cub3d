@@ -29,6 +29,7 @@ void	config_options_init(t_game *game)
 	menu->options.crosshair = true;
 	menu->options.minimap = true;
 	menu->options.fullscreen = false;
+	menu->options.debug_mode = false;
 	menu->options.game_speed = 70;
 	menu->options.fps_limit_index = 2;
 	menu->options.mouse_sens = 50;

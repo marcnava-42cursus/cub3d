@@ -93,7 +93,8 @@ void	place_breakable_block(t_game *game)
 
 	if (!game)
 		return ;
-	printf("Attempting to place block\n");
+	if (game->menu.options.debug_mode)
+		printf("Attempting to place block\n");
 	if (orb_projectile_is_active(game))
 		return ;
 	if (!player_has_block(&game->cub_data.player))
@@ -124,7 +125,8 @@ void	place_breakable_block(t_game *game)
 		return ;
 	}
 	game->cub_data.player.state = STATE_THROW;
-	printf("Placed block at (%d, %d)\n", target_x, target_y);
+	if (game->menu.options.debug_mode)
+		printf("Placed block at (%d, %d)\n", target_x, target_y);
 	//render_double_buffer(game);
 }
 
@@ -147,7 +149,8 @@ void	test_break_wall_in_front(t_game *game)
 
 	if (!game)
 		return ;
-	printf("Attempting to break block\n");
+	if (game->menu.options.debug_mode)
+		printf("Attempting to break block\n");
 	cell_changed = false;
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
@@ -169,7 +172,9 @@ void	test_break_wall_in_front(t_game *game)
 				game->cub_data.map.grid[hit.cell[1]][hit.cell[0]] = cell;
 			if (cell_changed)
 			{
-				printf("Broke block at (%d, %d)\n", hit.cell[0], hit.cell[1]);
+				if (game->menu.options.debug_mode)
+					printf("Broke block at (%d, %d)\n",
+						hit.cell[0], hit.cell[1]);
 				game->cub_data.player.state = STATE_TAKE;
 			}
 		}
