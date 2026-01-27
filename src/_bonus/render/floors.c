@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 18:43:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:37:29 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 		f[Y] = floor_and_steps.y - floorf(floor_and_steps.y);
 		t[X] = (int)(f[X] * textures->floor->texture.width);
 		t[Y] = (int)(f[Y] * textures->floor->texture.height);
-		t[X] = (int)clamp((float)t[X], 0.0f, textures->floor->texture.width - 1);
-		t[Y] = (int)clamp((float)t[Y], 0.0f, textures->floor->texture.height - 1);
+		t[X] = (int)clamp((float)t[X], 0.0f,
+				textures->floor->texture.width - 1);
+		t[Y] = (int)clamp((float)t[Y], 0.0f,
+				textures->floor->texture.height - 1);
 		paint_horizontal_line_texture_bonus(y, x, img, textures->floor,
 			textures->fog, t[Y], t[X], fog);
 		floor_and_steps.x += floor_and_steps.u;
@@ -74,8 +76,8 @@ void	render_floors(t_game *game, float center, float ray_dir[4])
 			* WORLDMAP_TILE_SIZE;
 		fog = sqrtf(dist[X] * dist[X] + dist[Y] * dist[Y]);
 		fog = fog_factor(fog);
-		render_floor_fill(i, game->double_buffer[NEXT], &game->cub_data.textures,
-			floor_and_steps, fog);
+		render_floor_fill(i, game->double_buffer[NEXT],
+			&game->cub_data.textures, floor_and_steps, fog);
 		i++;
 	}
 }
