@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 15:17:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 16:49:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,10 @@ void	window_free_bonus(t_game *game)
 		mlx_delete_image(game->mlx, game->double_buffer[CURRENT]);
 	if (game->crosshair)
 		mlx_delete_image(game->mlx, game->crosshair);
-
-	// Bonus specific cleanup
 	if (game->menu.modal)
 		mlx_delete_image(game->mlx, game->menu.modal);
 	if (game->menu.quit_label)
 		mlx_delete_image(game->mlx, game->menu.quit_label);
-
 	minimap_free(game->mlx, &game->minimap);
 	mlx_terminate(game->mlx);
 }

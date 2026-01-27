@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/27 15:01:08 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/27 16:57:19 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +114,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/render/raycast.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \
-				$(SRCPATH)/render/bresenham.c \
+				$(SRCPATH)/_bonus/render/bresenham_clipped.c \
 				$(SRCPATH)/_bonus/render/double_buffer_bonus.c \
 				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/minimap_player_vision.c \

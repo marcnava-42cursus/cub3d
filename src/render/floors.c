@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 15:01:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 16:51:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ static void	render_floor_fill(unsigned int y, mlx_image_t *img,
 		t[Y] = (int)(f[Y] * xpm->texture.height);
 		t[X] = (int)clamp((float)t[X], 0.0f, xpm->texture.width - 1);
 		t[Y] = (int)clamp((float)t[Y], 0.0f, xpm->texture.height - 1);
-		paint_horizontal_line_texture_bonus(y, x, img, xpm, textures->fog, t[Y], t[X],
-			fog);
+		paint_horizontal_line_texture_bonus(y, x, img, xpm, textures->fog, t[Y],
+			t[X], fog);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
 		x++;
