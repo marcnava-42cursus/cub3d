@@ -91,6 +91,7 @@ int		count_file_lines(const char *filename);
 // Validación
 int		validate_file_extension(const char *filename);
 int		validate_texture_path(const char *path);
+int		validate_texture_id(const char *identifier);
 
 // Texture loading
 int		load_textures(t_textures *textures);

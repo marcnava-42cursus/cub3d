@@ -38,6 +38,22 @@ int	validate_texture_path(const char *path)
 	return (1);
 }
 
+int	validate_texture_id(const char *identifier)
+{
+	if (!identifier || ft_strlen(identifier) != 2)
+	{
+		printf("Error: Invalid texture identifier\n");
+		return (0);
+	}
+	if (!ft_isalpha(identifier[1])
+		|| (!ft_isalpha(identifier[0]) && !ft_isdigit(identifier[0])))
+	{
+		printf("Error: Invalid texture identifier: %s\n", identifier);
+		return (0);
+	}
+	return (1);
+}
+
 int	validate_parsed_data(const t_cub_data *data)
 {
 	if (!data->textures.north || !data->textures.south

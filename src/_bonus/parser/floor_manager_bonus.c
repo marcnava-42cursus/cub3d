@@ -134,6 +134,32 @@ static t_floor	*find_floor_by_path_bonus(t_floor *head, const char *path)
 	return (NULL);
 }
 
+static void	free_texture_paths_bonus(t_textures *textures)
+{
+	if (!textures)
+		return ;
+	if (textures->north_path)
+	{
+		free(textures->north_path);
+		textures->north_path = NULL;
+	}
+	if (textures->south_path)
+	{
+		free(textures->south_path);
+		textures->south_path = NULL;
+	}
+	if (textures->west_path)
+	{
+		free(textures->west_path);
+		textures->west_path = NULL;
+	}
+	if (textures->east_path)
+	{
+		free(textures->east_path);
+		textures->east_path = NULL;
+	}
+}
+
 static void	free_floor_node_bonus(t_floor *floor)
 {
 	if (!floor)
@@ -146,6 +172,7 @@ static void	free_floor_node_bonus(t_floor *floor)
 		free(floor->up_path);
 	if (floor->down_path)
 		free(floor->down_path);
+	free_texture_paths_bonus(&floor->textures);
 	free_textures(&floor->textures);
 	free(floor);
 }
@@ -157,7 +184,10 @@ static int	create_floor_from_data_bonus(char *canonical_path, t_cub_data *src,
 		return (0);
 	*out = malloc(sizeof(t_floor));
 	if (!*out)
+	{
+		free(canonical_path);
 		return (0);
+	}
 	(*out)->path = canonical_path;
 	(*out)->map = src->map;
 	(*out)->up_path = src->up_path;
@@ -173,18 +203,18 @@ static int	create_floor_from_data_bonus(char *canonical_path, t_cub_data *src,
 	(*out)->has_player = (src->player.x >= 0.0f && src->player.y >= 0.0f);
 	(*out)->player = src->player;
 	(*out)->textures_loaded = false;
-	if (!collect_floor_elevators_bonus(*out))
-	{
-		free_floor_node_bonus(*out);
-		*out = NULL;
-		return (0);
-	}
 	ft_bzero(&src->map, sizeof(t_map));
 	ft_bzero(&src->textures, sizeof(t_textures));
 	ft_bzero(&src->floor_color, sizeof(t_color));
 	ft_bzero(&src->ceiling_color, sizeof(t_color));
 	src->up_path = NULL;
 	src->down_path = NULL;
+	if (!collect_floor_elevators_bonus(*out))
+	{
+		free_floor_node_bonus(*out);
+		*out = NULL;
+		return (0);
+	}
 	return (1);
 }
 
@@ -222,7 +252,6 @@ static int	parse_floor_file_bonus(const char *path, int index,
 	free_lines(lines, line_count);
 	if (!create_floor_from_data_bonus(canonical, &tmp, out_floor, index))
 	{
-		free(canonical);
 		free_cub_data(&tmp);
 		return (0);
 	}
