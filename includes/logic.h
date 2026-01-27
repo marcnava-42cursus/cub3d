@@ -176,6 +176,12 @@ void	handle_debug_map_update(t_game *game, int grid_x, int grid_y);
 // Debug / On-Screen Display
 void	init_crosshair(t_game *game);
 
+# ifndef BONUS
+#  ifdef DEBUG_FPS
+void	fps_overlay_update(t_game *game);
+#  endif
+# endif
+
 # ifdef BONUS
 
 // Test / Prototype

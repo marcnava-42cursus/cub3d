@@ -23,6 +23,8 @@ ifeq ($(DEBUG),1)
 	CFLAGS += $(DFLAGS)
 else ifeq ($(DEBUG),2)
 	CFLAGS += $(DFLAGS) $(SANITIZE)
+else ifeq ($(DEBUG),fps)
+	CFLAGS += -DDEBUG_FPS
 endif
 RM			:=	rm -rf
 
@@ -81,6 +83,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/logic/debug_map.c \
+				$(SRCPATH)/logic/fps_overlay.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
 				$(SRCPATH)/render/gameplay_window.c 
 

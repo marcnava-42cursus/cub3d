@@ -233,6 +233,9 @@ void	update_game_loop(void *param)
 	if (!game || !game->mlx)
 		return ;
 	refresh_key_states(game);
+#ifdef DEBUG_FPS
+	fps_overlay_update(game);
+#endif
 	if (game->mlx->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
