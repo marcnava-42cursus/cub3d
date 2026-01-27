@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:18:04 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:02:47 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	render_left_hand(mlx_image_t *buffer, int buffer_x_center,
 	coord[X] = buffer_x_center - HAND_TEXTURE_WIDTH * 2;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
 	paint_current_frame_to_image(buffer, atlas, coord,
-			player->left_hand_anims[player->current_left_hand_anim].current_frame);
+		player->left_hand_anims[player->current_left_hand_anim].current_frame);
 }
 
 static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
@@ -47,7 +47,8 @@ static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
 	coord[X] = buffer_x_center + HAND_TEXTURE_WIDTH;
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT;
 	paint_hori_flip_current_frame_to_image(buffer, atlas, coord,
-			player->right_hand_anims[player->current_right_hand_anim].current_frame);
+		player->right_hand_anims[
+		player->current_right_hand_anim].current_frame);
 }
 
 void	render_player_overlay(t_game *game)

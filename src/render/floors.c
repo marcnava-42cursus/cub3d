@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/25 23:55:55 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:00:31 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,14 @@ static xpm_t	*get_floor_texture(const t_map *map, t_textures *textures,
 	cell_x = (int)floorf(world_x);
 	cell_y = (int)floorf(world_y);
 	if (!map || !map->grid || cell_y < 0 || cell_y >= map->height)
-		return (textures->north);
+		return (textures->floor);
 	if (cell_x < 0 || cell_x >= (int)ft_strlen(map->grid[cell_y]))
-		return (textures->north);
+		return (textures->floor);
 	cell = map->grid[cell_y][cell_x];
 	custom = find_custom_floor_texture(textures->custom, cell);
 	if (custom)
 		return (custom);
-	return (textures->north);
+	return (textures->floor);
 }
 
 static void	render_floor_fill(unsigned int y, mlx_image_t *img,

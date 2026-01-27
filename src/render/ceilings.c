@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/25 23:58:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:00:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	render_ceilings(t_game *game, float center, float ray_dir[4])
 		fog = fog_factor(fog);
 		fog = fog * fog;
 		render_ceiling_fill(i, game->double_buffer[NEXT],
-			game->cub_data.textures.north, floor_and_steps, fog);
+			game->cub_data.textures.ceiling, floor_and_steps, fog);
 		i++;
 	}
 }
