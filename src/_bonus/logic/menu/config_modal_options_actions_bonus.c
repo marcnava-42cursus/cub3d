@@ -73,7 +73,9 @@ void	config_option_toggle(t_game *game, int index)
 		else
 			name = "Fullscreen";
 		*toggle = !(*toggle);
-		if (toggle)
+		if (index == CONFIG_OPTION_CROSSHAIR && game->crosshair)
+			set_image_enabled(game->crosshair, *toggle);
+		if (*toggle)
 			printf("Config: %s ON\n", name);
 		else
 			printf("Config: %s OFF\n", name);
