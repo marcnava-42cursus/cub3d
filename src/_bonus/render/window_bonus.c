@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2025/12/24 10:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:17:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 // Prototypes
 bool	world_map_init_bonus(t_game *game);
 void	free_map_textures_bonus(t_game *game);
-void	minimap_init(t_game *game); // Shared
-void	minimap_free(mlx_t *mlx, t_minimap *minimap); // Shared
 
 bool	window_init_bonus(t_game *game)
 {
@@ -32,13 +30,13 @@ bool	window_init_bonus(t_game *game)
 	mlx_set_window_size(game->mlx, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
 	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH) / 2,
 		(monitor_height - MAX_WINDOW_HEIGHT) / 2);
-	game->double_buffer[NEXT] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
-			MAX_WINDOW_HEIGHT);
+	game->resolution_scale = 0.5f;
+	game->double_buffer[NEXT] = mlx_new_image(game->mlx,
+			MAX_WINDOW_WIDTH * game->resolution_scale,
+			MAX_WINDOW_HEIGHT * game->resolution_scale);
 	game->double_buffer[CURRENT] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
-	mlx_image_to_window(game->mlx, game->double_buffer[NEXT], 0, 0);
 	mlx_image_to_window(game->mlx, game->double_buffer[CURRENT], 0, 0);
-	game->resolution_scale = 0.5f;
 	if (!world_map_init_bonus(game))
 		return (false);
 	minimap_init(game);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_init.c                                      :+:      :+:    :+:   */
+/*   parser_init_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 14:53:19 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/23 00:55:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "structs.h"
 //temporary
 #include "render.h"
+#include "animation.h"
 
 void	init_cub_data(t_cub_data *data)
 {
@@ -40,6 +41,7 @@ void	init_cub_data(t_cub_data *data)
 	atlas_init(&data->player.textures.weapon,
 		"./assets/textures/player/test_weapon.xpm42",
 		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
+	init_player_anims(&data->player);
 }
 
 void	init_cub_data_parser_only(t_cub_data *data)

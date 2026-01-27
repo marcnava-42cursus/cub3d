@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 13:39:55 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:20:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,6 @@ int	init_game(t_game *game, const char *map_file)
 		printf("Error: Failed to initialize window\n");
 		return (0);
 	}
-
-	// Cargar texturas 2D
-	if (!load_map_textures(game))
-	{
-		printf("Error: Failed to load textures\n");
-		return (0);
-	}
-
 	return (1);
 }
 
@@ -66,6 +58,13 @@ void	cleanup_game(t_game *game)
 		window_free(game);
 }
 
+static void render_loop(void *param)
+{
+	t_game *game = (t_game *)param;
+
+	render_double_buffer(game);
+}
+
 int	run_game(t_game *game)
 {
     // Inicializar sistema de movimiento
@@ -76,6 +75,7 @@ int	run_game(t_game *game)
 	// - Procesamiento de input
 	// - Lógica del juego
 	// - Rendering
+	mlx_loop_hook(game->mlx, render_loop, (void *)game);
 	mlx_loop(game->mlx);
 
 	return (1);

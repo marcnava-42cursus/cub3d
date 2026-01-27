@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:53:54 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 05:07:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 06:06:17 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t)
 	uint8_t	rgba_color_2[4];
 	uint8_t	color_new[4];
 
-	//t = clamp(t, 0.0f, 1.0f);
 	rgba_color_1[0] = (color_1 >> 24) & 0xFF;
 	rgba_color_2[0] = (color_2 >> 24) & 0xFF;
 	rgba_color_1[1] = (color_1 >> 16) & 0xFF;

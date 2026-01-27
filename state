@@ -1,0 +1,91 @@
+src/_bonus/parser/map/map_validation_bonus.c:				player->x = (float)x + 0.5f;
+src/_bonus/parser/map/map_validation_bonus.c:				player->y = (float)y + 0.5f;
+src/_bonus/parser/map/map_validation_bonus.c:				player->orientation = map->grid[y][x];
+src/_bonus/parser/map/map_validation_bonus.c:				if (player->orientation == NORTH)
+src/_bonus/parser/map/map_validation_bonus.c:					player->angle = 3.0f * (FT_PI / 2);
+src/_bonus/parser/map/map_validation_bonus.c:				else if (player->orientation == SOUTH)
+src/_bonus/parser/map/map_validation_bonus.c:					player->angle = FT_PI / 2;
+src/_bonus/parser/map/map_validation_bonus.c:				else if (player->orientation == EAST)
+src/_bonus/parser/map/map_validation_bonus.c:					player->angle = 0.0f;
+src/_bonus/parser/map/map_validation_bonus.c:				else if (player->orientation == WEST)
+src/_bonus/parser/map/map_validation_bonus.c:					player->angle = FT_PI;
+src/_bonus/parser/map/map_validation_bonus.c:		player->x = -1.0f;
+src/_bonus/parser/map/map_validation_bonus.c:		player->y = -1.0f;
+src/_bonus/parser/map/map_validation_bonus.c:		player->angle = 0.0f;
+src/_bonus/parser/map/map_validation_bonus.c:		player->orientation = 0;
+src/_bonus/logic/inventory.c:	return (player->inventory != '\0');
+src/_bonus/logic/inventory.c:	player->inventory = block;
+src/_bonus/logic/inventory.c:	block = player->inventory;
+src/_bonus/logic/inventory.c:	player->inventory = '\0';
+src/animation/player_right_hand_anims.c:	player->right_hand_anims = ft_calloc(4, sizeof(t_anim));
+src/animation/player_right_hand_anims.c:	if (!player->right_hand_anims) 
+src/animation/player_right_hand_anims.c:	anim_init(&player->right_hand_anims[ANIM_EMPTY], &player->textures.hand, empty_frames,
+src/animation/player_right_hand_anims.c:	anim_init(&player->right_hand_anims[ANIM_TAKE], &player->textures.hand, take_frames,
+src/animation/player_right_hand_anims.c:	anim_init(&player->right_hand_anims[ANIM_HOLD], &player->textures.hand, hold_frames,
+src/animation/player_right_hand_anims.c:	anim_init(&player->right_hand_anims[ANIM_THROW], &player->textures.hand, throw_frames,
+src/animation/player_right_hand_anims.c:	player->current_right_hand_anim = ANIM_HOLD;
+src/animation/player_right_hand_anims.c:			&player->right_hand_anims[player->current_right_hand_anim],
+src/animation/player_right_hand_anims.c:	if (player->state == STATE_THROW)
+src/animation/player_right_hand_anims.c:		set_player_anim(player->right_hand_anims,
+src/animation/player_right_hand_anims.c:				&player->current_right_hand_anim, ANIM_THROW);
+src/animation/player_right_hand_anims.c:	else if (player->state == STATE_TAKE)
+src/animation/player_right_hand_anims.c:		set_player_anim(player->right_hand_anims,
+src/animation/player_right_hand_anims.c:				&player->current_right_hand_anim, ANIM_TAKE);
+src/animation/player_right_hand_anims.c:	else if (player->state == STATE_HOLD)
+src/animation/player_right_hand_anims.c:		set_player_anim(player->right_hand_anims,
+src/animation/player_right_hand_anims.c:				&player->current_right_hand_anim, ANIM_HOLD);
+src/animation/player_right_hand_anims.c:		set_player_anim(player->right_hand_anims,
+src/animation/player_right_hand_anims.c:				&player->current_right_hand_anim, ANIM_EMPTY);
+src/animation/player_left_hand_anims.c:	player->left_hand_anims = ft_calloc(4, sizeof(t_anim));
+src/animation/player_left_hand_anims.c:	if (!player->left_hand_anims) 
+src/animation/player_left_hand_anims.c:	anim_init(&player->left_hand_anims[ANIM_EMPTY], &player->textures.hand, empty_frames,
+src/animation/player_left_hand_anims.c:	anim_init(&player->left_hand_anims[ANIM_TAKE], &player->textures.hand, take_frames,
+src/animation/player_left_hand_anims.c:	anim_init(&player->left_hand_anims[ANIM_HOLD], &player->textures.hand, hold_frames,
+src/animation/player_left_hand_anims.c:	anim_init(&player->left_hand_anims[ANIM_THROW], &player->textures.hand, throw_frames,
+src/animation/player_left_hand_anims.c:	player->current_left_hand_anim = ANIM_HOLD;
+src/animation/player_left_hand_anims.c:			&player->left_hand_anims[player->current_left_hand_anim],
+src/animation/player_left_hand_anims.c:		if (player->inventory)
+src/animation/player_left_hand_anims.c:			player->state = STATE_HOLD;
+src/animation/player_left_hand_anims.c:			player->state = STATE_EMPTY;
+src/animation/player_left_hand_anims.c:	if (player->state == STATE_THROW)
+src/animation/player_left_hand_anims.c:		set_player_anim(player->left_hand_anims,
+src/animation/player_left_hand_anims.c:				&player->current_left_hand_anim, ANIM_THROW);
+src/animation/player_left_hand_anims.c:	else if (player->state == STATE_TAKE)
+src/animation/player_left_hand_anims.c:		set_player_anim(player->left_hand_anims,
+src/animation/player_left_hand_anims.c:				&player->current_left_hand_anim, ANIM_TAKE);
+src/animation/player_left_hand_anims.c:	else if (player->state == STATE_HOLD)
+src/animation/player_left_hand_anims.c:		set_player_anim(player->left_hand_anims,
+src/animation/player_left_hand_anims.c:				&player->current_left_hand_anim, ANIM_HOLD);
+src/animation/player_left_hand_anims.c:		set_player_anim(player->left_hand_anims, 
+src/animation/player_left_hand_anims.c:				&player->current_left_hand_anim, ANIM_EMPTY);
+src/render/floors.c:	floor_and_steps.x = player->x + row_distance * ray_dir[X];
+src/render/floors.c:	floor_and_steps.y = player->y + row_distance * ray_dir[Y];
+src/render/minimap_tile.c:	player_angle_inverse = minimap->player->angle + (FT_PI / 2.0f);
+src/render/minimap_tile.c:				world[X] = minimap->player->x + (world[X] / (float)MINIMAP_TILE_SIZE);
+src/render/minimap_tile.c:				world[Y] = minimap->player->y + (world[Y] / (float)MINIMAP_TILE_SIZE);
+src/animation/player_anim.c:	free(player->left_hand_anims);
+src/animation/player_anim.c:	free(player->right_hand_anims);
+src/render/minimap_utils.c:	world_offset[X] = world.x - (minimap->player->x) * WORLDMAP_TILE_SIZE;
+src/render/minimap_utils.c:	world_offset[Y] = world.y - (minimap->player->y) * WORLDMAP_TILE_SIZE;
+src/render/minimap_utils.c:			-(minimap->player->angle + FT_PI / 2));
+src/render/ceilings.c:	floor_and_steps.x = player->x + row_distance * ray_dir[X];
+src/render/ceilings.c:	floor_and_steps.y = player->y + row_distance * ray_dir[Y];
+src/render/player.c:		player->left_hand_anims[player->current_left_hand_anim].current_frame);
+src/render/player.c:	if (player->state != STATE_HOLD || !player->inventory)
+src/render/player.c:		player->right_hand_anims[
+src/render/player.c:		player->current_right_hand_anim].current_frame);
+src/render/player.c:	textures = &player->textures;
+src/render/minimap_player_vision.c:	angle_strt_ray_inc[0] = minimap->player->angle - 0.5f * PLAYER_FOV;
+src/render/minimap_player_vision.c:	player_position.x = (minimap->player->x) * WORLDMAP_TILE_SIZE;
+src/render/minimap_player_vision.c:	player_position.y = (minimap->player->y) * WORLDMAP_TILE_SIZE;
+src/parser/map/map_player.c:	player->orientation = (t_orientation)c;
+src/parser/map/map_player.c:	if (player->orientation == NORTH)
+src/parser/map/map_player.c:		player->angle = 3.0f * (FT_PI / 2);
+src/parser/map/map_player.c:	else if (player->orientation == SOUTH)
+src/parser/map/map_player.c:		player->angle = FT_PI / 2;
+src/parser/map/map_player.c:	else if (player->orientation == EAST)
+src/parser/map/map_player.c:		player->angle = 0.0f;
+src/parser/map/map_player.c:	else if (player->orientation == WEST)
+src/parser/map/map_player.c:		player->angle = FT_PI;
+src/parser/map/map_player.c:	player->x = (float)x;
+src/parser/map/map_player.c:	player->y = (float)y;

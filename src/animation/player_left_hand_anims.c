@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 02:02:18 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 06:28:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,20 @@ void	update_player_left_hand_anims(t_player *player, float delta_time)
 			delta_time);
 	if (finished)
 	{
-		if (player->inventory)
+		if (player->state = STATE_EMPTY)
+		{
+			if (player->inventory)
+				player->state = STATE_HOLD;
+			else
+				player->state = STATE_TAKE;
+		}
+		else if (player->state = STATE_TAKE)
 			player->state = STATE_HOLD;
-		else
+		
+		else if (player->state = STATE_HOLD)
+			player->state = STATE_THROW;
+		else if (player->state = STATE_THROW)
+
 			player->state = STATE_EMPTY;
 	}
 	if (player->state == STATE_THROW)

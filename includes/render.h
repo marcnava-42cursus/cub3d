@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 05:14:43 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:07:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_RENDER_DISTANCE 2000.0f
-# define FOG_TILE_START 2.0f
-# define FOG_TILE_END 4.0f
+# define FOG_TILE_START 4.0f
+# define FOG_TILE_END 6.0f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)
@@ -127,9 +127,6 @@ void	fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
 /*----------------------------- MINIMAP_TILE.C -------------------------------*/
 void	render_minimap_walls(t_minimap *minimap);
 void	render_minimap_player(t_minimap *minimap);
-# ifdef BONUS
-void	render_minimap_orb(t_game *game);
-# endif
 
 /*----------------------------- MINIMAP_UTILS.C ------------------------------*/
 bool		is_inside_minimap_circle(int coord[2]);
@@ -149,7 +146,7 @@ void	render_walls(t_game *game, t_rayhit *rayhits, float center);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
-		float center);
+		float center, float dist_to_proj_plane);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
 float	*render_floors(t_game *game, float center, float ray_dir[4]);
@@ -169,22 +166,24 @@ uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 			mlx_image_t *img, t_textures *textures);
-void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-			xpm_t *texture, xpm_t *fog_texture, int tex_x, float tex_pos,
-			float tex_step, float fog);
+void	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
+		xpm_t *texture, int tex_x, float tex_pos, float tex_step);
 void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
-			mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture,
-			int tex_y, float tex_x, float fog);
+		mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x);
 
 # ifdef BONUS
-
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
-		int original_y[2], mlx_image_t *img, t_textures *textures, const t_map *map);
+		mlx_image_t *img, t_textures *textures);
+void 	paint_vertical_line_texture_bonus(unsigned int x, int y[2], mlx_image_t *img,
+			xpm_t *texture, xpm_t *fog_texture, int tex_x, float tex_pos,
+			float tex_step, float fog);
+void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
+			mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture,
+			int tex_y, float tex_x, float fog);
 
 void	render_player_dynamic_bonus(t_game *game);
 void	render_map_2d_initial_bonus(t_game *game);
 void	toggle_map_overlay_bonus(t_game *game);
-
 # endif
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool	window_init(t_game *game);

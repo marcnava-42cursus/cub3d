@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 04:14:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:01:51 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static vertex_t	get_ceiling_ray_steps(t_player *player, float ray_dir[4],
 	float		dist_to_proj_plane;
 
 	p = center - y;
-	if (p < 1.0f) 
+	if (p < 1.0f)
 		p = 1.0f;
 	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
 	row_distance = dist_to_proj_plane * 0.5f / p;
@@ -42,14 +42,14 @@ static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
 	x = 0;
 	while (x < img->width)
 	{
-		f[X] = floor_and_steps.x - floor(floor_and_steps.x);
-		f[Y] = floor_and_steps.y - floor(floor_and_steps.y);
-		t[X] = (int)(f[X] * textures->ceiling->texture.width);
-		t[Y] = (int)(f[Y] * textures->ceiling->texture.height);
-		t[X] = (int)clamp((float)t[X], 0.0f, textures->ceiling->texture.width - 1); 
-		t[Y] = (int)clamp((float)t[Y], 0.0f, textures->ceiling->texture.height - 1); 
-		paint_horizontal_line_texture(y, x, img, textures->ceiling, textures->fog,
-				t[Y], t[X], fog);
+		f[X] = floor_and_steps.x - floorf(floor_and_steps.x);
+		f[Y] = floor_and_steps.y - floorf(floor_and_steps.y);
+		t[X] = (int)clamp((float)(f[X] * textures->ceiling->texture.width),
+				0.0f, textures->ceiling->texture.width - 1);
+		t[Y] = (int)clamp((float)(f[Y] * textures->ceiling->texture.height),
+				0.0f, textures->ceiling->texture.height - 1);
+		paint_horizontal_line_texture_bonus(y, x, img, textures->ceiling,
+			textures->fog, t[Y], t[X], fog);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
 		x++;
@@ -58,21 +58,22 @@ static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
 
 void	render_ceilings(t_game *game, float center, float ray_dir[4])
 {
-	int	i;
-	vertex_t		floor_and_steps;
-	float			dist[2];
-	float			fog;
+	int			i;
+	vertex_t	floor_and_steps;
+	float		dist[2];
+	float		fog;
 
 	i = 0;
 	while (i < (int)center)
 	{
 		floor_and_steps = get_ceiling_ray_steps(&game->cub_data.player, ray_dir,
 				game->double_buffer[NEXT], i, center);
-		dist[X] = (floor_and_steps.x - game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
-		dist[Y] = (floor_and_steps.y - game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
+		dist[X] = (floor_and_steps.x - game->cub_data.player.x)
+			* WORLDMAP_TILE_SIZE;
+		dist[Y] = (floor_and_steps.y - game->cub_data.player.y)
+			* WORLDMAP_TILE_SIZE;
 		fog = sqrtf(dist[X] * dist[X] + dist[Y] * dist[Y]);
 		fog = fog_factor(fog);
-		fog = fog * fog;
 		render_ceiling_fill(i, game->double_buffer[NEXT],
 			&game->cub_data.textures, floor_and_steps, fog);
 		i++;

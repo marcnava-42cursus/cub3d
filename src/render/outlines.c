@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 10:27:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 13:07:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,30 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 }
 
 static void	draw_vertical_outline(unsigned int x, t_rayhit rayhit,
-		mlx_image_t *img, int color, float center)
+		mlx_image_t *img, int color, float center, float dist_to_proj_plane)
 {
 	int			slice_height;
 	int			slice_bounds[2];
-	float		dist_to_proj_plane;
 
 	if (!rayhit.hit)
 		return ;
-	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
-	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane / rayhit.distance);
+	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane
+			/ rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + center;
 	slice_bounds[1] = slice_height / 2 + center;
 	paint_vertical_line_color((unsigned int)x, slice_bounds, img, color);
 }
 
 static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
-		mlx_image_t *img, int color, float center)
+		mlx_image_t *img, int color, float center, float dist_to_proj_plane)
 {
 	int			slice_height;
 	int			slice_bounds[2];
-	float		dist_to_proj_plane;
 
 	if (!rayhit.hit)
 		return ;
-	dist_to_proj_plane = (float)img->width / (2.0f * tanf(PLAYER_FOV / 2.0f));
-	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane / rayhit.distance);
+	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane
+			/ rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + center;
 	slice_bounds[1] = slice_height / 2 + center;
 	if (x >= img->width)
@@ -88,7 +86,7 @@ static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
 }
 
 void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
-		float center)
+		float center, float dist_to_proj_plane)
 {
 	unsigned int	i;
 	int				c_cell[2];
@@ -108,9 +106,11 @@ void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
 			&& rh[i].face == c_face && rh[img->width / 2].distance <= 300.0f)
 		{
 			if (is_raycast_edge(rh, i, img))
-				draw_vertical_outline(i, rh[i], img, color, center);
+				draw_vertical_outline(i, rh[i], img, color, center,
+					dist_to_proj_plane);
 			else
-				draw_top_and_bottom_outline(i, rh[i], img, color, center);
+				draw_top_and_bottom_outline(i, rh[i], img, color, center,
+					dist_to_proj_plane);
 		}
 		i++;
 	}

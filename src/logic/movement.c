@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/23 01:26:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 14:49:34 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,21 +123,6 @@ static bool	switch_floor(t_game *game, char id)
 }
 
 /**
- * @brief Updates only the player position display
- *
- * This is called when the map overlay is visible and the player moves.
- *
- * @param game Pointer to the game structure
- */
-void	update_player_position(t_game *game)
-{
-	if (!game)
-		return ;
-	if (game->map_2d_visible)
-		render_player_dynamic(game);
-}
-
-/**
  * @brief Processes movement input and updates game state
  *
  * This function checks all movement-related key states and calls the
@@ -223,8 +208,6 @@ static void	handle_movement_rendering(t_game *game)
 			current_grid_y = (int)floor(game->cub_data.player.y);
 		}
 	}
-	if (game->map_2d_visible)
-		update_player_position(game);
 }
 
 /**
@@ -313,7 +296,6 @@ void	init_movement_system(t_game *game)
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
-	init_crosshair(game);
 	mlx_key_hook(game->mlx, key_hook, game);
 	mlx_mouse_hook(game->mlx, mouse_hook, game);
 	mlx_cursor_hook(game->mlx, cursor_hook, game);

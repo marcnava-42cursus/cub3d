@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 11:23:30 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/15 13:43:21 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 11:40:47 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 		pixel[X] = 0;
 		while (pixel[X] < atlas->frame_width)
 		{
-			save_pixel_to_image(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
+			safe_put_pixel(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
 				get_corrected_color_from_pixel(row, pixel[X], atlas));
 			pixel[X]++;
 		}
@@ -60,7 +60,7 @@ void	paint_hori_flip_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 		pixel[X] = 0;
 		while (horiflip >= 0 && pixel[X] < atlas->frame_width)
 		{
-			save_pixel_to_image(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
+			safe_put_pixel(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
 				get_corrected_color_from_pixel(row, horiflip, atlas));
 			horiflip--;
 			pixel[X]++;

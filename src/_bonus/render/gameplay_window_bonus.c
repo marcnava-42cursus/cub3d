@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gameplay_window.c                                  :+:      :+:    :+:   */
+/*   gameplay_window_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 14:10:18 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 12:44:24 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,27 @@ static t_rayhit	cast_ray_for_column(t_cub_data *cub_data, int x,
 	return (rayhit);
 }
 
+static void	get_ray_dir(float angle, float ray_dir[4])
+{
+	float			player_dir[2];
+	float			camera_plane[2];
+
+	player_dir[X] = cosf(angle);
+	player_dir[Y] = sinf(angle);
+	camera_plane[X] = -player_dir[Y] * tanf(PLAYER_FOV / 2.0f);
+	camera_plane[Y] = player_dir[X] * tanf(PLAYER_FOV / 2.0f);
+	ray_dir[X] = player_dir[X] - camera_plane[X];
+	ray_dir[Y] = player_dir[Y] - camera_plane[Y];
+	ray_dir[U] = player_dir[X] + camera_plane[X];
+	ray_dir[V] = player_dir[Y] + camera_plane[Y];
+}
+
 void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 {
 	unsigned int	i;
 	t_rayhit		*rayhits;
 	float			center;
+	float			ray_dir[4];
 
 	render_bg(game);
 	rayhits = ft_calloc(buffer_width, sizeof(t_rayhit));
@@ -71,6 +87,11 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 	}
 	center = calculate_center(game->double_buffer[NEXT]->height,
 			game->cub_data.player.pitch);
+	get_ray_dir(game->cub_data.player.angle, ray_dir);
+	render_floors(game, center, ray_dir);
+	render_ceilings(game, center, ray_dir);
 	render_walls(game, rayhits, center);
+	render_orb(game, rayhits, center, ray_dir);
+	render_player_overlay(game);
 	free(rayhits);
 }

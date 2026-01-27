@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/27 04:06:43 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/27 15:01:08 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,17 +65,15 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/background.c \
-				$(SRCPATH)/render/bresenham.c \
 				$(SRCPATH)/render/double_buffer.c \
-				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/raycast.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/texture_mapping.c \
+				$(SRCPATH)/render/texture_atlas.c \
+				$(SRCPATH)/render/texture_atlas_utils.c \
 				$(SRCPATH)/render/walls.c \
-				$(SRCPATH)/render/outlines.c \
 				$(SRCPATH)/render/window.c \
 				$(SRCPATH)/render/utils.c \
-				$(SRCPATH)/render/map_2d.c \
 				$(SRCPATH)/logic/movement.c \
 				$(SRCPATH)/logic/input.c \
 				$(SRCPATH)/logic/timing.c \
@@ -84,21 +82,17 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
-				$(SRCPATH)/render/gameplay_window.c \
-				$(SRCPATH)/render/player.c \
-				$(SRCPATH)/render/floors.c \
-				$(SRCPATH)/render/world_map.c
+				$(SRCPATH)/render/gameplay_window.c 
 
 # Bonus sources - replace standard parser files with bonus versions
 SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
-				$(SRCPATH)/parser/core/parser_init.c \
+				$(SRCPATH)/_bonus/parser/core/parser_init_bonus.c \
 				$(SRCPATH)/_bonus/parser/core/parser_orchestrator_bonus.c \
 				$(SRCPATH)/_bonus/parser/link_utils_bonus.c \
 				$(SRCPATH)/_bonus/parser/floor_manager_bonus.c \
 				$(SRCPATH)/_bonus/parser/core/parser_finder_bonus.c \
 				$(SRCPATH)/_bonus/parser/map/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
-				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
@@ -111,7 +105,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/parser/utils/file_utils.c \
 				$(SRCPATH)/parser/utils/link_utils.c \
 				$(SRCPATH)/parser/utils/validation_utils.c \
-				$(SRCPATH)/parser/utils/memory_utils.c \
+				$(SRCPATH)/_bonus/parser/utils/memory_utils_bonus.c \
 				$(SRCPATH)/parser/utils/debug_utils.c \
 				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
@@ -121,7 +115,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \
 				$(SRCPATH)/render/bresenham.c \
-				$(SRCPATH)/render/double_buffer.c \
+				$(SRCPATH)/_bonus/render/double_buffer_bonus.c \
 				$(SRCPATH)/render/minimap.c \
 				$(SRCPATH)/render/minimap_player_vision.c \
 				$(SRCPATH)/render/scanline_fill.c \
@@ -137,7 +131,8 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/logic/debug_map.c \
-				$(SRCPATH)/render/gameplay_window.c \
+				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
+				$(SRCPATH)/_bonus/render/walls_bonus.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/floors.c \
 				$(SRCPATH)/render/ceilings.c \

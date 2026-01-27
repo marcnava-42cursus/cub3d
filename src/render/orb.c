@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 03:55:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 15:02:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool	set_cam_x_y(t_game *game, float cam[2], float ray_dir[4])
 
 static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
 		int sprite_render_dims[2], float *tex_step,
-		float *tex_pos_start, t_game *game, int screen_x) 
+		float *tex_pos_start, t_game *game, int screen_x)
 {
 	draw_y[0] = center - sprite_render_dims[Y] / 2;
 	draw_y[1] = center + sprite_render_dims[Y] / 2;
@@ -64,22 +64,23 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 	int		tex_x;
 	int		i;
 	float	fog;
+	int		frame_width;
 
 	i = draw_x[0];
+	frame_width = game->cub_data.player.textures.weapon.frame_width;
 	while (i < draw_x[1])
 	{
-		tex_x = (int)((i - (screen_x - sprite_width / 2))
-				* game->cub_data.player.textures.weapon.frame_width / sprite_width);
-		tex_x = (int)clamp((float)tex_x, 0.0f, game->cub_data.player.textures.weapon.frame_width);
-		if (cam_y < rayhits[i].distance)
+		tex_x = (int)((i - (screen_x - sprite_width / 2)) * frame_width
+				/ sprite_width);
+		tex_x = (int)clamp((float)tex_x, 0.0f, frame_width);
+		if (cam_y * WORLDMAP_TILE_SIZE < rayhits[i].distance)
 		{
 			fog = fog_factor(cam_y);
-			fog = fog * fog;
-			paint_vertical_line_texture(i, draw_y, 
-					game->double_buffer[NEXT],
-					game->cub_data.player.textures.weapon.xpm,
-					game->cub_data.textures.fog,
-					tex_x, tex_pos_start, tex_step, fog);
+			paint_vertical_line_texture_bonus(i, draw_y,
+				game->double_buffer[NEXT],
+				game->cub_data.player.textures.weapon.xpm,
+				game->cub_data.textures.fog,
+				tex_x, tex_pos_start, tex_step, fog);
 		}
 		i++;
 	}
@@ -105,7 +106,7 @@ void	render_orb(t_game *game, t_rayhit *rayhits, float center,
 	if (sprite_render_dims[Y] == 0)
 		return ;
 	set_draw_x_and_draw_y(draw_x, draw_y, center, sprite_render_dims,
-			&tex_step, &tex_pos_start, game, screen_x);
+		&tex_step, &tex_pos_start, game, screen_x);
 	paint_orb_by_line(game, draw_x, draw_y, screen_x, sprite_render_dims[X],
-			cam[Y], rayhits, tex_pos_start, tex_step);
+		cam[Y], rayhits, tex_pos_start, tex_step);
 }
