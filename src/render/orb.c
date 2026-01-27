@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 01:13:22 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 01:56:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static bool	set_cam_x_y(t_game *game, float cam[2], float ray_dir[4])
 }
 
 static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
-		int sprite_render_dims[2], float *tex_step, float *tex_pos_start, t_game *game, int screen_x) 
+		int sprite_render_dims[2], float *tex_step,
+		float *tex_pos_start, t_game *game, int screen_x) 
 {
 	draw_y[0] = center - sprite_render_dims[Y] / 2;
 	draw_y[1] = center + sprite_render_dims[Y] / 2;
@@ -56,7 +57,9 @@ static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
 		draw_x[1] = (int)game->double_buffer[NEXT]->width - 1;
 }
 
-static void	paint_orb_by_line(t_atlas *orb_atlas, mlx_image_t *img, int draw_x[2], int draw_y[2], int screen_x, int sprite_width, float cam_y, t_rayhit *rayhits, float tex_pos_start, float tex_step)
+static void	paint_orb_by_line(t_atlas *orb_atlas, mlx_image_t *img,
+		int draw_x[2], int draw_y[2], int screen_x, int sprite_width,
+		float cam_y, t_rayhit *rayhits, float tex_pos_start, float tex_step)
 {
 	int		tex_x;
 	int		i;
@@ -96,6 +99,8 @@ void	render_orb(t_game *game, t_rayhit *rayhits, float center,
 		* (1 + cam[X] / cam[Y]);
 	sprite_render_dims[Y] = (game->double_buffer[NEXT]->height / cam[Y]) / 2;
 	sprite_render_dims[X] = sprite_render_dims[Y];
+	if (sprite_render_dims[Y] == 0)
+		return ;
 	set_draw_x_and_draw_y(draw_x, draw_y, center, sprite_render_dims,
 			&tex_step, &tex_pos_start, game, screen_x);
 	paint_orb_by_line(&game->cub_data.player.textures.weapon,

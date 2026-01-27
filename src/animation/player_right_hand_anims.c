@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:19:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 02:01:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	init_player_right_hand_anims(t_player *player)
 	anim_init(&player->right_hand_anims[ANIM_EMPTY], &player->textures.hand, empty_frames,
 			empty_holds, 1, true);
 	anim_init(&player->right_hand_anims[ANIM_TAKE], &player->textures.hand, take_frames,
-			take_holds, 4, false);
+			take_holds, 3, false);
 	anim_init(&player->right_hand_anims[ANIM_HOLD], &player->textures.hand, hold_frames,
 			hold_holds, 1, true);
 	anim_init(&player->right_hand_anims[ANIM_THROW], &player->textures.hand, throw_frames,
-			throw_holds, 3, false);
+			throw_holds, 2, false);
 	player->current_right_hand_anim = ANIM_HOLD;
 }
 
