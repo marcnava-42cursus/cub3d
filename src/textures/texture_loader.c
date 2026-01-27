@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/26 21:58:49 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 04:19:38 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	load_textures(t_textures *textures)
 	//temporary to load ceiling and floor
 	textures->floor = mlx_load_xpm42( "./assets/textures/walls/test_floor_flesh.xpm42");
 	textures->ceiling = mlx_load_xpm42( "./assets/textures/walls/test_floor_flesh.xpm42");
+	textures->fog = mlx_load_xpm42("./assets/textures/walls/fog_16colors.xpm42");
 	if (textures->custom)
 		load_custom_textures(textures->custom);
     return (1);
@@ -135,6 +136,11 @@ void	free_textures(t_textures *textures)
 	{
 		mlx_delete_xpm42(textures->ceiling);
 		textures->ceiling = NULL;
+	}
+	if (textures->fog)
+	{
+		mlx_delete_xpm42(textures->fog);
+		textures->fog = NULL;
 	}
 	if (textures->custom)
 	{

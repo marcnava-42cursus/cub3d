@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/24 14:58:08 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/27 04:06:43 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/parser/map/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
 				$(SRCPATH)/render/walls.c \
-				$(SRCPATH)/render/texture_mapping.c \
+				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \

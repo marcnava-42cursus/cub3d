@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/26 00:07:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 04:17:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@
 # define BLACK 0x000000FF
 # define ORANGE 0xFF7F00FF
 # define TRANSPARENT_BLUE 0x0000FF44
-# define FOG_COLOR DARK_GREY
+# define FOG_COLOR TRANSPARENT_BLUE
 
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
@@ -170,9 +170,11 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
 void	render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
 			mlx_image_t *img, t_textures *textures);
 void 	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
-			xpm_t *texture, int tex_x, float tex_pos, float tex_step, float fog);
+			xpm_t *texture, xpm_t *fog_texture, int tex_x, float tex_pos,
+			float tex_step, float fog);
 void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
-			mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x, float fog);
+			mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture,
+			int tex_y, float tex_x, float fog);
 
 # ifdef BONUS
 

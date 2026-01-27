@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/26 22:00:10 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 04:14:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static vertex_t	get_ceiling_ray_steps(t_player *player, float ray_dir[4],
 }
 
 static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
-		xpm_t *xpm, vertex_t floor_and_steps, float fog)
+		t_textures *textures, vertex_t floor_and_steps, float fog)
 {
 	unsigned int	x;
 	float			f[2];
@@ -44,11 +44,12 @@ static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
 	{
 		f[X] = floor_and_steps.x - floor(floor_and_steps.x);
 		f[Y] = floor_and_steps.y - floor(floor_and_steps.y);
-		t[X] = (int)(f[X] * xpm->texture.width);
-		t[Y] = (int)(f[Y] * xpm->texture.height);
-		t[X] = (int)clamp((float)t[X], 0.0f, xpm->texture.width - 1); 
-		t[Y] = (int)clamp((float)t[Y], 0.0f, xpm->texture.height - 1); 
-		paint_horizontal_line_texture(y, x, img, xpm, t[Y], t[X], fog);
+		t[X] = (int)(f[X] * textures->ceiling->texture.width);
+		t[Y] = (int)(f[Y] * textures->ceiling->texture.height);
+		t[X] = (int)clamp((float)t[X], 0.0f, textures->ceiling->texture.width - 1); 
+		t[Y] = (int)clamp((float)t[Y], 0.0f, textures->ceiling->texture.height - 1); 
+		paint_horizontal_line_texture(y, x, img, textures->ceiling, textures->fog,
+				t[Y], t[X], fog);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
 		x++;
@@ -73,7 +74,7 @@ void	render_ceilings(t_game *game, float center, float ray_dir[4])
 		fog = fog_factor(fog);
 		fog = fog * fog;
 		render_ceiling_fill(i, game->double_buffer[NEXT],
-			game->cub_data.textures.ceiling, floor_and_steps, fog);
+			&game->cub_data.textures, floor_and_steps, fog);
 		i++;
 	}
 }

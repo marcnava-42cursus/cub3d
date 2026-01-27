@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/26 21:56:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/27 03:43:59 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ typedef struct s_textures
 	xpm_t				*south;			// Loaded south texture
 	xpm_t				*west;			// Loaded west texture
 	xpm_t				*east;			// Loaded east texture
-	xpm_t				*floor;			// Loaded west texture
-	xpm_t				*ceiling;			// Loaded east texture
+	xpm_t				*floor;			// Loaded floor texture
+	xpm_t				*ceiling;		// Loaded ceiling texture
+	xpm_t				*fog;			// Loaded fog texture
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
 
