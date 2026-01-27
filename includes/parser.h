@@ -38,6 +38,13 @@ typedef struct s_map
 	int		height;
 }	t_map;
 
+typedef struct s_link_info
+{
+	char		**target;
+	const char	*label;
+	size_t		id_len;
+}	t_link_info;
+
 typedef struct s_cub_data	t_cub_data;
 typedef struct s_textures	t_textures;
 typedef struct s_player	t_player;
@@ -84,6 +91,7 @@ int		count_file_lines(const char *filename);
 // Validación
 int		validate_file_extension(const char *filename);
 int		validate_texture_path(const char *path);
+int		validate_texture_id(const char *identifier);
 
 // Texture loading
 int		load_textures(t_textures *textures);

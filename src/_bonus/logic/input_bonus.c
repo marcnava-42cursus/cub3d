@@ -56,6 +56,11 @@ void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 		config_modal_handle_key(game, keydata);
 		return ;
 	}
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+	{
+		toggle_map_overlay_bonus(game);
+		return ;
+	}
 	if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
 		place_breakable_block(game);
 	else if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)

@@ -43,6 +43,16 @@ static void	free_texture_path(char **texture_path)
 	}
 }
 
+static void	free_texture_paths(t_textures *textures)
+{
+	if (!textures)
+		return ;
+	free_texture_path(&textures->north_path);
+	free_texture_path(&textures->south_path);
+	free_texture_path(&textures->west_path);
+	free_texture_path(&textures->east_path);
+}
+
 static void	free_floor_list(t_floor *head)
 {
 	t_floor	*current;
@@ -52,6 +62,7 @@ static void	free_floor_list(t_floor *head)
 	while (current)
 	{
 		next = current->next;
+		free_texture_paths(&current->textures);
 		free_textures(&current->textures);
 		free_texture_path(&current->up_path);
 		free_texture_path(&current->down_path);

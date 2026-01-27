@@ -159,28 +159,40 @@ void	update_player_position(t_game *game)
 static bool	process_movement_input(t_game *game)
 {
 	bool	moved;
+	float	forward;
+	float	strafe;
+	float	move_x;
+	float	move_y;
+	float	len;
+	float	speed;
+	float	angle;
 
 	if (!game)
 		return (false);
 	moved = false;
+	forward = 0.0f;
+	strafe = 0.0f;
 	if (game->key_w_pressed)
-	{
-		move_forward(game, true);
-		moved = true;
-	}
+		forward += 1.0f;
 	if (game->key_s_pressed)
-	{
-		move_forward(game, false);
-		moved = true;
-	}
-	if (game->key_a_pressed)
-	{
-		move_strafe(game, false);
-		moved = true;
-	}
+		forward -= 1.0f;
 	if (game->key_d_pressed)
+		strafe += 1.0f;
+	if (game->key_a_pressed)
+		strafe -= 1.0f;
+	if (forward != 0.0f || strafe != 0.0f)
 	{
-		move_strafe(game, true);
+		angle = game->cub_data.player.angle;
+		move_x = cosf(angle) * forward + cosf(angle + FT_PI_2) * strafe;
+		move_y = sinf(angle) * forward + sinf(angle + FT_PI_2) * strafe;
+		len = sqrtf(move_x * move_x + move_y * move_y);
+		if (len > 1.0f)
+		{
+			move_x /= len;
+			move_y /= len;
+		}
+		speed = game->move_speed * (float)game->mlx->delta_time;
+		attempt_move(game, move_x * speed, move_y * speed);
 		moved = true;
 	}
 	if (game->key_left_pressed)

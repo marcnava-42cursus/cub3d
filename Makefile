@@ -19,6 +19,15 @@ CFLAGS		+= -MMD -MP
 DFLAGS		:= -g3
 SANITIZE	:= -fsanitize=address
 DEBUG		?= 0
+VSYNC		?= on
+MLX_SWAP_INTERVAL_VALUE := 1
+ifeq ($(VSYNC),off)
+	MLX_SWAP_INTERVAL_VALUE := 0
+else ifeq ($(VSYNC),0)
+	MLX_SWAP_INTERVAL_VALUE := 0
+endif
+MLX_SWAP_INTERVAL_DEFINE := -DMLX_SWAP_INTERVAL=$(MLX_SWAP_INTERVAL_VALUE)
+MLX_CMAKE_FLAGS := -DCMAKE_C_FLAGS=$(MLX_SWAP_INTERVAL_DEFINE)
 ifeq ($(DEBUG),1)
 	CFLAGS += $(DFLAGS)
 else ifeq ($(DEBUG),2)
@@ -26,6 +35,7 @@ else ifeq ($(DEBUG),2)
 else ifeq ($(DEBUG),fps)
 	CFLAGS += -DDEBUG_FPS
 endif
+CFLAGS += $(MLX_SWAP_INTERVAL_DEFINE)
 RM			:=	rm -rf
 
 MAKEFLAGS	+=	--no-print-directory
@@ -38,6 +48,7 @@ LIBPATH		:=	libs
 
 LIBFT		:=	$(LIBPATH)/libft
 LIBMLX		:=	$(LIBPATH)/minilibx
+MLX_SWAP_STAMP := $(LIBMLX)/build/.mlx_swap_interval
 
 INCLUDES	:=	-I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include
 
@@ -77,12 +88,13 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/window.c \
 				$(SRCPATH)/render/utils.c \
 				$(SRCPATH)/logic/movement.c \
+				$(SRCPATH)/logic/movement_init.c \
+				$(SRCPATH)/logic/movement_elevator.c \
 				$(SRCPATH)/logic/input.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/collision.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
-				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/logic/fps_overlay.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
 				$(SRCPATH)/render/gameplay_window.c 
@@ -134,7 +146,6 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
-				$(SRCPATH)/logic/debug_map.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
 				$(SRCPATH)/_bonus/render/floors.c \
@@ -290,13 +301,19 @@ libs/minilibx/CMakeLists.txt:
 	@echo "$(GREEN)✓ minilibx cloned$(RESET)"
 
 libmlx:	$(LIBMLX)/CMakeLists.txt
-	@if [ -f "$(LIBMLX)/build/libmlx42.a" ] && [ "$(LIBMLX)/CMakeLists.txt" -ot "$(LIBMLX)/build/libmlx42.a" ]; then \
+	@current_interval="$(MLX_SWAP_INTERVAL_VALUE)"; \
+	stored_interval=""; \
+	if [ -f "$(MLX_SWAP_STAMP)" ]; then stored_interval=$$(cat "$(MLX_SWAP_STAMP)"); fi; \
+	if [ -f "$(LIBMLX)/build/libmlx42.a" ] && \
+	   [ "$(LIBMLX)/CMakeLists.txt" -ot "$(LIBMLX)/build/libmlx42.a" ] && \
+	   [ "$$stored_interval" = "$$current_interval" ]; then \
 		echo "$(GREEN)✓ Nothing to be done for minilibx$(RESET)"; \
 	else \
 		echo "$(YELLOW)Compiling minilibx...$(RESET)"; \
-		if cmake $(LIBMLX) -B $(LIBMLX)/build > /dev/null 2>&1 && \
+		if cmake $(LIBMLX) -B $(LIBMLX)/build $(MLX_CMAKE_FLAGS) > /dev/null 2>&1 && \
 		   $(MAKE) -s -C $(LIBMLX)/build -j4 > /dev/null 2>&1; then \
 			echo "$(GREEN)✓ minilibx compiled$(RESET)"; \
+			echo "$$current_interval" > "$(MLX_SWAP_STAMP)"; \
 		else \
 			echo "$(RED)✗ Failed compiling minilibx$(RESET)"; \
 			exit 1; \

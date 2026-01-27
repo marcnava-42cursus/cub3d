@@ -126,6 +126,13 @@ typedef struct s_floor
 	int				elevator_y[16];
 }	t_floor;
 
+typedef struct s_elevator_target
+{
+	t_floor	*floor;
+	int		x;
+	int		y;
+}	t_elevator_target;
+
 // Estructura principal que contiene todos los datos parseados
 typedef struct s_cub_data
 {
