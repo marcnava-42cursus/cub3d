@@ -40,7 +40,8 @@ int	is_map_line(const char *line)
 
 static int	is_valid_map_char(char c)
 {
-	return (c >= 33 && c <= 126);
+	return (c == '0' || c == '1'
+		|| c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
 int	validate_map_characters(t_map *map)

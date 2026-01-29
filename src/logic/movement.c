@@ -86,7 +86,6 @@ void	update_game_loop(void *param)
 {
 	t_game	*game;
 	bool	moved;
-	bool	mouse_rotated;
 
 	game = (t_game *)param;
 	if (!game || !game->mlx)
@@ -96,7 +95,5 @@ void	update_game_loop(void *param)
 	if (game->mlx->delta_time <= 0.0)
 		return ;
 	moved = process_movement_input(game);
-	mouse_rotated = process_mouse_rotation(game);
-	if (moved || mouse_rotated)
-		movement_handle_elevator(game);
+	(void)moved;
 }

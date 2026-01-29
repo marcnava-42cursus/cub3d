@@ -26,11 +26,7 @@ void	init_cub_data(t_cub_data *data)
 	data->player.pitch = 0.0f;
 	data->player.orientation = 0;
 	data->player.inventory = '2';
-	data->player_floor_index = -1;
 	data->player.state = STATE_HOLD;
-	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
-	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
-	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));
 	atlas_init(&data->player.textures.hand,
 		"./assets/textures/player/test_hand_atlas.xpm42",
 		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
@@ -53,14 +49,5 @@ void	init_cub_data_parser_only(t_cub_data *data)
 	data->player.pitch = 0.0f;
 	data->player.orientation = 0;
 	data->player.inventory = '2';
-	data->floors = NULL;
-	data->current_floor = NULL;
-	data->floor_count = 0;
-	data->player_floor_index = -1;
-	data->player_floor_path = NULL;
-	data->elevator_id_count = 0;
 	data->player.state = STATE_HOLD;
-	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
-	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
-	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));
 }

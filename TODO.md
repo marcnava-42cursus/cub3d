@@ -18,3 +18,4 @@
 [ ] - Particle system (LOW PRIORITY)
 [ ] - Investigar posibles optimizaciones de fog
 [ ] - Doors?
+[ ] - Quality changer

@@ -88,13 +88,19 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 	int	i;
 	int	map_end;
 
-	map_end = start_line;
+	map_end = -1;
 	i = start_line;
-	while (lines[i++])
+	while (lines[i])
 	{
-		if (!is_empty_line(lines[i]) && is_map_line(lines[i]))
-			map_end = i;
+		if (is_empty_line(lines[i]))
+			return (printf("Error: Empty line inside map\n"), 0);
+		if (!is_map_line(lines[i]))
+			return (printf("Error: Invalid line after map start\n"), 0);
+		map_end = i;
+		i++;
 	}
+	if (map_end < start_line)
+		return (printf("Error: Invalid map section\n"), 0);
 	data->map.height = map_end - start_line + 1;
 	data->map.width = calculate_map_width(lines, start_line, map_end);
 	if (data->map.height <= 0 || data->map.width <= 0)

@@ -86,22 +86,9 @@ void	mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
  */
 void	cursor_hook(double xpos, double ypos, void *param)
 {
-	t_game	*game;
-	double	delta_x;
-
+	(void)xpos;
 	(void)ypos;
-	game = (t_game *)param;
-	if (!game || !game->mlx)
-		return ;
-	if (!game->mouse_initialized)
-	{
-		game->last_mouse_x = xpos;
-		game->mouse_initialized = true;
-		return ;
-	}
-	delta_x = xpos - game->last_mouse_x;
-	game->last_mouse_x = xpos;
-	game->mouse_delta_accumulated += (float)delta_x * game->mouse_sensitivity;
+	(void)param;
 }
 
 /**
@@ -116,24 +103,6 @@ void	cursor_hook(double xpos, double ypos, void *param)
  */
 bool	process_mouse_rotation(t_game *game)
 {
-	float	rotation_amount;
-	float	smoothing;
-
-	if (!game || !game->mlx || game->mouse_delta_accumulated == 0.0f)
-		return (false);
-	if (game->mlx->delta_time <= 0.0)
-		return (false);
-	smoothing = MOUSE_SMOOTHING * (float)game->mlx->delta_time;
-	if (smoothing > 1.0f)
-		smoothing = 1.0f;
-	rotation_amount = game->mouse_delta_accumulated * smoothing;
-	game->mouse_delta_accumulated -= rotation_amount;
-	if (rotation_amount > -EPSILON && rotation_amount < EPSILON)
-	{
-		game->mouse_delta_accumulated = 0.0f;
-		return (false);
-	}
-	game->cub_data.player.angle += rotation_amount;
-	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
-	return (true);
+	(void)game;
+	return (false);
 }

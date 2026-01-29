@@ -177,7 +177,6 @@ void	place_breakable_block(t_game *game);
 
 // Loop / Update
 void	update_player_position(t_game *game);
-void	movement_handle_elevator(t_game *game);
 void	update_game_loop(void *param);
 void	init_movement_system(t_game *game);
 

@@ -31,6 +31,14 @@ int	is_texture_identifier(const char *line)
 	return (result);
 }
 
+static int	is_required_texture_id(const char *identifier)
+{
+	return (ft_strcmp(identifier, "NO") == 0
+		|| ft_strcmp(identifier, "SO") == 0
+		|| ft_strcmp(identifier, "WE") == 0
+		|| ft_strcmp(identifier, "EA") == 0);
+}
+
 static char	*get_validated_path(const char *line, const char *identifier)
 {
 	char	*path;
@@ -56,52 +64,6 @@ static char	*get_validated_path(const char *line, const char *identifier)
 	return (path);
 }
 
-static t_custom_texture	*find_custom_tail(t_custom_texture *head,
-		const char *id)
-{
-	t_custom_texture	*current;
-
-	current = head;
-	while (current && current->next)
-	{
-		if (ft_strcmp(current->id, id) == 0)
-			return (NULL);
-		current = current->next;
-	}
-	if (current && ft_strcmp(current->id, id) == 0)
-		return (NULL);
-	return (current);
-}
-
-static int	add_custom_texture(t_textures *textures, const char *id, char *path)
-{
-	t_custom_texture	*new;
-	t_custom_texture	*current;
-
-	current = find_custom_tail(textures->custom, id);
-	if (textures->custom && !current)
-	{
-		printf("Error: Duplicate texture identifier: %s\n", id);
-		free(path);
-		return (0);
-	}
-	new = malloc(sizeof(t_custom_texture));
-	if (!new)
-	{
-		free(path);
-		return (0);
-	}
-	ft_strlcpy(new->id, id, 3);
-	new->path = path;
-	new->texture = NULL;
-	new->next = NULL;
-	if (!textures->custom)
-		textures->custom = new;
-	else
-		current->next = new;
-	return (1);
-}
-
 int	parse_texture_line(const char *line, t_textures *textures)
 {
 	char	identifier[3];
@@ -116,13 +78,14 @@ int	parse_texture_line(const char *line, t_textures *textures)
 	identifier[2] = '\0';
 	if (!validate_texture_id(identifier))
 		return (0);
+	if (!is_required_texture_id(identifier))
+	{
+		printf("Error: Invalid texture identifier in mandatory: %s\n",
+			identifier);
+		return (0);
+	}
 	path = get_validated_path(line, identifier);
 	if (!path)
 		return (0);
-	if (ft_strcmp(identifier, "NO") == 0
-		|| ft_strcmp(identifier, "SO") == 0
-		|| ft_strcmp(identifier, "WE") == 0
-		|| ft_strcmp(identifier, "EA") == 0)
-		return (set_texture(textures, identifier, path));
-	return (add_custom_texture(textures, identifier, path));
+	return (set_texture(textures, identifier, path));
 }

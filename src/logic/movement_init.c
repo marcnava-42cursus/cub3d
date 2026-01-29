@@ -45,7 +45,5 @@ void	init_movement_system(t_game *game)
 	game->last_grid_y = -1;
 	mlx_key_hook(game->mlx, key_hook, game);
 	mlx_mouse_hook(game->mlx, mouse_hook, game);
-	mlx_cursor_hook(game->mlx, cursor_hook, game);
-	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	mlx_loop_hook(game->mlx, update_game_loop, game);
 }

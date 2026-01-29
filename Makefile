@@ -89,7 +89,6 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/utils.c \
 				$(SRCPATH)/logic/movement.c \
 				$(SRCPATH)/logic/movement_init.c \
-				$(SRCPATH)/logic/movement_elevator.c \
 				$(SRCPATH)/logic/input.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/collision.c \

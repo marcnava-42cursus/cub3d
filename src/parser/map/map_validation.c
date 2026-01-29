@@ -49,8 +49,6 @@ static int	is_walkable_char(char c)
 		return (1);
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (1);
-	if (c >= 'a' && c <= 'z')
-		return (1);
 	return (0);
 }
 

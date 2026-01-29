@@ -46,18 +46,8 @@ static int	parse_elements(char **lines, int map_start, t_cub_data *data)
 
 static int	finalize_parsed_data(t_cub_data *data)
 {
-	if (data->floor_color.r == -1)
-	{
-		data->floor_color.r = 30;
-		data->floor_color.g = 30;
-		data->floor_color.b = 30;
-	}
-	if (data->ceiling_color.r == -1)
-	{
-		data->ceiling_color.r = 120;
-		data->ceiling_color.g = 170;
-		data->ceiling_color.b = 255;
-	}
+	if (data->floor_color.r == -1 || data->ceiling_color.r == -1)
+		return (0);
 	if (!data->textures.north_path || !data->textures.south_path
 		|| !data->textures.west_path || !data->textures.east_path)
 		return (0);
