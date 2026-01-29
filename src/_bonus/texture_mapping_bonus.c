@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/29 22:46:42 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 23:31:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,20 +192,28 @@ void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
 		float tex_x, float fog)
 {
 	uint32_t	pixel_color;
-	uint32_t	fog_color;
 	int			fog_pixel[2];
+	uint32_t	fog_sample;
+	float		fog_mod;
+	float		noise;
+	float		strength;
 
 	pixel_color = sample_texture_pixel(texture, tex_x, tex_y);
 	if (fog_texture)	
 	{
 		fog_pixel[X] = (int)(x & (fog_texture->texture.width - 1));
 		fog_pixel[Y] = (int)(y & (fog_texture->texture.height - 1));
-		fog_color = sample_texture_pixel(fog_texture, fog_pixel[X], fog_pixel[Y]);
-		fog_color = rgba_color_lerp(pixel_color, fog_color, fog);
+		fog_sample = sample_texture_pixel(fog_texture, fog_pixel[X], fog_pixel[Y]);
+		noise = ((fog_sample >> 24) & 0xFF) * (1.0f / 255.0f);
+		noise -= 0.5f;
+		strength = 0.05f + 0.15f * fog;
+		fog_mod = fog + noise * (strength * fog);
+		fog_mod = clamp(fog_mod, 0.0f, 0.95f);
+		fog_sample = rgba_color_lerp(pixel_color, FOG_COLOR, fog_mod);
 	}
 	else
-		fog_color = rgba_color_lerp(pixel_color, FOG_COLOR, fog);
-	save_pixel_to_image(img, x, y, fog_color);
+		fog_sample = rgba_color_lerp(pixel_color, FOG_COLOR, fog);
+	save_pixel_to_image(img, x, y, fog_sample);
 }
 
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
