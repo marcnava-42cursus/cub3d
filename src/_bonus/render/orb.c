@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/28 22:29:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 22:44:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,20 @@ static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
 		int sprite_render_dims[2], float *tex_step,
 		float *tex_pos_start, t_game *game, int screen_x)
 {
-	draw_y[0] = center - sprite_render_dims[Y] / 2;
-	draw_y[1] = center + sprite_render_dims[Y] / 2;
+	float	sprite_top;
+
+	sprite_top = center - sprite_render_dims[Y] * 0.5f;
+	draw_y[0] = (int)sprite_top;
+	draw_y[1] = (int)(center + sprite_render_dims[Y] * 0.5f);
 	if (draw_y[0] < 0)
 		draw_y[0] = 0;
 	if (draw_y[1] >= (int)game->double_buffer[NEXT]->height)
 		draw_y[1] = (int)game->double_buffer[NEXT]->height - 1;
 	*tex_step = (float)game->cub_data.player.textures.weapon.frame_height
 		/ (float)sprite_render_dims[Y];
-	*tex_pos_start = (draw_y[0] - (center - sprite_render_dims[Y] / 2.0f))
-		* *tex_step;
+	*tex_pos_start = (draw_y[0] - sprite_top) * *tex_step;
+	if (*tex_pos_start < 0.0f)
+		*tex_pos_start = 0.0f;
 	draw_x[0] = screen_x - sprite_render_dims[X] / 2;
 	draw_x[1] = screen_x + sprite_render_dims[X] / 2;
 	if (draw_x[1] < 0 || draw_x[0] >= (int)game->double_buffer[NEXT]->width)
@@ -71,8 +75,8 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 	while (i < draw_x[1])
 	{
 		tex_x = (int)((i - (screen_x - sprite_width / 2)) * frame_width
-				/ sprite_width);
-		tex_x = (int)clamp((float)tex_x, 0.0f, frame_width);
+				/ sprite_width) - 1;
+		tex_x = (int)clamp((float)tex_x, 0.0f, (float)(frame_width - 1));
 		if (cam_y * WORLDMAP_TILE_SIZE < rayhits[i].distance)
 		{
 			fog = fog_factor(cam_y);

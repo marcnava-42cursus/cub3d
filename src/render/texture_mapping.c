@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/29 19:15:29 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 22:40:42 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 	uint32_t	pixel_color;
 
 	tex_y = (int)tex_pos;
-	if (tex_y >= (int)texture->texture.height)
-		tex_y = texture->texture.height - 1;
+	tex_y = (int)clamp((float)tex_y, 0.0f,
+		(float)(texture->texture.height - 1));
+	///if (tex_y < 0)
+	///	tex_y = 0;
+	///if (tex_y >= (int)texture->texture.height)
+	///	tex_y = texture->texture.height - 1;
 	if (tex_x >= 0 && tex_x < (int)texture->texture.width
 		&& tex_y >= 0 && tex_y < (int)texture->texture.height)
 	{

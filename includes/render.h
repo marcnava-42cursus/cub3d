@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/29 15:42:52 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 22:07:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_RENDER_DISTANCE 2000.0f
-# define FOG_TILE_START 0.5f
-# define FOG_TILE_END 17.5f
+# define FOG_TILE_START 3.5f
+# define FOG_TILE_END 15.5f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)
