@@ -6,24 +6,22 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 15:01:51 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/28 22:33:44 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
 static vertex_t	get_ceiling_ray_steps(t_player *player, float ray_dir[4],
-		mlx_image_t *img, int y, float center)
+		mlx_image_t *img, int y, float center, float dist_to_proj_plane)
 {
 	vertex_t	floor_and_steps;
 	float		p;
 	float		row_distance;
-	float		dist_to_proj_plane;
 
 	p = center - y;
 	if (p < 1.0f)
 		p = 1.0f;
-	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
 	row_distance = dist_to_proj_plane * 0.5f / p;
 	floor_and_steps.x = player->x + row_distance * ray_dir[X];
 	floor_and_steps.y = player->y + row_distance * ray_dir[Y];
@@ -56,7 +54,8 @@ static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
 	}
 }
 
-void	render_ceilings(t_game *game, float center, float ray_dir[4])
+void	render_ceilings(t_game *game, float center, float ray_dir[4],
+		float dist_to_proj_plane)
 {
 	int			i;
 	vertex_t	floor_and_steps;
@@ -67,7 +66,7 @@ void	render_ceilings(t_game *game, float center, float ray_dir[4])
 	while (i < (int)center)
 	{
 		floor_and_steps = get_ceiling_ray_steps(&game->cub_data.player, ray_dir,
-				game->double_buffer[NEXT], i, center);
+				game->double_buffer[NEXT], i, center, dist_to_proj_plane);
 		dist[X] = (floor_and_steps.x - game->cub_data.player.x)
 			* WORLDMAP_TILE_SIZE;
 		dist[Y] = (floor_and_steps.y - game->cub_data.player.y)

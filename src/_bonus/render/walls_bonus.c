@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 18:35:49 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/28 18:21:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	build_wall_bounds(t_rayhit *rayhit, mlx_image_t *img, float center,
 {
 	int	slice_height;
 
-	dist_to_proj_plane = (img->width * 0.5f) / tanf(PLAYER_FOV / 2.0f);
 	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane
 			/ rayhit->distance);
 	rayhit->wall_bounds[0] = center - slice_height / 2;

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 18:48:17 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:26:50 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ int	load_textures(t_textures *textures)
 		}
 	}
 	textures->floor = mlx_load_xpm42( "./assets/textures/walls/test_floor_flesh.xpm42");
-	textures->ceiling = mlx_load_xpm42( "./assets/textures/walls/test_floor_flesh.xpm42");
-	textures->fog = mlx_load_xpm42("./assets/textures/walls/fog_16colors.xpm42");
+	textures->ceiling = mlx_load_xpm42( "./assets/textures/walls/test_ceiling_flesh.xpm42");
+	textures->fog = mlx_load_xpm42("./assets/textures/walls/test_fog_256.xpm42");
 	if (textures->custom)
 		load_custom_textures(textures->custom);
 	return (1);

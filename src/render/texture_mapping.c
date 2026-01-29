@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 14:43:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 19:15:29 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,15 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 void	paint_vertical_line_texture(unsigned int x, int y[2], mlx_image_t *img,
 		xpm_t *texture, int tex_x, float tex_pos, float tex_step)
 {
-	int			current_y;
-	float		current_t_pos;
-	uint32_t	pixel_color;
+	int	current_y;
 
 	current_y = y[0];
-	current_t_pos = tex_pos;
 	while (current_y <= y[1])
 	{
-		pixel_color = sample_texture_pixel(texture, tex_x, current_t_pos);
-		save_pixel_to_image(img, x, (unsigned int)current_y, pixel_color);
+		paint_horizontal_line_texture(current_y, x, img, texture, tex_pos,
+			tex_x);
 		current_y++;
-		current_t_pos += tex_step;
+		tex_pos += tex_step;
 	}
 }
 

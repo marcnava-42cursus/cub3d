@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:53:54 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 06:06:17 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/28 18:51:54 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ float	fog_factor(float distance)
 	end = FOG_TILE_END * WORLDMAP_TILE_SIZE;
 	range = (distance - start) / (end - start);
 	range = clamp(range, 0.0f, 1.0f);
+	range *= range;
 	return (range);
 }
 

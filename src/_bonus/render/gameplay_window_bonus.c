@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 18:56:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/28 18:55:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 	center = calculate_center(game->double_buffer[NEXT]->height,
 			game->cub_data.player.pitch);
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
-	render_floors(game, center, ray_dir);
-	render_ceilings(game, center, ray_dir);
+	render_floors(game, center, ray_dir, dist_to_proj_plane);
+	render_ceilings(game, center, ray_dir, dist_to_proj_plane);
 	render_walls(game, rayhits, center, dist_to_proj_plane);
 	render_orb(game, rayhits, center, ray_dir);
 	render_player_overlay(game);

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:11:38 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 15:42:52 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_RENDER_DISTANCE 2000.0f
-# define FOG_TILE_START 4.0f
-# define FOG_TILE_END 6.0f
+# define FOG_TILE_START 0.5f
+# define FOG_TILE_END 17.5f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)
@@ -150,10 +150,10 @@ void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
 		float center, float dist_to_proj_plane);
 
 /*-------------------------------- FLOORS.C ----------------------------------*/
-void	render_floors(t_game *game, float center, float ray_dir[4]);
+void	render_floors(t_game *game, float center, float ray_dir[4], float dist_to_proj_plane);
 
 /*------------------------------- CEILINGS.C ---------------------------------*/
-void	render_ceilings(t_game *game, float center, float ray_dir[4]);
+void	render_ceilings(t_game *game, float center, float ray_dir[4], float dist_to_proj_plane);
 
 /*---------------------------------- ORB.C -----------------------------------*/
 void	render_orb(t_game *game, t_rayhit *rayhits,  float center,
