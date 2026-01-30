@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 void	draw_border(mlx_image_t *img, t_border border)
 {

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "render.h"
+#include "logic_bonus.h"
 #include <math.h>
 #include <stdint.h>
 #include <string.h>

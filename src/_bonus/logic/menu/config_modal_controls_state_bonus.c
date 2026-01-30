@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 void	config_controls_select(t_game *game, int delta)
 {
@@ -33,6 +33,27 @@ void	config_controls_select(t_game *game, int delta)
 	draw_modal_layout(game);
 }
 
+void	config_controls_set_column(t_game *game, int delta)
+{
+	t_menu_state	*menu;
+	int				column;
+
+	if (!game)
+		return ;
+	menu = &game->menu;
+	if (menu->controls_rebinding)
+		return ;
+	column = menu->controls_column + delta;
+	if (column < CONTROLS_COLUMN_KEYBOARD)
+		column = CONTROLS_COLUMN_CONTROLLER;
+	else if (column > CONTROLS_COLUMN_CONTROLLER)
+		column = CONTROLS_COLUMN_KEYBOARD;
+	if (column == menu->controls_column)
+		return ;
+	menu->controls_column = column;
+	draw_modal_layout(game);
+}
+
 void	config_controls_begin_rebind(t_game *game)
 {
 	t_menu_state	*menu;
@@ -42,6 +63,7 @@ void	config_controls_begin_rebind(t_game *game)
 	menu = &game->menu;
 	menu->controls_rebinding = true;
 	menu->controls_rebind_target = menu->controls_selected;
+	menu->controls_rebind_column = menu->controls_column;
 	draw_modal_layout(game);
 }
 
@@ -54,4 +76,5 @@ void	config_controls_cancel_rebind(t_game *game)
 	menu = &game->menu;
 	menu->controls_rebinding = false;
 	menu->controls_rebind_target = -1;
+	menu->controls_rebind_column = -1;
 }

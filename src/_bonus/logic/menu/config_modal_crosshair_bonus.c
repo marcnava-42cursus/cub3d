@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logic.h"
+#include "logic_bonus.h"
 #include "render.h"
 #include "structs.h"
 

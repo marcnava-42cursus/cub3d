@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 18:35:23 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/30 14:10:02 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdint.h>
 # include "MLX42/MLX42.h"
 
-typedef struct s_game t_game;
+typedef struct s_game	t_game;
 
 # define CONFIG_MODAL_BG_COLOR 0x000000C0
 # define CONFIG_MODAL_PANEL_COLOR 0x1E1E1ED0
@@ -51,9 +51,26 @@ typedef struct s_game t_game;
 
 # define CONFIG_MODAL_TOGGLE_COUNT 5
 # define CONFIG_MODAL_SLIDER_COUNT 4
-# define CONFIG_MODAL_OPTION_COUNT (CONFIG_MODAL_TOGGLE_COUNT \
-		+ CONFIG_MODAL_SLIDER_COUNT)
-# define CONFIG_MODAL_CONTROL_COUNT 10
+# define CONFIG_MODAL_OPTION_COUNT 9 // TOGGLE_COUNT + SLIDER_COUNT
+# define CONFIG_MODAL_CONTROL_COUNT 14
+
+typedef enum e_control_action
+{
+	ACTION_FORWARD = 0,
+	ACTION_BACKWARD = 1,
+	ACTION_STRAFE_RIGHT = 2,
+	ACTION_STRAFE_LEFT = 3,
+	ACTION_TURN_RIGHT = 4,
+	ACTION_TURN_LEFT = 5,
+	ACTION_LOOK_UP = 6,
+	ACTION_LOOK_DOWN = 7,
+	ACTION_BREAK = 8,
+	ACTION_PLACE = 9,
+	ACTION_MENU = 10,
+	ACTION_MAP = 11,
+	ACTION_ACCEPT = 12,
+	ACTION_QUIT = 13
+}	t_control_action;
 
 # define CONFIG_OPTION_SHOW_FPS 0
 # define CONFIG_OPTION_CROSSHAIR 1
@@ -84,6 +101,11 @@ typedef struct s_game t_game;
 # define CONFIG_MODAL_KEYCAP_W 64
 # define CONFIG_MODAL_KEYCAP_H 24
 # define CONFIG_MODAL_KEY_LABEL_LEN 16
+# define CONTROLS_COLUMN_KEYBOARD 0
+# define CONTROLS_COLUMN_CONTROLLER 1
+# define CONTROLLER_BUTTON_COUNT 15
+# define CONTROLLER_AXIS_COUNT 6
+# define CONTROLLER_DEADZONE 0.25f
 
 # define CONFIG_SLIDER_GAME_SPEED 0
 # define CONFIG_SLIDER_FPS_LIMIT 1
@@ -150,14 +172,20 @@ typedef struct s_menu_labels
 	mlx_image_t	*settings_labels[CONFIG_MODAL_OPTION_COUNT];
 	mlx_image_t	*controls_labels[CONFIG_MODAL_CONTROL_COUNT];
 	mlx_image_t	*controls_key_labels[CONFIG_MODAL_CONTROL_COUNT];
+	mlx_image_t	*controls_controller_labels[CONFIG_MODAL_CONTROL_COUNT];
+	mlx_image_t	*controls_controller_key_labels[CONFIG_MODAL_CONTROL_COUNT];
 	mlx_image_t	*settings_sections[2];
 	mlx_image_t	*controls_header;
+	mlx_image_t	*controls_controller_header;
 	mlx_image_t	*controls_prompt;
+	mlx_image_t	*controls_controller_prompt;
 	mlx_image_t	*slider_value_labels[CONFIG_MODAL_SLIDER_COUNT];
 	char		slider_value_cache[CONFIG_MODAL_SLIDER_COUNT]
-		[CONFIG_MODAL_SLIDER_VALUE_LEN];
+	[CONFIG_MODAL_SLIDER_VALUE_LEN];
 	char		controls_key_cache[CONFIG_MODAL_CONTROL_COUNT]
-		[CONFIG_MODAL_KEY_LABEL_LEN];
+	[CONFIG_MODAL_KEY_LABEL_LEN];
+	char		controls_controller_key_cache[CONFIG_MODAL_CONTROL_COUNT]
+	[CONFIG_MODAL_KEY_LABEL_LEN];
 }	t_menu_labels;
 
 typedef struct s_menu_state
@@ -178,12 +206,45 @@ typedef struct s_menu_state
 	int			pending_slider_value;
 	int			slider_drag_index;
 	int			controls_selected;
+	int			controls_column;
+	int			controls_rebind_column;
 	bool		controls_rebinding;
 	int			controls_rebind_target;
+	keys_t		controls_key_codes[CONFIG_MODAL_CONTROL_COUNT];
 	char		controls_key_text[CONFIG_MODAL_CONTROL_COUNT]
+		[CONFIG_MODAL_KEY_LABEL_LEN];
+	char		controls_controller_text[CONFIG_MODAL_CONTROL_COUNT]
 		[CONFIG_MODAL_KEY_LABEL_LEN];
 	t_menu_labels	labels;
 }	t_menu_state;
+
+typedef enum e_controller_bind_type
+{
+	CONTROLLER_BIND_NONE = 0,
+	CONTROLLER_BIND_BUTTON = 1,
+	CONTROLLER_BIND_AXIS = 2
+}	t_controller_bind_type;
+
+typedef struct s_controller_bind
+{
+	t_controller_bind_type	type;
+	int						id;
+	int						dir;
+}	t_controller_bind;
+
+typedef struct s_controller_state
+{
+	bool			connected;
+	int				gamepad_id;
+	float			deadzone;
+	bool			axis_calibrated;
+	float			axis_center[CONTROLLER_AXIS_COUNT];
+	bool			menu_quit_held;
+	bool			prev_buttons[CONTROLLER_BUTTON_COUNT];
+	float			prev_axes[CONTROLLER_AXIS_COUNT];
+	bool			prev_action_active[CONFIG_MODAL_CONTROL_COUNT];
+	t_controller_bind	binds[CONFIG_MODAL_CONTROL_COUNT];
+}	t_controller_state;
 
 typedef struct s_menu_layout
 {
@@ -245,11 +306,15 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 bool	config_option_drag_update(t_game *game, int32_t mx, int32_t my,
 			bool mouse_down);
 void	config_controls_select(t_game *game, int delta);
+void	config_controls_set_column(t_game *game, int delta);
 void	config_controls_begin_rebind(t_game *game);
 void	config_controls_cancel_rebind(t_game *game);
 bool	config_controls_handle_key(t_game *game, mlx_key_data_t keydata);
 int		config_controls_selected(t_game *game);
+int		config_controls_column(t_game *game);
+int		config_controls_rebind_column(t_game *game);
 bool	config_controls_is_rebinding(t_game *game);
 const char	*config_controls_key_text(t_game *game, int index);
+const char	*config_controls_controller_text(t_game *game, int index);
 
 #endif

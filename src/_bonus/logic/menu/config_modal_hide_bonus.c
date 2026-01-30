@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 void	hide_settings_options(t_game *game)
 {
@@ -40,6 +40,12 @@ void	hide_controls_options(t_game *game)
 		CONFIG_MODAL_CONTROL_COUNT);
 	disable_label_group(menu->labels.controls_key_labels,
 		CONFIG_MODAL_CONTROL_COUNT);
+	disable_label_group(menu->labels.controls_controller_labels,
+		CONFIG_MODAL_CONTROL_COUNT);
+	disable_label_group(menu->labels.controls_controller_key_labels,
+		CONFIG_MODAL_CONTROL_COUNT);
 	set_image_enabled(menu->labels.controls_header, false);
 	set_image_enabled(menu->labels.controls_prompt, false);
+	set_image_enabled(menu->labels.controls_controller_header, false);
+	set_image_enabled(menu->labels.controls_controller_prompt, false);
 }

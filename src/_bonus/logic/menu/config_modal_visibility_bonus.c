@@ -13,7 +13,7 @@
 #include "config_bonus.h"
 #include "render.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 static bool	ensure_config_modal_ready(t_game *game)
 {

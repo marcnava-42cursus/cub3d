@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 static void	draw_tab_icons(t_game *game, t_rect panel, int tab_w)
 {

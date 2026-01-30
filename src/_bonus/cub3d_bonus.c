@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 #include "config_bonus.h"
+#include "logic_bonus.h"
 #include <string.h>
 
 // Prototypes for bonus functions

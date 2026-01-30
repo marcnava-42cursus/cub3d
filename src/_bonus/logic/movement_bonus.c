@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logic.h"
+#include "logic_bonus.h"
 #include "render.h"
 #include "structs.h"
 #include "parser.h"
@@ -288,6 +288,8 @@ void	update_game_loop_bonus(void *param)
 		return ;
 	if (is_config_modal_open(game))
 	{
+		controller_handle_rebind_bonus(game);
+		controller_update_bonus(game);
 		update_config_modal(game);
 		return ;
 	}
@@ -312,6 +314,11 @@ void	update_game_loop_bonus(void *param)
 	else
 		next_tick = 0.0;
 	refresh_key_states_bonus(game);
+	if (is_config_modal_open(game))
+	{
+		update_config_modal(game);
+		return ;
+	}
 	fps_overlay_update(game);
 	if (game->mlx->delta_time <= 0.0)
 		return ;

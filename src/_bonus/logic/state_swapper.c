@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 #include "render.h"
 
 /**

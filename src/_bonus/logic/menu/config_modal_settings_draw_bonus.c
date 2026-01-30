@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 static void	place_settings_sections(t_menu_state *menu,
 			t_rect left, t_rect right)

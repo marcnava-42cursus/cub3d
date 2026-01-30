@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 #include <stdio.h>
 
 int	config_fps_limit_value(int index)

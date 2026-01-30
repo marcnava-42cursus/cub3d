@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 #include <stdlib.h>
 
 static t_fps_overlay	g_fps;

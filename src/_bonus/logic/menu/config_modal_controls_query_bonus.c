@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 int	config_controls_selected(t_game *game)
 {
@@ -22,6 +22,26 @@ int	config_controls_selected(t_game *game)
 		return (0);
 	menu = &game->menu;
 	return (menu->controls_selected);
+}
+
+int	config_controls_column(t_game *game)
+{
+	t_menu_state	*menu;
+
+	if (!game)
+		return (CONTROLS_COLUMN_KEYBOARD);
+	menu = &game->menu;
+	return (menu->controls_column);
+}
+
+int	config_controls_rebind_column(t_game *game)
+{
+	t_menu_state	*menu;
+
+	if (!game)
+		return (-1);
+	menu = &game->menu;
+	return (menu->controls_rebind_column);
 }
 
 bool	config_controls_is_rebinding(t_game *game)
@@ -42,4 +62,14 @@ const char	*config_controls_key_text(t_game *game, int index)
 		return ("");
 	menu = &game->menu;
 	return (menu->controls_key_text[index]);
+}
+
+const char	*config_controls_controller_text(t_game *game, int index)
+{
+	t_menu_state	*menu;
+
+	if (!game || index < 0 || index >= CONFIG_MODAL_CONTROL_COUNT)
+		return ("");
+	menu = &game->menu;
+	return (menu->controls_controller_text[index]);
 }

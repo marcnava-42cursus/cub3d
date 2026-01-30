@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 int	config_option_from_pos(t_game *game, int32_t mx, int32_t my)
 {

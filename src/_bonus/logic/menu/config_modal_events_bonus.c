@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 static bool	is_quit_hovered(t_game *game, int32_t mouse_x, int32_t mouse_y)
 {
@@ -74,11 +74,11 @@ void	update_config_modal(t_game *game)
 
 	if (!game || !game->mlx || !game->menu.open)
 		return ;
-	if (game->menu.current_tab != 0)
-		return ;
-	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
-	game->menu.quit_hover = is_quit_hovered(game, mouse_x, mouse_y);
-	holding_q = mlx_is_key_down(game->mlx, MLX_KEY_Q);
+	holding_q = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_QUIT])
+		|| game->controller.menu_quit_held;
+	if (game->menu.controls_rebinding)
+		holding_q = false;
 	if (holding_q)
 		game->menu.quit_hold_time += game->mlx->delta_time;
 	else
@@ -88,6 +88,10 @@ void	update_config_modal(t_game *game)
 		mlx_close_window(game->mlx);
 		return ;
 	}
+	if (game->menu.current_tab != 0)
+		return ;
+	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
+	game->menu.quit_hover = is_quit_hovered(game, mouse_x, mouse_y);
 	dragging = config_option_drag_update(game, mouse_x, mouse_y,
 			mlx_is_mouse_down(game->mlx, MLX_MOUSE_BUTTON_LEFT));
 	if (dragging)
@@ -100,12 +104,15 @@ void	update_config_modal(t_game *game)
 
 void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 {
+	keys_t	accept_key;
+
 	if (!game || !game->menu.open)
 		return ;
 	if (keydata.action != MLX_PRESS)
 		return ;
 	if (config_controls_handle_key(game, keydata))
 		return ;
+	accept_key = game->menu.controls_key_codes[ACTION_ACCEPT];
 	if (keydata.key == MLX_KEY_LEFT && game->menu.current_tab > 0)
 	{
 		game->menu.current_tab--;
@@ -124,9 +131,11 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 			config_controls_select(game, -1);
 		else if (keydata.key == MLX_KEY_DOWN)
 			config_controls_select(game, 1);
-		else if (keydata.key == MLX_KEY_ENTER
-			|| keydata.key == MLX_KEY_KP_ENTER
-			|| keydata.key == MLX_KEY_SPACE)
+		else if (keydata.key == MLX_KEY_A)
+			config_controls_set_column(game, -1);
+		else if (keydata.key == MLX_KEY_D)
+			config_controls_set_column(game, 1);
+		else if (keydata.key == accept_key)
 			config_controls_begin_rebind(game);
 		return ;
 	}
@@ -134,8 +143,7 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 		config_option_select(game, -1);
 	else if (keydata.key == MLX_KEY_DOWN)
 		config_option_select(game, 1);
-	else if (keydata.key == MLX_KEY_ENTER || keydata.key == MLX_KEY_KP_ENTER
-		|| keydata.key == MLX_KEY_SPACE)
+	else if (keydata.key == accept_key)
 		config_option_toggle(game, game->menu.options.selected);
 	else if (keydata.key == MLX_KEY_A)
 		config_option_adjust(game, -1);

@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 #include <stdio.h>
 
 static const char	*key_name_from_mlx(keys_t key, char *buffer,
@@ -96,6 +96,15 @@ bool	config_controls_handle_key(t_game *game, mlx_key_data_t keydata)
 		return (false);
 	if (keydata.action != MLX_PRESS)
 		return (true);
+	if (menu->controls_rebind_column == CONTROLS_COLUMN_CONTROLLER)
+	{
+		if (keydata.key == MLX_KEY_BACKSPACE)
+		{
+			config_controls_cancel_rebind(game);
+			draw_modal_layout(game);
+		}
+		return (true);
+	}
 	if (keydata.key == MLX_KEY_BACKSPACE)
 	{
 		config_controls_cancel_rebind(game);
@@ -109,6 +118,7 @@ bool	config_controls_handle_key(t_game *game, mlx_key_data_t keydata)
 		draw_modal_layout(game);
 		return (true);
 	}
+	menu->controls_key_codes[menu->controls_rebind_target] = keydata.key;
 	name = key_name_from_mlx(keydata.key, name_buf, sizeof(name_buf));
 	ft_strlcpy(menu->controls_key_text[menu->controls_rebind_target], name,
 		CONFIG_MODAL_KEY_LABEL_LEN);

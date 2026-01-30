@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic_bonus.h"
 
 static void	place_block_on_arrival(t_game *game)
 {

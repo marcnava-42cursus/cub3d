@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
 void	disable_label_group(mlx_image_t **labels, size_t count)
 {
@@ -101,17 +101,29 @@ bool	ensure_controls_labels(t_game *game)
 	text[3] = "Strafe left";
 	text[4] = "Turn right";
 	text[5] = "Turn left";
-	text[6] = "Break";
-	text[7] = "Place";
-	text[8] = "Open menu";
-	text[9] = "Open map";
+	text[6] = "Look up";
+	text[7] = "Look down";
+	text[8] = "Break";
+	text[9] = "Place";
+	text[10] = "Open menu";
+	text[11] = "Open map";
+	text[12] = "Accept";
+	text[13] = "Quit game";
 	if (!menu->labels.controls_header)
 		menu->labels.controls_header = mlx_put_string(
-				game->mlx, "CONTROLS", 0, 0);
+				game->mlx, "KEYBOARD", 0, 0);
+	if (!menu->labels.controls_controller_header)
+		menu->labels.controls_controller_header = mlx_put_string(
+				game->mlx, "CONTROLLER", 0, 0);
 	if (!menu->labels.controls_prompt)
 		menu->labels.controls_prompt = mlx_put_string(
 				game->mlx, "PRESS A KEY...", 0, 0);
-	if (!menu->labels.controls_header || !menu->labels.controls_prompt)
+	if (!menu->labels.controls_controller_prompt)
+		menu->labels.controls_controller_prompt = mlx_put_string(
+				game->mlx, "PRESS A BUTTON...", 0, 0);
+	if (!menu->labels.controls_header || !menu->labels.controls_prompt
+		|| !menu->labels.controls_controller_header
+		|| !menu->labels.controls_controller_prompt)
 		return (false);
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
@@ -119,13 +131,24 @@ bool	ensure_controls_labels(t_game *game)
 		if (!menu->labels.controls_labels[i])
 			menu->labels.controls_labels[i] = mlx_put_string(
 					game->mlx, text[i], 0, 0);
+		if (!menu->labels.controls_controller_labels[i])
+			menu->labels.controls_controller_labels[i] = mlx_put_string(
+					game->mlx, text[i], 0, 0);
 		if (!update_label_text(game, &menu->labels.controls_key_labels[i],
 				menu->labels.controls_key_cache[i],
 				sizeof(menu->labels.controls_key_cache[i]),
 				config_controls_key_text(game, (int)i)))
 			return (false);
+		if (!update_label_text(game,
+				&menu->labels.controls_controller_key_labels[i],
+				menu->labels.controls_controller_key_cache[i],
+				sizeof(menu->labels.controls_controller_key_cache[i]),
+				config_controls_controller_text(game, (int)i)))
+			return (false);
 		if (!menu->labels.controls_labels[i]
-			|| !menu->labels.controls_key_labels[i])
+			|| !menu->labels.controls_key_labels[i]
+			|| !menu->labels.controls_controller_labels[i]
+			|| !menu->labels.controls_controller_key_labels[i])
 			return (false);
 		i++;
 	}
@@ -133,7 +156,13 @@ bool	ensure_controls_labels(t_game *game)
 		CONFIG_MODAL_CONTROL_COUNT);
 	disable_label_group(menu->labels.controls_key_labels,
 		CONFIG_MODAL_CONTROL_COUNT);
+	disable_label_group(menu->labels.controls_controller_labels,
+		CONFIG_MODAL_CONTROL_COUNT);
+	disable_label_group(menu->labels.controls_controller_key_labels,
+		CONFIG_MODAL_CONTROL_COUNT);
 	set_image_enabled(menu->labels.controls_header, false);
 	set_image_enabled(menu->labels.controls_prompt, false);
+	set_image_enabled(menu->labels.controls_controller_header, false);
+	set_image_enabled(menu->labels.controls_controller_prompt, false);
 	return (true);
 }

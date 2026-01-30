@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 12:51:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/29 21:37:27 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,9 +236,8 @@ typedef struct s_game
 	float		resolution_scale;
 	t_minimap	minimap;
 
-# ifdef BONUS
 	t_orb_projectile	orb;
-# endif
+	t_controller_state	controller;
 
 	// Estado de UI
 	bool		map_2d_visible;

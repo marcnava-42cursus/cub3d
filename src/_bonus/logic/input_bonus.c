@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 #include "render.h"
 
 void	refresh_key_states_bonus(t_game *game)
@@ -27,26 +27,47 @@ void	refresh_key_states_bonus(t_game *game)
 		game->key_d_pressed = false;
 		game->key_left_pressed = false;
 		game->key_right_pressed = false;
+		game->key_up_pressed = false;
+		game->key_down_pressed = false;
 		return ;
 	}
-	game->key_w_pressed = mlx_is_key_down(game->mlx, MLX_KEY_W);
-	game->key_s_pressed = mlx_is_key_down(game->mlx, MLX_KEY_S);
-	game->key_a_pressed = mlx_is_key_down(game->mlx, MLX_KEY_A);
-	game->key_d_pressed = mlx_is_key_down(game->mlx, MLX_KEY_D);
-	game->key_left_pressed = mlx_is_key_down(game->mlx, MLX_KEY_LEFT);
-	game->key_right_pressed = mlx_is_key_down(game->mlx, MLX_KEY_RIGHT);
-	game->key_up_pressed = mlx_is_key_down(game->mlx, MLX_KEY_UP);
-	game->key_down_pressed = mlx_is_key_down(game->mlx, MLX_KEY_DOWN);
+	game->key_w_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_FORWARD]);
+	game->key_s_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_BACKWARD]);
+	game->key_d_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_STRAFE_RIGHT]);
+	game->key_a_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_STRAFE_LEFT]);
+	game->key_right_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_TURN_RIGHT]);
+	game->key_left_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_TURN_LEFT]);
+	game->key_up_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_LOOK_UP]);
+	game->key_down_pressed = mlx_is_key_down(game->mlx,
+			game->menu.controls_key_codes[ACTION_LOOK_DOWN]);
+	controller_update_bonus(game);
 }
 
 void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;
+	keys_t	menu_key;
+	keys_t	break_key;
+	keys_t	place_key;
+	keys_t	map_key;
 
 	game = (t_game *)param;
 	if (!game)
 		return ;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	if (is_config_modal_open(game) && game->menu.controls_rebinding)
+	{
+		config_modal_handle_key(game, keydata);
+		return ;
+	}
+	menu_key = game->menu.controls_key_codes[ACTION_MENU];
+	if (keydata.key == menu_key && keydata.action == MLX_PRESS)
 	{
 		toggle_config_modal(game);
 		return ;
@@ -56,15 +77,21 @@ void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 		config_modal_handle_key(game, keydata);
 		return ;
 	}
-	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+	map_key = game->menu.controls_key_codes[ACTION_MAP];
+	if (keydata.key == map_key && keydata.action == MLX_PRESS)
 	{
 		toggle_map_overlay_bonus(game);
 		return ;
 	}
-	if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+	place_key = game->menu.controls_key_codes[ACTION_PLACE];
+	if (keydata.key == place_key && keydata.action == MLX_PRESS)
 		place_breakable_block(game);
-	else if (keydata.key == MLX_KEY_E && keydata.action == MLX_PRESS)
-		test_break_wall_in_front(game);
+	else
+	{
+		break_key = game->menu.controls_key_codes[ACTION_BREAK];
+		if (keydata.key == break_key && keydata.action == MLX_PRESS)
+			test_break_wall_in_front(game);
+	}
 }
 
 void	mouse_hook_bonus(mouse_key_t button, action_t action,

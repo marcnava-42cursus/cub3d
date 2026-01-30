@@ -12,7 +12,7 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 #include <stdio.h>
 
 static bool	*toggle_value_ptr(t_game *game, int index)

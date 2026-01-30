@@ -1,0 +1,133 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   logic_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
+/*   Updated: 2026/01/30 14:14:15 by marcnava         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef LOGIC_BONUS_H
+# define LOGIC_BONUS_H
+
+# define GLFW_INCLUDE_NONE
+# include <GLFW/glfw3.h>
+# include "logic.h"
+# include "config_bonus.h"
+
+# define ORB_PROJECTILE_DEFAULT_SPEED 6.0f
+# define EPSILON 0.0f
+
+struct	s_controller_bind;
+
+typedef enum e_orb_mode
+{
+	ORB_MODE_NONE = 0,
+	ORB_MODE_TAKE = 1,
+	ORB_MODE_PLACE = 2
+}	t_orb_mode;
+
+typedef struct s_orb_projectile
+{
+	bool		active;
+	t_orb_mode	mode;
+	float		x;
+	float		y;
+	float		target_x;
+	float		target_y;
+	float		speed;
+	char		payload;
+	int			target_cell_x;
+	int			target_cell_y;
+	bool		needs_redraw;
+	float		last_draw_x;
+	float		last_draw_y;
+	bool		last_draw_active;
+}	t_orb_projectile;
+
+// Collision bonus
+bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
+bool	collides_with_wall_bonus(t_game *game, float x, float y);
+void	attempt_move_bonus(t_game *game, float step_x, float step_y);
+
+// Input bonus
+void	refresh_key_states_bonus(t_game *game);
+void	key_hook_bonus(mlx_key_data_t keydata, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
+void	cursor_hook_bonus(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_bonus(t_game *game);
+
+// Movement bonus
+void	update_game_loop_bonus(void *param);
+void	init_movement_system_bonus(t_game *game);
+
+// Inventory
+bool	player_has_block(const t_player *player);
+bool	store_block_in_inventory(t_player *player, char block);
+char	consume_inventory_block(t_player *player);
+
+// Orb projectile
+void	init_orb_projectile_bonus(t_game *game);
+bool	orb_projectile_is_active(const t_game *game);
+bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
+			char block);
+bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
+			char block);
+bool	orb_projectile_update(t_game *game, float delta_time);
+bool	orb_projectile_needs_redraw(const t_game *game);
+void	orb_projectile_mark_drawn(t_game *game);
+
+// Config modal UI
+void	set_config_modal_visible(t_game *game, bool visible);
+void	toggle_config_modal(t_game *game);
+bool	is_config_modal_open(const t_game *game);
+void	update_config_modal(t_game *game);
+void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata);
+
+// World map overlay
+void	toggle_map_overlay_bonus(t_game *game);
+
+// Controller (raw)
+void	controller_init_bonus(t_game *game);
+void	controller_update_bonus(t_game *game);
+bool	controller_handle_rebind_bonus(t_game *game);
+bool	controller_poll_state(t_game *game, GLFWgamepadstate *state);
+void	controller_calibrate_axes(t_game *game,
+			const GLFWgamepadstate *state);
+float	controller_axis_delta(const t_game *game,
+			const GLFWgamepadstate *state, int axis);
+void	controller_store_raw_state(t_game *game,
+			const GLFWgamepadstate *state);
+bool	controller_action_active(t_game *game, int action,
+			const struct s_controller_bind *bind,
+			const GLFWgamepadstate *state, float deadzone);
+bool	controller_action_pressed(t_game *game,
+			const GLFWgamepadstate *state, int action);
+bool	controller_button_pressed(t_game *game,
+			const GLFWgamepadstate *state, int button);
+bool	controller_menu_hold_quit(t_game *game,
+			const GLFWgamepadstate *state);
+void	controller_update_menu(t_game *game,
+			const GLFWgamepadstate *state);
+
+// Test / Prototype
+void	test_break_wall_in_front(t_game *game);
+void	place_breakable_block(t_game *game);
+
+// Bonus aliases for shared code
+#  define is_cell_blocking is_cell_blocking_bonus
+#  define collides_with_wall collides_with_wall_bonus
+#  define attempt_move attempt_move_bonus
+#  define refresh_key_states refresh_key_states_bonus
+#  define key_hook key_hook_bonus
+#  define mouse_hook mouse_hook_bonus
+#  define cursor_hook cursor_hook_bonus
+#  define process_mouse_rotation process_mouse_rotation_bonus
+#  define update_game_loop update_game_loop_bonus
+#  define init_movement_system init_movement_system_bonus
+
+#endif

@@ -12,45 +12,65 @@
 
 #include "config_bonus.h"
 #include "structs.h"
-#include "logic.h"
+#include "logic_bonus.h"
 
-static void	draw_controls_prompt(t_game *game, t_rect card)
+static void	draw_controls_prompt(t_game *game, t_rect card, int column)
 {
 	t_menu_state	*menu;
+	mlx_image_t		*prompt;
 
 	menu = &game->menu;
-	if (config_controls_is_rebinding(game))
+	if (column == CONTROLS_COLUMN_CONTROLLER)
+		prompt = menu->labels.controls_controller_prompt;
+	else
+		prompt = menu->labels.controls_prompt;
+	if (config_controls_is_rebinding(game)
+		&& config_controls_rebind_column(game) == column)
 	{
-		menu->labels.controls_prompt->instances[0].x = card.x
+		prompt->instances[0].x = card.x
 			+ CONFIG_MODAL_CARD_PADDING;
-		menu->labels.controls_prompt->instances[0].y = card.y + card.h
+		prompt->instances[0].y = card.y + card.h
 			- CONFIG_MODAL_CARD_PADDING
-			- (int)menu->labels.controls_prompt->height;
-		set_image_enabled(menu->labels.controls_prompt, true);
+			- (int)prompt->height;
+		set_image_enabled(prompt, true);
 	}
 	else
-		set_image_enabled(menu->labels.controls_prompt, false);
+		set_image_enabled(prompt, false);
 }
 
-static void	draw_controls_rows(t_game *game, t_rect card)
+static void	draw_controls_rows(t_game *game, t_rect card, int column)
 {
 	t_rect		keycap;
 	t_border	border;
 	int			i;
 	int			row_y;
 	int			selected;
+	mlx_image_t	**labels;
+	mlx_image_t	**key_labels;
 
 	selected = config_controls_selected(game);
+	if (config_controls_column(game) != column)
+		selected = -1;
+	if (column == CONTROLS_COLUMN_CONTROLLER)
+	{
+		labels = game->menu.labels.controls_controller_labels;
+		key_labels = game->menu.labels.controls_controller_key_labels;
+	}
+	else
+	{
+		labels = game->menu.labels.controls_labels;
+		key_labels = game->menu.labels.controls_key_labels;
+	}
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
 	{
 		row_y = menu_layout_row_y(card, i);
 		if (selected == i)
 			draw_row_highlight(game, card, row_y);
-		game->menu.labels.controls_labels[i]->instances[0].x = card.x
+		labels[i]->instances[0].x = card.x
 			+ CONFIG_MODAL_CARD_PADDING;
-		game->menu.labels.controls_labels[i]->instances[0].y = row_y + 4;
-		set_image_enabled(game->menu.labels.controls_labels[i], true);
+		labels[i]->instances[0].y = row_y + 4;
+		set_image_enabled(labels[i], true);
 		keycap = rect_make(card.x + card.w - CONFIG_MODAL_CARD_PADDING
 				- CONFIG_MODAL_KEYCAP_W,
 				row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_KEYCAP_H) / 2,
@@ -60,21 +80,38 @@ static void	draw_controls_rows(t_game *game, t_rect card)
 		border.thickness = 1;
 		border.color = CONFIG_MODAL_KEYCAP_BORDER_COLOR;
 		draw_border(game->menu.modal, border);
-		game->menu.labels.controls_key_labels[i]->instances[0].x = keycap.x
+		key_labels[i]->instances[0].x = keycap.x
 			+ (keycap.w
-				- (int)game->menu.labels.controls_key_labels[i]->width) / 2;
-		game->menu.labels.controls_key_labels[i]->instances[0].y = keycap.y
+				- (int)key_labels[i]->width) / 2;
+		key_labels[i]->instances[0].y = keycap.y
 			+ (keycap.h
-				- (int)game->menu.labels.controls_key_labels[i]->height) / 2;
-		set_image_enabled(game->menu.labels.controls_key_labels[i], true);
+				- (int)key_labels[i]->height) / 2;
+		set_image_enabled(key_labels[i], true);
 		i++;
 	}
+}
+
+static void	draw_controls_column(t_game *game, t_rect card, int column)
+{
+	t_menu_state	*menu;
+	mlx_image_t		*header;
+
+	menu = &game->menu;
+	draw_card(game, card);
+	if (column == CONTROLS_COLUMN_CONTROLLER)
+		header = menu->labels.controls_controller_header;
+	else
+		header = menu->labels.controls_header;
+	header->instances[0].x = card.x + CONFIG_MODAL_CARD_PADDING;
+	header->instances[0].y = card.y + CONFIG_MODAL_CARD_PADDING;
+	set_image_enabled(header, true);
+	draw_controls_prompt(game, card, column);
+	draw_controls_rows(game, card, column);
 }
 
 void	draw_controls_options(t_game *game, t_rect panel)
 {
 	t_menu_layout	layout;
-	t_rect			card;
 	t_menu_state	*menu;
 
 	if (!game || !game->menu.modal || !ensure_controls_labels(game))
@@ -82,14 +119,6 @@ void	draw_controls_options(t_game *game, t_rect panel)
 	menu = &game->menu;
 	(void)panel;
 	layout = menu_layout_build(menu);
-	card = rect_make(layout.content.x, layout.content.y,
-			layout.content.w, layout.content.h);
-	draw_card(game, card);
-	menu->labels.controls_header->instances[0].x = card.x
-		+ CONFIG_MODAL_CARD_PADDING;
-	menu->labels.controls_header->instances[0].y = card.y
-		+ CONFIG_MODAL_CARD_PADDING;
-	set_image_enabled(menu->labels.controls_header, true);
-	draw_controls_prompt(game, card);
-	draw_controls_rows(game, card);
+	draw_controls_column(game, layout.left, CONTROLS_COLUMN_KEYBOARD);
+	draw_controls_column(game, layout.right, CONTROLS_COLUMN_CONTROLLER);
 }

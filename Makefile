@@ -109,6 +109,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
 				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
+				$(SRCPATH)/_bonus/logic/collision_alias_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \
 				$(SRCPATH)/parser/colors/color_validation.c \
@@ -142,6 +143,11 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/render/map_2d_bonus.c \
 				$(SRCPATH)/_bonus/logic/movement_bonus.c \
 				$(SRCPATH)/_bonus/logic/input_bonus.c \
+				$(SRCPATH)/_bonus/logic/controller_bonus.c \
+				$(SRCPATH)/_bonus/logic/controller_bonus_state.c \
+				$(SRCPATH)/_bonus/logic/controller_bonus_actions.c \
+				$(SRCPATH)/_bonus/logic/controller_bonus_menu.c \
+				$(SRCPATH)/_bonus/logic/controller_bonus_bindings.c \
 				$(SRCPATH)/logic/timing.c \
 				$(SRCPATH)/logic/move.c \
 				$(SRCPATH)/logic/rotation.c \
