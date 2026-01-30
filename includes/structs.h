@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 12:51:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 17:09:47 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ struct s_custom_texture
 	xpm_t				*texture;	// Loaded texture
 	t_custom_texture	*next;		// Next in linked list
 };
+typedef struct s_atlas
+{
+	xpm_t 			*xpm;
+	unsigned int	max_frame[2];
+	unsigned int	current_frame[2];
+	unsigned int	frame_width;
+	unsigned int	frame_height;
+	unsigned int	total_frames;
+} t_atlas;
 
 // Estructura para texturas
 typedef struct s_textures
@@ -48,19 +57,9 @@ typedef struct s_textures
 	xpm_t				*floor;			// Loaded floor texture
 	xpm_t				*ceiling;		// Loaded ceiling texture
 	xpm_t				*fog;			// Loaded fog texture
+	t_atlas				living;
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
-
-
-typedef struct s_atlas
-{
-	xpm_t 			*xpm;
-	unsigned int	max_frame[2];
-	unsigned int	current_frame[2];
-	unsigned int	frame_width;
-	unsigned int	frame_height;
-	unsigned int	total_frames;
-} t_atlas;
 
 //Player texture collection
 typedef struct s_player_textures
