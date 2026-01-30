@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/29 22:44:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:23:19 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 				game->double_buffer[NEXT],
 				game->cub_data.player.textures.weapon.xpm,
 				game->cub_data.textures.fog,
-				tex_x, tex_pos_start, tex_step, fog);
+				tex_x, tex_pos_start, tex_step, fog, NULL, NULL);
 		}
 		i++;
 	}

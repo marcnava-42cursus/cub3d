@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:39:38 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:29:15 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	init_player_left_hand_anims(t_player *player)
 {
 	static const unsigned int	empty_frames[1] = {5};
 	static const unsigned int	empty_holds[1] = {1};
-	static const unsigned int	take_frames[4] = {5, 6, 8};
-	static const unsigned int	take_holds[4] = {4, 1, 2};
+	static const unsigned int	take_frames[3] = {5, 6, 8};
+	static const unsigned int	take_holds[3] = {4, 1, 2};
 	static const unsigned int	hold_frames[1] = {0};
 	static const unsigned int	hold_holds[1] = {1};
 	static const unsigned int	throw_frames[3] = {1, 2, 3};

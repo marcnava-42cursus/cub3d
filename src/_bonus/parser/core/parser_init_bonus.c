@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/23 00:55:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:29:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,6 @@ void	init_cub_data(t_cub_data *data)
 	ft_bzero(data->elevator_ids, sizeof(data->elevator_ids));
 	ft_bzero(data->elevator_floor_a, sizeof(data->elevator_floor_a));
 	ft_bzero(data->elevator_floor_b, sizeof(data->elevator_floor_b));
-	atlas_init(&data->player.textures.hand,
-		"./assets/textures/player/test_hand_atlas.xpm42",
-		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&data->player.textures.thumb,
-		"./assets/textures/player/test_thumb.xpm42",
-		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&data->player.textures.weapon,
-		"./assets/textures/player/test_weapon.xpm42",
-		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
-	init_player_anims(&data->player);
 }
 
 void	init_cub_data_parser_only(t_cub_data *data)

@@ -6,13 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/28 18:21:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 17:27:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	build_wall_bounds(t_rayhit *rayhit, mlx_image_t *img, float center,
+static void	build_wall_bounds(t_rayhit *rayhit, float center,
 		float dist_to_proj_plane)
 {
 	int	slice_height;
@@ -32,7 +32,7 @@ static void	render_wall_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
 	if (!rayhit->hit)
 		return ;
 	img = game->double_buffer[NEXT];
-	build_wall_bounds(rayhit, img, center, dist_to_proj_plane);
+	build_wall_bounds(rayhit, center, dist_to_proj_plane);
 	screen_bounds[0] = rayhit->wall_bounds[0];
 	screen_bounds[1] = rayhit->wall_bounds[1];
 	if (screen_bounds[0] < 0)
@@ -43,8 +43,7 @@ static void	render_wall_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
 		|| screen_bounds[1] < 0 || screen_bounds[0] >= (int)img->height)
 		return ;
 	if (screen_bounds[0] <= screen_bounds[1])
-		render_texture_line_bonus(*rayhit, x, screen_bounds, img,
-			&game->cub_data.textures);
+		render_texture_line_bonus(*rayhit, x, screen_bounds, game);
 	rayhit->wall_bounds[0] = screen_bounds[0];
 	rayhit->wall_bounds[1] = screen_bounds[1];
 }

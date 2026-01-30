@@ -6,11 +6,12 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/29 23:31:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:43:35 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
+#include "animation.h"
 
 static xpm_t	*get_custom_texture(t_custom_texture *custom, char cell,
 		t_orientation face)
@@ -115,26 +116,61 @@ static xpm_t	*get_custom_texture(t_custom_texture *custom, char cell,
 //		paint_vertical_line_color(x, y, img, color);
 //}
 
-static int	get_tex_x(t_rayhit rayhit, t_textures *textures, xpm_t **texture)
+static int	get_tex_x(t_game *game, t_rayhit rayhit, xpm_t **texture)
 {
 	float	wall_x;
+	char	cell_char;
+	int		frame_width;
 
+	cell_char = game->cub_data.map.grid[rayhit.cell[Y]][rayhit.cell[X]];
 	if (rayhit.face == NORTH)
-		*texture = textures->north;
+		*texture = game->cub_data.textures.north;
 	else if (rayhit.face == SOUTH)
-		*texture = textures->south;
+		*texture = game->cub_data.textures.south;
 	else if (rayhit.face == EAST)
-		*texture = textures->east;
+		*texture = game->cub_data.textures.east;
 	else if (rayhit.face == WEST)
-		*texture = textures->west;
+		*texture = game->cub_data.textures.west;
 	else
 		*texture = NULL;
+	if (cell_char == '2')
+	{
+		*texture = game->cub_data.textures.living.xpm;
+		frame_width = game->cub_data.textures.living.frame_width;
+	}
+	else
+		frame_width = (*texture)->texture.width;
 	if (rayhit.side == 0)
 		wall_x = rayhit.position.y / WORLDMAP_TILE_SIZE;
 	else
 		wall_x = rayhit.position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
-	return ((int)(wall_x * (float)(*texture)->texture.width));
+	return ((int)(wall_x * (float)frame_width));
+}
+
+uint32_t	sample_atlas_frame_pixel(t_atlas *atlas,
+		unsigned int current_frame[2], int tex_x, float tex_pos)
+{
+	int			tex_y;
+	int			pixel_index;
+	uint8_t		*pixels;
+	int			src[2];
+
+	tex_y = (int)tex_pos;
+	tex_x = (int)clamp((float)tex_x, 0.0f, (float)(atlas->frame_width - 1));
+	tex_y = (int)clamp((float)tex_y, 0.0f, (float)(atlas->frame_height - 1));
+	src[X] = (current_frame[X] * 128.0f) + tex_x;
+	src[Y] = (current_frame[Y] * 128.0f) + tex_y;
+	if (src[X] < 0 || src[X] >= (int)atlas->xpm->texture.width
+		|| src[Y] < 0 || src[Y] >= (int)atlas->xpm->texture.height)
+		return (MAGENTA);
+	pixels = atlas->xpm->texture.pixels;
+	pixel_index = (src[Y] * atlas->xpm->texture.width + src[X])
+		* atlas->xpm->texture.bytes_per_pixel;
+	return ((pixels[pixel_index] << 24)
+		| (pixels[pixel_index + 1] << 16)
+		| (pixels[pixel_index + 2] << 8)
+		| pixels[pixel_index + 3]);
 }
 
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
@@ -147,10 +183,6 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 	tex_y = (int)tex_pos;
 	tex_y = (int)clamp((float)tex_y, 0.0f,
 		(float)(texture->texture.height - 1));
-	//if (tex_y < 0)
-	//	tex_y = 0;
-	//if (tex_y >= (int)texture->texture.height)
-	//	tex_y = texture->texture.height - 1;
 	if (tex_x >= 0 && tex_x < (int)texture->texture.width
 		&& tex_y >= 0 && tex_y < (int)texture->texture.height)
 	{
@@ -173,7 +205,8 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 // Textured vertical line painter - y[0] is start and y[1] is end
 void	paint_vertical_line_texture_bonus(unsigned int x, int y[2],
 		mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture,
-		int tex_x, float tex_pos, float tex_step, float fog)
+		int tex_x, float tex_pos, float tex_step, float fog, t_atlas *atlas,
+		unsigned int current_frame[2])
 {
 	int			current_y;
 
@@ -181,7 +214,7 @@ void	paint_vertical_line_texture_bonus(unsigned int x, int y[2],
 	while (current_y <= y[1])
 	{
 		paint_horizontal_line_texture_bonus(current_y, x, img, texture,
-			fog_texture, tex_pos, tex_x, fog);
+			fog_texture, tex_pos, tex_x, fog, atlas, current_frame);
 		current_y++;
 		tex_pos += tex_step;
 	}
@@ -189,7 +222,7 @@ void	paint_vertical_line_texture_bonus(unsigned int x, int y[2],
 
 void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
 		mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture, int tex_y,
-		float tex_x, float fog)
+		float tex_x, float fog, t_atlas *atlas, unsigned int current_frame[2])
 {
 	uint32_t	pixel_color;
 	int			fog_pixel[2];
@@ -198,7 +231,10 @@ void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
 	float		noise;
 	float		strength;
 
-	pixel_color = sample_texture_pixel(texture, tex_x, tex_y);
+	if (atlas)
+		pixel_color = sample_atlas_frame_pixel(atlas, current_frame, tex_x, tex_y);
+	else
+		pixel_color = sample_texture_pixel(texture, tex_x, tex_y);
 	if (fog_texture)	
 	{
 		fog_pixel[X] = (int)(x & (fog_texture->texture.width - 1));
@@ -217,7 +253,7 @@ void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
 }
 
 void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
-		mlx_image_t *img, t_textures *textures)
+		t_game *game)
 {
 	xpm_t	*texture;
 	int		tex_x;
@@ -225,21 +261,47 @@ void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 	float	step;
 	float	tex_offset;
 	float	fog;
+	int		y_unclipped[2];
+	int		source_height;
+	int		source_width;
 
-	if (x >= img->width)
+	y_unclipped[0] = rayhit.wall_bounds[0];
+	y_unclipped[1] = rayhit.wall_bounds[1];
+	original_line_height = y_unclipped[1] - y_unclipped[0] + 1;
+	y[0] = y_unclipped[0];
+	y[1] = y_unclipped[1];
+	if (x >= game->double_buffer[NEXT]->width)
 		return ;
-	if (y[1] >= (int)img->height)
-		y[1] = (int)img->height - 1;
+	if (y[0] < 0)
+		y[0] = 0;
+	if (y[1] >= (int)game->double_buffer[NEXT]->height)
+		y[1] = (int)game->double_buffer[NEXT]->height - 1;
 	if (y[0] >= y[1])
 		return ;
-	tex_x = get_tex_x(rayhit, textures, &texture);
+	tex_x = get_tex_x(game, rayhit, &texture);
+	if (texture == game->cub_data.textures.living.xpm)
+	{
+		source_height = game->cub_data.textures.living.frame_height;
+		source_width = game->cub_data.textures.living.frame_width;
+	}
+	else
+	{
+		source_height = texture->texture.height;
+		source_width = texture->texture.width;
+	}
 	if ((rayhit.side == 0 && rayhit.face == NORTH)
 		|| (rayhit.side == 1 && rayhit.face == WEST))
-		tex_x = texture->texture.width - tex_x - 1;
-	original_line_height = rayhit.wall_bounds[1] - rayhit.wall_bounds[0] + 1;
-	step = (float)texture->texture.height / (float)original_line_height;
-	tex_offset = (y[0] - rayhit.wall_bounds[0]) * step;
+		tex_x = source_width - tex_x - 1;
+	step = (float)source_height / (float)original_line_height;
+	tex_offset = (y[0] - y_unclipped[0]) * step;
 	fog = fog_factor(rayhit.distance);
-	paint_vertical_line_texture_bonus(x, y, img, texture, textures->fog, tex_x,
-			tex_offset, step, fog);
+	if (texture == game->cub_data.textures.living.xpm)
+		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT], texture, 
+				game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
+				&game->cub_data.textures.living,
+				game->cub_data.block.anims[ANIM_BREATHE].current_frame);
+	else
+		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
+				texture, game->cub_data.textures.fog, tex_x, tex_offset,
+				step, fog, NULL, NULL);
 }

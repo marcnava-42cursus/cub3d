@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/22 17:19:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:27:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ typedef enum e_player_anim
 	ANIM_THROW = 3
 }	t_player_anim;
 
+typedef enum e_living_block_anim
+{
+	ANIM_CREATE = 0,
+	ANIM_BREATHE = 1
+}	t_living_block_anim;
+
 /*-------------------------------- ANIM.C ------------------------------------*/
 void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
 		const unsigned int *holds, unsigned int count, bool loop);
@@ -45,7 +51,12 @@ void	free_player_anims(t_player *player);
 void	update_player_left_hand_anims(t_player *player, float delta_time);
 void	init_player_left_hand_anims(t_player *player);
 
-/*------------------------ PLAYER_RIGHT_HAND_ANIMS.C --------------------------*/
+/*----------------------- PLAYER_RIGHT_HAND_ANIMS.C --------------------------*/
 void	update_player_right_hand_anims(t_player *player, float delta_time);
 void	init_player_right_hand_anims(t_player *player);
+
+/*-------------------------- LIVING_BLOCK_ANIMS.C ----------------------------*/
+void	init_living_block_anims(t_living_block *block, t_atlas *atlas);
+void	update_living_block_anims(t_living_block *block, float delta_time);
+void	free_living_block_anims(t_living_block *block);
 #endif

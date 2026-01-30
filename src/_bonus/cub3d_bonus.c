@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/28 12:24:40 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:24:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,18 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		free_cub_data(&game->cub_data);
 		return (0);
 	}
+	atlas_init(&game->cub_data.player.textures.hand,
+		"./assets/textures/player/test_hand_atlas.xpm42",
+		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
+	atlas_init(&game->cub_data.player.textures.thumb,
+		"./assets/textures/player/test_thumb.xpm42",
+		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
+	atlas_init(&game->cub_data.player.textures.weapon,
+		"./assets/textures/player/test_weapon.xpm42",
+		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
+	init_player_anims(&game->cub_data.player);
+	init_living_block_anims(&game->cub_data.block,
+		&game->cub_data.textures.living);
 	if (game->cub_data.current_floor)
 	{
 		game->cub_data.current_floor->textures = game->cub_data.textures;
@@ -80,6 +92,7 @@ static void render_loop(void *param)
 	game = (t_game *)param;
 	orb_moved = orb_projectile_update(game, game->mlx->delta_time);
 	update_player_anims(&game->cub_data.player, game->mlx->delta_time);
+	update_living_block_anims(&game->cub_data.block, game->mlx->delta_time);
 	render_double_buffer(game);
 	if (orb_moved && game->map_2d_visible)
 		render_player_dynamic_bonus(game);

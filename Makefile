@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/27 19:02:05 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/30 18:27:58 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -184,6 +184,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
 				$(SRCPATH)/_bonus/animation/player_left_hand_anims.c \
 				$(SRCPATH)/_bonus/animation/player_right_hand_anims.c \
+				$(SRCPATH)/_bonus/animation/living_block_anims.c \
 				$(SRCPATH)/_bonus/animation/player_anim.c
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)

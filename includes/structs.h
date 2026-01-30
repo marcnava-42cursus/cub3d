@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/30 17:09:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:18:19 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ typedef struct s_player
 	t_player_state		state;
 }	t_player;
 
+typedef struct e_living_block
+{
+	bool	is_creating;
+	t_anim	*anims;
+}	t_living_block;
+
 // Floor node for bonus multi-level maps
 typedef struct s_floor
 {
@@ -135,22 +141,23 @@ typedef struct s_elevator_target
 // Estructura principal que contiene todos los datos parseados
 typedef struct s_cub_data
 {
-	t_textures	textures;
-	t_color		floor_color;
-	t_color		ceiling_color;
-	char		*up_path;
-	char		*down_path;
-	t_map		map;
-	t_player	player;
-	t_floor		*floors;
-	t_floor		*current_floor;
-	int			floor_count;
-	int			player_floor_index;
-	char		*player_floor_path;
-	int			elevator_id_count;
-	char		elevator_ids[16];
-	t_floor		*elevator_floor_a[16];
-	t_floor		*elevator_floor_b[16];
+	t_textures		textures;
+	t_color			floor_color;
+	t_color			ceiling_color;
+	char			*up_path;
+	char			*down_path;
+	t_map			map;
+	t_player		player;
+	t_living_block	block;
+	t_floor			*floors;
+	t_floor			*current_floor;
+	int				floor_count;
+	int				player_floor_index;
+	char			*player_floor_path;
+	int				elevator_id_count;
+	char			elevator_ids[16];
+	t_floor			*elevator_floor_a[16];
+	t_floor			*elevator_floor_b[16];
 }	t_cub_data;
 
 // Textures for 2D map rendering

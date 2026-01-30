@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 00:28:55 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/28 22:33:44 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:23:01 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	render_ceiling_fill(unsigned int y, mlx_image_t *img,
 		t[Y] = (int)clamp((float)(f[Y] * textures->ceiling->texture.height),
 				0.0f, textures->ceiling->texture.height - 1);
 		paint_horizontal_line_texture_bonus(y, x, img, textures->ceiling,
-			textures->fog, t[Y], t[X], fog);
+			textures->fog, t[Y], t[X], fog, NULL, NULL);
 		floor_and_steps.x += floor_and_steps.u;
 		floor_and_steps.y += floor_and_steps.v;
 		x++;
