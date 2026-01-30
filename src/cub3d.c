@@ -68,7 +68,7 @@ static void render_loop(void *param)
 int	run_game(t_game *game)
 {
     // Inicializar sistema de movimiento
-    init_movement_system(game);
+	INIT_MOVEMENT_SYSTEM(game);
 
 	// Iniciar loop de MLX
 	// Aquí iría el game loop principal

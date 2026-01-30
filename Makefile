@@ -109,7 +109,6 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
 				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
-				$(SRCPATH)/_bonus/logic/collision_alias_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \
 				$(SRCPATH)/parser/colors/color_validation.c \

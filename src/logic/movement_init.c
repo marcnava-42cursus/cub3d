@@ -43,7 +43,7 @@ void	init_movement_system(t_game *game)
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
-	mlx_key_hook(game->mlx, key_hook, game);
-	mlx_mouse_hook(game->mlx, mouse_hook, game);
-	mlx_loop_hook(game->mlx, update_game_loop, game);
+	mlx_key_hook(game->mlx, KEY_HOOK, game);
+	mlx_mouse_hook(game->mlx, MOUSE_HOOK, game);
+	mlx_loop_hook(game->mlx, UPDATE_GAME_LOOP, game);
 }

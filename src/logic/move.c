@@ -38,7 +38,7 @@ void	move_forward(t_game *game, bool forward)
 	speed = game->move_speed * (float)game->mlx->delta_time * direction;
 	new_x = cosf(game->cub_data.player.angle) * speed;
 	new_y = sinf(game->cub_data.player.angle) * speed;
-	attempt_move(game, new_x, new_y);
+	ATTEMPT_MOVE(game, new_x, new_y);
 }
 
 /**
@@ -68,5 +68,5 @@ void	move_strafe(t_game *game, bool right)
 	speed = game->move_speed * (float)game->mlx->delta_time;
 	new_x = cosf(strafe_angle) * speed;
 	new_y = sinf(strafe_angle) * speed;
-	attempt_move(game, new_x, new_y);
+	ATTEMPT_MOVE(game, new_x, new_y);
 }

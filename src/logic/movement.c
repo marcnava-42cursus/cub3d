@@ -48,7 +48,7 @@ static bool	handle_translation(t_game *game)
 		move_y /= len;
 	}
 	speed = game->move_speed * (float)game->mlx->delta_time;
-	attempt_move(game, move_x * speed, move_y * speed);
+	ATTEMPT_MOVE(game, move_x * speed, move_y * speed);
 	return (true);
 }
 
@@ -90,7 +90,7 @@ void	update_game_loop(void *param)
 	game = (t_game *)param;
 	if (!game || !game->mlx)
 		return ;
-	refresh_key_states(game);
+	REFRESH_KEY_STATES(game);
 	fps_overlay_update(game);
 	if (game->mlx->delta_time <= 0.0)
 		return ;

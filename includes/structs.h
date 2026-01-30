@@ -21,6 +21,7 @@
 
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
+# define ORB_PROJECTILE_DEFAULT_SPEED 6.0f
 
 // Forward declaration for custom texture entries
 typedef struct s_custom_texture	t_custom_texture;
@@ -101,6 +102,31 @@ typedef struct s_player
 	int					current_right_hand_anim;
 	t_player_state		state;
 }	t_player;
+
+typedef enum e_orb_mode
+{
+	ORB_MODE_NONE = 0,
+	ORB_MODE_TAKE = 1,
+	ORB_MODE_PLACE = 2
+}	t_orb_mode;
+
+typedef struct s_orb_projectile
+{
+	bool		active;
+	t_orb_mode	mode;
+	float		x;
+	float		y;
+	float		target_x;
+	float		target_y;
+	float		speed;
+	char		payload;
+	int			target_cell_x;
+	int			target_cell_y;
+	bool		needs_redraw;
+	float		last_draw_x;
+	float		last_draw_y;
+	bool		last_draw_active;
+}	t_orb_projectile;
 
 // Floor node for bonus multi-level maps
 typedef struct s_floor

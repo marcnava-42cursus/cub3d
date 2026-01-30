@@ -192,7 +192,7 @@ static bool	process_movement_input(t_game *game)
 			move_y /= len;
 		}
 		speed = game->move_speed * (float)game->mlx->delta_time;
-		attempt_move(game, move_x * speed, move_y * speed);
+		ATTEMPT_MOVE(game, move_x * speed, move_y * speed);
 		moved = true;
 	}
 	if (game->key_left_pressed)
