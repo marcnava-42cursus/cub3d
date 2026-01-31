@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 00:16:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 20:10:40 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,13 @@ typedef struct s_living_block
 	t_anim	*anims;
 }	t_living_block;
 
+typedef struct s_effects
+{
+	t_atlas	atlas;
+	t_anim	*anims;
+	int		current_anim; 
+}	t_effects;
+
 // Floor node for bonus multi-level maps
 typedef struct s_floor
 {
@@ -150,6 +157,7 @@ typedef struct s_cub_data
 	t_map			map;
 	t_player		player;
 	t_living_block	block;
+	t_effects		effects;
 	t_floor			*floors;
 	t_floor			*current_floor;
 	int				floor_count;

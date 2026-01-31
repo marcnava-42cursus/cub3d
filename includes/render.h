@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 17:10:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 20:09:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,10 @@ void		render_orb(t_game *game, t_rayhit *rayhits, float center,
 /*---------------------------------- FOG.C -----------------------------------*/
 float		fog_factor(float distance);
 uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
+
+/*-------------------------------- ABSORB.C ----------------------------------*/
+void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
+		float dist_to_proj_plane);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 uint32_t	sample_atlas_frame_pixel(t_atlas *atlas,
