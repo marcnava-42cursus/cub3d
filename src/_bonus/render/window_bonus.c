@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/28 13:29:26 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 00:18:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,15 @@ bool	window_init_bonus(t_game *game)
 
 	monitor_width = 0;
 	monitor_height = 0;
-	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "cub3D", false);
+	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "HamCraft",
+			false);
 	if (!game->mlx)
 		return (false);
 	mlx_get_monitor_size(0, &monitor_width, &monitor_height);
 	mlx_set_window_size(game->mlx, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
 	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH) / 2,
 		(monitor_height - MAX_WINDOW_HEIGHT) / 2);
-	game->resolution_scale = 0.32f;
+	game->resolution_scale = RESOLUTION_SCALE;
 	game->double_buffer[NEXT] = mlx_new_image(game->mlx,
 			MAX_WINDOW_WIDTH * game->resolution_scale,
 			MAX_WINDOW_HEIGHT * game->resolution_scale);

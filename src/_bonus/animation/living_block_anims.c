@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/30 20:16:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 00:20:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,21 @@
 
 void	init_living_block_anims(t_living_block *block, t_atlas *atlas)
 {
-	static const unsigned int	create_frames[9] = {8, 9, 10, 11, 12, 13, 14, 15, 16};
+	static const unsigned int	create_frames[9] = {8, 9, 10, 11, 12, 13, 14,
+		15, 16};
 	static const unsigned int	create_holds[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
-	static const unsigned int	breathe_frames[10] = {0, 1, 2, 3, 4, 6, 2, 5, 2, 5};
-	static const unsigned int	breathe_holds[10] = {4, 1, 2, 3, 6, 1, 1, 1, 1, 2};
+	static const unsigned int	breathe_frames[10] = {0, 1, 2, 3, 4, 6, 2, 5,
+		2, 5};
+	static const unsigned int	breathe_holds[10] = {4, 1, 2, 3, 6, 1, 1, 1, 1,
+		2};
 
 	block->anims = ft_calloc(2, sizeof(t_anim));
 	if (!block->anims)
 		return ;
 	anim_init(&block->anims[ANIM_CREATE], atlas, create_frames, create_holds,
-			9, false);
+		9, false);
 	anim_init(&block->anims[ANIM_BREATHE], atlas, breathe_frames, breathe_holds,
-			10, true);
+		10, true);
 }
 
 void	update_living_block_anims(t_living_block *block, float delta_time)

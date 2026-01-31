@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/30 18:27:58 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/31 13:01:18 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/parser/core/parser_finder_bonus.c \
 				$(SRCPATH)/_bonus/parser/map/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
-				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
+				$(SRCPATH)/_bonus/render/texture_mapping_bonus.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \
@@ -150,6 +150,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
 				$(SRCPATH)/_bonus/render/floors.c \
 				$(SRCPATH)/_bonus/render/ceilings.c \
+				$(SRCPATH)/_bonus/render/floors_and_ceilings.c \
 				$(SRCPATH)/_bonus/render/orb.c \
 				$(SRCPATH)/_bonus/render/fog.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \

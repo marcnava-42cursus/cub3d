@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/30 18:18:19 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 00:16:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,16 @@ struct s_custom_texture
 	xpm_t				*texture;	// Loaded texture
 	t_custom_texture	*next;		// Next in linked list
 };
+
 typedef struct s_atlas
 {
-	xpm_t 			*xpm;
+	xpm_t			*xpm;
 	unsigned int	max_frame[2];
 	unsigned int	current_frame[2];
 	unsigned int	frame_width;
 	unsigned int	frame_height;
 	unsigned int	total_frames;
-} t_atlas;
+}	t_atlas;
 
 // Estructura para texturas
 typedef struct s_textures
@@ -101,7 +102,7 @@ typedef struct s_player
 	t_player_state		state;
 }	t_player;
 
-typedef struct e_living_block
+typedef struct s_living_block
 {
 	bool	is_creating;
 	t_anim	*anims;
@@ -163,13 +164,13 @@ typedef struct s_cub_data
 // Textures for 2D map rendering
 typedef struct s_map_textures
 {
-	mlx_image_t	*wall;          // block.png
-	mlx_image_t	*floor;         // floor.png
-	mlx_image_t	*player;        // player.png (fallback)
-	mlx_image_t	*player_north;  // player facing north
-	mlx_image_t	*player_south;  // player facing south
-	mlx_image_t	*player_east;   // player facing east
-	mlx_image_t	*player_west;   // player facing west
+	mlx_image_t	*wall;			// block.png
+	mlx_image_t	*floor;			// floor.png
+	mlx_image_t	*player;		// player.png (fallback)
+	mlx_image_t	*player_north;	// player facing north
+	mlx_image_t	*player_south;	// player facing south
+	mlx_image_t	*player_east;	// player facing east
+	mlx_image_t	*player_west;	// player facing west
 }	t_map_textures;
 
 typedef struct s_minimap
@@ -197,63 +198,62 @@ typedef struct s_rayhit
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
-	t_cub_data	cub_data;		// Datos parseados del archivo .cub
+	t_cub_data			cub_data;		// Datos parseados del archivo .cub
 	// Ventana MLX
-	mlx_t		*mlx;
+	mlx_t				*mlx;
 
 	// Capas separadas para el renderizado 2D
-	mlx_image_t	*map_layer;		// Capa estática del mapa
-	mlx_image_t	*player_layer;		// Capa dinámica del jugador
+	mlx_image_t			*map_layer;		// Capa estática del mapa
+	mlx_image_t			*player_layer;		// Capa dinámica del jugador
 	// Texturas 2D
-	t_map_textures	textures_2d;
+	t_map_textures		textures_2d;
 	// Variables para seguimiento de estado del jugador
-	float		last_player_x;
-	float		last_player_y;
-	float		last_player_angle;
-	int			last_grid_x;
-	int			last_grid_y;
+	float				last_player_x;
+	float				last_player_y;
+	float				last_player_angle;
+	int					last_grid_x;
+	int					last_grid_y;
 	// Parámetros de movimiento
-	float		move_speed;
-	float		rot_speed;
-	float		player_radius;
-	double		movement_lock_until;
-	double		last_teleport_time;
-	char		last_teleport_id;
-	bool		bg_layer_attached;
-	bool		map_layer_attached;
-	bool		player_layer_attached;
+	float				move_speed;
+	float				rot_speed;
+	float				player_radius;
+	double				movement_lock_until;
+	double				last_teleport_time;
+	char				last_teleport_id;
+	bool				bg_layer_attached;
+	bool				map_layer_attached;
+	bool				player_layer_attached;
 	// Estado de teclas para movimiento continuo
-	bool		key_w_pressed;
-	bool		key_s_pressed;
-	bool		key_a_pressed;
-	bool		key_d_pressed;
-	bool		key_left_pressed;
-	bool		key_right_pressed;
-	bool		key_up_pressed;
-	bool		key_down_pressed;
+	bool				key_w_pressed;
+	bool				key_s_pressed;
+	bool				key_a_pressed;
+	bool				key_d_pressed;
+	bool				key_left_pressed;
+	bool				key_right_pressed;
+	bool				key_up_pressed;
+	bool				key_down_pressed;
 	// Variables de control de mouse
-	double		last_mouse_x;
-	bool		mouse_initialized;
-	float		mouse_delta_accumulated;
-	float		mouse_sensitivity;
+	double				last_mouse_x;
+	bool				mouse_initialized;
+	float				mouse_delta_accumulated;
+	float				mouse_sensitivity;
 
 	// Datos de renderizado (raycast, sprites, etc.)
-	mlx_image_t	*double_buffer[2];
-	float		resolution_scale;
-	t_minimap	minimap;
+	mlx_image_t			*double_buffer[2];
+	float				resolution_scale;
+	t_minimap			minimap;
 
 # ifdef BONUS
 	t_orb_projectile	orb;
 # endif
-
 	// Estado de UI
-	bool		map_2d_visible;
+	bool				map_2d_visible;
 
 	// Config modal UI
-	t_menu_state	menu;
+	t_menu_state		menu;
 
 	// Debug overlay
-	mlx_image_t	*crosshair;
+	mlx_image_t			*crosshair;
 }	t_game;
 
 #endif

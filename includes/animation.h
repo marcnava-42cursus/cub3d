@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/30 18:27:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 00:29:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef enum e_living_block_anim
 
 /*-------------------------------- ANIM.C ------------------------------------*/
 void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
-		const unsigned int *holds, unsigned int count, bool loop);
+			const unsigned int *holds, unsigned int count, bool loop);
 void	anim_start(t_anim *anim);
 bool	anim_update(t_anim *anim, float delta_time);
 
@@ -48,11 +48,11 @@ void	update_player_anims(t_player *player, float delta_time);
 void	free_player_anims(t_player *player);
 
 /*------------------------ PLAYER_LEFT_HAND_ANIMS.C --------------------------*/
-void	update_player_left_hand_anims(t_player *player, float delta_time);
+void	set_player_left_hand_anims(t_player *player);
 void	init_player_left_hand_anims(t_player *player);
 
 /*----------------------- PLAYER_RIGHT_HAND_ANIMS.C --------------------------*/
-void	update_player_right_hand_anims(t_player *player, float delta_time);
+void	set_player_right_hand_anims(t_player *player);
 void	init_player_right_hand_anims(t_player *player);
 
 /*-------------------------- LIVING_BLOCK_ANIMS.C ----------------------------*/

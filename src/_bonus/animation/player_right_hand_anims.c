@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:22:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 00:28:44 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,8 @@ void	init_player_right_hand_anims(t_player *player)
 	player->current_right_hand_anim = ANIM_HOLD;
 }
 
-void	update_player_right_hand_anims(t_player *player, float delta_time)
+void	set_player_right_hand_anims(t_player *player)
 {
-	anim_update(&player->right_hand_anims[player->current_right_hand_anim],
-		delta_time);
 	if (player->state == STATE_THROW)
 		set_player_anim(player->right_hand_anims,
 			&player->current_right_hand_anim, ANIM_THROW);
