@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 00:20:21 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 13:42:13 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ void	init_living_block_anims(t_living_block *block, t_atlas *atlas)
 	block->anims = ft_calloc(2, sizeof(t_anim));
 	if (!block->anims)
 		return ;
-	anim_init(&block->anims[ANIM_CREATE], atlas, create_frames, create_holds,
-		9, false);
-	anim_init(&block->anims[ANIM_BREATHE], atlas, breathe_frames, breathe_holds,
-		10, true);
+	anim_init(&block->anims[ANIM_CREATE], atlas, false);
+	store_anim_frame_data(&block->anims[ANIM_CREATE], create_frames,
+		create_holds, 9);
+	anim_init(&block->anims[ANIM_BREATHE], atlas, true);
+	store_anim_frame_data(&block->anims[ANIM_BREATHE], breathe_frames,
+		breathe_holds, 10);
 }
 
 void	update_living_block_anims(t_living_block *block, float delta_time)

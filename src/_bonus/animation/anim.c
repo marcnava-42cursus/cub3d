@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 13:28:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:16:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 13:31:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,25 @@ static void	set_frame_from_id(t_anim *anim, unsigned int id)
 	anim->current_frame[Y] = id / width;
 }
 
-void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
-		const unsigned int *holds, unsigned int count, bool loop)
+void	anim_init(t_anim *anim, t_atlas *atlas, bool loop)
 {
 	anim->atlas = atlas;
 	anim->current_frame[X] = 0;
 	anim->current_frame[Y] = 0;
-	anim->frames = frames;
-	anim->holds = holds;
-	anim->hold_left = anim->holds[0];
-	anim->count = count;
 	anim->i = 0;
 	anim->time = 0.0f;
 	anim->spf = 1.0f / FPS;
 	anim->loop = loop;
 	anim->finished = false;
+}
+
+void	store_anim_frame_data(t_anim *anim, const unsigned int *frames,
+		const unsigned int *holds, unsigned int count)
+{
+	anim->frames = frames;
+	anim->holds = holds;
+	anim->hold_left = anim->holds[0];
+	anim->count = count;
 }
 
 void	anim_start(t_anim *anim)

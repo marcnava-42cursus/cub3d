@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 12:32:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 13:27:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ static xpm_t	*get_custom_texture(t_custom_texture *custom, char cell,
 //		tex_offset = (y[0] - original_y[0]) * step;
 //		fog = fog_factor(rayhit.distance);
 //		fog = fog * fog;
-//		paint_vertical_line_texture_bonus(x, y, img, texture, textures->fog, tex_x, tex_offset, step, fog);
+//		paint_vertical_line_texture_bonus(x, y, img, texture, textures->fog,
+//			tex_x, tex_offset, step, fog);
 //	}
 //	else
 //		paint_vertical_line_color(x, y, img, color);
@@ -182,7 +183,7 @@ uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
 
 	tex_y = (int)tex_pos;
 	tex_y = (int)clamp((float)tex_y, 0.0f,
-		(float)(texture->texture.height - 1));
+			(float)(texture->texture.height - 1));
 	if (tex_x >= 0 && tex_x < (int)texture->texture.width
 		&& tex_y >= 0 && tex_y < (int)texture->texture.height)
 	{
@@ -232,14 +233,16 @@ void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
 	float		strength;
 
 	if (atlas)
-		pixel_color = sample_atlas_frame_pixel(atlas, current_frame, tex_x, tex_y);
+		pixel_color = sample_atlas_frame_pixel(atlas, current_frame, tex_x,
+				tex_y);
 	else
 		pixel_color = sample_texture_pixel(texture, tex_x, tex_y);
-	if (fog_texture)	
+	if (fog_texture)
 	{
 		fog_pixel[X] = (int)(x & (fog_texture->texture.width - 1));
 		fog_pixel[Y] = (int)(y & (fog_texture->texture.height - 1));
-		fog_sample = sample_texture_pixel(fog_texture, fog_pixel[X], fog_pixel[Y]);
+		fog_sample = sample_texture_pixel(fog_texture, fog_pixel[X],
+				fog_pixel[Y]);
 		noise = ((fog_sample >> 24) & 0xFF) * (1.0f / 255.0f);
 		noise -= 0.5f;
 		strength = 0.05f + 0.15f * fog;
@@ -296,12 +299,12 @@ void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 	tex_offset = (y[0] - y_unclipped[0]) * step;
 	fog = fog_factor(rayhit.distance);
 	if (texture == game->cub_data.textures.living.xpm)
-		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT], texture, 
-				game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
-				&game->cub_data.textures.living,
-				game->cub_data.block.anims[ANIM_BREATHE].current_frame);
+		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
+			texture, game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
+			&game->cub_data.textures.living,
+			game->cub_data.block.anims[ANIM_BREATHE].current_frame);
 	else
 		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
-				texture, game->cub_data.textures.fog, tex_x, tex_offset,
-				step, fog, NULL, NULL);
+			texture, game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
+			NULL, NULL);
 }

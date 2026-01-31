@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/31 13:01:18 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/01/31 13:56:26 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -148,8 +148,6 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
-				$(SRCPATH)/_bonus/render/floors.c \
-				$(SRCPATH)/_bonus/render/ceilings.c \
 				$(SRCPATH)/_bonus/render/floors_and_ceilings.c \
 				$(SRCPATH)/_bonus/render/orb.c \
 				$(SRCPATH)/_bonus/render/fog.c \
@@ -183,10 +181,10 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
-				$(SRCPATH)/_bonus/animation/player_left_hand_anims.c \
-				$(SRCPATH)/_bonus/animation/player_right_hand_anims.c \
 				$(SRCPATH)/_bonus/animation/living_block_anims.c \
-				$(SRCPATH)/_bonus/animation/player_anim.c
+				$(SRCPATH)/_bonus/animation/player/player_anim.c \
+				$(SRCPATH)/_bonus/animation/player/player_left_hand_anims.c \
+				$(SRCPATH)/_bonus/animation/player/player_right_hand_anims.c 
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_BONUS)/%.o)

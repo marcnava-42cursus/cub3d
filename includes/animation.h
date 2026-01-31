@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 00:29:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 13:44:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ typedef enum e_living_block_anim
 }	t_living_block_anim;
 
 /*-------------------------------- ANIM.C ------------------------------------*/
-void	anim_init(t_anim *anim, t_atlas *atlas, const unsigned int *frames,
-			const unsigned int *holds, unsigned int count, bool loop);
+void	anim_init(t_anim *anim, t_atlas *atlas, bool loop);
+void	store_anim_frame_data(t_anim *anim, const unsigned int *frames,
+			const unsigned int *holds, unsigned int count);
 void	anim_start(t_anim *anim);
 bool	anim_update(t_anim *anim, float delta_time);
 

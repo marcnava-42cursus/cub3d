@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 11:48:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 13:17:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 13:23:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static vertex_t	get_ray_steps(t_game *game, float ray_dir[4],
 	return (floor_and_steps);
 }
 
-static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps, float fog)
+static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
+		float fog)
 {
 	unsigned int	x;
 	float			f[2];
@@ -47,8 +48,8 @@ static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
 		t[X] = (int)clamp((float)(t[X]), 0.0f, texture->texture.width - 1);
 		t[Y] = (int)clamp((float)(t[Y]), 0.0f, texture->texture.height - 1);
 		paint_horizontal_line_texture_bonus(y, x, game->double_buffer[NEXT],
-				texture, game->cub_data.textures.fog, t[Y], t[X], fog, NULL,
-				NULL);
+			texture, game->cub_data.textures.fog, t[Y], t[X], fog, NULL,
+			NULL);
 		ray_steps.x += ray_steps.u;
 		ray_steps.y += ray_steps.v;
 		x++;
@@ -71,9 +72,9 @@ void	render_floors_and_ceilings(t_game *game, float center, float ray_dir[4],
 		dist[Y] = (ray_steps.y - game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 		fog = sqrtf(dist[X] * dist[X] + dist[Y] * dist[Y]);
 		render_fill(game, center + i, game->cub_data.textures.floor,
-				ray_steps, fog);
+			ray_steps, fog);
 		render_fill(game, center - i - 1, game->cub_data.textures.ceiling,
-				ray_steps, fog);
+			ray_steps, fog);
 		i++;
 	}
 }
