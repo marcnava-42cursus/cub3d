@@ -15,6 +15,35 @@
 #include "logic_bonus.h"
 #include <stdio.h>
 
+static int	clamp_value(int value, int min, int max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
+}
+
+static float	config_quality_scale(int index)
+{
+	static const float	scales[CONFIG_QUALITY_COUNT] = {
+		0.2f, 0.35f, 0.42f, 0.5f
+	};
+
+	index = clamp_value(index, 0, CONFIG_QUALITY_COUNT - 1);
+	return (scales[index]);
+}
+
+static const char	*config_quality_label(int index)
+{
+	static const char	*labels[CONFIG_QUALITY_COUNT] = {
+		"LOW", "MEDIUM", "HIGH", "ULTRA"
+	};
+
+	index = clamp_value(index, 0, CONFIG_QUALITY_COUNT - 1);
+	return (labels[index]);
+}
+
 int	config_fps_limit_value(int index)
 {
 	static const int	limits[6] = {10, 30, 60, 120, 240, -1};
@@ -36,6 +65,8 @@ int	config_option_slider_raw(t_game *game, int slider)
 		return (game->menu.options.mouse_sens);
 	if (slider == CONFIG_SLIDER_PROJECTILE_SPEED)
 		return (game->menu.options.projectile_speed);
+	if (slider == CONFIG_SLIDER_QUALITY)
+		return (game->menu.options.quality_index);
 	return (0);
 }
 
@@ -51,6 +82,12 @@ void	config_option_set_slider_raw(t_game *game, int slider, int value)
 		game->menu.options.mouse_sens = value;
 	else if (slider == CONFIG_SLIDER_PROJECTILE_SPEED)
 		game->menu.options.projectile_speed = value;
+	else if (slider == CONFIG_SLIDER_QUALITY)
+	{
+		value = clamp_value(value, 0, CONFIG_QUALITY_COUNT - 1);
+		game->menu.options.quality_index = value;
+		game->resolution_scale = config_quality_scale(value);
+	}
 }
 
 bool	config_option_toggle_state(t_game *game, int index)
@@ -82,6 +119,11 @@ int	config_option_slider_value(t_game *game, int index)
 	value = config_option_slider_raw(game, slider);
 	if (slider == CONFIG_SLIDER_FPS_LIMIT)
 		return ((value * 100) / (6 - 1));
+	if (slider == CONFIG_SLIDER_QUALITY)
+	{
+		value = clamp_value(value, 0, CONFIG_QUALITY_COUNT - 1);
+		return ((value * 100) / (CONFIG_QUALITY_COUNT - 1));
+	}
 	return (((value - 1) * 100) / 99);
 }
 
@@ -111,6 +153,12 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 			snprintf(buffer, buffer_size, "UNLIMITED");
 		else
 			snprintf(buffer, buffer_size, "%d", value);
+		return ;
+	}
+	if (slider == CONFIG_SLIDER_QUALITY)
+	{
+		snprintf(buffer, buffer_size, "%s",
+			config_quality_label(raw));
 		return ;
 	}
 	snprintf(buffer, buffer_size, "%d", raw);

@@ -50,8 +50,8 @@ typedef struct s_game	t_game;
 # define CONFIG_MODAL_OPTION_BOX 22
 
 # define CONFIG_MODAL_TOGGLE_COUNT 5
-# define CONFIG_MODAL_SLIDER_COUNT 4
-# define CONFIG_MODAL_OPTION_COUNT 9 // TOGGLE_COUNT + SLIDER_COUNT
+# define CONFIG_MODAL_SLIDER_COUNT 5
+# define CONFIG_MODAL_OPTION_COUNT 10 // TOGGLE_COUNT + SLIDER_COUNT
 # define CONFIG_MODAL_CONTROL_COUNT 14
 
 typedef enum e_control_action
@@ -81,6 +81,7 @@ typedef enum e_control_action
 # define CONFIG_OPTION_FPS_LIMIT 6
 # define CONFIG_OPTION_MOUSE_SENS 7
 # define CONFIG_OPTION_PROJECTILE_SPEED 8
+# define CONFIG_OPTION_QUALITY 9
 
 # define CONFIG_MODAL_CONTENT_PADDING 28
 # define CONFIG_MODAL_COLUMN_GAP 26
@@ -111,6 +112,13 @@ typedef enum e_control_action
 # define CONFIG_SLIDER_FPS_LIMIT 1
 # define CONFIG_SLIDER_MOUSE_SENS 2
 # define CONFIG_SLIDER_PROJECTILE_SPEED 3
+# define CONFIG_SLIDER_QUALITY 4
+
+# define CONFIG_QUALITY_COUNT 4
+# define CONFIG_QUALITY_LOW 0
+# define CONFIG_QUALITY_MEDIUM 1
+# define CONFIG_QUALITY_HIGH 2
+# define CONFIG_QUALITY_ULTRA 3
 
 # define CONFIG_MODAL_TEXT_COLOR 0xF2F0E6FF
 # define CONFIG_MODAL_MUTED_TEXT_COLOR 0xA0A0A0FF
@@ -164,6 +172,7 @@ typedef struct s_config_options
 	int		fps_limit_index;
 	int		mouse_sens;
 	int		projectile_speed;
+	int		quality_index;
 	int		selected;
 }	t_config_options;
 

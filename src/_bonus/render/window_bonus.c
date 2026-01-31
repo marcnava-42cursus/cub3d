@@ -30,7 +30,6 @@ bool	window_init_bonus(t_game *game)
 	mlx_set_window_size(game->mlx, MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT);
 	mlx_set_window_pos(game->mlx, (monitor_width - MAX_WINDOW_WIDTH) / 2,
 		(monitor_height - MAX_WINDOW_HEIGHT) / 2);
-	game->resolution_scale = 0.5f;
 	game->double_buffer[NEXT] = mlx_new_image(game->mlx,
 			MAX_WINDOW_WIDTH * game->resolution_scale,
 			MAX_WINDOW_HEIGHT * game->resolution_scale);

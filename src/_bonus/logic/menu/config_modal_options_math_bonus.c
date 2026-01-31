@@ -35,6 +35,13 @@ void	config_option_set_slider_percent(t_game *game, int slider, int percent)
 			clamp_value(value, 0, 6 - 1));
 		return ;
 	}
+	if (slider == CONFIG_SLIDER_QUALITY)
+	{
+		value = (percent * (CONFIG_QUALITY_COUNT - 1) + 50) / 100;
+		config_option_set_slider_raw(game, slider,
+			clamp_value(value, 0, CONFIG_QUALITY_COUNT - 1));
+		return ;
+	}
 	value = 1 + (percent * 99 + 50) / 100;
 	config_option_set_slider_raw(game, slider,
 		clamp_value(value, 1, 100));
@@ -48,6 +55,12 @@ void	config_option_step_slider(t_game *game, int slider, int delta)
 	if (slider == CONFIG_SLIDER_FPS_LIMIT)
 	{
 		value = clamp_value(value + delta, 0, 6 - 1);
+		config_option_set_slider_raw(game, slider, value);
+		return ;
+	}
+	if (slider == CONFIG_SLIDER_QUALITY)
+	{
+		value = clamp_value(value + delta, 0, CONFIG_QUALITY_COUNT - 1);
 		config_option_set_slider_raw(game, slider, value);
 		return ;
 	}

@@ -99,10 +99,14 @@ void	config_option_toggle(t_game *game, int index)
 			name = "Game Speed";
 		else if (index == CONFIG_OPTION_FPS_LIMIT)
 			name = "FPS Limit";
+		else if (index == CONFIG_OPTION_MOUSE_SENS)
+			name = "Mouse Sensitivity";
 		else if (index == CONFIG_OPTION_PROJECTILE_SPEED)
 			name = "Projectile Speed";
+		else if (index == CONFIG_OPTION_QUALITY)
+			name = "Quality";
 		else
-			name = "Mouse Sensitivity";
+			name = "Slider";
 		config_option_slider_text(game, index, value_text,
 			sizeof(value_text));
 		printf("Config: %s %s\n", name, value_text);
