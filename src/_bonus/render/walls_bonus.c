@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/30 17:27:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:17:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	render_wall_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
 		|| screen_bounds[1] < 0 || screen_bounds[0] >= (int)img->height)
 		return ;
 	if (screen_bounds[0] <= screen_bounds[1])
-		render_texture_line_bonus(*rayhit, x, screen_bounds, game);
+		render_texture_line_bonus(rayhit, x, screen_bounds, game);
 	rayhit->wall_bounds[0] = screen_bounds[0];
 	rayhit->wall_bounds[1] = screen_bounds[1];
 }

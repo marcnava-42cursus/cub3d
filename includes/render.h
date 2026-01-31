@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 13:20:29 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:17:31 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
 uint32_t	sample_atlas_frame_pixel(t_atlas *atlas,
 				unsigned int current_frame[2], int tex_x, float tex_pos);
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
-void		render_texture_line(t_rayhit rayhit, unsigned int x, int y[2],
+void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
 				mlx_image_t *img, t_textures *textures);
 void		paint_vertical_line_texture(unsigned int x, int y[2],
 				mlx_image_t *img, xpm_t *texture, int tex_x, float tex_pos,
@@ -184,8 +184,8 @@ void		paint_horizontal_line_texture(unsigned int y, unsigned int x,
 
 # ifdef BONUS
 
-void		render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
-				t_game *game);
+void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
+				int y[2], t_game *game);
 void		paint_vertical_line_texture_bonus(unsigned int x, int y[2],
 				mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture,
 				int tex_x, float tex_pos, float tex_step, float fog,

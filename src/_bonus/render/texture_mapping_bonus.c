@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 13:27:27 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:19:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,20 +117,20 @@ static xpm_t	*get_custom_texture(t_custom_texture *custom, char cell,
 //		paint_vertical_line_color(x, y, img, color);
 //}
 
-static int	get_tex_x(t_game *game, t_rayhit rayhit, xpm_t **texture)
+static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture)
 {
 	float	wall_x;
 	char	cell_char;
 	int		frame_width;
 
-	cell_char = game->cub_data.map.grid[rayhit.cell[Y]][rayhit.cell[X]];
-	if (rayhit.face == NORTH)
+	cell_char = game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]];
+	if (rayhit->face == NORTH)
 		*texture = game->cub_data.textures.north;
-	else if (rayhit.face == SOUTH)
+	else if (rayhit->face == SOUTH)
 		*texture = game->cub_data.textures.south;
-	else if (rayhit.face == EAST)
+	else if (rayhit->face == EAST)
 		*texture = game->cub_data.textures.east;
-	else if (rayhit.face == WEST)
+	else if (rayhit->face == WEST)
 		*texture = game->cub_data.textures.west;
 	else
 		*texture = NULL;
@@ -141,10 +141,10 @@ static int	get_tex_x(t_game *game, t_rayhit rayhit, xpm_t **texture)
 	}
 	else
 		frame_width = (*texture)->texture.width;
-	if (rayhit.side == 0)
-		wall_x = rayhit.position.y / WORLDMAP_TILE_SIZE;
+	if (rayhit->side == 0)
+		wall_x = rayhit->position.y / WORLDMAP_TILE_SIZE;
 	else
-		wall_x = rayhit.position.x / WORLDMAP_TILE_SIZE;
+		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
 	return ((int)(wall_x * (float)frame_width));
 }
@@ -255,7 +255,7 @@ void	paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
 	save_pixel_to_image(img, x, y, fog_sample);
 }
 
-void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
+void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x, int y[2],
 		t_game *game)
 {
 	xpm_t	*texture;
@@ -268,8 +268,8 @@ void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 	int		source_height;
 	int		source_width;
 
-	y_unclipped[0] = rayhit.wall_bounds[0];
-	y_unclipped[1] = rayhit.wall_bounds[1];
+	y_unclipped[0] = rayhit->wall_bounds[0];
+	y_unclipped[1] = rayhit->wall_bounds[1];
 	original_line_height = y_unclipped[1] - y_unclipped[0] + 1;
 	y[0] = y_unclipped[0];
 	y[1] = y_unclipped[1];
@@ -292,12 +292,12 @@ void	render_texture_line_bonus(t_rayhit rayhit, unsigned int x, int y[2],
 		source_height = texture->texture.height;
 		source_width = texture->texture.width;
 	}
-	if ((rayhit.side == 0 && rayhit.face == NORTH)
-		|| (rayhit.side == 1 && rayhit.face == WEST))
+	if ((rayhit->side == 0 && rayhit->face == NORTH)
+		|| (rayhit->side == 1 && rayhit->face == WEST))
 		tex_x = source_width - tex_x - 1;
 	step = (float)source_height / (float)original_line_height;
 	tex_offset = (y[0] - y_unclipped[0]) * step;
-	fog = fog_factor(rayhit.distance);
+	fog = fog_factor(rayhit->distance);
 	if (texture == game->cub_data.textures.living.xpm)
 		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
 			texture, game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
