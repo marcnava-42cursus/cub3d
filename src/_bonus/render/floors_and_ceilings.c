@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 11:48:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 13:23:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:05:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,25 @@ void	render_floors_and_ceilings(t_game *game, float center, float ray_dir[4],
 	float		dist[2];
 	float		fog;
 
-	i = 1;
+	i = 0;
 	while (i < (int)center)
 	{
-		ray_steps = get_ray_steps(game, ray_dir, i, dist_to_proj_plane);
+		ray_steps = get_ray_steps(game, ray_dir, center - i, dist_to_proj_plane);
 		dist[X] = (ray_steps.x - game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
 		dist[Y] = (ray_steps.y - game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 		fog = sqrtf(dist[X] * dist[X] + dist[Y] * dist[Y]);
-		render_fill(game, center + i, game->cub_data.textures.floor,
+		render_fill(game, i, game->cub_data.textures.ceiling,
 			ray_steps, fog);
-		render_fill(game, center - i - 1, game->cub_data.textures.ceiling,
+		i++;
+	}
+	i++;
+	while (i < game->double_buffer[NEXT]->height)
+	{
+		ray_steps = get_ray_steps(game, ray_dir, i - center + 1, dist_to_proj_plane);
+		dist[X] = (ray_steps.x - game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
+		dist[Y] = (ray_steps.y - game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
+		fog = sqrtf(dist[X] * dist[X] + dist[Y] * dist[Y]);
+		render_fill(game, i, game->cub_data.textures.floor,
 			ray_steps, fog);
 		i++;
 	}

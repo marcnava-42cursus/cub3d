@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 15:17:31 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:10:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_TILE_RENDER 20.0f
 # define FOG_TILE_START 0.5f
-# define FOG_TILE_END 10.5f
+# define FOG_TILE_END 9.5f
 
 # define BASE_ASPECT_RATIO (16.0f / 9.0f)
 # define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)

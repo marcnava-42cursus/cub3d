@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/30 19:23:19 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:14:04 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 		tex_x = (int)((i - (screen_x - sprite_width / 2)) * frame_width
 				/ sprite_width) - 1;
 		tex_x = (int)clamp((float)tex_x, 0.0f, (float)(frame_width - 1));
-		if (cam_y * WORLDMAP_TILE_SIZE < rayhits[i].distance)
+		if (cam_y < rayhits[i].distance)
 		{
 			fog = fog_factor(cam_y);
 			paint_vertical_line_texture_bonus(i, draw_y,
@@ -112,5 +112,5 @@ void	render_orb(t_game *game, t_rayhit *rayhits, float center,
 	set_draw_x_and_draw_y(draw_x, draw_y, center, sprite_render_dims,
 		&tex_step, &tex_pos_start, game, screen_x);
 	paint_orb_by_line(game, draw_x, draw_y, screen_x, sprite_render_dims[X],
-		cam[Y], rayhits, tex_pos_start, tex_step);
+		cam[Y] * WORLDMAP_TILE_SIZE, rayhits, tex_pos_start, tex_step);
 }
