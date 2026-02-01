@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 20:10:40 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/01 18:23:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,12 @@ typedef struct s_living_block
 
 typedef struct s_effects
 {
-	t_atlas	atlas;
-	t_anim	*anims;
-	int		current_anim; 
+	t_atlas	absorb_atlas;
+	t_atlas	orb_atlas;
+	t_anim	*absorb_anims;
+	t_anim	*orb_anims;
+	int		current_absorb_anim; 
+	int		current_orb_anim; 
 }	t_effects;
 
 // Floor node for bonus multi-level maps

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 17:58:35 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/01 18:12:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_orb_projectile
 
 # define TWO_PI (2.0f * FT_PI)
 # define MOUSE_SMOOTHING 10.0f
-# define EPSILON 0.0f
+# define EPSILON 0.0f   // <---- em... what?
 
 # ifdef DEBUG_FPS
 #  define FPS_OVERLAY_ENABLED 1

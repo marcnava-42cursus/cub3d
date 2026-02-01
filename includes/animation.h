@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 19:24:17 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/01 18:04:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ typedef enum e_effects_anim
 	ANIM_ABSORB = 0,
 	ANIM_SPAWN = 1
 }	t_effects_anim;
+
+typedef enum e_orb_anim
+{
+	ORB_SPAWN = 0,
+	ORB_LOOP = 1,
+	ORB_HOLD = 2
+}	t_orb_anim;
 
 /*-------------------------------- ANIM.C ------------------------------------*/
 void	anim_init(t_anim *anim, t_atlas *atlas, bool loop);
