@@ -54,6 +54,9 @@ static void	clear_input_state(t_game *game)
 	game->key_right_pressed = false;
 	game->mouse_initialized = false;
 	game->mouse_delta_accumulated = 0.0f;
+	game->mouse_delta_accumulated_y = 0.0f;
+	game->last_mouse_x = 0.0;
+	game->last_mouse_y = 0.0;
 }
 
 void	set_config_modal_visible(t_game *game, bool visible)

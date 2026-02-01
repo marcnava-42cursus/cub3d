@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/04 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:22:57 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,8 @@ static int	parse_floor_file_bonus(const char *path, int index,
 		{
 			printf("Error: Multiple player positions across floors\n");
 			if (global->player_floor_path)
-				printf("  - First player found in: %s\n", global->player_floor_path);
+				printf("  - First player found in: %s\n",
+					global->player_floor_path);
 			printf("  - Another player found in: %s\n", canonical);
 			free_floor_node_bonus(*out_floor);
 			*out_floor = NULL;
@@ -286,8 +287,8 @@ static int	parse_floor_file_bonus(const char *path, int index,
 	return (1);
 }
 
-static int	parse_neighbor_floor_bonus(t_floor *current, const char *neighbor_path,
-		int is_up, t_cub_data *data, int *player_count)
+static int	parse_neighbor_floor_bonus(t_floor *current,
+	const char *neighbor_path, int is_up, t_cub_data *data, int *player_count)
 {
 	t_floor	*neighbor;
 	int		index;
@@ -353,7 +354,8 @@ static int	parse_floor_neighbors_bonus(t_floor *floor, t_cub_data *data,
 	if (!parse_neighbor_floor_bonus(floor, floor->down_path, 0, data,
 			player_count))
 		return (0);
-	if (floor->up && !parse_floor_neighbors_bonus(floor->up, data, player_count))
+	if (floor->up && !parse_floor_neighbors_bonus(floor->up, data,
+		player_count))
 		return (0);
 	if (floor->down
 		&& !parse_floor_neighbors_bonus(floor->down, data, player_count))

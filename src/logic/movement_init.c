@@ -38,8 +38,10 @@ void	init_movement_system(t_game *game)
 	game->last_teleport_id = '\0';
 	game->mouse_initialized = false;
 	game->mouse_delta_accumulated = 0.0f;
+	game->mouse_delta_accumulated_y = 0.0f;
 	game->mouse_sensitivity = 0.001f;
 	game->last_mouse_x = 0.0;
+	game->last_mouse_y = 0.0;
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;

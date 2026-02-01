@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 02:37:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:20:20 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	hide_fps_label(void)
 
 static void	build_fps_text(char *buffer, size_t size, int fps)
 {
-	char		*number;
+	char	*number;
 
 	if (!buffer || size == 0)
 		return ;
@@ -59,6 +59,7 @@ void	fps_overlay_update(t_game *game)
 	double	now;
 	double	dt;
 	double	fps;
+	int		limit;
 
 	if (!game || !game->mlx)
 		return ;
@@ -84,8 +85,6 @@ void	fps_overlay_update(t_game *game)
 	}
 	fps = (double)g_fps.frames / g_fps.accum;
 	{
-		int	limit;
-
 		limit = config_fps_limit_value(game->menu.options.fps_limit_index);
 		if (limit > 0 && fps > (double)limit)
 			fps = (double)limit;

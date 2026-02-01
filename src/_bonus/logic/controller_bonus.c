@@ -14,6 +14,55 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
+static float	clamp_axis_value(float value, float deadzone)
+{
+	if (value > 1.0f)
+		value = 1.0f;
+	if (value < -1.0f)
+		value = -1.0f;
+	if (value > deadzone)
+		return ((value - deadzone) / (1.0f - deadzone));
+	if (value < -deadzone)
+		return ((value + deadzone) / (1.0f - deadzone));
+	return (0.0f);
+}
+
+static float	controller_action_value(t_game *game, int action,
+			const GLFWgamepadstate *state, float deadzone)
+{
+	t_controller_bind	bind;
+	float				value;
+
+	if (!game || !state)
+		return (0.0f);
+	if (action < 0 || action >= CONFIG_MODAL_CONTROL_COUNT)
+		return (0.0f);
+	bind = game->controller.binds[action];
+	if (bind.type == CONTROLLER_BIND_BUTTON)
+	{
+		if (bind.id < 0 || bind.id >= CONTROLLER_BUTTON_COUNT)
+			return (0.0f);
+		return (state->buttons[bind.id] == GLFW_PRESS);
+	}
+	if (bind.type == CONTROLLER_BIND_AXIS)
+	{
+		if (bind.id < 0 || bind.id >= CONTROLLER_AXIS_COUNT)
+			return (0.0f);
+		if (bind.dir == 0)
+			return (0.0f);
+		value = controller_axis_delta(game, state, bind.id);
+		if (bind.dir < 0)
+			value = -value;
+		if (value <= deadzone)
+			return (0.0f);
+		value = clamp_axis_value(value, deadzone);
+		if (value < 0.0f)
+			value = 0.0f;
+		return (value);
+	}
+	return (0.0f);
+}
+
 void	controller_update_bonus(t_game *game)
 {
 	GLFWgamepadstate	state;
@@ -31,6 +80,10 @@ void	controller_update_bonus(t_game *game)
 	if (!controller_poll_state(game, &state))
 	{
 		game->controller.menu_quit_held = false;
+		game->controller.move_forward = 0.0f;
+		game->controller.move_strafe = 0.0f;
+		game->controller.turn = 0.0f;
+		game->controller.look = 0.0f;
 		return ;
 	}
 	if (!game->controller.axis_calibrated)
@@ -43,6 +96,18 @@ void	controller_update_bonus(t_game *game)
 				&game->controller.binds[i], &state, deadzone);
 		i++;
 	}
+	game->controller.move_forward = controller_action_value(game,
+			ACTION_FORWARD, &state, deadzone)
+		- controller_action_value(game, ACTION_BACKWARD, &state, deadzone);
+	game->controller.move_strafe = controller_action_value(game,
+			ACTION_STRAFE_RIGHT, &state, deadzone)
+		- controller_action_value(game, ACTION_STRAFE_LEFT, &state, deadzone);
+	game->controller.turn = controller_action_value(game,
+			ACTION_TURN_RIGHT, &state, deadzone)
+		- controller_action_value(game, ACTION_TURN_LEFT, &state, deadzone);
+	game->controller.look = controller_action_value(game,
+			ACTION_LOOK_UP, &state, deadzone)
+		- controller_action_value(game, ACTION_LOOK_DOWN, &state, deadzone);
 	allow_menu_toggle = true;
 	if (game->menu.open && game->menu.controls_rebinding
 		&& game->menu.controls_rebind_column == CONTROLS_COLUMN_CONTROLLER)
@@ -67,22 +132,6 @@ void	controller_update_bonus(t_game *game)
 		return ;
 	}
 	game->controller.menu_quit_held = false;
-	if (active[ACTION_FORWARD])
-		game->key_w_pressed = true;
-	if (active[ACTION_BACKWARD])
-		game->key_s_pressed = true;
-	if (active[ACTION_STRAFE_RIGHT])
-		game->key_d_pressed = true;
-	if (active[ACTION_STRAFE_LEFT])
-		game->key_a_pressed = true;
-	if (active[ACTION_TURN_RIGHT])
-		game->key_right_pressed = true;
-	if (active[ACTION_TURN_LEFT])
-		game->key_left_pressed = true;
-	if (active[ACTION_LOOK_UP])
-		game->key_up_pressed = true;
-	if (active[ACTION_LOOK_DOWN])
-		game->key_down_pressed = true;
 	break_pressed = active[ACTION_BREAK]
 		&& !game->controller.prev_action_active[ACTION_BREAK];
 	place_pressed = active[ACTION_PLACE]

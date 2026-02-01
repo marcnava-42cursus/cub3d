@@ -246,6 +246,10 @@ typedef struct s_controller_state
 	bool			connected;
 	int				gamepad_id;
 	float			deadzone;
+	float			move_forward;
+	float			move_strafe;
+	float			turn;
+	float			look;
 	bool			axis_calibrated;
 	float			axis_center[CONTROLLER_AXIS_COUNT];
 	bool			menu_quit_held;

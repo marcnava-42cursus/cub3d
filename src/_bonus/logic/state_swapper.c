@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 02:04:59 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:21:38 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,8 @@ void	place_breakable_block(t_game *game)
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
-			game->cub_data.player.angle, PLACE_BLOCK_DISTANCE * WORLDMAP_TILE_SIZE);
+			game->cub_data.player.angle,
+			PLACE_BLOCK_DISTANCE * WORLDMAP_TILE_SIZE);
 	if (!hit.hit)
 		return ;
 	if (hit.cell[1] < 0 || hit.cell[1] >= game->cub_data.map.height
@@ -127,7 +128,6 @@ void	place_breakable_block(t_game *game)
 	game->cub_data.player.state = STATE_THROW;
 	if (game->menu.options.debug_mode)
 		printf("Placed block at (%d, %d)\n", target_x, target_y);
-	//render_double_buffer(game);
 }
 
 /**
@@ -155,7 +155,8 @@ void	test_break_wall_in_front(t_game *game)
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
 	start.y = (game->cub_data.player.y) * WORLDMAP_TILE_SIZE;
 	hit = raycast_world(&game->cub_data.map, start,
-			game->cub_data.player.angle, BREAK_BLOCK_DISTANCE * WORLDMAP_TILE_SIZE);
+			game->cub_data.player.angle,
+			BREAK_BLOCK_DISTANCE * WORLDMAP_TILE_SIZE);
 	if (hit.hit)
 	{
 		cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];
@@ -179,8 +180,7 @@ void	test_break_wall_in_front(t_game *game)
 			}
 		}
 		else if (cell == 'D' || cell == 'd')
-			cell_changed = modify_interactive_cell(game, hit.cell[X], hit.cell[Y]);
+			cell_changed = modify_interactive_cell(game, hit.cell[X],
+				hit.cell[Y]);
 	}
-	//if (cell_changed)
-	//	render_double_buffer(game);
 }

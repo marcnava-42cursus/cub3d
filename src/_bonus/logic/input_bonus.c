@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/23 01:25:48 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:19:21 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,8 @@ void	cursor_hook_bonus(double xpos, double ypos, void *param)
 {
 	t_game	*game;
 	double	delta_x;
+	double	delta_y;
 
-	(void)ypos;
 	game = (t_game *)param;
 	if (!game)
 		return ;
@@ -133,30 +133,50 @@ void	cursor_hook_bonus(double xpos, double ypos, void *param)
 	if (!game->mouse_initialized)
 	{
 		game->last_mouse_x = xpos;
+		game->last_mouse_y = ypos;
 		game->mouse_initialized = true;
 		return ;
 	}
 	delta_x = xpos - game->last_mouse_x;
+	delta_y = ypos - game->last_mouse_y;
 	game->last_mouse_x = xpos;
+	game->last_mouse_y = ypos;
 	game->mouse_delta_accumulated += (float)delta_x * game->mouse_sensitivity;
+	game->mouse_delta_accumulated_y += (float)(-delta_y)
+		*game->mouse_sensitivity;
 }
 
 bool	process_mouse_rotation_bonus(t_game *game)
 {
 	float	rotation_amount;
+	float	pitch_amount;
+	float	max_pitch;
+	bool	rotated;
 
 	if (is_config_modal_open(game) || !game)
 		return (false);
-	if (game->mouse_delta_accumulated == 0.0f)
+	if (game->mouse_delta_accumulated == 0.0f
+		&& game->mouse_delta_accumulated_y == 0.0f)
 		return (false);
 	rotation_amount = game->mouse_delta_accumulated;
+	pitch_amount = game->mouse_delta_accumulated_y;
 	game->mouse_delta_accumulated = 0.0f;
-	if (rotation_amount > -EPSILON && rotation_amount < EPSILON)
+	game->mouse_delta_accumulated_y = 0.0f;
+	rotated = false;
+	if (rotation_amount > EPSILON || rotation_amount < -EPSILON)
 	{
-		game->mouse_delta_accumulated = 0.0f;
-		return (false);
+		game->cub_data.player.angle += rotation_amount;
+		game->cub_data.player.angle = normalize_angle(
+				game->cub_data.player.angle);
+		rotated = true;
 	}
-	game->cub_data.player.angle += rotation_amount;
-	game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
-	return (true);
+	if (pitch_amount > EPSILON || pitch_amount < -EPSILON)
+	{
+		game->cub_data.player.pitch += pitch_amount;
+		max_pitch = game->double_buffer[NEXT]->height * 0.35f;
+		game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+				-max_pitch, max_pitch);
+		rotated = true;
+	}
+	return (rotated);
 }

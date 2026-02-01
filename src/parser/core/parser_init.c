@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 14:53:19 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:48:19 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "structs.h"
 //temporary
 #include "render.h"
+#include "paths.h"
 
 void	init_cub_data(t_cub_data *data)
 {
@@ -27,14 +28,11 @@ void	init_cub_data(t_cub_data *data)
 	data->player.orientation = 0;
 	data->player.inventory = '2';
 	data->player.state = STATE_HOLD;
-	atlas_init(&data->player.textures.hand,
-		"./assets/textures/player/test_hand_atlas.xpm42",
+	atlas_init(&data->player.textures.hand, HAND_ATLAS,
 		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&data->player.textures.thumb,
-		"./assets/textures/player/test_thumb.xpm42",
+	atlas_init(&data->player.textures.thumb, THUMB,
 		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&data->player.textures.weapon,
-		"./assets/textures/player/test_weapon.xpm42",
+	atlas_init(&data->player.textures.weapon, WEAPON,
 		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
 }
 

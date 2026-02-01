@@ -253,8 +253,10 @@ typedef struct s_game
 	bool		key_down_pressed;
 	// Variables de control de mouse
 	double		last_mouse_x;
+	double		last_mouse_y;
 	bool		mouse_initialized;
 	float		mouse_delta_accumulated;
+	float		mouse_delta_accumulated_y;
 	float		mouse_sensitivity;
 
 	// Datos de renderizado (raycast, sprites, etc.)

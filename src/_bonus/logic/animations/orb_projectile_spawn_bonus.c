@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/22 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:21:57 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	orb_projectile_activate(t_game *game, t_orb_mode mode,
 	game->orb.needs_redraw = true;
 }
 
-bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y, char block)
+bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
+	char block)
 {
 	if (!game || game->orb.active)
 		return (false);

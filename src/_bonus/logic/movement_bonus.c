@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 03:09:44 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:18:53 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,10 @@ static bool	process_movement_input(t_game *game)
 	float	len;
 	float	speed;
 	float	angle;
+	float	turn;
+	float	look;
+	float	max_pitch;
+	float	pitch_delta;
 
 	if (!game)
 		return (false);
@@ -180,6 +184,16 @@ static bool	process_movement_input(t_game *game)
 		strafe += 1.0f;
 	if (game->key_a_pressed)
 		strafe -= 1.0f;
+	forward += game->controller.move_forward;
+	strafe += game->controller.move_strafe;
+	if (forward > 1.0f)
+		forward = 1.0f;
+	if (forward < -1.0f)
+		forward = -1.0f;
+	if (strafe > 1.0f)
+		strafe = 1.0f;
+	if (strafe < -1.0f)
+		strafe = -1.0f;
 	if (forward != 0.0f || strafe != 0.0f)
 	{
 		angle = game->cub_data.player.angle;
@@ -205,6 +219,15 @@ static bool	process_movement_input(t_game *game)
 		rotate_player(game, true);
 		moved = true;
 	}
+	turn = game->controller.turn;
+	if (turn > EPSILON || turn < -EPSILON)
+	{
+		game->cub_data.player.angle += game->rot_speed
+			* (float)game->mlx->delta_time * turn;
+		game->cub_data.player.angle = normalize_angle(
+				game->cub_data.player.angle);
+		moved = true;
+	}
 	if (game->key_up_pressed)
 	{
 		pitch_player(game, true);
@@ -213,6 +236,16 @@ static bool	process_movement_input(t_game *game)
 	if (game->key_down_pressed)
 	{
 		pitch_player(game, false);
+		moved = true;
+	}
+	look = game->controller.look;
+	if (look > EPSILON || look < -EPSILON)
+	{
+		pitch_delta = 600.0f * (float)game->mlx->delta_time * look;
+		game->cub_data.player.pitch += pitch_delta;
+		max_pitch = game->double_buffer[NEXT]->height * 0.35f;
+		game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+				-max_pitch, max_pitch);
 		moved = true;
 	}
 	return (moved);
@@ -274,12 +307,12 @@ static void	handle_movement_rendering(t_game *game)
  */
 void	update_game_loop_bonus(void *param)
 {
-	t_game	*game;
-	bool	moved;
-	bool	mouse_rotated;
-	double	min_step;
-	int		fps_limit;
-	double	now;
+	t_game			*game;
+	bool			moved;
+	bool			mouse_rotated;
+	double			min_step;
+	int				fps_limit;
+	double			now;
 	static double	next_tick = 0.0;
 	static int		last_limit = -2;
 
@@ -379,8 +412,10 @@ void	init_movement_system_bonus(t_game *game)
 	game->last_teleport_id = '\0';
 	game->mouse_initialized = false;
 	game->mouse_delta_accumulated = 0.0f;
+	game->mouse_delta_accumulated_y = 0.0f;
 	game->mouse_sensitivity = 0.005f;
 	game->last_mouse_x = 0.0;
+	game->last_mouse_y = 0.0;
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;

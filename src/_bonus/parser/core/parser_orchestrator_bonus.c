@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 15:12:38 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 15:20:07 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:30:34 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ static int	store_link_path_bonus(char **slot, char *path, const char *label)
 
 static int	parse_link_line_bonus(const char *line, t_cub_data *data)
 {
-	char	*path;
-	size_t	id_len;
-	char	**target;
+	char		*path;
+	size_t		id_len;
+	char		**target;
 	const char	*label;
-	char	*trimmed;
+	char		*trimmed;
 
 	target = NULL;
 	label = "";
@@ -120,8 +120,7 @@ static int	parse_elements(char **lines, int map_start, t_cub_data *data)
 			if (!parse_link_line_bonus(lines[i], data))
 				return (0);
 		}
-		else
-		if (is_texture_identifier(lines[i]))
+		else if (is_texture_identifier(lines[i]))
 		{
 			if (!parse_texture_line(lines[i], &data->textures))
 				return (0);
@@ -149,31 +148,29 @@ static int	validate_parsed_data(const t_cub_data *data)
 
 int	process_file_data_bonus(char **lines, int line_count, t_cub_data *data)
 {
-	int	map_start;
+	int			map_start;
+	const char	*e = "Error: ";
 
 	map_start = find_map_start(lines, line_count);
 	if (map_start == -1)
 	{
-		printf("Error: Map section not found\n");
+		printf("%sMap section not found\n", e);
 		return (0);
 	}
 	if (!parse_elements(lines, map_start, data))
 	{
-		printf("Error: Failed parsing elements (textures/colors/links) before map\n");
+		printf("%sFailed parsing elements before map\n", e);
 		return (0);
 	}
 	apply_default_colors_bonus(data);
 	if (!parse_map_section(lines, map_start, data))
 	{
-		printf("Error: Failed parsing map section\n");
+		printf("%sFailed parsing map section\n", e);
 		return (0);
 	}
 	if (!validate_parsed_data(data))
 	{
-		printf(
-			"%s Parsed data invalid (missing textures"
-			"/map/player)\n",
-			"Error: ");
+		printf("%sParsed data invalid (missing textures)\n", e);
 		return (0);
 	}
 	return (1);
