@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/02 10:45:59 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/02 23:03:27 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -153,6 +153,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
 				$(SRCPATH)/_bonus/render/floors_and_ceilings.c \
+				$(SRCPATH)/_bonus/render/door.c \
 				$(SRCPATH)/_bonus/render/orb.c \
 				$(SRCPATH)/_bonus/render/fog.c \
 				$(SRCPATH)/_bonus/render/absorb.c \
@@ -186,9 +187,12 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
+				$(SRCPATH)/_bonus/animation/anim_utils.c \
 				$(SRCPATH)/_bonus/animation/living_block_anims.c \
 				$(SRCPATH)/_bonus/animation/absorb_anims.c \
+				$(SRCPATH)/_bonus/animation/effects_anims.c \
 				$(SRCPATH)/_bonus/animation/orb_anims.c \
+				$(SRCPATH)/_bonus/animation/door_anims.c \
 				$(SRCPATH)/_bonus/animation/player/player_anim.c \
 				$(SRCPATH)/_bonus/animation/player/player_left_hand_anims.c \
 				$(SRCPATH)/_bonus/animation/player/player_right_hand_anims.c 

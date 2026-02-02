@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 16:31:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:59:47 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ typedef enum e_orb_anim
 	ORB_HOLD = 2
 }	t_orb_anim;
 
+typedef enum e_door_anim
+{
+	DOOR_CLOSED = 0,
+	DOOR_OPEN = 1,
+	DOOR_OPENED = 2,
+	DOOR_CLOSE = 3
+}	t_door_anim;
+
 /*-------------------------------- ANIM.C ------------------------------------*/
 void	anim_init(t_anim *anim, t_atlas *atlas, bool loop);
 void	store_anim_frame_data(t_anim *anim, const unsigned int *frames,
@@ -55,8 +63,10 @@ void	store_anim_frame_data(t_anim *anim, const unsigned int *frames,
 void	anim_start(t_anim *anim);
 bool	anim_update(t_anim *anim, float delta_time);
 
+/*------------------------------ ANIM_UTILS.C --------------------------------*/
+void	set_current_anim(t_anim *anim_ptr, int *current_anim, int new_anim);
+
 /*----------------------------- PLAYER_ANIM.C --------------------------------*/
-void	set_player_anim(t_anim *anim_ptr, int *current_anim, int new_anim);
 void	init_player_anims(t_player *player);
 void	update_player_anims(t_player *player, float delta_time);
 void	free_player_anims(t_player *player);
@@ -70,19 +80,25 @@ void	set_player_right_hand_anims(t_player *player);
 void	init_player_right_hand_anims(t_player *player);
 
 /*-------------------------- LIVING_BLOCK_ANIMS.C ----------------------------*/
-void	init_living_block_anims(t_living_block *block, t_atlas *atlas);
+void	init_living_block_anims(t_living_block *block);
 void	update_living_block_anims(t_living_block *block, float delta_time);
 void	free_living_block_anims(t_living_block *block);
+
+/*---------------------------- EFFECTS_ANIMS.C -------------------------------*/
+void	free_effects_anims(t_effects *effects);
+
+/*------------------------------ DOOR_ANIMS.C --------------------------------*/
+void	init_door_anims(t_effects *effects);
+void	update_door_anims(t_player *player, t_effects *effects,
+			float delta_time);
 
 /*----------------------------- ABSORB_ANIMS.C -------------------------------*/
 void	init_absorb_anims(t_effects *effects);
 void	update_absorb_anims(t_player *player, t_effects *effects,
 			float delta_time);
-void	free_absorb_anims(t_effects *effects);
 
 /*------------------------------ ORB_ANIMS.C ---------------------------------*/
 void	init_orb_anims(t_effects *effects);
 void	update_orb_anims(t_orb_projectile *orb, t_effects *effects,
 			float delta_time);
-void	free_orb_anims(t_effects *effects);
 #endif

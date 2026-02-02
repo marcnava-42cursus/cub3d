@@ -134,8 +134,13 @@ static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture)
 		*texture = NULL;
 	if (cell_char == '2')
 	{
-		*texture = game->cub_data.textures.living.xpm;
-		frame_width = game->cub_data.textures.living.frame_width;
+		*texture = game->cub_data.block.atlas.xpm;
+		frame_width = game->cub_data.block.atlas.frame_width;
+	}
+	else if (ft_strchr("!\"·$%&/()=?", cell_char))
+	{
+		*texture = game->cub_data.effects.door_atlas.xpm;
+		frame_width = game->cub_data.effects.door_atlas.frame_width;
 	}
 	else
 		frame_width = (*texture)->texture.width;
@@ -265,6 +270,7 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x, int y[2],
 	int		y_unclipped[2];
 	int		source_height;
 	int		source_width;
+	unsigned int		current_frame[2] = {0, 0};
 
 	y_unclipped[0] = rayhit->wall_bounds[0];
 	y_unclipped[1] = rayhit->wall_bounds[1];
@@ -280,10 +286,15 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x, int y[2],
 	if (y[0] >= y[1])
 		return ;
 	tex_x = get_tex_x(game, rayhit, &texture);
-	if (texture == game->cub_data.textures.living.xpm)
+	if (texture == game->cub_data.block.atlas.xpm)
 	{
-		source_height = game->cub_data.textures.living.frame_height;
-		source_width = game->cub_data.textures.living.frame_width;
+		source_height = game->cub_data.block.atlas.frame_height;
+		source_width = game->cub_data.block.atlas.frame_width;
+	}
+	else if (texture == game->cub_data.effects.door_atlas.xpm)
+	{
+		source_height = game->cub_data.effects.door_atlas.frame_height;
+		source_width = game->cub_data.effects.door_atlas.frame_width;
 	}
 	else
 	{
@@ -296,11 +307,17 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x, int y[2],
 	step = (float)source_height / (float)original_line_height;
 	tex_offset = (y[0] - y_unclipped[0]) * step;
 	fog = fog_factor(rayhit->distance);
-	if (texture == game->cub_data.textures.living.xpm)
+	if (texture == game->cub_data.block.atlas.xpm)
 		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
 			texture, game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
-			&game->cub_data.textures.living,
+			&game->cub_data.block.atlas,
 			game->cub_data.block.anims[ANIM_BREATHE].current_frame);
+	else if (texture == game->cub_data.effects.door_atlas.xpm)
+		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
+			texture, game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
+			&game->cub_data.effects.door_atlas,
+			//game->cub_data.effects.door_anims[ANIM_BREATHE].current_frame);
+			current_frame);
 	else
 		paint_vertical_line_texture_bonus(x, y, game->double_buffer[NEXT],
 			texture, game->cub_data.textures.fog, tex_x, tex_offset, step, fog,

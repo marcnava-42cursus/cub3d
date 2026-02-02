@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 16:53:43 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:08:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_textures
 	xpm_t				*floor;			// Loaded floor texture
 	xpm_t				*ceiling;		// Loaded ceiling texture
 	xpm_t				*fog;			// Loaded fog texture
-	t_atlas				living;
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
 
@@ -131,6 +130,7 @@ typedef struct s_orb_projectile
 typedef struct s_living_block
 {
 	bool	is_creating;
+	t_atlas	atlas;
 	t_anim	*anims;
 }	t_living_block;
 
@@ -138,10 +138,13 @@ typedef struct s_effects
 {
 	t_atlas	absorb_atlas;
 	t_atlas	orb_atlas;
+	t_atlas door_atlas;
 	t_anim	*absorb_anims;
 	t_anim	*orb_anims;
+	t_anim	*door_anims;
 	int		current_absorb_anim; 
 	int		current_orb_anim; 
+	int		current_door_anim;
 }	t_effects;
 
 // Floor node for bonus multi-level maps

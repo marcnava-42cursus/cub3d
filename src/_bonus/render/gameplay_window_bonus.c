@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 16:46:39 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 18:43:13 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
 	render_floors_and_ceilings(game, center, ray_dir, dist_to_proj_plane);
 	render_walls(game, rayhits, center, dist_to_proj_plane);
-	//render_doors(game, rayhits, center, dist_to_proj_plane);
+	render_doors(game, rayhits, center, dist_to_proj_plane);
 	render_orb(game, rayhits, center, ray_dir);
 	render_player_overlay(game);
 	free(rayhits);

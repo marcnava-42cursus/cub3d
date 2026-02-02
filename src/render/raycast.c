@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:06:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/25 23:50:42 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 18:03:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ static bool	read_cell(const t_map *map, int cell[2])
 	cell_char = row[cell[X]];
 	if (cell_char == '1' || cell_char == '2' || cell_char == ' '
 		|| cell_char == '\0')
+		return (false);
+	if (ft_strchr("!\"·$%&\/()=?", cell_char))
 		return (false);
 	return (true);
 }

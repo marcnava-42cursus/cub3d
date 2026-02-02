@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 16:30:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:16:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,16 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		"./assets/textures/player/test_weapon.xpm42",
 		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
 	atlas_init(&game->cub_data.effects.absorb_atlas,
-		"./assets/textures/effects/absorb_effect_32_colors.xpm42",
-		128, 128);
+		"./assets/textures/effects/absorb_effect_32_colors.xpm42", 128, 128);
+	atlas_init(&game->cub_data.block.atlas,
+			"./assets/textures/walls/test_living_flesh_atlas.xpm42", 128, 128);
+	atlas_init(&game->cub_data.effects.door_atlas,
+			"./assets/textures/walls/door.xpm42", 128, 128);
 	init_player_anims(&game->cub_data.player);
-	init_living_block_anims(&game->cub_data.block,
-		&game->cub_data.textures.living);
+	init_living_block_anims(&game->cub_data.block);
 	init_absorb_anims(&game->cub_data.effects);
 	init_orb_anims(&game->cub_data.effects);
+	init_door_anims(&game->cub_data.effects);	
 	if (game->cub_data.current_floor)
 	{
 		game->cub_data.current_floor->textures = game->cub_data.textures;

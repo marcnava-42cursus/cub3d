@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:16:11 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 00:32:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:53:58 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,6 @@ static void	player_state_machine(t_player *player)
 		player->state = STATE_THROW;
 	else if (player->state == STATE_THROW)
 		player->state = STATE_EMPTY;
-}
-
-void	set_player_anim(t_anim *anim_ptr, int *current_anim, int new_anim)
-{
-	if (*current_anim == new_anim)
-		return ;
-	*current_anim = new_anim;
-	anim_start(&anim_ptr[*current_anim]);
 }
 
 void	init_player_anims(t_player *player)

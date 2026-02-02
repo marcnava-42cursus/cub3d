@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 13:49:10 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:53:53 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,15 @@ void	init_player_left_hand_anims(t_player *player)
 void	set_player_left_hand_anims(t_player *player)
 {
 	if (player->state == STATE_THROW)
-		set_player_anim(player->left_hand_anims,
+		set_current_anim(player->left_hand_anims,
 			&player->current_left_hand_anim, ANIM_THROW);
 	else if (player->state == STATE_TAKE)
-		set_player_anim(player->left_hand_anims,
+		set_current_anim(player->left_hand_anims,
 			&player->current_left_hand_anim, ANIM_TAKE);
 	else if (player->state == STATE_HOLD)
-		set_player_anim(player->left_hand_anims,
+		set_current_anim(player->left_hand_anims,
 			&player->current_left_hand_anim, ANIM_HOLD);
 	else
-		set_player_anim(player->left_hand_anims,
+		set_current_anim(player->left_hand_anims,
 			&player->current_left_hand_anim, ANIM_EMPTY);
 }

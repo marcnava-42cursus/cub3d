@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/30 14:49:11 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:40:17 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "logic.h"
 # include "config_bonus.h"
 
-# define EPSILON 0.0f
+# define EPSILON 0.01f
 
 struct	s_controller_bind;
 

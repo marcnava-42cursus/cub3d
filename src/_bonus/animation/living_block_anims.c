@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 13:42:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:15:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "animation.h"
 
-void	init_living_block_anims(t_living_block *block, t_atlas *atlas)
+void	init_living_block_anims(t_living_block *block)
 {
 	static const unsigned int	create_frames[9] = {8, 9, 10, 11, 12, 13, 14,
 		15, 16};
@@ -25,10 +25,10 @@ void	init_living_block_anims(t_living_block *block, t_atlas *atlas)
 	block->anims = ft_calloc(2, sizeof(t_anim));
 	if (!block->anims)
 		return ;
-	anim_init(&block->anims[ANIM_CREATE], atlas, false);
+	anim_init(&block->anims[ANIM_CREATE], &block->atlas, false);
 	store_anim_frame_data(&block->anims[ANIM_CREATE], create_frames,
 		create_holds, 9);
-	anim_init(&block->anims[ANIM_BREATHE], atlas, true);
+	anim_init(&block->anims[ANIM_BREATHE], &block->atlas, true);
 	store_anim_frame_data(&block->anims[ANIM_BREATHE], breathe_frames,
 		breathe_holds, 10);
 }

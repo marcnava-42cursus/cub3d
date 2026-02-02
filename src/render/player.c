@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 14:02:38 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 17:16:59 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	render_left_hand(mlx_image_t *buffer, int buffer_x_center,
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT * scale[Y];
 	paint_current_frame_to_image(buffer, atlas, coord,
 		player->left_hand_anims[player->current_left_hand_anim].current_frame,
-		0.5f);
+		1.0f);
 }
 
 static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
@@ -40,7 +40,7 @@ static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
 	coord[X] = buffer_x_center - (HAND_TEXTURE_WIDTH * 1.7 * scale[X]);
 	coord[Y] = buffer->height - (HAND_TEXTURE_HEIGHT * scale[Y])
 		- (WEAPON_TEXTURE_HEIGHT * 0.5f) * scale[Y];
-	paint_current_frame_to_image(buffer, atlas, coord, current_frame, 0.5f);
+	paint_current_frame_to_image(buffer, atlas, coord, current_frame, 1.0f);
 }
 
 static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
@@ -55,7 +55,7 @@ static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
 	coord[Y] = buffer->height - HAND_TEXTURE_HEIGHT * scale[Y];
 	paint_hori_flip_current_frame_to_image(buffer, atlas, coord,
 		player->right_hand_anims[
-		player->current_right_hand_anim].current_frame, 0.5f);
+		player->current_right_hand_anim].current_frame, 1.0f);
 }
 
 void	render_player_overlay(t_game *game)

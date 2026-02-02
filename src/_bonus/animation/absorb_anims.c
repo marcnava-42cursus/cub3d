@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:57:12 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 10:38:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:58:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,4 @@ void	update_absorb_anims(t_player *player, t_effects *effects,
 		effects->current_absorb_anim = ANIM_SPAWN;
 	anim_update(&effects->absorb_anims[effects->current_absorb_anim],
 		delta_time);
-}
-
-void	free_absorb_anims(t_effects *effects)
-{
-	free(effects->absorb_anims);
 }

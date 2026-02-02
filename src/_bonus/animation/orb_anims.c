@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:47:25 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 16:39:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:58:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ void	init_orb_anims(t_effects *effects)
 	effects->current_orb_anim = ORB_HOLD;
 }
 
-static void	set_orb_anim(t_anim *anim_ptr, int *current_anim, int new_anim)
-{
-	if (*current_anim == new_anim)
-		return ;
-	*current_anim = new_anim;
-	anim_start(&anim_ptr[*current_anim]);
-}
-
 void	update_orb_anims(t_orb_projectile *orb, t_effects *effects,
 		float delta_time)
 {
@@ -65,24 +57,20 @@ void	update_orb_anims(t_orb_projectile *orb, t_effects *effects,
 	if (orb->active)
 	{
 		if (orb->mode == ORB_MODE_PLACE)
-			set_orb_anim(effects->orb_anims, &effects->current_orb_anim,
+			set_current_anim(effects->orb_anims, &effects->current_orb_anim,
 				ORB_LOOP);
 		else if (orb->mode == ORB_MODE_TAKE)
 		{
 			if (effects->current_orb_anim != ORB_SPAWN 
 					&& effects->current_orb_anim != ORB_LOOP && !finished)
-				set_orb_anim(effects->orb_anims, &effects->current_orb_anim,
+				set_current_anim(effects->orb_anims, &effects->current_orb_anim,
 					ORB_SPAWN);
 			else if (effects->current_orb_anim == ORB_SPAWN && finished)
-				set_orb_anim(effects->orb_anims, &effects->current_orb_anim,
+				set_current_anim(effects->orb_anims, &effects->current_orb_anim,
 					ORB_LOOP);
 		}
 	}
 	else
-		set_orb_anim(effects->orb_anims, &effects->current_orb_anim, ORB_HOLD);
-}
-
-void	free_orb_anims(t_effects *effects)
-{
-	free(effects->orb_anims);
+		set_current_anim(effects->orb_anims, &effects->current_orb_anim,
+			ORB_HOLD);
 }
