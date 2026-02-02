@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:57:12 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 20:14:32 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:38:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,34 @@ void	init_absorb_anims(t_effects *effects)
 	static const unsigned int	spawn_frames[9] = {0, 1, 2, 3, 4, 5, 6, 7, 8};	
 	static const unsigned int	spawn_holds[9] =  {1, 1, 1, 1, 1, 1, 1, 1, 1};
 	
-	effects->anims = ft_calloc(2, sizeof(t_anim));
-	if (!effects->anims)
+	effects->absorb_anims = ft_calloc(2, sizeof(t_anim));
+	if (!effects->absorb_anims)
 		return ;
 
-	anim_init(&effects->anims[ANIM_ABSORB], &effects->atlas, true);
-	store_anim_frame_data(&effects->anims[ANIM_ABSORB], absorb_frames,
+	anim_init(&effects->absorb_anims[ANIM_ABSORB], &effects->absorb_atlas,
+		true);
+	store_anim_frame_data(&effects->absorb_anims[ANIM_ABSORB], absorb_frames,
 		absorb_holds, 9);
-	anim_start(&effects->anims[ANIM_ABSORB]);
-	anim_init(&effects->anims[ANIM_SPAWN], &effects->atlas, true);
-	store_anim_frame_data(&effects->anims[ANIM_SPAWN], spawn_frames,
+	anim_start(&effects->absorb_anims[ANIM_ABSORB]);
+	anim_init(&effects->absorb_anims[ANIM_SPAWN], &effects->absorb_atlas, true);
+	store_anim_frame_data(&effects->absorb_anims[ANIM_SPAWN], spawn_frames,
 		spawn_holds, 9);
-	anim_start(&effects->anims[ANIM_SPAWN]);
+	anim_start(&effects->absorb_anims[ANIM_SPAWN]);
+	effects->current_absorb_anim = ANIM_SPAWN;
 }
 
 void	update_absorb_anims(t_player *player, t_effects *effects,
 		float delta_time)
 {
 	if (player->inventory)
-		effects->current_anim = ANIM_ABSORB;
+		effects->current_absorb_anim = ANIM_ABSORB;
 	else
-		effects->current_anim = ANIM_SPAWN;
-	anim_update(&effects->anims[effects->current_anim], delta_time);
+		effects->current_absorb_anim = ANIM_SPAWN;
+	anim_update(&effects->absorb_anims[effects->current_absorb_anim],
+		delta_time);
 }
 
-void	free_effects_anims(t_anim *effects)
+void	free_absorb_anims(t_effects *effects)
 {
-	free(effects);
+	free(effects->absorb_anims);
 }

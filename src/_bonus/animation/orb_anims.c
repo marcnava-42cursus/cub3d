@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:47:25 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/01 18:27:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:49:26 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	init_orb_anims(t_effects *effects)
 		return ;
 	init_orb_shoot_anims(effects);
 	init_orb_hold_anim(effects);
+	effects->current_orb_anim = ORB_HOLD;
 }
 
 void	update_orb_anims(t_orb_projectile *orb, t_player *player,

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 19:30:40 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:40:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ void	free_cub_data(t_cub_data *data)
 	atlas_free(&data->player.textures.hand);
 	atlas_free(&data->player.textures.thumb);
 	atlas_free(&data->player.textures.weapon);
-	atlas_free(&data->effects.atlas);
+	atlas_free(&data->effects.absorb_atlas);
 	free_player_anims(&data->player);
 	free_living_block_anims(&data->block);
-	free_effects_anims(data->effects.anims);
+	free_absorb_anims(&data->effects);
 }
 
 void	free_lines(char **lines, int line_count)

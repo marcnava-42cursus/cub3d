@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 20:32:21 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:35:39 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	get_effects_tex_x(t_effects *effects, t_rayhit *rayhit)
 	float	wall_x;
 	int		frame_width;
 
-	frame_width = effects->atlas.frame_width;
+	frame_width = effects->absorb_atlas.frame_width;
 	if (rayhit->side == 0)
 		wall_x = rayhit->position.y / WORLDMAP_TILE_SIZE;
 	else
@@ -63,15 +63,15 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 				return ;
 			tex_x = get_effects_tex_x(&game->cub_data.effects, &rh[i]);
 			fog = fog_factor(rh[i].distance);
-			step = (float)game->cub_data.effects.atlas.frame_height
+			step = (float)game->cub_data.effects.absorb_atlas.frame_height
 				/ (float)(rh[i].wall_bounds[1] - rh[i].wall_bounds[0] + 1);
 			tex_offset = (y[0] - rh[i].wall_bounds[0]) * step;
 			paint_vertical_line_texture_bonus(i, y, game->double_buffer[NEXT],
-					game->cub_data.effects.atlas.xpm,
+					game->cub_data.effects.absorb_atlas.xpm,
 					game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
-					&game->cub_data.effects.atlas,
-					game->cub_data.effects.anims[
-					game->cub_data.effects.current_anim].current_frame);	
+					&game->cub_data.effects.absorb_atlas,
+					game->cub_data.effects.absorb_anims[
+					game->cub_data.effects.current_absorb_anim].current_frame);	
 		}
 		i++;
 	}
