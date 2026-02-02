@@ -48,6 +48,14 @@ static bool	is_valid_target_cell(t_game *game, int x, int y)
 	int		player_x;
 	int		player_y;
 	size_t	row_len;
+	float	nearest_x;
+	float	nearest_y;
+	float	dx;
+	float	dy;
+	float	min_x;
+	float	max_x;
+	float	min_y;
+	float	max_y;
 
 	if (!game || !game->cub_data.map.grid)
 		return (false);
@@ -59,6 +67,16 @@ static bool	is_valid_target_cell(t_game *game, int x, int y)
 	player_x = (int)floorf(game->cub_data.player.x);
 	player_y = (int)floorf(game->cub_data.player.y);
 	if (x == player_x && y == player_y)
+		return (false);
+	min_x = (float)x;
+	max_x = min_x + 1.0f;
+	min_y = (float)y;
+	max_y = min_y + 1.0f;
+	nearest_x = fmaxf(min_x, fminf(game->cub_data.player.x, max_x));
+	nearest_y = fmaxf(min_y, fminf(game->cub_data.player.y, max_y));
+	dx = game->cub_data.player.x - nearest_x;
+	dy = game->cub_data.player.y - nearest_y;
+	if ((dx * dx + dy * dy) <= game->player_radius * game->player_radius)
 		return (false);
 	return (game->cub_data.map.grid[y][x] == '0');
 }

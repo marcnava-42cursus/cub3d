@@ -132,13 +132,21 @@ static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture)
 		*texture = game->cub_data.textures.west;
 	else
 		*texture = NULL;
-	if (cell_char == '2')
+	if (cell_char == ORB_GHOST_BLOCK_CELL
+		&& game->cub_data.textures.ghost_block)
+	{
+		*texture = game->cub_data.textures.ghost_block;
+		frame_width = (*texture)->texture.width;
+	}
+	else if (cell_char == '2')
 	{
 		*texture = game->cub_data.textures.living.xpm;
 		frame_width = game->cub_data.textures.living.frame_width;
 	}
-	else
+	else if (*texture)
 		frame_width = (*texture)->texture.width;
+	else
+		frame_width = 1;
 	if (rayhit->side == 0)
 		wall_x = rayhit->position.y / WORLDMAP_TILE_SIZE;
 	else

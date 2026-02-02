@@ -19,5 +19,6 @@
 # define HAND_ATLAS "./assets/textures/player/test_hand_atlas.xpm42"
 # define THUMB "./assets/textures/player/test_thumb.xpm42"
 # define WEAPON "./assets/textures/player/test_weapon.xpm42"
+# define GHOST_BLOCK "./assets/textures/west_wall.xpm42"
 
 #endif

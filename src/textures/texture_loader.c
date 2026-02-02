@@ -85,6 +85,12 @@ int	load_textures(t_textures *textures)
 			return (0);
 		}
 	}
+	textures->ghost_block = mlx_load_xpm42(GHOST_BLOCK);
+	if (!textures->ghost_block)
+	{
+		printf("Error: Failed to load ghost block texture: %s\n", GHOST_BLOCK);
+		return (0);
+	}
 	textures->floor = mlx_load_xpm42( "./assets/textures/walls/test_floor_flesh.xpm42");
 	textures->ceiling = mlx_load_xpm42( "./assets/textures/walls/test_ceiling_flesh.xpm42");
 	textures->fog = mlx_load_xpm42("./assets/textures/walls/test_fog_128.xpm42");
@@ -149,6 +155,11 @@ void	free_textures(t_textures *textures)
 	{
 		mlx_delete_xpm42(textures->fog);
 		textures->fog = NULL;
+	}
+	if (textures->ghost_block)
+	{
+		mlx_delete_xpm42(textures->ghost_block);
+		textures->ghost_block = NULL;
 	}
 	atlas_free(&textures->living);
 	if (textures->custom)

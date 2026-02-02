@@ -19,3 +19,4 @@
 [ ] - Investigar posibles optimizaciones de fog
 [ ] - Doors?
 [ ] - Quality changer
+[ ] - Option outlines-vortex

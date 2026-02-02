@@ -88,7 +88,8 @@ static bool	read_cell(const t_map *map, int cell[2])
 	if (cell[X] < 0 || cell[X] >= (int)ft_strlen(row))
 		return (false);
 	cell_char = row[cell[X]];
-	if (cell_char == '1' || cell_char == '2' || cell_char == ' '
+	if (cell_char == '1' || cell_char == '2'
+		|| cell_char == ORB_GHOST_BLOCK_CELL || cell_char == ' '
 		|| cell_char == '\0')
 		return (false);
 	return (true);

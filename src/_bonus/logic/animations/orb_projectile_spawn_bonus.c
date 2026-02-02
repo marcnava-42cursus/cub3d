@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic_bonus.h"
 
 static void	orb_projectile_activate(t_game *game, t_orb_mode mode,
 		float start_x, float start_y)
@@ -43,6 +44,8 @@ bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 		char block)
 {
 	if (!game || game->orb.active)
+		return (false);
+	if (!orb_projectile_spawn_ghost(game, target_x, target_y))
 		return (false);
 	orb_projectile_activate(game, ORB_MODE_PLACE,
 		game->cub_data.player.x, game->cub_data.player.y);

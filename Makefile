@@ -183,6 +183,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_query_bonus.c \
 				$(SRCPATH)/_bonus/logic/state_swapper.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_state_bonus.c \
+				$(SRCPATH)/_bonus/logic/animations/orb_projectile_ghost_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
