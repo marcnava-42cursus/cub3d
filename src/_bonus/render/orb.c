@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 17:14:04 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:12:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
 		draw_y[0] = 0;
 	if (draw_y[1] >= (int)game->double_buffer[NEXT]->height)
 		draw_y[1] = (int)game->double_buffer[NEXT]->height - 1;
-	*tex_step = (float)game->cub_data.player.textures.weapon.frame_height
+	*tex_step = (float)game->cub_data.effects.orb_atlas.frame_height
 		/ (float)sprite_render_dims[Y];
 	*tex_pos_start = (draw_y[0] - sprite_top) * *tex_step;
 	if (*tex_pos_start < 0.0f)
@@ -71,7 +71,7 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 	int		frame_width;
 
 	i = draw_x[0];
-	frame_width = game->cub_data.player.textures.weapon.frame_width;
+	frame_width = game->cub_data.effects.orb_atlas.frame_width;
 	while (i < draw_x[1])
 	{
 		tex_x = (int)((i - (screen_x - sprite_width / 2)) * frame_width
@@ -82,9 +82,12 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 			fog = fog_factor(cam_y);
 			paint_vertical_line_texture_bonus(i, draw_y,
 				game->double_buffer[NEXT],
-				game->cub_data.player.textures.weapon.xpm,
+				game->cub_data.effects.orb_atlas.xpm,
 				game->cub_data.textures.fog,
-				tex_x, tex_pos_start, tex_step, fog, NULL, NULL);
+				tex_x, tex_pos_start, tex_step, fog,
+				&game->cub_data.effects.orb_atlas,
+				game->cub_data.effects.orb_anims[
+				game->cub_data.effects.current_orb_anim].current_frame);
 		}
 		i++;
 	}

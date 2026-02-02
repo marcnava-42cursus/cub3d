@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 20:09:06 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:46:31 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,10 @@ void		init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 void		render_walls(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
 
+/*--------------------------------- DOORS.C ----------------------------------*/
+void		render_doors(t_game *game, t_rayhit *rayhits, float center,
+				float dist_to_proj_plane);
+
 /*------------------------------- OUTLINES.C --------------------------------*/
 void		add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
 				float center, float dist_to_proj_plane);
@@ -171,8 +175,8 @@ float		fog_factor(float distance);
 uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
 
 /*-------------------------------- ABSORB.C ----------------------------------*/
-void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
-		float dist_to_proj_plane);
+void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
+				float dist_to_proj_plane);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 uint32_t	sample_atlas_frame_pixel(t_atlas *atlas,

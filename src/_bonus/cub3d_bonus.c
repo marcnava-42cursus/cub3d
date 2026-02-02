@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 10:47:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:30:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	init_game_bonus(t_game *game, const char *map_file)
 	atlas_init(&game->cub_data.player.textures.thumb,
 		"./assets/textures/player/test_thumb.xpm42",
 		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&game->cub_data.player.textures.weapon,
+	atlas_init(&game->cub_data.effects.orb_atlas,
 		"./assets/textures/player/test_weapon.xpm42",
 		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
 	atlas_init(&game->cub_data.effects.absorb_atlas,
@@ -100,8 +100,7 @@ static void render_loop(void *param)
 	update_living_block_anims(&game->cub_data.block, game->mlx->delta_time);
 	update_absorb_anims(&game->cub_data.player, &game->cub_data.effects,
 		game->mlx->delta_time);
-	update_orb_anims(&game->orb, &game->cub_data.player,
-		&game->cub_data.effects, game->mlx->delta_time);
+	update_orb_anims(&game->orb, &game->cub_data.effects, game->mlx->delta_time);
 	render_double_buffer(game);
 	if (orb_moved && game->map_2d_visible)
 		render_player_dynamic_bonus(game);

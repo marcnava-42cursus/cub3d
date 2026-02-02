@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 10:45:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:31:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	free_absorb_anims(t_effects *effects);
 
 /*------------------------------ ORB_ANIMS.C ---------------------------------*/
 void	init_orb_anims(t_effects *effects);
-void	update_orb_anims(t_orb_projectile *orb, t_player *player,
-			t_effects *effects, float delta_time);
+void	update_orb_anims(t_orb_projectile *orb, t_effects *effects,
+			float delta_time);
 void	free_orb_anims(t_effects *effects);
 #endif
