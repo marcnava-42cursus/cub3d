@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 16:27:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:58:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "paths.h"
 #include "parser.h"
 #include <stdio.h>
+#include "render.h"
 
 static int	load_custom_textures(t_custom_texture *custom)
 {
@@ -84,9 +85,11 @@ int	load_textures(t_textures *textures)
 			return (0);
 		}
 	}
-	textures->floor = mlx_load_xpm42(FLOOR_FLESH);
-	textures->ceiling = mlx_load_xpm42(FLOOR_FLESH);
-	textures->fog = mlx_load_xpm42(FOG_16);
+	textures->floor = mlx_load_xpm42( "./assets/textures/walls/test_floor_flesh.xpm42");
+	textures->ceiling = mlx_load_xpm42( "./assets/textures/walls/test_ceiling_flesh.xpm42");
+	textures->fog = mlx_load_xpm42("./assets/textures/walls/test_fog_128.xpm42");
+	atlas_init(&textures->living,
+			"./assets/textures/walls/test_living_flesh_atlas.xpm42", 128, 128);
 	if (textures->custom)
 		load_custom_textures(textures->custom);
 	return (1);
@@ -147,6 +150,7 @@ void	free_textures(t_textures *textures)
 		mlx_delete_xpm42(textures->fog);
 		textures->fog = NULL;
 	}
+	atlas_free(&textures->living);
 	if (textures->custom)
 	{
 		free_custom_textures(textures->custom);

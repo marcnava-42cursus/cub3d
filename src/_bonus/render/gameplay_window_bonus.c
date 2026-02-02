@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 18:56:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:46:39 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static float	calculate_center(float height, float pitch)
 	float	max_height;
 
 	half_height = height * 0.5f;
-	min_height = 1.0f;
-	max_height = height - 2.0f;
+	min_height = 0.0f;
+	max_height = height - 1.0f;
 	center = half_height + pitch;
 	center = clamp(center, min_height, max_height);
 	return (center);
@@ -50,7 +50,7 @@ static t_rayhit	cast_ray_for_column(t_cub_data *cub_data, int x,
 	player_position.y = ((float)cub_data->player.y) * WORLDMAP_TILE_SIZE;
 	rayhit = raycast_world(&cub_data->map, player_position,
 			cub_data->player.angle + atanf(camera_x * tanf(PLAYER_FOV / 2.0f)),
-			MAX_RENDER_DISTANCE);
+			MAX_TILE_RENDER * WORLDMAP_TILE_SIZE);
 	fisheye_correction(&rayhit, camera_x);
 	return (rayhit);
 }
@@ -90,9 +90,9 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 	center = calculate_center(game->double_buffer[NEXT]->height,
 			game->cub_data.player.pitch);
 	get_ray_dir(game->cub_data.player.angle, ray_dir);
-	render_floors(game, center, ray_dir);
-	render_ceilings(game, center, ray_dir);
+	render_floors_and_ceilings(game, center, ray_dir, dist_to_proj_plane);
 	render_walls(game, rayhits, center, dist_to_proj_plane);
+	//render_doors(game, rayhits, center, dist_to_proj_plane);
 	render_orb(game, rayhits, center, ray_dir);
 	render_player_overlay(game);
 	free(rayhits);

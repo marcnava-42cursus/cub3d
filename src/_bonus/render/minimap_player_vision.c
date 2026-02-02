@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 21:31:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/04 14:58:52 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/30 22:16:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	cast_rays_for_vision(vertex_t ray_endpoints[16],
 		angle_strt_ray_inc[1] = normalize_angle(
 				angle_strt_ray_inc[0] + i * angle_strt_ray_inc[2]);
 		rayhit = raycast_world(minimap->map, *player_position,
-				angle_strt_ray_inc[1], MAX_RENDER_DISTANCE);
+				angle_strt_ray_inc[1], MAX_TILE_RENDER * MINIMAP_TILE_SIZE);
 		ray_endpoints[i] = world_to_minimap_vertex(minimap, rayhit.position);
 		i++;
 	}

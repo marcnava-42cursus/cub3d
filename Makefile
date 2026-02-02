@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/01/27 19:02:05 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/02 10:45:59 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,7 +107,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/parser/core/parser_finder_bonus.c \
 				$(SRCPATH)/_bonus/parser/map/map_validation_bonus.c \
 				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
-				$(SRCPATH)/_bonus/texture_mapping_bonus.c \
+				$(SRCPATH)/_bonus/render/texture_mapping_bonus.c \
 				$(SRCPATH)/_bonus/logic/collision_bonus.c \
 				$(SRCPATH)/parser/map/map_parser.c \
 				$(SRCPATH)/parser/colors/parse_colors.c \
@@ -152,10 +152,10 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
-				$(SRCPATH)/_bonus/render/floors.c \
-				$(SRCPATH)/_bonus/render/ceilings.c \
+				$(SRCPATH)/_bonus/render/floors_and_ceilings.c \
 				$(SRCPATH)/_bonus/render/orb.c \
 				$(SRCPATH)/_bonus/render/fog.c \
+				$(SRCPATH)/_bonus/render/absorb.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \
 				$(SRCPATH)/_bonus/logic/inventory.c \
 				$(SRCPATH)/_bonus/logic/menu/config_modal_draw_base_bonus.c \
@@ -186,9 +186,12 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
-				$(SRCPATH)/_bonus/animation/player_left_hand_anims.c \
-				$(SRCPATH)/_bonus/animation/player_right_hand_anims.c \
-				$(SRCPATH)/_bonus/animation/player_anim.c
+				$(SRCPATH)/_bonus/animation/living_block_anims.c \
+				$(SRCPATH)/_bonus/animation/absorb_anims.c \
+				$(SRCPATH)/_bonus/animation/orb_anims.c \
+				$(SRCPATH)/_bonus/animation/player/player_anim.c \
+				$(SRCPATH)/_bonus/animation/player/player_left_hand_anims.c \
+				$(SRCPATH)/_bonus/animation/player/player_right_hand_anims.c 
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_BONUS)/%.o)

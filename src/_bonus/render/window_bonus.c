@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 16:49:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:56:51 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ bool	window_init_bonus(t_game *game)
 
 	monitor_width = 0;
 	monitor_height = 0;
-	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "cub3D", false);
+	game->mlx = mlx_init(MAX_WINDOW_WIDTH, MAX_WINDOW_HEIGHT, "HamCraft",
+			false);
 	if (!game->mlx)
 		return (false);
 	mlx_get_monitor_size(0, &monitor_width, &monitor_height);

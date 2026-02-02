@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/30 14:48:58 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:55:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ typedef struct s_fps_overlay
 	double		accum;
 	int			frames;
 	double		last_time;
-}	t_fps_overlay;
+} 	t_fps_overlay;
+
+# define TWO_PI (2.0f * FT_PI)
+# define MOUSE_SMOOTHING 10.0f
+# define EPSILON 0.0f
 
 # ifdef DEBUG_FPS
 

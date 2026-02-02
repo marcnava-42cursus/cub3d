@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/29 21:37:27 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:53:43 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ struct s_custom_texture
 	t_custom_texture	*next;		// Next in linked list
 };
 
+typedef struct s_atlas
+{
+	xpm_t			*xpm;
+	unsigned int	max_frame[2];
+	unsigned int	current_frame[2];
+	unsigned int	frame_width;
+	unsigned int	frame_height;
+	unsigned int	total_frames;
+}	t_atlas;
+
 // Estructura para texturas
 typedef struct s_textures
 {
@@ -49,19 +59,9 @@ typedef struct s_textures
 	xpm_t				*floor;			// Loaded floor texture
 	xpm_t				*ceiling;		// Loaded ceiling texture
 	xpm_t				*fog;			// Loaded fog texture
+	t_atlas				living;
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
-
-
-typedef struct s_atlas
-{
-	xpm_t 			*xpm;
-	unsigned int	max_frame[2];
-	unsigned int	current_frame[2];
-	unsigned int	frame_width;
-	unsigned int	frame_height;
-	unsigned int	total_frames;
-} t_atlas;
 
 //Player texture collection
 typedef struct s_player_textures
@@ -128,6 +128,22 @@ typedef struct s_orb_projectile
 	bool		last_draw_active;
 }	t_orb_projectile;
 
+typedef struct s_living_block
+{
+	bool	is_creating;
+	t_anim	*anims;
+}	t_living_block;
+
+typedef struct s_effects
+{
+	t_atlas	absorb_atlas;
+	t_atlas	orb_atlas;
+	t_anim	*absorb_anims;
+	t_anim	*orb_anims;
+	int		current_absorb_anim; 
+	int		current_orb_anim; 
+}	t_effects;
+
 // Floor node for bonus multi-level maps
 typedef struct s_floor
 {
@@ -162,34 +178,36 @@ typedef struct s_elevator_target
 // Estructura principal que contiene todos los datos parseados
 typedef struct s_cub_data
 {
-	t_textures	textures;
-	t_color		floor_color;
-	t_color		ceiling_color;
-	char		*up_path;
-	char		*down_path;
-	t_map		map;
-	t_player	player;
-	t_floor		*floors;
-	t_floor		*current_floor;
-	int			floor_count;
-	int			player_floor_index;
-	char		*player_floor_path;
-	int			elevator_id_count;
-	char		elevator_ids[16];
-	t_floor		*elevator_floor_a[16];
-	t_floor		*elevator_floor_b[16];
+	t_textures		textures;
+	t_color			floor_color;
+	t_color			ceiling_color;
+	char			*up_path;
+	char			*down_path;
+	t_map			map;
+	t_player		player;
+	t_living_block	block;
+	t_effects		effects;
+	t_floor			*floors;
+	t_floor			*current_floor;
+	int				floor_count;
+	int				player_floor_index;
+	char			*player_floor_path;
+	int				elevator_id_count;
+	char			elevator_ids[16];
+	t_floor			*elevator_floor_a[16];
+	t_floor			*elevator_floor_b[16];
 }	t_cub_data;
 
 // Textures for 2D map rendering
 typedef struct s_map_textures
 {
-	mlx_image_t	*wall;          // block.png
-	mlx_image_t	*floor;         // floor.png
-	mlx_image_t	*player;        // player.png (fallback)
-	mlx_image_t	*player_north;  // player facing north
-	mlx_image_t	*player_south;  // player facing south
-	mlx_image_t	*player_east;   // player facing east
-	mlx_image_t	*player_west;   // player facing west
+	mlx_image_t	*wall;			// block.png
+	mlx_image_t	*floor;			// floor.png
+	mlx_image_t	*player;		// player.png (fallback)
+	mlx_image_t	*player_north;	// player facing north
+	mlx_image_t	*player_south;	// player facing south
+	mlx_image_t	*player_east;	// player facing east
+	mlx_image_t	*player_west;	// player facing west
 }	t_map_textures;
 
 typedef struct s_minimap
@@ -217,40 +235,40 @@ typedef struct s_rayhit
 // Estructura principal del juego que contiene TODOS los datos
 typedef struct s_game
 {
-	t_cub_data	cub_data;		// Datos parseados del archivo .cub
+	t_cub_data			cub_data;		// Datos parseados del archivo .cub
 	// Ventana MLX
-	mlx_t		*mlx;
+	mlx_t				*mlx;
 
 	// Capas separadas para el renderizado 2D
-	mlx_image_t	*map_layer;		// Capa estática del mapa
-	mlx_image_t	*player_layer;		// Capa dinámica del jugador
+	mlx_image_t			*map_layer;		// Capa estática del mapa
+	mlx_image_t			*player_layer;		// Capa dinámica del jugador
 	// Texturas 2D
-	t_map_textures	textures_2d;
+	t_map_textures		textures_2d;
 	// Variables para seguimiento de estado del jugador
-	float		last_player_x;
-	float		last_player_y;
-	float		last_player_angle;
-	int			last_grid_x;
-	int			last_grid_y;
+	float				last_player_x;
+	float				last_player_y;
+	float				last_player_angle;
+	int					last_grid_x;
+	int					last_grid_y;
 	// Parámetros de movimiento
-	float		move_speed;
-	float		rot_speed;
-	float		player_radius;
-	double		movement_lock_until;
-	double		last_teleport_time;
-	char		last_teleport_id;
-	bool		bg_layer_attached;
-	bool		map_layer_attached;
-	bool		player_layer_attached;
+	float				move_speed;
+	float				rot_speed;
+	float				player_radius;
+	double				movement_lock_until;
+	double				last_teleport_time;
+	char				last_teleport_id;
+	bool				bg_layer_attached;
+	bool				map_layer_attached;
+	bool				player_layer_attached;
 	// Estado de teclas para movimiento continuo
-	bool		key_w_pressed;
-	bool		key_s_pressed;
-	bool		key_a_pressed;
-	bool		key_d_pressed;
-	bool		key_left_pressed;
-	bool		key_right_pressed;
-	bool		key_up_pressed;
-	bool		key_down_pressed;
+	bool				key_w_pressed;
+	bool				key_s_pressed;
+	bool				key_a_pressed;
+	bool				key_d_pressed;
+	bool				key_left_pressed;
+	bool				key_right_pressed;
+	bool				key_up_pressed;
+	bool				key_down_pressed;
 	// Variables de control de mouse
 	double		last_mouse_x;
 	double		last_mouse_y;
@@ -260,21 +278,21 @@ typedef struct s_game
 	float		mouse_sensitivity;
 
 	// Datos de renderizado (raycast, sprites, etc.)
-	mlx_image_t	*double_buffer[2];
-	float		resolution_scale;
-	t_minimap	minimap;
+	mlx_image_t			*double_buffer[2];
+	float				resolution_scale;
+	t_minimap			minimap;
 
 	t_orb_projectile	orb;
 	t_controller_state	controller;
 
 	// Estado de UI
-	bool		map_2d_visible;
+	bool				map_2d_visible;
 
 	// Config modal UI
-	t_menu_state	menu;
+	t_menu_state		menu;
 
 	// Debug overlay
-	mlx_image_t	*crosshair;
+	mlx_image_t			*crosshair;
 }	t_game;
 
 #endif

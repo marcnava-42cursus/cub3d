@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/15 13:39:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:30:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,23 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		free_cub_data(&game->cub_data);
 		return (0);
 	}
+	atlas_init(&game->cub_data.player.textures.hand,
+		"./assets/textures/player/test_hand_atlas.xpm42",
+		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
+	atlas_init(&game->cub_data.player.textures.thumb,
+		"./assets/textures/player/test_thumb.xpm42",
+		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
+	atlas_init(&game->cub_data.effects.orb_atlas,
+		"./assets/textures/player/test_weapon.xpm42",
+		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
+	atlas_init(&game->cub_data.effects.absorb_atlas,
+		"./assets/textures/effects/absorb_effect_32_colors.xpm42",
+		128, 128);
+	init_player_anims(&game->cub_data.player);
+	init_living_block_anims(&game->cub_data.block,
+		&game->cub_data.textures.living);
+	init_absorb_anims(&game->cub_data.effects);
+	init_orb_anims(&game->cub_data.effects);
 	if (game->cub_data.current_floor)
 	{
 		game->cub_data.current_floor->textures = game->cub_data.textures;
@@ -75,11 +92,16 @@ int	init_game_bonus(t_game *game, const char *map_file)
 
 static void render_loop(void *param)
 {
-	t_game *game = (t_game *)param;
+	t_game	*game;
 	bool	orb_moved;
 
+	game = (t_game *)param;
 	orb_moved = orb_projectile_update(game, game->mlx->delta_time);
 	update_player_anims(&game->cub_data.player, game->mlx->delta_time);
+	update_living_block_anims(&game->cub_data.block, game->mlx->delta_time);
+	update_absorb_anims(&game->cub_data.player, &game->cub_data.effects,
+		game->mlx->delta_time);
+	update_orb_anims(&game->orb, &game->cub_data.effects, game->mlx->delta_time);
 	render_double_buffer(game);
 	if (orb_moved && game->map_2d_visible)
 		render_player_dynamic_bonus(game);

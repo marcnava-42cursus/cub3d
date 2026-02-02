@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 15:20:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:24:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ void	cleanup_game(t_game *game)
 
 static void render_loop(void *param)
 {
-	t_game *game = (t_game *)param;
+	t_game	*game;
 
+	game= (t_game *)param;
 	render_double_buffer(game);
 }
 
