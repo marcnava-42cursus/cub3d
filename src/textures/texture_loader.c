@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 22:22:51 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:25:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,32 @@
 #include <stdio.h>
 #include "render.h"
 
+static bool	load_texture(xpm_t **xpm, char *path)
+{
+	if (!path)
+	{
+		printf("Error: Path not found: %s\n", path);
+		return (false);
+	}
+	*xpm = mlx_load_xpm42(path);
+	if (!*xpm)
+	{
+		printf("Error: Failed to load texture: %s\n", path);
+		return (false);
+	}
+	return (true);
+}
+
 static int	load_custom_textures(t_custom_texture *custom)
 {
 	t_custom_texture	*current;
 	int					count;
 
+	if (!custom)
+	{
+			printf("Warning: No custom texture\n");
+		return (0);
+	}
 	current = custom;
 	count = 0;
 	while (current)
@@ -43,57 +64,33 @@ static int	load_custom_textures(t_custom_texture *custom)
 	return (1);
 }
 
-int	load_textures(t_textures *textures)
+bool	load_textures(t_textures *textures)
 {
-	if (textures->north_path)
-	{
-		textures->north = mlx_load_xpm42(textures->north_path);
-		if (!textures->north)
-		{
-			printf("Error: Failed to load north texture: %s\n",
-				textures->north_path);
-			return (0);
-		}
-	}
-	if (textures->south_path)
-	{
-		textures->south = mlx_load_xpm42(textures->south_path);
-		if (!textures->south)
-		{
-			printf("Error: Failed to load south texture: %s\n",
-				textures->south_path);
-			return (0);
-		}
-	}
-	if (textures->east_path)
-	{
-		textures->east = mlx_load_xpm42(textures->east_path);
-		if (!textures->east)
-		{
-			printf("Error: Failed to load east texture: %s\n",
-				textures->east_path);
-			return (0);
-		}
-	}
-	if (textures->west_path)
-	{
-		textures->west = mlx_load_xpm42(textures->west_path);
-		if (!textures->west)
-		{
-			printf("Error: Failed to load west texture: %s\n",
-				textures->west_path);
-			return (0);
-		}
-	}
-	textures->floor = mlx_load_xpm42(
+	if (!load_texture(&textures->north, textures->north_path))
+		return (false);
+	if (!load_texture(&textures->south, textures->south_path))
+		return (false);
+	if (!load_texture(&textures->east, textures->east_path))
+		return (false);
+	if (!load_texture(&textures->west, textures->west_path))
+		return (false);
+	if (textures->floor_path)
+		load_texture(&textures->floor, textures->floor_path);
+	else
+		textures->floor = mlx_load_xpm42(
 			"./assets/textures/walls/test_floor_flesh.xpm42");
-	textures->ceiling = mlx_load_xpm42(
+	if (textures->ceiling_path)
+		load_texture(&textures->ceiling, textures->ceiling_path);
+	else
+		textures->ceiling = mlx_load_xpm42(
 			"./assets/textures/walls/test_ceiling_flesh.xpm42");
-	textures->fog = mlx_load_xpm42(
+	if (textures->fog_path)
+		load_texture(&textures->fog, textures->fog_path);
+	else
+		textures->fog = mlx_load_xpm42(
 			"./assets/textures/walls/test_fog_128.xpm42");
-	if (textures->custom)
-		load_custom_textures(textures->custom);
-	return (1);
+	load_custom_textures(textures->custom);
+	return (true);
 }
 
 static void	free_custom_textures(t_custom_texture *custom)

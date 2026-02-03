@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 22:53:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:03:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ static void	init_empty_and_hold(t_player *player)
 	static const unsigned int	hold_frames[1] = {0};
 	static const unsigned int	hold_holds[1] = {1};
 
-	anim_init(&player->left_hand_anims[ANIM_EMPTY], &player->textures.hand,
-		true);
+	anim_init(&player->left_hand_anims[ANIM_EMPTY], &player->hand_atlas, true);
 	store_anim_frame_data(&player->left_hand_anims[ANIM_EMPTY], empty_frames,
 		empty_holds, 1);
-	anim_init(&player->left_hand_anims[ANIM_HOLD], &player->textures.hand,
-		true);
+	anim_init(&player->left_hand_anims[ANIM_HOLD], &player->hand_atlas, true);
 	store_anim_frame_data(&player->left_hand_anims[ANIM_HOLD], hold_frames,
 		hold_holds, 1);
 }
@@ -36,12 +34,10 @@ static void	init_take_and_throw(t_player *player)
 	static const unsigned int	throw_frames[3] = {1, 2, 3};
 	static const unsigned int	throw_holds[3] = {2, 1, 3};
 
-	anim_init(&player->left_hand_anims[ANIM_TAKE], &player->textures.hand,
-		false);
+	anim_init(&player->left_hand_anims[ANIM_TAKE], &player->hand_atlas, false);
 	store_anim_frame_data(&player->left_hand_anims[ANIM_TAKE], take_frames,
 		take_holds, 3);
-	anim_init(&player->left_hand_anims[ANIM_THROW], &player->textures.hand,
-		false);
+	anim_init(&player->left_hand_anims[ANIM_THROW], &player->hand_atlas, false);
 	store_anim_frame_data(&player->left_hand_anims[ANIM_THROW], throw_frames,
 		throw_holds, 3);
 }

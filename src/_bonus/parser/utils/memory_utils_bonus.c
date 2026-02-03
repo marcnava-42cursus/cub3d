@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 23:00:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:29:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ static void	free_texture_paths(t_textures *textures)
 	free_texture_path(&textures->south_path);
 	free_texture_path(&textures->west_path);
 	free_texture_path(&textures->east_path);
+	free_texture_path(&textures->floor_path);
+	free_texture_path(&textures->ceiling_path);
+	free_texture_path(&textures->fog_path);
 }
 
 static void	free_floor_list(t_floor *head)
@@ -86,21 +89,19 @@ void	free_cub_data(t_cub_data *data)
 	}
 	else
 	{
-		free_texture_path(&data->textures.north_path);
-		free_texture_path(&data->textures.south_path);
-		free_texture_path(&data->textures.west_path);
-		free_texture_path(&data->textures.east_path);
+		free_texture_paths(&data->textures);
 		free_textures(&data->textures);
 		free_map(&data->map);
 	}
 	free_texture_path(&data->up_path);
 	free_texture_path(&data->down_path);
 	free_texture_path(&data->player_floor_path);
-	atlas_free(&data->player.textures.hand);
-	atlas_free(&data->player.textures.thumb);
+	atlas_free(&data->player.hand_atlas);
+	atlas_free(&data->player.thumb_atlas);
 	atlas_free(&data->effects.absorb_atlas);
 	atlas_free(&data->effects.orb_atlas);
 	atlas_free(&data->effects.door_atlas);
+	atlas_free(&data->block.atlas);
 	free_player_anims(&data->player);
 	free_living_block_anims(&data->block);
 	free_effects_anims(&data->effects);

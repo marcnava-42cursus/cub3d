@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/02 23:03:27 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/03 17:36:15 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,7 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/texture_mapping.c \
 				$(SRCPATH)/render/texture_atlas.c \
+				$(SRCPATH)/render/frame_to_image.c \
 				$(SRCPATH)/render/texture_atlas_utils.c \
 				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/render/window.c \
@@ -124,6 +125,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/texture_atlas.c \
+				$(SRCPATH)/render/frame_to_image.c \
 				$(SRCPATH)/render/texture_atlas_utils.c \
 				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/raycast.c \

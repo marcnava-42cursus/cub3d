@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 15:04:54 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:17:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int		validate_texture_path(const char *path);
 int		validate_texture_id(const char *identifier);
 
 // Texture loading
-int		load_textures(t_textures *textures);
+bool	load_textures(t_textures *textures);
 void	free_textures(t_textures *textures);
 
 // Debug

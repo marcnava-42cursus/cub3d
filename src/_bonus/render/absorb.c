@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 10:35:39 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 18:27:52 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 	c_face = rh[game->double_buffer[NEXT]->width / 2].face;
 	if (game->cub_data.player.inventory == '\0')
 	{
-		if (game->cub_data.map.grid[c_cell[Y]][c_cell[X]] != '2')
+		if (game->cub_data.map.grid[c_cell[Y]][c_cell[X]] == '2')
 			return ;
 	}
 	while (i < game->double_buffer[NEXT]->width && i < MAX_WINDOW_WIDTH)

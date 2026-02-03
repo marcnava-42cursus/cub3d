@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:39:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 22:59:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 10:57:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	init_open_anims(t_effects *effects)
 		open_holds, 7);
 }
 
-static void init_close_anims(t_effects *effects)
+static void	init_close_anims(t_effects *effects)
 {
 	static const unsigned int	closed_frames[1] = {8};
 	static const unsigned int	closed_holds[1] = {1};
@@ -46,7 +46,7 @@ void	init_door_anims(t_effects *effects)
 {
 	effects->door_anims = ft_calloc(4, sizeof(t_anim));
 	if (!effects->door_anims)
-		return ;	
+		return ;
 	init_close_anims(effects);
 	init_open_anims(effects);
 }

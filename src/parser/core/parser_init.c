@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 16:57:18 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:07:19 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@ void	init_cub_data(t_cub_data *data)
 	data->player.orientation = 0;
 	data->player.inventory = '2';
 	data->player.state = STATE_HOLD;
-	atlas_init(&data->player.textures.hand, HAND_ATLAS,
-		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&data->player.textures.thumb, THUMB,
-		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&data->player.textures.weapon, WEAPON,
-		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
 }
 
 void	init_cub_data_parser_only(t_cub_data *data)

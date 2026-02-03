@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 16:46:31 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 17:35:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,20 @@ typedef enum e_coord
 }	t_coord;
 
 /*----------------------------- TEXTURE_ATLAS.C ------------------------------*/
-void		paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-				int coord[2], unsigned int current_frame[2], float scale);
-void		paint_hori_flip_current_frame_to_image(mlx_image_t *img,
-				t_atlas *atlas, int coord[2], unsigned int current_frame[2],
-				float scale);
+//void		paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
+//				int coord[2], unsigned int current_frame[2], float scale);
+//void		paint_hori_flip_current_frame_to_image(mlx_image_t *img,
+//				t_atlas *atlas, int coord[2], unsigned int current_frame[2],
+//				float scale);
 void		atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
 				unsigned int frame_height);
 void		atlas_free(t_atlas *atlas);
 
+/*----------------------------- FRAME_TO_IMAGE.C -----------------------------*/
+void		frame_to_image(mlx_image_t *img, t_atlas *atlas,
+			int coord[2], unsigned int frame[2]);
+void		hori_flip_frame_to_image(mlx_image_t *img, t_atlas *atlas,
+			int coord[2], unsigned int frame[2]);
 /*-------------------------- TEXTURE_ATLAS_UTILS.C ---------------------------*/
 uint8_t		*get_pixel_start(unsigned int stride, int current_frame[2],
 				t_atlas *atlas);

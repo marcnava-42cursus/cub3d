@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 22:08:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:39:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ typedef struct s_atlas
 // Estructura para texturas
 typedef struct s_textures
 {
-	char				*north_path;	// NO - file path
-	char				*south_path;	// SO - file path
-	char				*west_path;		// WE - file path
-	char				*east_path;		// EA - file path
+	char				*north_path;	// NO		- file path
+	char				*south_path;	// SO 		- file path
+	char				*west_path;		// WE		- file path
+	char				*east_path;		// EA		- file path
+	char				*floor_path;	// floor	- file path	
+	char				*ceiling_path;	// ceiling	- file path	
+	char				*fog_path;		// fog 		- file path	
 	xpm_t				*north;			// Loaded north texture
 	xpm_t				*south;			// Loaded south texture
 	xpm_t				*west;			// Loaded west texture
@@ -61,14 +64,6 @@ typedef struct s_textures
 	xpm_t				*fog;			// Loaded fog texture
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
-
-//Player texture collection
-typedef struct s_player_textures
-{
-	t_atlas	hand;
-	t_atlas	thumb;
-	t_atlas	weapon;
-}	t_player_textures;
 
 typedef struct s_anim
 {
@@ -94,7 +89,8 @@ typedef struct s_player
 	float				pitch;
 	char				inventory;
 	t_orientation		orientation;
-	t_player_textures	textures;
+	t_atlas				hand_atlas;
+	t_atlas				thumb_atlas;
 	t_anim				*left_hand_anims;
 	t_anim				*right_hand_anims;
 	int					current_left_hand_anim;
@@ -132,7 +128,16 @@ typedef struct s_living_block
 	bool	is_creating;
 	t_atlas	atlas;
 	t_anim	*anims;
+	int		current_anim;
 }	t_living_block;
+
+typedef struct s_door
+{
+	bool	is_locked;
+	t_atlas	*atlas;
+	t_anim	*anims;
+	int		current_anim;
+}	t_door;
 
 typedef struct s_effects
 {
