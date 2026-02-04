@@ -50,7 +50,7 @@ LIBFT		:=	$(LIBPATH)/libft
 LIBMLX		:=	$(LIBPATH)/minilibx
 MLX_SWAP_STAMP := $(LIBMLX)/build/.mlx_swap_interval
 
-INCLUDES	:=	-I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include
+INCLUDES	:=	-I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include -I$(LIBPATH)
 
 MLX			:=	$(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
@@ -186,6 +186,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_ghost_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
 				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
+				$(SRCPATH)/_bonus/audio/orb_audio_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
 				$(SRCPATH)/_bonus/animation/living_block_anims.c \
 				$(SRCPATH)/_bonus/animation/absorb_anims.c \
