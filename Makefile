@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/02 10:45:59 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/05 16:50:03 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -237,28 +237,28 @@ bonus:
 
 _compile:	libft libmlx $(OBJS)
 	@if [ ! -f $(NAME) ]; then \
-		echo "$(GREEN)✓ Linking $(NAME)...$(RESET)"; \
+		printf "$(GREEN)✓ Linking $(NAME)...$(RESET)\n"; \
 		$(CC) $(CFLAGS) $(OBJS) $(LIBFT)/libft.a $(MLX) -o $(NAME); \
-		echo "$(GREEN)$(BOLD)✓ $(NAME) compiled successfully!$(RESET)\n"; \
+		printf "$(GREEN)$(BOLD)✓ $(NAME) compiled successfully!$(RESET)\n\n"; \
 	elif [ $(NAME) -ot $(LIBFT)/libft.a ] || [ $(NAME) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH) -name '*.o' -newer $(NAME) 2>/dev/null)" ]; then \
-		echo "$(GREEN)✓ Linking $(NAME)...$(RESET)"; \
+		printf "$(GREEN)✓ Linking $(NAME)...$(RESET)\n"; \
 		$(CC) $(CFLAGS) $(OBJS) $(LIBFT)/libft.a $(MLX) -o $(NAME); \
-		echo "$(GREEN)$(BOLD)✓ $(NAME) compiled successfully!$(RESET)\n"; \
+		printf "$(GREEN)$(BOLD)✓ $(NAME) compiled successfully!$(RESET)\n\n"; \
 	else \
-		echo "$(GREEN)✓ Nothing to be done for $(NAME)$(RESET)\n"; \
+		printf "$(GREEN)✓ Nothing to be done for $(NAME)$(RESET)\n\n"; \
 	fi
 
-_compile_bonus:	libft libmlx $(OBJS_BONUS)
+_compile_bonus:	libft libmlx libminiaudio $(OBJS_BONUS)
 	@if [ ! -f $(NAME_BONUS) ]; then \
-		echo "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)"; \
+		printf "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)\n"; \
 		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
-		echo "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n"; \
+		printf "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n\n"; \
 	elif [ $(NAME_BONUS) -ot $(LIBFT)/libft.a ] || [ $(NAME_BONUS) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH_BONUS) -name '*.o' -newer $(NAME_BONUS) 2>/dev/null)" ]; then \
-		echo "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)"; \
+		printf "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)\n"; \
 		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
-		echo "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n"; \
+		printf "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n\n"; \
 	else \
-		echo "$(GREEN)✓ Nothing to be done for $(NAME_BONUS)$(RESET)\n"; \
+		printf "$(GREEN)✓ Nothing to be done for $(NAME_BONUS)$(RESET)\n\n"; \
 	fi
 
 $(OBJPATH)/%.o:	%.c
@@ -276,38 +276,42 @@ $(OBJPATH_BONUS)/%.o:	%.c
 		(printf "$(RED)\r✗ Failed compiling %-50s$(RESET)\n" "$<" && exit 1)
 
 clean:
-	@echo "$(YELLOW)Cleaning object files...$(RESET)"
+	@printf "$(YELLOW)Cleaning object files...$(RESET)\n"
 	@$(RM) $(OBJPATH) $(OBJPATH_BONUS)
 	@$(MAKE) -C $(LIBFT) clean > /dev/null 2>&1
 	@-$(MAKE) -C $(LIBMLX)/build clean > /dev/null 2>&1
-	@echo "$(GREEN)✓ Clean complete$(RESET)"
+	@printf "$(GREEN)✓ Clean complete$(RESET)\n"
 
 fclean:		clean
-	@echo "$(YELLOW)Removing binaries...$(RESET)"
+	@printf "$(YELLOW)Removing binaries...$(RESET)\n"
 	@$(RM) $(NAME) $(NAME_BONUS)
 	@$(RM) $(LIBPATH)
-	@echo "$(GREEN)✓ Full clean complete$(RESET)"
+	@printf "$(GREEN)✓ Full clean complete$(RESET)\n"
 
 libclean:
-	@echo "$(YELLOW)Removing libraries...$(RESET)"
+	@printf "$(YELLOW)Removing libraries...$(RESET)\n"
 	@$(RM) $(LIBPATH)
-	@echo "$(GREEN)✓ Libraries removed$(RESET)"
+	@printf "$(GREEN)✓ Libraries removed$(RESET)\n"
 
 re:			fclean all
 
-relib:		libclean libft libmlx
+relib:		libclean libft libmlx miniaudio
 
 libs/libft/Makefile:
 	@mkdir -p $(LIBPATH)
-	@echo "$(YELLOW)Cloning libft...$(RESET)"
+	@printf "$(YELLOW)Cloning libft...$(RESET)\n"
 	@git clone https://github.com/marcnava-42cursus/libft $(LIBFT) > /dev/null 2>&1
-	@echo "$(GREEN)✓ libft cloned$(RESET)"
+	@printf "$(GREEN)✓ libft cloned$(RESET)\n"
 
 libs/minilibx/CMakeLists.txt:
 	@mkdir -p $(LIBPATH)
-	@echo "$(YELLOW)Cloning minilibx...$(RESET)"
+	@printf "$(YELLOW)Cloning minilibx...$(RESET)\n"
 	@git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX) > /dev/null 2>&1
-	@echo "$(GREEN)✓ minilibx cloned$(RESET)"
+	@printf "$(GREEN)✓ minilibx cloned$(RESET)\n"
+
+libs/miniaudio.h:
+	@printf "$(YELLOW)Downloading miniaudio.h...$(RESET)\n"
+	@curl -fsSL -o libs/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
 
 libmlx:	$(LIBMLX)/CMakeLists.txt
 	@current_interval="$(MLX_SWAP_INTERVAL_VALUE)"; \
@@ -316,36 +320,39 @@ libmlx:	$(LIBMLX)/CMakeLists.txt
 	if [ -f "$(LIBMLX)/build/libmlx42.a" ] && \
 	   [ "$(LIBMLX)/CMakeLists.txt" -ot "$(LIBMLX)/build/libmlx42.a" ] && \
 	   [ "$$stored_interval" = "$$current_interval" ]; then \
-		echo "$(GREEN)✓ Nothing to be done for minilibx$(RESET)"; \
+		printf "$(GREEN)✓ Nothing to be done for minilibx$(RESET)\n"; \
 	else \
-		echo "$(YELLOW)Compiling minilibx...$(RESET)"; \
+		printf "$(YELLOW)Compiling minilibx...$(RESET)\n"; \
 		if cmake $(LIBMLX) -B $(LIBMLX)/build $(MLX_CMAKE_FLAGS) > /dev/null 2>&1 && \
 		   $(MAKE) -s -C $(LIBMLX)/build -j4 > /dev/null 2>&1; then \
-			echo "$(GREEN)✓ minilibx compiled$(RESET)"; \
-			echo "$$current_interval" > "$(MLX_SWAP_STAMP)"; \
+			printf "$(GREEN)✓ minilibx compiled$(RESET)\n"; \
+			printf "$$current_interval" > "$(MLX_SWAP_STAMP)"; \
 		else \
-			echo "$(RED)✗ Failed compiling minilibx$(RESET)"; \
+			printf "$(RED)✗ Failed compiling minilibx$(RESET)\n"; \
 			exit 1; \
 		fi; \
 	fi
 
 libft:	$(LIBFT)/Makefile
 	@if [ -f "$(LIBFT)/libft.a" ] && [ "$(LIBFT)/Makefile" -ot "$(LIBFT)/libft.a" ]; then \
-		echo "$(GREEN)✓ Nothing to be done for libft$(RESET)"; \
+		printf "$(GREEN)✓ Nothing to be done for libft$(RESET)\n"; \
 	else \
-		echo "$(YELLOW)Compiling libft...$(RESET)"; \
+		printf "$(YELLOW)Compiling libft...$(RESET)\n"; \
 		if $(MAKE) -s -C $(LIBFT) > /dev/null 2>&1; then \
-			echo "$(GREEN)✓ libft compiled$(RESET)"; \
+			printf "$(GREEN)✓ libft compiled$(RESET)\n"; \
 		else \
-			echo "$(RED)✗ Failed compiling libft$(RESET)"; \
+			printf "$(RED)✗ Failed compiling libft$(RESET)\n"; \
 			exit 1; \
 		fi; \
 	fi
+
+libminiaudio:	libs/miniaudio.h
+	@printf "$(GREEN)✓ miniaudio downloaded$(RESET)\n"
 
 reload:	all
 	./cub3D maps/example.cub
 
 reload_bonus:	bonus
-	./cub3D_bonus maps/example.cub
+	./cub3D_bonus maps/exampleb.cub
 
 .PHONY:		all bonus clean fclean libclean re relib libft libmlx reload reload_bonus
