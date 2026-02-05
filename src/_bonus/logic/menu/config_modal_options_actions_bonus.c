@@ -95,14 +95,10 @@ void	config_option_toggle(t_game *game, int index)
 			config_option_step_slider(game, slider, 1);
 		menu->pending_slider_index = -1;
 		menu->pending_slider_value = -1;
-		if (index == CONFIG_OPTION_GAME_SPEED)
-			name = "Game Speed";
-		else if (index == CONFIG_OPTION_FPS_LIMIT)
+		if (index == CONFIG_OPTION_FPS_LIMIT)
 			name = "FPS Limit";
 		else if (index == CONFIG_OPTION_MOUSE_SENS)
 			name = "Mouse Sensitivity";
-		else if (index == CONFIG_OPTION_PROJECTILE_SPEED)
-			name = "Projectile Speed";
 		else if (index == CONFIG_OPTION_QUALITY)
 			name = "Quality";
 		else

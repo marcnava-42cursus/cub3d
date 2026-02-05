@@ -277,8 +277,12 @@ $(OBJPATH_BONUS)/%.o:	%.c
 clean:
 	@echo "$(YELLOW)Cleaning object files...$(RESET)"
 	@$(RM) $(OBJPATH) $(OBJPATH_BONUS)
-	@$(MAKE) -C $(LIBFT) clean > /dev/null 2>&1
-	@-$(MAKE) -C $(LIBMLX)/build clean > /dev/null 2>&1
+	@if [ -f "$(LIBFT)/Makefile" ]; then \
+		$(MAKE) -C $(LIBFT) clean > /dev/null 2>&1; \
+	fi
+	@if [ -d "$(LIBMLX)/build" ]; then \
+		$(MAKE) -C $(LIBMLX)/build clean > /dev/null 2>&1; \
+	fi
 	@echo "$(GREEN)✓ Clean complete$(RESET)"
 
 fclean:		clean

@@ -19,6 +19,14 @@
 
 # define BREAK_BLOCK_DISTANCE 4
 # define PLACE_BLOCK_DISTANCE 20
+# define BASE_MOVE_SPEED 4.0f
+# define BASE_ROT_SPEED 2.5f
+# define GAME_SPEED_SCALE 1.0f
+# ifdef BONUS
+#  define DEFAULT_MOUSE_SENS 0.005f
+# else
+#  define DEFAULT_MOUSE_SENS 0.001f
+# endif
 
 // Orientaciones del jugador
 typedef enum e_orientation

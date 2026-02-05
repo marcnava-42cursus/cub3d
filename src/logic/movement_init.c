@@ -39,7 +39,7 @@ void	init_movement_system(t_game *game)
 	game->mouse_initialized = false;
 	game->mouse_delta_accumulated = 0.0f;
 	game->mouse_delta_accumulated_y = 0.0f;
-	game->mouse_sensitivity = 0.001f;
+	game->mouse_sensitivity = DEFAULT_MOUSE_SENS;
 	game->last_mouse_x = 0.0;
 	game->last_mouse_y = 0.0;
 	game->last_player_angle = game->cub_data.player.angle;

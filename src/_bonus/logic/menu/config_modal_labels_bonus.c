@@ -56,10 +56,8 @@ bool	ensure_settings_labels(t_game *game)
 	text[CONFIG_OPTION_MINIMAP] = "Show minimap";
 	text[CONFIG_OPTION_FULLSCREEN] = "Fullscreen";
 	text[CONFIG_OPTION_DEBUG_MODE] = "DEBUG MODE";
-	text[CONFIG_OPTION_GAME_SPEED] = "Game speed";
 	text[CONFIG_OPTION_FPS_LIMIT] = "FPS limit";
 	text[CONFIG_OPTION_MOUSE_SENS] = "Mouse sensitivity";
-	text[CONFIG_OPTION_PROJECTILE_SPEED] = "Projectile speed";
 	text[CONFIG_OPTION_QUALITY] = "Quality";
 	if (!menu->labels.settings_sections[0])
 		menu->labels.settings_sections[0] = mlx_put_string(

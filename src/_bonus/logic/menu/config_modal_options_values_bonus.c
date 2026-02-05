@@ -53,18 +53,20 @@ int	config_fps_limit_value(int index)
 	return (limits[index]);
 }
 
+float	config_mouse_sens_value(int raw)
+{
+	raw = clamp_value(raw, 1, 100);
+	return ((float)raw / 10000.0f);
+}
+
 int	config_option_slider_raw(t_game *game, int slider)
 {
 	if (!game)
 		return (0);
-	if (slider == CONFIG_SLIDER_GAME_SPEED)
-		return (game->menu.options.game_speed);
 	if (slider == CONFIG_SLIDER_FPS_LIMIT)
 		return (game->menu.options.fps_limit_index);
 	if (slider == CONFIG_SLIDER_MOUSE_SENS)
 		return (game->menu.options.mouse_sens);
-	if (slider == CONFIG_SLIDER_PROJECTILE_SPEED)
-		return (game->menu.options.projectile_speed);
 	if (slider == CONFIG_SLIDER_QUALITY)
 		return (game->menu.options.quality_index);
 	return (0);
@@ -74,14 +76,14 @@ void	config_option_set_slider_raw(t_game *game, int slider, int value)
 {
 	if (!game)
 		return ;
-	if (slider == CONFIG_SLIDER_GAME_SPEED)
-		game->menu.options.game_speed = value;
-	else if (slider == CONFIG_SLIDER_FPS_LIMIT)
+	if (slider == CONFIG_SLIDER_FPS_LIMIT)
 		game->menu.options.fps_limit_index = value;
 	else if (slider == CONFIG_SLIDER_MOUSE_SENS)
+	{
+		value = clamp_value(value, 1, 100);
 		game->menu.options.mouse_sens = value;
-	else if (slider == CONFIG_SLIDER_PROJECTILE_SPEED)
-		game->menu.options.projectile_speed = value;
+		game->mouse_sensitivity = config_mouse_sens_value(value);
+	}
 	else if (slider == CONFIG_SLIDER_QUALITY)
 	{
 		value = clamp_value(value, 0, CONFIG_QUALITY_COUNT - 1);

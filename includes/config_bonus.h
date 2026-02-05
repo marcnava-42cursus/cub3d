@@ -50,8 +50,8 @@ typedef struct s_game	t_game;
 # define CONFIG_MODAL_OPTION_BOX 22
 
 # define CONFIG_MODAL_TOGGLE_COUNT 5
-# define CONFIG_MODAL_SLIDER_COUNT 5
-# define CONFIG_MODAL_OPTION_COUNT 10 // TOGGLE_COUNT + SLIDER_COUNT
+# define CONFIG_MODAL_SLIDER_COUNT 3
+# define CONFIG_MODAL_OPTION_COUNT 8 // TOGGLE_COUNT + SLIDER_COUNT
 # define CONFIG_MODAL_CONTROL_COUNT 14
 
 typedef enum e_control_action
@@ -77,11 +77,9 @@ typedef enum e_control_action
 # define CONFIG_OPTION_MINIMAP 2
 # define CONFIG_OPTION_FULLSCREEN 3
 # define CONFIG_OPTION_DEBUG_MODE 4
-# define CONFIG_OPTION_GAME_SPEED 5
-# define CONFIG_OPTION_FPS_LIMIT 6
-# define CONFIG_OPTION_MOUSE_SENS 7
-# define CONFIG_OPTION_PROJECTILE_SPEED 8
-# define CONFIG_OPTION_QUALITY 9
+# define CONFIG_OPTION_FPS_LIMIT 5
+# define CONFIG_OPTION_MOUSE_SENS 6
+# define CONFIG_OPTION_QUALITY 7
 
 # define CONFIG_MODAL_CONTENT_PADDING 28
 # define CONFIG_MODAL_COLUMN_GAP 26
@@ -108,11 +106,9 @@ typedef enum e_control_action
 # define CONTROLLER_AXIS_COUNT 6
 # define CONTROLLER_DEADZONE 0.25f
 
-# define CONFIG_SLIDER_GAME_SPEED 0
-# define CONFIG_SLIDER_FPS_LIMIT 1
-# define CONFIG_SLIDER_MOUSE_SENS 2
-# define CONFIG_SLIDER_PROJECTILE_SPEED 3
-# define CONFIG_SLIDER_QUALITY 4
+# define CONFIG_SLIDER_FPS_LIMIT 0
+# define CONFIG_SLIDER_MOUSE_SENS 1
+# define CONFIG_SLIDER_QUALITY 2
 
 # define CONFIG_QUALITY_COUNT 4
 # define CONFIG_QUALITY_LOW 0
@@ -168,10 +164,8 @@ typedef struct s_config_options
 	bool	minimap;
 	bool	fullscreen;
 	bool	debug_mode;
-	int		game_speed;
 	int		fps_limit_index;
 	int		mouse_sens;
-	int		projectile_speed;
 	int		quality_index;
 	int		selected;
 }	t_config_options;
@@ -311,6 +305,7 @@ int		config_option_slider_value(t_game *game, int index);
 int		config_option_slider_raw(t_game *game, int slider);
 void	config_option_set_slider_raw(t_game *game, int slider, int value);
 int		config_fps_limit_value(int index);
+float	config_mouse_sens_value(int raw);
 void	config_option_set_slider_percent(t_game *game, int slider,
 			int percent);
 void	config_option_step_slider(t_game *game, int slider, int delta);
