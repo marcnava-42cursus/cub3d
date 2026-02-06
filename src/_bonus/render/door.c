@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:40:09 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 19:00:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 18:45:01 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static void	render_door_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
 	if (screen_bounds[0] > screen_bounds[1]
 		|| screen_bounds[1] < 0 || screen_bounds[0] >= (int)img->height)
 		return ;
-	if (screen_bounds[0] <= screen_bounds[1])
-		render_texture_line_bonus(rayhit, x, screen_bounds, game);
 	rayhit->wall_bounds[0] = screen_bounds[0];
 	rayhit->wall_bounds[1] = screen_bounds[1];
+	if (screen_bounds[0] <= screen_bounds[1])
+		render_texture_line_bonus(rayhit, x, game);
 }
 
 void	render_doors(t_game *game, t_rayhit *rayhits, float center,

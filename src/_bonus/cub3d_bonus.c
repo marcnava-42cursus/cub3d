@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/03 18:33:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 19:21:15 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ static void render_loop(void *param)
 	game = (t_game *)param;
 	orb_moved = orb_projectile_update(game, game->mlx->delta_time);
 	update_player_anims(&game->cub_data.player, game->mlx->delta_time);
-	update_living_block_anims(&game->cub_data.block, &game->orb,
-		game->mlx->delta_time);
+	update_living_block_anims(&game->cub_data.block, game->mlx->delta_time);
 	update_absorb_anims(&game->cub_data.player, &game->cub_data.effects,
 		game->mlx->delta_time);
 	update_orb_anims(&game->orb, &game->cub_data.effects, game->mlx->delta_time);

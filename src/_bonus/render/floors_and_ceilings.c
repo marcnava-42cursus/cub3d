@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 11:48:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 17:54:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 18:43:38 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
 {
 	float			f[2];
 	int				t[2];
-	unsigned int	pixel[2];
+	int				pixel[2];
 
 	fog = fog_factor(fog);
 	pixel[X] = 0;

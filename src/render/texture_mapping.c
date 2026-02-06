@@ -6,24 +6,25 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 15:15:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 20:08:39 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static int	get_tex_x(t_rayhit *rayhit, t_textures *textures, xpm_t **texture)
+static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
+		float *original_line_height)
 {
 	float	wall_x;
 
 	if (rayhit->face == NORTH)
-		*texture = textures->north;
+		*texture = game->cub_data.textures.north;
 	else if (rayhit->face == SOUTH)
-		*texture = textures->south;
+		*texture = game->cub_data.textures.south;
 	else if (rayhit->face == EAST)
-		*texture = textures->east;
+		*texture = game->cub_data.textures.east;
 	else if (rayhit->face == WEST)
-		*texture = textures->west;
+		*texture = game->cub_data.textures.west;
 	else
 		*texture = NULL;
 	if (rayhit->side == 0)
@@ -31,6 +32,8 @@ static int	get_tex_x(t_rayhit *rayhit, t_textures *textures, xpm_t **texture)
 	else
 		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
+	*original_line_height = (float)(*texture)->texture.height
+		/ (float)*original_line_height;
 	return ((int)(wall_x * (float)(*texture)->texture.width));
 }
 
@@ -89,26 +92,25 @@ void	paint_horizontal_line_texture(unsigned int y, unsigned int x,
 }
 
 void	render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
-		mlx_image_t *img, t_textures *textures)
+		t_game *game)
 {
 	xpm_t	*texture;
 	int		tex_x;
-	int		original_line_height;
 	float	step;
 	float	tex_offset;
 
-	if (x >= img->width)
+	if (x >= game->double_buffer[NEXT]->width)
 		return ;
-	if (y[1] >= (int)img->height)
-		y[1] = (int)img->height - 1;
+	if (y[1] >= (int)game->double_buffer[NEXT]->height)
+		y[1] = (int)game->double_buffer[NEXT]->height - 1;
 	if (y[0] >= y[1])
 		return ;
-	tex_x = get_tex_x(rayhit, textures, &texture);
+	step = (float)(rayhit->wall_bounds[1] - rayhit->wall_bounds[0] + 1);
+	tex_x = get_tex_x(game, rayhit, &texture, &step);
 	if ((rayhit->side == 0 && rayhit->face == NORTH)
 		|| (rayhit->side == 1 && rayhit->face == WEST))
 		tex_x = texture->texture.width - tex_x - 1;
-	original_line_height = rayhit->wall_bounds[1] - rayhit->wall_bounds[0] + 1;
-	step = (float)texture->texture.height / (float)original_line_height;
 	tex_offset = (y[0] - rayhit->wall_bounds[0]) * step;
-	paint_vertical_line_texture(x, y, img, texture, tex_x, tex_offset, step);
+	paint_vertical_line_texture(x, y, game->double_buffer[NEXT],
+		texture, tex_x, tex_offset, step);
 }

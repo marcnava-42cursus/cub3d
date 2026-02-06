@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 18:04:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 20:46:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
-				mlx_image_t *img, t_textures *textures);
+				t_game *game);
 void		paint_vertical_line_texture(unsigned int x, int y[2],
 				mlx_image_t *img, xpm_t *texture, int tex_x, float tex_pos,
 				float tex_step);
@@ -195,7 +195,7 @@ void		paint_horizontal_line_texture(unsigned int y, unsigned int x,
 # ifdef BONUS
 
 void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
-				int y[2], t_game *game);
+				t_game *game);
 void		paint_vertical_line_texture_bonus(unsigned int x, int y[2],
 				t_game *game, xpm_t *texture, int tex_x, float tex_pos,
 				float tex_step, float fog, t_anim *anim);
@@ -222,8 +222,6 @@ void		save_pixel_to_image(mlx_image_t *image, unsigned int x,
 int			t_color_to_int(t_color *color, int alpha);
 float		normalize_angle(float angle);
 float		clamp(float value, float min, float max);
-void		paint_vertical_line_color(unsigned int x, int y[2],
-				mlx_image_t *img, uint32_t color);
 void		safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/

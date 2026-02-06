@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 17:26:34 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 19:55:25 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	render_weapon(mlx_image_t *buffer, int buffer_x_center,
 	coord[Y] = buffer->height - (HAND_TEXTURE_HEIGHT)
 		- (WEAPON_TEXTURE_HEIGHT * 0.5f);
 	frame_to_image(buffer, &effects->orb_atlas, coord,
-			effects->orb_anims[effects->current_orb_anim].current_frame);
+		effects->orb_anims[effects->current_orb_anim].current_frame);
 }
 
 static void	render_right_hand(mlx_image_t *buffer, int buffer_x_center,
@@ -73,6 +73,6 @@ void	render_player_overlay(t_game *game)
 	buffer_x_center = buffer->width / 2;
 	render_left_hand(buffer, buffer_x_center, player);
 	render_weapon(buffer, buffer_x_center, effects, player);
-	//render_left_thumb(buffer, buffer_x_center, player);
 	render_right_hand(buffer, buffer_x_center, player);
 }
+//render_left_thumb(buffer, buffer_x_center, player);

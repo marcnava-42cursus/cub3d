@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 13:07:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 20:29:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ static bool	is_raycast_edge(t_rayhit *rayhits, unsigned int x, mlx_image_t *img)
 static void	draw_vertical_outline(unsigned int x, t_rayhit rayhit,
 		mlx_image_t *img, int color, float center, float dist_to_proj_plane)
 {
-	int			slice_height;
-	int			slice_bounds[2];
+	int	slice_height;
+	int	slice_bounds[2];
+	int	current_y;
 
 	if (!rayhit.hit)
 		return ;
@@ -62,7 +63,20 @@ static void	draw_vertical_outline(unsigned int x, t_rayhit rayhit,
 			/ rayhit.distance);
 	slice_bounds[0] = -slice_height / 2 + center;
 	slice_bounds[1] = slice_height / 2 + center;
-	paint_vertical_line_color((unsigned int)x, slice_bounds, img, color);
+	if (x >= img->width)
+		return ;
+	if (slice_bounds[1] >= (int)img->height)
+		slice_bounds[1] = (int)img->height - 1;
+	if (slice_bounds[0] < 0)
+		slice_bounds[0] = 0;
+	if (slice_bounds[0] >= slice_bounds[1])
+		return ;
+	current_y = slice_bounds[0];
+	while (current_y <= slice_bounds[1])
+	{
+		save_pixel_to_image(img, x, (unsigned int)current_y, color);
+		current_y++;
+	}
 }
 
 static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,

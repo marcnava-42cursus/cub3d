@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/23 10:31:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 20:46:05 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,6 @@ float	clamp(float value, float min, float max)
 	if (value > max)
 		value = max;
 	return (value);
-}
-
-// Simple solid color vertical line painter - y[0] is start and y[1] is end
-void	paint_vertical_line_color(unsigned int x, int y[2], mlx_image_t *img,
-		uint32_t color)
-{
-	int	current_y;
-
-	if (x >= img->width)
-		return ;
-	if (y[1] >= (int)img->height)
-		y[1] = (int)img->height - 1;
-	if (y[0] < 0)
-		y[0] = 0;
-	if (y[0] >= y[1])
-		return ;
-	current_y = y[0];
-	while (current_y <= y[1])
-	{
-		save_pixel_to_image(img, x, (unsigned int)current_y, color);
-		current_y++;
-	}
 }
 
 void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color)

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 18:05:32 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 19:20:24 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	init_living_block_anims(t_living_block *block)
 		breathe_holds, 10);
 }
 
-void	update_living_block_anims(t_living_block *block, t_orb_projectile *orb,
-		float delta_time)
+void	update_living_block_anims(t_living_block *block, float delta_time)
 {
 	bool	create_finished;
 
