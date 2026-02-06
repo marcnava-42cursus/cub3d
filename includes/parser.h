@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/03 12:17:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:53:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <string.h>
 # include <math.h>
+# include <stdbool.h>
 
 # include "libft.h"
 
