@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/02 14:12:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 17:42:52 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,11 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 		{
 			fog = fog_factor(cam_y);
 			paint_vertical_line_texture_bonus(i, draw_y,
-				game->double_buffer[NEXT],
+				game,
 				game->cub_data.effects.orb_atlas.xpm,
-				game->cub_data.textures.fog,
 				tex_x, tex_pos_start, tex_step, fog,
-				&game->cub_data.effects.orb_atlas,
-				game->cub_data.effects.orb_anims[
-				game->cub_data.effects.current_orb_anim].current_frame);
+				&game->cub_data.effects.orb_anims[
+				game->cub_data.effects.current_orb_anim]);
 		}
 		i++;
 	}

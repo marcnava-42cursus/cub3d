@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 17:35:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 18:04:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,6 @@ void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 				float dist_to_proj_plane);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
-uint32_t	sample_atlas_frame_pixel(t_atlas *atlas,
-				unsigned int current_frame[2], int tex_x, float tex_pos);
-uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos);
 void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
 				mlx_image_t *img, t_textures *textures);
 void		paint_vertical_line_texture(unsigned int x, int y[2],
@@ -200,18 +197,18 @@ void		paint_horizontal_line_texture(unsigned int y, unsigned int x,
 void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 				int y[2], t_game *game);
 void		paint_vertical_line_texture_bonus(unsigned int x, int y[2],
-				mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture,
-				int tex_x, float tex_pos, float tex_step, float fog,
-				t_atlas *atlas, unsigned int current_frame[2]);
-void		paint_horizontal_line_texture_bonus(unsigned int y, unsigned int x,
-				mlx_image_t *img, xpm_t *texture, xpm_t *fog_texture, int tex_y,
-				float tex_x, float fog, t_atlas *atlas,
-				unsigned int current_frame[2]);
+				t_game *game, xpm_t *texture, int tex_x, float tex_pos,
+				float tex_step, float fog, t_anim *anim);
 
 void		render_player_dynamic_bonus(t_game *game);
 void		render_map_2d_initial_bonus(t_game *game);
 void		toggle_map_overlay_bonus(t_game *game);
 # endif
+
+/*----------------------- PAINT_TEXTURE_PIXEL_BONUS.C ------------------------*/
+void	paint_texture_pixel_bonus(int pixel[2], t_game *game,
+		xpm_t *texture, int tex_coord[2], float fog, t_anim *anim);
+
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool		window_init(t_game *game);
 void		window_free(t_game *game);

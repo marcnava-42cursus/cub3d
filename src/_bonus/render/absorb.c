@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 18:27:52 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 17:43:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 	c_face = rh[game->double_buffer[NEXT]->width / 2].face;
 	if (game->cub_data.player.inventory == '\0')
 	{
-		if (game->cub_data.map.grid[c_cell[Y]][c_cell[X]] == '2')
+		if (game->cub_data.map.grid[c_cell[Y]][c_cell[X]] != '2')
 			return ;
 	}
 	while (i < game->double_buffer[NEXT]->width && i < MAX_WINDOW_WIDTH)
@@ -66,12 +66,11 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 			step = (float)game->cub_data.effects.absorb_atlas.frame_height
 				/ (float)(rh[i].wall_bounds[1] - rh[i].wall_bounds[0] + 1);
 			tex_offset = (y[0] - rh[i].wall_bounds[0]) * step;
-			paint_vertical_line_texture_bonus(i, y, game->double_buffer[NEXT],
+			paint_vertical_line_texture_bonus(i, y, game,
 					game->cub_data.effects.absorb_atlas.xpm,
-					game->cub_data.textures.fog, tex_x, tex_offset, step, fog,
-					&game->cub_data.effects.absorb_atlas,
-					game->cub_data.effects.absorb_anims[
-					game->cub_data.effects.current_absorb_anim].current_frame);	
+					tex_x, tex_offset, step, fog,
+					&game->cub_data.effects.absorb_anims[
+					game->cub_data.effects.current_absorb_anim]);	
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 11:48:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/31 17:05:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 17:54:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ static vertex_t	get_ray_steps(t_game *game, float ray_dir[4],
 static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
 		float fog)
 {
-	unsigned int	x;
 	float			f[2];
 	int				t[2];
+	unsigned int	pixel[2];
 
 	fog = fog_factor(fog);
-	x = 0;
-	while (x < game->double_buffer[NEXT]->width)
+	pixel[X] = 0;
+	pixel[Y] = (unsigned int)y;
+	while (pixel[X] < game->double_buffer[NEXT]->width)
 	{
 		f[X] = ray_steps.x - floorf(ray_steps.x);
 		f[Y] = ray_steps.y - floorf(ray_steps.y);
@@ -47,12 +48,10 @@ static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
 		t[Y] = (int)(f[Y] * texture->texture.height);
 		t[X] = (int)clamp((float)(t[X]), 0.0f, texture->texture.width - 1);
 		t[Y] = (int)clamp((float)(t[Y]), 0.0f, texture->texture.height - 1);
-		paint_horizontal_line_texture_bonus(y, x, game->double_buffer[NEXT],
-			texture, game->cub_data.textures.fog, t[Y], t[X], fog, NULL,
-			NULL);
+		paint_texture_pixel_bonus(pixel, game, texture, t, fog, NULL);
 		ray_steps.x += ray_steps.u;
 		ray_steps.y += ray_steps.v;
-		x++;
+		pixel[X]++;
 	}
 }
 
