@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 16:21:38 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 00:54:53 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	place_breakable_block(t_game *game)
 		store_block_in_inventory(&game->cub_data.player, cell);
 		return ;
 	}
+	game->cub_data.block.is_creating = true;
 	game->cub_data.player.state = STATE_THROW;
 	if (game->menu.options.debug_mode)
 		printf("Placed block at (%d, %d)\n", target_x, target_y);
