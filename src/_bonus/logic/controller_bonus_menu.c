@@ -14,6 +14,37 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
+static void	sync_settings_selection(t_game *game)
+{
+	if (!game)
+		return ;
+	if (game->menu.current_tab == CONFIG_MENU_GENERAL
+		&& game->menu.options.selected >= CONFIG_MODAL_TOGGLE_COUNT)
+		game->menu.options.selected = CONFIG_OPTION_SHOW_FPS;
+	else if (game->menu.current_tab == CONFIG_MENU_TUNING
+		&& game->menu.options.selected < CONFIG_MODAL_TOGGLE_COUNT)
+		game->menu.options.selected = CONFIG_OPTION_FPS_LIMIT;
+}
+
+static void	advance_menu_section(t_game *game, int delta)
+{
+	int	next;
+
+	if (!game)
+		return ;
+	next = game->menu.current_tab + delta;
+	if (next < CONFIG_MENU_GENERAL)
+		next = CONFIG_MENU_SECTION_COUNT - 1;
+	else if (next >= CONFIG_MENU_SECTION_COUNT)
+		next = CONFIG_MENU_GENERAL;
+	if (next == game->menu.current_tab)
+		return ;
+	game->menu.current_tab = next;
+	sync_settings_selection(game);
+	config_controls_cancel_rebind(game);
+	draw_modal_layout(game);
+}
+
 bool	controller_menu_hold_quit(t_game *game,
 			const GLFWgamepadstate *state)
 {
@@ -51,31 +82,43 @@ void	controller_update_menu(t_game *game,
 			GLFW_GAMEPAD_BUTTON_DPAD_RIGHT);
 	confirm = controller_action_pressed(game, state, ACTION_ACCEPT);
 	tab_left = controller_button_pressed(game, state,
-			GLFW_GAMEPAD_BUTTON_LEFT_BUMPER);
+				GLFW_GAMEPAD_BUTTON_LEFT_BUMPER);
 	tab_right = controller_button_pressed(game, state,
-			GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER);
-	if (tab_left && game->menu.current_tab > 0)
+				GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER);
+	if (game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
 	{
-		game->menu.current_tab--;
-		config_controls_cancel_rebind(game);
-		draw_modal_layout(game);
+		if (tab_left)
+			advance_menu_section(game, -1);
+		else if (tab_right)
+			advance_menu_section(game, 1);
+		if (up)
+			advance_menu_section(game, -1);
+		else if (down)
+			advance_menu_section(game, 1);
+		if (right || confirm)
+		{
+			game->menu.current_column = CONFIG_MENU_COLUMN_RIGHT;
+			draw_modal_layout(game);
+		}
+		return ;
 	}
-	else if (tab_right && game->menu.current_tab < 1)
+	if (left)
 	{
-		game->menu.current_tab++;
-		config_controls_cancel_rebind(game);
+		game->menu.current_column = CONFIG_MENU_COLUMN_LEFT;
 		draw_modal_layout(game);
+		return ;
 	}
-	if (game->menu.current_tab != 0)
+	if (game->menu.current_tab == CONFIG_MENU_KEYBOARD_CONTROLS
+		|| game->menu.current_tab == CONFIG_MENU_CONTROLLER_CONTROLS)
 	{
+		if (game->menu.current_tab == CONFIG_MENU_CONTROLLER_CONTROLS)
+			game->menu.controls_column = CONTROLS_COLUMN_CONTROLLER;
+		else
+			game->menu.controls_column = CONTROLS_COLUMN_KEYBOARD;
 		if (up)
 			config_controls_select(game, -1);
 		else if (down)
 			config_controls_select(game, 1);
-		if (left)
-			config_controls_set_column(game, -1);
-		else if (right)
-			config_controls_set_column(game, 1);
 		if (confirm)
 			config_controls_begin_rebind(game);
 		return ;
@@ -84,9 +127,14 @@ void	controller_update_menu(t_game *game,
 		config_option_select(game, -1);
 	else if (down)
 		config_option_select(game, 1);
-	if (left)
+	if (right)
+	{
+		if (game->menu.current_tab == CONFIG_MENU_TUNING)
+			config_option_adjust(game, 1);
+	}
+	if (tab_left && game->menu.current_tab == CONFIG_MENU_TUNING)
 		config_option_adjust(game, -1);
-	else if (right)
+	else if (tab_right && game->menu.current_tab == CONFIG_MENU_TUNING)
 		config_option_adjust(game, 1);
 	if (confirm)
 		config_option_toggle(game, game->menu.options.selected);

@@ -25,12 +25,13 @@ typedef struct s_game	t_game;
 # define CONFIG_MODAL_BORDER_COLOR 0xCCCCCCFF
 # define CONFIG_MODAL_BORDER_THICKNESS 2
 
-# define TAB_HEIGHT 40
-# define TAB_INACTIVE_COLOR 0x333333FF
-# define TAB_ACTIVE_COLOR 0x1E1E1ED0
-# define TAB_BORDER_COLOR 0x999999FF
-# define TAB_SELECTED_BORDER_COLOR 0xFFFFFFFF
-# define TAB_SELECTED_BORDER_THICKNESS 3
+# define CONFIG_MENU_GENERAL 0
+# define CONFIG_MENU_TUNING 1
+# define CONFIG_MENU_KEYBOARD_CONTROLS 2
+# define CONFIG_MENU_CONTROLLER_CONTROLS 3
+# define CONFIG_MENU_SECTION_COUNT 4
+# define CONFIG_MENU_COLUMN_LEFT 0
+# define CONFIG_MENU_COLUMN_RIGHT 1
 
 # define CONFIG_MODAL_QUIT_TEXT "QUIT (Q)"
 # define CONFIG_MODAL_QUIT_BTN_COLOR 0x555555FF
@@ -83,6 +84,13 @@ typedef enum e_control_action
 
 # define CONFIG_MODAL_CONTENT_PADDING 28
 # define CONFIG_MODAL_COLUMN_GAP 26
+# define CONFIG_MODAL_MENU_MIN_W 210
+# define CONFIG_MODAL_MENU_MAX_W 320
+# define CONFIG_MODAL_MENU_ITEM_H 52
+# define CONFIG_MODAL_MENU_ITEM_GAP 12
+# define CONFIG_MODAL_MENU_ITEM_COLOR 0x272727EE
+# define CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR 0xF2B13444
+# define CONFIG_MODAL_MENU_ITEM_BORDER_COLOR 0x131313FF
 # define CONFIG_MODAL_CARD_PADDING 18
 # define CONFIG_MODAL_SECTION_TITLE_GAP 26
 # define CONFIG_MODAL_ROW_SPACING 40
@@ -172,6 +180,7 @@ typedef struct s_config_options
 
 typedef struct s_menu_labels
 {
+	mlx_image_t	*menu_entries[CONFIG_MENU_SECTION_COUNT];
 	mlx_image_t	*settings_labels[CONFIG_MODAL_OPTION_COUNT];
 	mlx_image_t	*controls_labels[CONFIG_MODAL_CONTROL_COUNT];
 	mlx_image_t	*controls_key_labels[CONFIG_MODAL_CONTROL_COUNT];
@@ -196,6 +205,7 @@ typedef struct s_menu_state
 	bool		open;
 	bool		attached;
 	int			current_tab;
+	int			current_column;
 	mlx_image_t	*modal;
 	int32_t		quit_x;
 	int32_t		quit_y;
@@ -278,6 +288,7 @@ void	draw_controls_icon(mlx_image_t *img, t_icon icon);
 void	disable_label_group(mlx_image_t **labels, size_t count);
 bool	update_label_text(t_game *game, mlx_image_t **label, char *cache,
 			size_t cache_size, const char *text);
+bool	ensure_menu_labels(t_game *game);
 bool	ensure_settings_labels(t_game *game);
 bool	ensure_controls_labels(t_game *game);
 void	draw_card(t_game *game, t_rect card);

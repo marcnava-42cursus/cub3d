@@ -23,7 +23,8 @@ static bool	ensure_config_modal_ready(t_game *game)
 	game->menu.quit_h = CONFIG_MODAL_QUIT_BTN_H;
 	game->menu.quit_hover = false;
 	game->menu.quit_hold_time = 0.0;
-	game->menu.current_tab = 0;
+	game->menu.current_tab = CONFIG_MENU_GENERAL;
+	game->menu.current_column = CONFIG_MENU_COLUMN_LEFT;
 	config_options_reset(game);
 	if (!game->menu.modal)
 	{
@@ -75,6 +76,8 @@ void	set_config_modal_visible(t_game *game, bool visible)
 	}
 	game->menu.open = false;
 	clear_input_state(game);
+	disable_label_group(game->menu.labels.menu_entries,
+		CONFIG_MENU_SECTION_COUNT);
 	hide_settings_options(game);
 	hide_controls_options(game);
 	config_controls_cancel_rebind(game);

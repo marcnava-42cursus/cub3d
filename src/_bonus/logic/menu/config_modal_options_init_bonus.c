@@ -41,6 +41,7 @@ void	config_options_init(t_game *game)
 	menu->options.mouse_sens = 50;
 	menu->options.quality_index = CONFIG_QUALITY_MEDIUM;
 	menu->options.selected = 0;
+	menu->current_column = CONFIG_MENU_COLUMN_LEFT;
 	menu->pending_slider_index = -1;
 	menu->pending_slider_value = -1;
 	menu->slider_drag_index = -1;
@@ -73,6 +74,7 @@ void	config_options_reset(t_game *game)
 		return ;
 	menu = &game->menu;
 	menu->options.selected = 0;
+	menu->current_column = CONFIG_MENU_COLUMN_LEFT;
 	menu->controls_selected = 0;
 	menu->controls_column = CONTROLS_COLUMN_KEYBOARD;
 	menu->controls_rebind_column = -1;

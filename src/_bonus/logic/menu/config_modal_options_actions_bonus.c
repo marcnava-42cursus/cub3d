@@ -32,19 +32,48 @@ static bool	*toggle_value_ptr(t_game *game, int index)
 	return (NULL);
 }
 
+static bool	get_section_option_range(t_game *game, int *min, int *max)
+{
+	if (!game || !min || !max)
+		return (false);
+	if (game->menu.current_tab == CONFIG_MENU_GENERAL)
+	{
+		*min = 0;
+		*max = CONFIG_MODAL_TOGGLE_COUNT - 1;
+		return (true);
+	}
+	if (game->menu.current_tab == CONFIG_MENU_TUNING)
+	{
+		*min = CONFIG_MODAL_TOGGLE_COUNT;
+		*max = CONFIG_MODAL_OPTION_COUNT - 1;
+		return (true);
+	}
+	return (false);
+}
+
 void	config_option_select(t_game *game, int delta)
 {
 	int				selected;
+	int				min;
+	int				max;
 	t_menu_state	*menu;
 
 	if (!game)
 		return ;
+	if (!get_section_option_range(game, &min, &max))
+		return ;
 	menu = &game->menu;
+	if (menu->options.selected < min || menu->options.selected > max)
+	{
+		menu->options.selected = min;
+		draw_modal_layout(game);
+		return ;
+	}
 	selected = menu->options.selected + delta;
-	if (selected < 0)
-		selected = CONFIG_MODAL_OPTION_COUNT - 1;
-	else if (selected >= CONFIG_MODAL_OPTION_COUNT)
-		selected = 0;
+	if (selected < min)
+		selected = max;
+	else if (selected > max)
+		selected = min;
 	menu->options.selected = selected;
 	draw_modal_layout(game);
 }

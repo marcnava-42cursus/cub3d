@@ -56,7 +56,7 @@ static void	draw_controls_rows(t_game *game, t_rect card, int column)
 	mlx_image_t	**key_labels;
 
 	selected = config_controls_selected(game);
-	if (config_controls_column(game) != column)
+	if (game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
 		selected = -1;
 	if (column == CONTROLS_COLUMN_CONTROLLER)
 	{
@@ -119,21 +119,21 @@ static void	draw_controls_column(t_game *game, t_rect card, int column)
 void	draw_controls_options(t_game *game, t_rect panel)
 {
 	t_menu_layout	layout;
-	t_menu_state	*menu;
 	int				min_height;
+	int				column;
 
 	if (!game || !game->menu.modal || !ensure_controls_labels(game))
 		return ;
-	menu = &game->menu;
 	(void)panel;
-	layout = menu_layout_build(menu);
+	layout = menu_layout_build(&game->menu);
+	if (game->menu.current_tab == CONFIG_MENU_CONTROLLER_CONTROLS)
+		column = CONTROLS_COLUMN_CONTROLLER;
+	else
+		column = CONTROLS_COLUMN_KEYBOARD;
 	min_height = controls_card_min_height();
 	if (min_height > layout.content.h)
 		min_height = layout.content.h;
-	if (layout.left.h < min_height)
-		layout.left.h = min_height;
 	if (layout.right.h < min_height)
 		layout.right.h = min_height;
-	draw_controls_column(game, layout.left, CONTROLS_COLUMN_KEYBOARD);
-	draw_controls_column(game, layout.right, CONTROLS_COLUMN_CONTROLLER);
+	draw_controls_column(game, layout.right, column);
 }

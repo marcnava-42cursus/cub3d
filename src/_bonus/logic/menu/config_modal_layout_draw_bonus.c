@@ -14,65 +14,46 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
-static void	draw_tab_icons(t_game *game, t_rect panel, int tab_w)
+static void	draw_menu_labels(t_game *game, t_rect card)
 {
-	t_icon	icon;
+	t_menu_state	*menu;
+	t_border		border;
+	t_rect			item;
+	mlx_image_t		*label;
+	uint32_t		color;
+	int				i;
+	int				row_y;
 
-	icon.cx = panel.x + tab_w / 2;
-	icon.cy = panel.y + TAB_HEIGHT / 2;
-	icon.size = 24;
-	icon.color = CONFIG_MODAL_MUTED_TEXT_COLOR;
-	if (game->menu.current_tab == 0)
-		icon.color = CONFIG_MODAL_ACCENT_COLOR;
-	draw_settings_icon(game->menu.modal, icon);
-	icon.cx = panel.x + tab_w + tab_w / 2;
-	icon.size = 32;
-	icon.color = CONFIG_MODAL_MUTED_TEXT_COLOR;
-	if (game->menu.current_tab == 1)
-		icon.color = CONFIG_MODAL_ACCENT_COLOR;
-	draw_controls_icon(game->menu.modal, icon);
-}
-
-static void	draw_tabs(t_game *game, t_rect panel)
-{
-	int			tab_w;
-	int			i;
-	uint32_t	color;
-	t_border	border;
-	t_rect		indicator;
-
-	tab_w = panel.w / 2;
-	i = 0;
+	menu = &game->menu;
 	border.thickness = 1;
-	border.color = TAB_BORDER_COLOR;
-	while (i < 2)
+	border.color = CONFIG_MODAL_MENU_ITEM_BORDER_COLOR;
+	i = 0;
+	while (i < CONFIG_MENU_SECTION_COUNT)
 	{
-		color = TAB_INACTIVE_COLOR;
-		if (game->menu.current_tab == i)
-			color = TAB_ACTIVE_COLOR;
-		border.area = rect_make(panel.x + i * tab_w, panel.y,
-				tab_w, TAB_HEIGHT);
-		draw_rect(game->menu.modal, border.area, color);
+		row_y = card.y + CONFIG_MODAL_CARD_PADDING
+			+ i * (CONFIG_MODAL_MENU_ITEM_H + CONFIG_MODAL_MENU_ITEM_GAP);
+		item = rect_make(card.x + CONFIG_MODAL_CARD_PADDING, row_y,
+				card.w - CONFIG_MODAL_CARD_PADDING * 2,
+				CONFIG_MODAL_MENU_ITEM_H);
+		color = CONFIG_MODAL_MENU_ITEM_COLOR;
+		if (menu->current_tab == i)
+			color = CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR;
+		draw_rect(game->menu.modal, item, color);
+		border.area = item;
 		draw_border(game->menu.modal, border);
-		if (game->menu.current_tab == i)
-		{
-			indicator = rect_make(border.area.x,
-					border.area.y + TAB_HEIGHT - 3, tab_w, 3);
-			draw_rect(game->menu.modal, indicator,
-				CONFIG_MODAL_ACCENT_COLOR);
-		}
+		label = menu->labels.menu_entries[i];
+		if (!label)
+			return ;
+		label->instances[0].x = item.x + CONFIG_MODAL_CARD_PADDING;
+		label->instances[0].y = item.y
+			+ (item.h - (int)label->height) / 2;
+		set_image_enabled(label, true);
 		i++;
 	}
-	draw_tab_icons(game, panel, tab_w);
 }
 
 static void	draw_quit_section(t_game *game, t_rect panel)
 {
-	if (game->menu.current_tab != 0)
-	{
-		set_image_enabled(game->menu.quit_label, false);
-		return ;
-	}
 	game->menu.quit_x = panel.x + panel.w - CONFIG_MODAL_BORDER_THICKNESS
 		- CONFIG_MODAL_QUIT_BTN_MARGIN - game->menu.quit_w;
 	game->menu.quit_y = panel.y + panel.h - CONFIG_MODAL_BORDER_THICKNESS
@@ -100,6 +81,8 @@ void	draw_modal_layout(t_game *game)
 	if (!game || !game->menu.modal)
 		return ;
 	layout = menu_layout_build(&game->menu);
+	if (!ensure_menu_labels(game))
+		return ;
 	draw_rect(game->menu.modal, rect_make(0, 0,
 			(int)game->menu.modal->width, (int)game->menu.modal->height),
 		CONFIG_MODAL_BG_COLOR);
@@ -110,11 +93,10 @@ void	draw_modal_layout(t_game *game)
 	border.thickness = CONFIG_MODAL_BORDER_THICKNESS;
 	draw_bevel_border(game->menu.modal, border,
 		CONFIG_MODAL_CARD_BORDER_LIGHT, CONFIG_MODAL_CARD_BORDER_DARK);
-	draw_tabs(game, layout.panel);
-	draw_rect(game->menu.modal, rect_make(layout.panel.x,
-			layout.panel.y + TAB_HEIGHT - 1, layout.panel.w, 1),
-		TAB_BORDER_COLOR);
-	if (game->menu.current_tab == 0)
+	draw_card(game, layout.left);
+	draw_menu_labels(game, layout.left);
+	if (game->menu.current_tab == CONFIG_MENU_GENERAL
+		|| game->menu.current_tab == CONFIG_MENU_TUNING)
 	{
 		draw_settings_options(game, layout.panel);
 		hide_controls_options(game);

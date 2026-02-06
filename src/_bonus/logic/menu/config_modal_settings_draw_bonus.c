@@ -14,42 +14,44 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
-static void	place_settings_sections(t_menu_state *menu,
-			t_rect left, t_rect right)
+static void	place_settings_section(t_menu_state *menu, t_rect card,
+			int section)
 {
-	menu->labels.settings_sections[0]->instances[0].x = left.x
+	mlx_image_t	*label;
+
+	if (section == CONFIG_MENU_TUNING)
+		label = menu->labels.settings_sections[1];
+	else
+		label = menu->labels.settings_sections[0];
+	if (!label)
+		return ;
+	label->instances[0].x = card.x
 		+ CONFIG_MODAL_CARD_PADDING;
-	menu->labels.settings_sections[0]->instances[0].y = left.y
+	label->instances[0].y = card.y
 		+ CONFIG_MODAL_CARD_PADDING;
-	menu->labels.settings_sections[1]->instances[0].x = right.x
-		+ CONFIG_MODAL_CARD_PADDING;
-	menu->labels.settings_sections[1]->instances[0].y = right.y
-		+ CONFIG_MODAL_CARD_PADDING;
-	set_image_enabled(menu->labels.settings_sections[0], true);
-	set_image_enabled(menu->labels.settings_sections[1], true);
+	set_image_enabled(label, true);
 }
 
-static void	draw_settings_toggles(t_game *game, t_menu_layout layout)
+static void	draw_settings_toggles(t_game *game, t_rect card)
 {
-	t_rect	left;
 	int		i;
 	int		row_y;
 	bool	selected;
 	t_rect	toggle_rect;
 
-	left = layout.left;
 	i = 0;
 	while (i < CONFIG_MODAL_TOGGLE_COUNT)
 	{
-		row_y = menu_layout_row_y(left, i);
-		selected = (game->menu.options.selected == i);
+		row_y = menu_layout_row_y(card, i);
+		selected = (game->menu.current_column == CONFIG_MENU_COLUMN_RIGHT
+				&& game->menu.options.selected == i);
 		if (selected)
-			draw_row_highlight(game, left, row_y);
-		game->menu.labels.settings_labels[i]->instances[0].x = left.x
+			draw_row_highlight(game, card, row_y);
+		game->menu.labels.settings_labels[i]->instances[0].x = card.x
 			+ CONFIG_MODAL_CARD_PADDING;
 		game->menu.labels.settings_labels[i]->instances[0].y = row_y + 4;
 		set_image_enabled(game->menu.labels.settings_labels[i], true);
-		toggle_rect = rect_make(left.x + left.w - CONFIG_MODAL_CARD_PADDING
+		toggle_rect = rect_make(card.x + card.w - CONFIG_MODAL_CARD_PADDING
 				- CONFIG_MODAL_TOGGLE_W,
 				row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_TOGGLE_H) / 2,
 				CONFIG_MODAL_TOGGLE_W, CONFIG_MODAL_TOGGLE_H);
@@ -61,7 +63,6 @@ static void	draw_settings_toggles(t_game *game, t_menu_layout layout)
 
 static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 {
-	t_rect	right;
 	int		i;
 	int		row_y;
 	bool	selected;
@@ -69,17 +70,17 @@ static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 	t_rect	value_rect;
 	char	value_text[CONFIG_MODAL_SLIDER_VALUE_LEN];
 
-	right = layout.right;
 	i = 0;
 	while (i < CONFIG_MODAL_SLIDER_COUNT)
 	{
-		row_y = menu_layout_row_y(right, i);
-		selected = (game->menu.options.selected
+		row_y = menu_layout_row_y(layout.right, i);
+		selected = (game->menu.current_column == CONFIG_MENU_COLUMN_RIGHT
+				&& game->menu.options.selected
 				== CONFIG_MODAL_TOGGLE_COUNT + i);
 		if (selected)
-			draw_row_highlight(game, right, row_y);
+			draw_row_highlight(game, layout.right, row_y);
 		game->menu.labels.settings_labels[CONFIG_MODAL_TOGGLE_COUNT + i]
-			->instances[0].x = right.x + CONFIG_MODAL_CARD_PADDING;
+			->instances[0].x = layout.right.x + CONFIG_MODAL_CARD_PADDING;
 		game->menu.labels.settings_labels[CONFIG_MODAL_TOGGLE_COUNT + i]
 			->instances[0].y = row_y + 4;
 		set_image_enabled(game->menu.labels.settings_labels
@@ -91,10 +92,10 @@ static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 		config_option_slider_text(game, CONFIG_MODAL_TOGGLE_COUNT + i,
 			value_text, sizeof(value_text));
 		if (update_label_text(game,
-				&game->menu.labels.slider_value_labels[i],
-				game->menu.labels.slider_value_cache[i],
-				sizeof(game->menu.labels.slider_value_cache[i]),
-				value_text))
+					&game->menu.labels.slider_value_labels[i],
+					game->menu.labels.slider_value_cache[i],
+					sizeof(game->menu.labels.slider_value_cache[i]),
+					value_text))
 		{
 			value_rect = rect_make(slider_rect.x + slider_rect.w
 					+ CONFIG_MODAL_SLIDER_VALUE_GAP,
@@ -106,8 +107,9 @@ static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 					.slider_value_labels[i]->height);
 			if (value_rect.x
 				+ (int)game->menu.labels.slider_value_labels[i]->width
-				> right.x + right.w - CONFIG_MODAL_CARD_PADDING)
-				value_rect.x = right.x + right.w
+				> layout.right.x + layout.right.w
+				- CONFIG_MODAL_CARD_PADDING)
+				value_rect.x = layout.right.x + layout.right.w
 					- CONFIG_MODAL_CARD_PADDING
 					- (int)game->menu.labels
 					.slider_value_labels[i]->width;
@@ -116,7 +118,7 @@ static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 			game->menu.labels.slider_value_labels[i]->instances[0].y
 				= value_rect.y;
 			set_image_enabled(game->menu.labels.slider_value_labels[i],
-				true);
+					true);
 		}
 		i++;
 	}
@@ -132,9 +134,16 @@ void	draw_settings_options(t_game *game, t_rect panel)
 	menu = &game->menu;
 	(void)panel;
 	layout = menu_layout_build(menu);
-	draw_card(game, layout.left);
+	disable_label_group(menu->labels.settings_labels,
+		CONFIG_MODAL_OPTION_COUNT);
+	disable_label_group(menu->labels.slider_value_labels,
+		CONFIG_MODAL_SLIDER_COUNT);
+	set_image_enabled(menu->labels.settings_sections[0], false);
+	set_image_enabled(menu->labels.settings_sections[1], false);
 	draw_card(game, layout.right);
-	place_settings_sections(menu, layout.left, layout.right);
-	draw_settings_toggles(game, layout);
-	draw_settings_sliders(game, layout);
+	place_settings_section(menu, layout.right, menu->current_tab);
+	if (menu->current_tab == CONFIG_MENU_TUNING)
+		draw_settings_sliders(game, layout);
+	else
+		draw_settings_toggles(game, layout.right);
 }
