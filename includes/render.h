@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 20:46:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:35:49 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,10 @@ uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
 /*-------------------------------- ABSORB.C ----------------------------------*/
 void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 				float dist_to_proj_plane);
+
+/*------------------------------ LIVING_BLOCK.C ------------------------------*/
+void	render_living_block(t_game *game, t_rayhit *rayhits, float center,
+		float dist_to_proj_plane);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],

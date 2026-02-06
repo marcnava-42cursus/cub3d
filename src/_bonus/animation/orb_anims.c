@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:47:25 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 10:56:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:45:11 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	update_orb_anims(t_orb_projectile *orb, t_effects *effects,
 		if (orb->mode == ORB_MODE_PLACE)
 			set_current_anim(effects->orb_anims, &effects->current_orb_anim,
 				ORB_LOOP);
-		else if (orb->mode == ORB_MODE_TAKE)
+		if (orb->mode == ORB_MODE_TAKE)
 		{
 			if (effects->current_orb_anim != ORB_SPAWN
 				&& effects->current_orb_anim != ORB_LOOP && !finished)

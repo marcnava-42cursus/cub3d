@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 19:20:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 22:53:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ void	init_living_block_anims(t_living_block *block)
 		breathe_holds, 10);
 }
 
-void	update_living_block_anims(t_living_block *block, float delta_time)
+void	update_living_block_anims(t_living_block *block, t_orb_projectile *orb, float delta_time)
 {
 	bool	create_finished;
 
 	create_finished = false;
 	anim_update(&block->anims[ANIM_BREATHE], delta_time);
-	if (block->is_creating)
+	if (orb->active && orb->mode == ORB_MODE_PLACE)
 	{
 		create_finished = anim_update(&block->anims[ANIM_CREATE], delta_time);
 		if (create_finished)
-			block->is_creating = false;
+			anim_start(&block->anims[ANIM_CREATE]);
 	}
 }
 

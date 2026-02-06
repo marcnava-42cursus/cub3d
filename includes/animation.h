@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 19:20:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:36:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ void	init_player_right_hand_anims(t_player *player);
 
 /*-------------------------- LIVING_BLOCK_ANIMS.C ----------------------------*/
 void	init_living_block_anims(t_living_block *block);
-void	update_living_block_anims(t_living_block *block, float delta_time);
+void	update_living_block_anims(t_living_block *block, t_orb_projectile *orb,
+			float delta_time);
 void	free_living_block_anims(t_living_block *block);
 
 /*---------------------------- EFFECTS_ANIMS.C -------------------------------*/

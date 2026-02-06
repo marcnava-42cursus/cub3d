@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/06 22:28:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 22:44:27 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_textures
 	xpm_t				*floor;			// Loaded floor texture
 	xpm_t				*ceiling;		// Loaded ceiling texture
 	xpm_t				*fog;			// Loaded fog texture
-	xpm_t				*ghost_block;	// Temporary block while orb is flying
 	t_atlas				living;
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
