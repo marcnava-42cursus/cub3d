@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic_bonus.h"
 
 static void	orb_projectile_activate(t_game *game, t_orb_mode mode,
 		float start_x, float start_y)
@@ -31,6 +32,7 @@ bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 		return (false);
 	orb_projectile_activate(game, ORB_MODE_TAKE,
 		(float)cell_x + 0.5f, (float)cell_y + 0.5f);
+	bonus_audio_play_orb_launch();
 	game->orb.payload = block;
 	game->orb.target_cell_x = -1;
 	game->orb.target_cell_y = -1;
@@ -44,8 +46,11 @@ bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 {
 	if (!game || game->orb.active)
 		return (false);
+	if (!orb_projectile_spawn_ghost(game, target_x, target_y))
+		return (false);
 	orb_projectile_activate(game, ORB_MODE_PLACE,
 		game->cub_data.player.x, game->cub_data.player.y);
+	bonus_audio_play_orb_launch();
 	game->orb.payload = block;
 	game->orb.target_cell_x = target_x;
 	game->orb.target_cell_y = target_y;

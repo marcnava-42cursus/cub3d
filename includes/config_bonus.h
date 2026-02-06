@@ -25,12 +25,13 @@ typedef struct s_game	t_game;
 # define CONFIG_MODAL_BORDER_COLOR 0xCCCCCCFF
 # define CONFIG_MODAL_BORDER_THICKNESS 2
 
-# define TAB_HEIGHT 40
-# define TAB_INACTIVE_COLOR 0x333333FF
-# define TAB_ACTIVE_COLOR 0x1E1E1ED0
-# define TAB_BORDER_COLOR 0x999999FF
-# define TAB_SELECTED_BORDER_COLOR 0xFFFFFFFF
-# define TAB_SELECTED_BORDER_THICKNESS 3
+# define CONFIG_MENU_GENERAL 0
+# define CONFIG_MENU_TUNING 1
+# define CONFIG_MENU_KEYBOARD_CONTROLS 2
+# define CONFIG_MENU_CONTROLLER_CONTROLS 3
+# define CONFIG_MENU_SECTION_COUNT 4
+# define CONFIG_MENU_COLUMN_LEFT 0
+# define CONFIG_MENU_COLUMN_RIGHT 1
 
 # define CONFIG_MODAL_QUIT_TEXT "QUIT (Q)"
 # define CONFIG_MODAL_QUIT_BTN_COLOR 0x555555FF
@@ -50,8 +51,8 @@ typedef struct s_game	t_game;
 # define CONFIG_MODAL_OPTION_BOX 22
 
 # define CONFIG_MODAL_TOGGLE_COUNT 5
-# define CONFIG_MODAL_SLIDER_COUNT 5
-# define CONFIG_MODAL_OPTION_COUNT 10 // TOGGLE_COUNT + SLIDER_COUNT
+# define CONFIG_MODAL_SLIDER_COUNT 3
+# define CONFIG_MODAL_OPTION_COUNT 8 // TOGGLE_COUNT + SLIDER_COUNT
 # define CONFIG_MODAL_CONTROL_COUNT 14
 
 typedef enum e_control_action
@@ -77,14 +78,19 @@ typedef enum e_control_action
 # define CONFIG_OPTION_MINIMAP 2
 # define CONFIG_OPTION_FULLSCREEN 3
 # define CONFIG_OPTION_DEBUG_MODE 4
-# define CONFIG_OPTION_GAME_SPEED 5
-# define CONFIG_OPTION_FPS_LIMIT 6
-# define CONFIG_OPTION_MOUSE_SENS 7
-# define CONFIG_OPTION_PROJECTILE_SPEED 8
-# define CONFIG_OPTION_QUALITY 9
+# define CONFIG_OPTION_FPS_LIMIT 5
+# define CONFIG_OPTION_MOUSE_SENS 6
+# define CONFIG_OPTION_QUALITY 7
 
 # define CONFIG_MODAL_CONTENT_PADDING 28
 # define CONFIG_MODAL_COLUMN_GAP 26
+# define CONFIG_MODAL_MENU_MIN_W 210
+# define CONFIG_MODAL_MENU_MAX_W 320
+# define CONFIG_MODAL_MENU_ITEM_H 52
+# define CONFIG_MODAL_MENU_ITEM_GAP 12
+# define CONFIG_MODAL_MENU_ITEM_COLOR 0x272727EE
+# define CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR 0xF2B13444
+# define CONFIG_MODAL_MENU_ITEM_BORDER_COLOR 0x131313FF
 # define CONFIG_MODAL_CARD_PADDING 18
 # define CONFIG_MODAL_SECTION_TITLE_GAP 26
 # define CONFIG_MODAL_ROW_SPACING 40
@@ -108,11 +114,9 @@ typedef enum e_control_action
 # define CONTROLLER_AXIS_COUNT 6
 # define CONTROLLER_DEADZONE 0.25f
 
-# define CONFIG_SLIDER_GAME_SPEED 0
-# define CONFIG_SLIDER_FPS_LIMIT 1
-# define CONFIG_SLIDER_MOUSE_SENS 2
-# define CONFIG_SLIDER_PROJECTILE_SPEED 3
-# define CONFIG_SLIDER_QUALITY 4
+# define CONFIG_SLIDER_FPS_LIMIT 0
+# define CONFIG_SLIDER_MOUSE_SENS 1
+# define CONFIG_SLIDER_QUALITY 2
 
 # define CONFIG_QUALITY_COUNT 4
 # define CONFIG_QUALITY_LOW 0
@@ -168,16 +172,15 @@ typedef struct s_config_options
 	bool	minimap;
 	bool	fullscreen;
 	bool	debug_mode;
-	int		game_speed;
 	int		fps_limit_index;
 	int		mouse_sens;
-	int		projectile_speed;
 	int		quality_index;
 	int		selected;
 }	t_config_options;
 
 typedef struct s_menu_labels
 {
+	mlx_image_t	*menu_entries[CONFIG_MENU_SECTION_COUNT];
 	mlx_image_t	*settings_labels[CONFIG_MODAL_OPTION_COUNT];
 	mlx_image_t	*controls_labels[CONFIG_MODAL_CONTROL_COUNT];
 	mlx_image_t	*controls_key_labels[CONFIG_MODAL_CONTROL_COUNT];
@@ -202,6 +205,7 @@ typedef struct s_menu_state
 	bool		open;
 	bool		attached;
 	int			current_tab;
+	int			current_column;
 	mlx_image_t	*modal;
 	int32_t		quit_x;
 	int32_t		quit_y;
@@ -284,6 +288,7 @@ void	draw_controls_icon(mlx_image_t *img, t_icon icon);
 void	disable_label_group(mlx_image_t **labels, size_t count);
 bool	update_label_text(t_game *game, mlx_image_t **label, char *cache,
 			size_t cache_size, const char *text);
+bool	ensure_menu_labels(t_game *game);
 bool	ensure_settings_labels(t_game *game);
 bool	ensure_controls_labels(t_game *game);
 void	draw_card(t_game *game, t_rect card);
@@ -311,6 +316,7 @@ int		config_option_slider_value(t_game *game, int index);
 int		config_option_slider_raw(t_game *game, int slider);
 void	config_option_set_slider_raw(t_game *game, int slider, int value);
 int		config_fps_limit_value(int index);
+float	config_mouse_sens_value(int raw);
 void	config_option_set_slider_percent(t_game *game, int slider,
 			int percent);
 void	config_option_step_slider(t_game *game, int slider, int delta);

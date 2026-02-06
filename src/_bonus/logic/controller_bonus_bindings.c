@@ -137,7 +137,7 @@ bool	controller_handle_rebind_bonus(t_game *game)
 
 	if (!game || !game->menu.open)
 		return (false);
-	if (game->menu.current_tab != 1)
+	if (game->menu.current_tab != CONFIG_MENU_CONTROLLER_CONTROLS)
 		return (false);
 	if (!game->menu.controls_rebinding
 		|| game->menu.controls_rebind_column != CONTROLS_COLUMN_CONTROLLER)

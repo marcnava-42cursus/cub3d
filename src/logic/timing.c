@@ -17,7 +17,7 @@ void	init_player_parameters(t_game *game)
 {
 	if (!game)
 		return ;
-	game->move_speed = 4.0f;
-	game->rot_speed = 2.5f;
+	game->move_speed = BASE_MOVE_SPEED * GAME_SPEED_SCALE;
+	game->rot_speed = BASE_ROT_SPEED * GAME_SPEED_SCALE;
 	game->player_radius = 0.2f;
 }

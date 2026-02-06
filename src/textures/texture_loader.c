@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 12:25:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 22:31:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ bool	load_textures(t_textures *textures)
 	else
 		textures->fog = mlx_load_xpm42(
 			"./assets/textures/walls/test_fog_128.xpm42");
+	textures->ghost_block = mlx_load_xpm42(GHOST_BLOCK);
+	if (!textures->ghost_block)
+	{
+		printf("Error: Failed to load ghost block texture: %s\n", GHOST_BLOCK);
+		return (0);
+	}
 	load_custom_textures(textures->custom);
 	return (true);
 }
@@ -148,6 +154,12 @@ void	free_textures(t_textures *textures)
 		mlx_delete_xpm42(textures->fog);
 		textures->fog = NULL;
 	}
+	if (textures->ghost_block)
+	{
+		mlx_delete_xpm42(textures->ghost_block);
+		textures->ghost_block = NULL;
+	}
+	atlas_free(&textures->living);
 	if (textures->custom)
 	{
 		free_custom_textures(textures->custom);

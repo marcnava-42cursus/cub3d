@@ -54,6 +54,13 @@ bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 bool	orb_projectile_update(t_game *game, float delta_time);
 bool	orb_projectile_needs_redraw(const t_game *game);
 void	orb_projectile_mark_drawn(t_game *game);
+bool	orb_projectile_spawn_ghost(t_game *game, int target_x, int target_y);
+void	orb_projectile_clear_ghost(t_game *game);
+
+// Audio bonus
+bool	bonus_audio_init(void);
+void	bonus_audio_shutdown(void);
+void	bonus_audio_play_orb_launch(void);
 
 // Config modal UI
 void	set_config_modal_visible(t_game *game, bool visible);

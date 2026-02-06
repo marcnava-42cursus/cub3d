@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/03 12:39:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/06 22:28:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
 # define ORB_PROJECTILE_DEFAULT_SPEED 6.0f
+# define ORB_GHOST_BLOCK_CELL '3'
 
 // Forward declaration for custom texture entries
 typedef struct s_custom_texture	t_custom_texture;
@@ -62,6 +63,8 @@ typedef struct s_textures
 	xpm_t				*floor;			// Loaded floor texture
 	xpm_t				*ceiling;		// Loaded ceiling texture
 	xpm_t				*fog;			// Loaded fog texture
+	xpm_t				*ghost_block;	// Temporary block while orb is flying
+	t_atlas				living;
 	t_custom_texture	*custom;		// List of custom textures (bonus)
 }	t_textures;
 

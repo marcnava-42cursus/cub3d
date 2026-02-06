@@ -42,6 +42,33 @@ bool	update_label_text(t_game *game, mlx_image_t **label,
 	return (true);
 }
 
+bool	ensure_menu_labels(t_game *game)
+{
+	const char		*text[CONFIG_MENU_SECTION_COUNT];
+	t_menu_state	*menu;
+	size_t			i;
+
+	if (!game || !game->mlx)
+		return (false);
+	menu = &game->menu;
+	text[CONFIG_MENU_GENERAL] = "General";
+	text[CONFIG_MENU_TUNING] = "Tuning";
+	text[CONFIG_MENU_KEYBOARD_CONTROLS] = "Keyboard Controls";
+	text[CONFIG_MENU_CONTROLLER_CONTROLS] = "Controller Controls";
+	i = 0;
+	while (i < CONFIG_MENU_SECTION_COUNT)
+	{
+		if (!menu->labels.menu_entries[i])
+			menu->labels.menu_entries[i] = mlx_put_string(game->mlx, text[i],
+					0, 0);
+		if (!menu->labels.menu_entries[i])
+			return (false);
+		set_image_enabled(menu->labels.menu_entries[i], false);
+		i++;
+	}
+	return (true);
+}
+
 bool	ensure_settings_labels(t_game *game)
 {
 	size_t			i;
@@ -56,14 +83,12 @@ bool	ensure_settings_labels(t_game *game)
 	text[CONFIG_OPTION_MINIMAP] = "Show minimap";
 	text[CONFIG_OPTION_FULLSCREEN] = "Fullscreen";
 	text[CONFIG_OPTION_DEBUG_MODE] = "DEBUG MODE";
-	text[CONFIG_OPTION_GAME_SPEED] = "Game speed";
 	text[CONFIG_OPTION_FPS_LIMIT] = "FPS limit";
 	text[CONFIG_OPTION_MOUSE_SENS] = "Mouse sensitivity";
-	text[CONFIG_OPTION_PROJECTILE_SPEED] = "Projectile speed";
 	text[CONFIG_OPTION_QUALITY] = "Quality";
 	if (!menu->labels.settings_sections[0])
 		menu->labels.settings_sections[0] = mlx_put_string(
-				game->mlx, "DISPLAY", 0, 0);
+				game->mlx, "GENERAL", 0, 0);
 	if (!menu->labels.settings_sections[1])
 		menu->labels.settings_sections[1] = mlx_put_string(
 				game->mlx, "TUNING", 0, 0);

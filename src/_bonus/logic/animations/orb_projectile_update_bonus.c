@@ -28,7 +28,7 @@ static void	place_block_on_arrival(t_game *game)
 	row = game->cub_data.map.grid[y];
 	if (!row || x < 0 || x >= (int)ft_strlen(row))
 		return ;
-	if (row[x] != '0')
+	if (row[x] != '0' && row[x] != ORB_GHOST_BLOCK_CELL)
 		return ;
 	row[x] = game->orb.payload;
 }
@@ -40,6 +40,7 @@ static void	resolve_orb_arrival(t_game *game)
 	else if (game->orb.mode == ORB_MODE_PLACE)
 		place_block_on_arrival(game);
 	game->orb.active = false;
+	orb_projectile_clear_ghost(game);
 	game->orb.mode = ORB_MODE_NONE;
 	game->orb.payload = '\0';
 	game->orb.needs_redraw = true;

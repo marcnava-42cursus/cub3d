@@ -31,7 +31,8 @@ bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y)
 	if (cell_x >= row_len)
 		return (true);
 	cell = row[cell_x];
-	if (cell == '1' || cell == '2' || cell == ' ')
+	if (cell == '1' || cell == '2' || cell == ORB_GHOST_BLOCK_CELL
+		|| cell == ' ')
 		return (true);
 	if (cell >= 'A' && cell <= 'Z' && cell != 'N'
 		&& cell != 'S' && cell != 'E' && cell != 'W')
