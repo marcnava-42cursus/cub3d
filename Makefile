@@ -6,28 +6,35 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/05 16:50:03 by marcnava         ###   ########.fr        #
+#    Updated: 2026/02/06 18:06:09 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# Name of the executables
 NAME		:= cub3D
 NAME_BONUS	:= cub3D_bonus
 
+# Compiler and flags
 CC			:= gcc
 CFLAGS		:= -Wall -Wextra #-Werror
 CFLAGS		+= -MMD -MP
 DFLAGS		:= -g3
 SANITIZE	:= -fsanitize=address
 DEBUG		?= 0
-VSYNC		?= on
-MLX_SWAP_INTERVAL_VALUE := 1
-ifeq ($(VSYNC),off)
-	MLX_SWAP_INTERVAL_VALUE := 0
-else ifeq ($(VSYNC),0)
-	MLX_SWAP_INTERVAL_VALUE := 0
+VSYNC		?= off
+MLX_SWAP	:= 0
+
+# VSync configuration for minilibx
+ifeq ($(VSYNC),on)
+	MLX_SWAP := 1
+else ifeq ($(VSYNC),1)
+	MLX_SWAP := 1
 endif
-MLX_SWAP_INTERVAL_DEFINE := -DMLX_SWAP_INTERVAL=$(MLX_SWAP_INTERVAL_VALUE)
+
+MLX_SWAP_INTERVAL_DEFINE := -DMLX_SWAP_INTERVAL=$(MLX_SWAP)
 MLX_CMAKE_FLAGS := -DCMAKE_C_FLAGS=$(MLX_SWAP_INTERVAL_DEFINE)
+
+# Debug flags
 ifeq ($(DEBUG),1)
 	CFLAGS += $(DFLAGS)
 else ifeq ($(DEBUG),2)
@@ -35,16 +42,30 @@ else ifeq ($(DEBUG),2)
 else ifeq ($(DEBUG),fps)
 	CFLAGS += -DDEBUG_FPS
 endif
-CFLAGS += $(MLX_SWAP_INTERVAL_DEFINE)
-RM			:=	rm -rf
 
+# Add MLX swap interval define to CFLAGS for main compilation
+CFLAGS		+=	$(MLX_SWAP_INTERVAL_DEFINE)
+# File management
+RM			:=	rm -rf
 MAKEFLAGS	+=	--no-print-directory
 
+# Directory structure
 SRCPATH		:=	src
 OBJPATH		:=	build
-OBJPATH_BONUS	:=	build_bonus
+OBJPATH_B	:=	build_bonus
 INCPATH		:=	includes
 LIBPATH		:=	libs
+
+# Folders
+BONUS		:=	$(SRCPATH)/_bonus
+PARSER		:=	$(SRCPATH)/parser
+LOGIC		:=	$(SRCPATH)/logic
+RENDER		:=	$(SRCPATH)/render
+PARSER_B	:=	$(BONUS)/parser
+LOGIC_B		:=	$(BONUS)/logic
+RENDER_B	:=	$(BONUS)/render
+ANIMATION	:=	$(BONUS)/animation
+AUDIO		:=	$(BONUS)/audio
 
 LIBFT		:=	$(LIBPATH)/libft
 LIBMLX		:=	$(LIBPATH)/minilibx
@@ -54,28 +75,43 @@ INCLUDES	:=	-I$(INCPATH) -I$(LIBFT)/includes -I$(LIBMLX)/include -I$(LIBPATH)
 
 MLX			:=	$(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-SRCS		:=	$(SRCPATH)/cub3d.c \
-				$(SRCPATH)/parser/core/parser_init.c \
-				$(SRCPATH)/parser/core/parser_finder.c \
-				$(SRCPATH)/parser/core/parser_orchestrator.c \
-				$(SRCPATH)/parser/map/map_characters.c \
-				$(SRCPATH)/parser/map/map_player.c \
-				$(SRCPATH)/parser/map/map_validation.c \
-				$(SRCPATH)/parser/map/map_parser.c \
-				$(SRCPATH)/parser/colors/parse_colors.c \
-				$(SRCPATH)/parser/colors/color_validation.c \
-				$(SRCPATH)/parser/colors/rgb_parsing.c \
-				$(SRCPATH)/parser/colors/value_extraction.c \
-				$(SRCPATH)/parser/textures/texture_extraction.c \
-				$(SRCPATH)/parser/textures/texture_parser.c \
-				$(SRCPATH)/parser/textures/texture_setter.c \
-				$(SRCPATH)/parser/utils/string_utils.c \
-				$(SRCPATH)/parser/utils/file_utils.c \
-				$(SRCPATH)/parser/utils/link_utils.c \
-				$(SRCPATH)/parser/utils/validation_utils.c \
-				$(SRCPATH)/parser/utils/memory_utils.c \
-				$(SRCPATH)/parser/utils/debug_utils.c \
-				$(SRCPATH)/parser/utils/debug_text_utils.c \
+# Source files
+SRCS		:=	$(SRCPATH)/cub3d.c
+
+SRCS		+=	\
+				$(PARSER)/core/parser_init.c \
+				$(PARSER)/core/parser_finder.c \
+				$(PARSER)/core/parser_orchestrator.c \
+				$(PARSER)/map/map_characters.c \
+				$(PARSER)/map/map_player.c \
+				$(PARSER)/map/map_validation.c \
+				$(PARSER)/map/map_parser.c \
+				$(PARSER)/colors/parse_colors.c \
+				$(PARSER)/colors/color_validation.c \
+				$(PARSER)/colors/rgb_parsing.c \
+				$(PARSER)/colors/value_extraction.c \
+				$(PARSER)/textures/texture_extraction.c \
+				$(PARSER)/textures/texture_parser.c \
+				$(PARSER)/textures/texture_setter.c \
+				$(PARSER)/utils/string_utils.c \
+				$(PARSER)/utils/file_utils.c \
+				$(PARSER)/utils/link_utils.c \
+				$(PARSER)/utils/validation_utils.c \
+				$(PARSER)/utils/memory_utils.c \
+				$(PARSER)/utils/debug_utils.c \
+				$(PARSER)/utils/debug_text_utils.c
+
+SRCS		+=	\
+				$(LOGIC)/movement.c \
+				$(LOGIC)/movement_init.c \
+				$(LOGIC)/input.c \
+				$(LOGIC)/timing.c \
+				$(LOGIC)/collision.c \
+				$(LOGIC)/move.c \
+				$(LOGIC)/rotation.c \
+				$(LOGIC)/fps_overlay.c
+
+SRCS		+=	\
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/background.c \
 				$(SRCPATH)/render/double_buffer.c \
@@ -87,41 +123,77 @@ SRCS		:=	$(SRCPATH)/cub3d.c \
 				$(SRCPATH)/render/walls.c \
 				$(SRCPATH)/render/window.c \
 				$(SRCPATH)/render/utils.c \
-				$(SRCPATH)/logic/movement.c \
-				$(SRCPATH)/logic/movement_init.c \
-				$(SRCPATH)/logic/input.c \
-				$(SRCPATH)/logic/timing.c \
-				$(SRCPATH)/logic/collision.c \
-				$(SRCPATH)/logic/move.c \
-				$(SRCPATH)/logic/rotation.c \
-				$(SRCPATH)/logic/fps_overlay.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
 				$(SRCPATH)/render/gameplay_window.c 
 
-# Bonus sources - replace standard parser files with bonus versions
-SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
-				$(SRCPATH)/_bonus/parser/core/parser_init_bonus.c \
-				$(SRCPATH)/_bonus/parser/core/parser_orchestrator_bonus.c \
-				$(SRCPATH)/_bonus/parser/link_utils_bonus.c \
-				$(SRCPATH)/_bonus/parser/floor_manager_bonus.c \
-				$(SRCPATH)/_bonus/parser/core/parser_finder_bonus.c \
-				$(SRCPATH)/_bonus/parser/map/map_validation_bonus.c \
-				$(SRCPATH)/_bonus/parser/textures/texture_parser_bonus.c \
+# Bonus source files
+SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c
+
+SRCS_BONUS	+=	\
+				$(PARSER)/map/map_parser.c \
+				$(PARSER)/colors/parse_colors.c \
+				$(PARSER)/colors/color_validation.c \
+				$(PARSER)/colors/rgb_parsing.c \
+				$(PARSER)/colors/value_extraction.c \
+				$(PARSER)/textures/texture_extraction.c \
+				$(PARSER)/utils/string_utils.c \
+				$(PARSER)/utils/file_utils.c \
+				$(PARSER)/utils/link_utils.c \
+				$(PARSER)/utils/validation_utils.c \
+				$(PARSER)/utils/debug_utils.c \
+				$(PARSER)/utils/debug_text_utils.c \
+				$(PARSER_B)/core/parser_init_bonus.c \
+				$(PARSER_B)/core/parser_orchestrator_bonus.c \
+				$(PARSER_B)/link_utils_bonus.c \
+				$(PARSER_B)/floor_manager_bonus.c \
+				$(PARSER_B)/core/parser_finder_bonus.c \
+				$(PARSER_B)/map/map_validation_bonus.c \
+				$(PARSER_B)/textures/texture_parser_bonus.c \
+				$(PARSER_B)/utils/memory_utils_bonus.c
+
+SRCS_BONUS	+=	\
+				$(LOGIC)/timing.c \
+				$(LOGIC)/move.c \
+				$(LOGIC)/rotation.c \
+				$(LOGIC_B)/movement_bonus.c \
+				$(LOGIC_B)/input_bonus.c \
+				$(LOGIC_B)/controller_bonus.c \
+				$(LOGIC_B)/controller_bonus_state.c \
+				$(LOGIC_B)/controller_bonus_actions.c \
+				$(LOGIC_B)/controller_bonus_menu.c \
+				$(LOGIC_B)/controller_bonus_bindings.c \
+				$(LOGIC_B)/inventory.c \
+				$(LOGIC_B)/menu/config_modal_draw_base_bonus.c \
+				$(LOGIC_B)/menu/config_modal_draw_rect_bonus.c \
+				$(LOGIC_B)/menu/config_modal_border_bonus.c \
+				$(LOGIC_B)/menu/config_modal_icons_bonus.c \
+				$(LOGIC_B)/menu/config_modal_layout_calc_bonus.c \
+				$(LOGIC_B)/menu/config_modal_layout_draw_bonus.c \
+				$(LOGIC_B)/menu/config_modal_labels_bonus.c \
+				$(LOGIC_B)/menu/config_modal_cards_bonus.c \
+				$(LOGIC_B)/menu/config_modal_hide_bonus.c \
+				$(LOGIC_B)/menu/config_modal_settings_draw_bonus.c \
+				$(LOGIC_B)/menu/config_modal_controls_draw_bonus.c \
+				$(LOGIC_B)/menu/config_modal_visibility_bonus.c \
+				$(LOGIC_B)/menu/config_modal_events_bonus.c \
+				$(LOGIC_B)/menu/config_modal_options_values_bonus.c \
+				$(LOGIC_B)/menu/config_modal_options_math_bonus.c \
+				$(LOGIC_B)/menu/config_modal_options_actions_bonus.c \
+				$(LOGIC_B)/menu/config_modal_options_mouse_bonus.c \
+				$(LOGIC_B)/menu/config_modal_options_init_bonus.c \
+				$(LOGIC_B)/menu/config_modal_fps_bonus.c \
+				$(LOGIC_B)/menu/config_modal_crosshair_bonus.c \
+				$(LOGIC_B)/menu/config_modal_controls_state_bonus.c \
+				$(LOGIC_B)/menu/config_modal_controls_rebind_bonus.c \
+				$(LOGIC_B)/menu/config_modal_controls_query_bonus.c \
+				$(LOGIC_B)/state_swapper.c \
+				$(LOGIC_B)/animations/orb_projectile_state_bonus.c \
+				$(LOGIC_B)/animations/orb_projectile_ghost_bonus.c \
+				$(LOGIC_B)/animations/orb_projectile_spawn_bonus.c \
+				$(LOGIC_B)/animations/orb_projectile_update_bonus.c \
+				$(LOGIC_B)/collision_bonus.c
+
+SRCS_BONUS	+=	\
 				$(SRCPATH)/_bonus/render/texture_mapping_bonus.c \
-				$(SRCPATH)/_bonus/logic/collision_bonus.c \
-				$(SRCPATH)/parser/map/map_parser.c \
-				$(SRCPATH)/parser/colors/parse_colors.c \
-				$(SRCPATH)/parser/colors/color_validation.c \
-				$(SRCPATH)/parser/colors/rgb_parsing.c \
-				$(SRCPATH)/parser/colors/value_extraction.c \
-				$(SRCPATH)/parser/textures/texture_extraction.c \
-				$(SRCPATH)/parser/utils/string_utils.c \
-				$(SRCPATH)/parser/utils/file_utils.c \
-				$(SRCPATH)/parser/utils/link_utils.c \
-				$(SRCPATH)/parser/utils/validation_utils.c \
-				$(SRCPATH)/_bonus/parser/utils/memory_utils_bonus.c \
-				$(SRCPATH)/parser/utils/debug_utils.c \
-				$(SRCPATH)/parser/utils/debug_text_utils.c \
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/texture_atlas.c \
 				$(SRCPATH)/render/texture_atlas_utils.c \
@@ -140,16 +212,6 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/render/outlines.c \
 				$(SRCPATH)/_bonus/render/window_bonus.c \
 				$(SRCPATH)/_bonus/render/map_2d_bonus.c \
-				$(SRCPATH)/_bonus/logic/movement_bonus.c \
-				$(SRCPATH)/_bonus/logic/input_bonus.c \
-				$(SRCPATH)/_bonus/logic/controller_bonus.c \
-				$(SRCPATH)/_bonus/logic/controller_bonus_state.c \
-				$(SRCPATH)/_bonus/logic/controller_bonus_actions.c \
-				$(SRCPATH)/_bonus/logic/controller_bonus_menu.c \
-				$(SRCPATH)/_bonus/logic/controller_bonus_bindings.c \
-				$(SRCPATH)/logic/timing.c \
-				$(SRCPATH)/logic/move.c \
-				$(SRCPATH)/logic/rotation.c \
 				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
 				$(SRCPATH)/_bonus/render/walls_bonus.c \
 				$(SRCPATH)/_bonus/render/floors_and_ceilings.c \
@@ -157,35 +219,6 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/render/fog.c \
 				$(SRCPATH)/_bonus/render/absorb.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \
-				$(SRCPATH)/_bonus/logic/inventory.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_draw_base_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_draw_rect_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_border_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_icons_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_layout_calc_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_layout_draw_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_labels_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_cards_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_hide_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_settings_draw_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_draw_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_visibility_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_events_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_options_values_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_options_math_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_options_actions_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_options_mouse_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_options_init_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_fps_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_crosshair_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_state_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_rebind_bonus.c \
-				$(SRCPATH)/_bonus/logic/menu/config_modal_controls_query_bonus.c \
-				$(SRCPATH)/_bonus/logic/state_swapper.c \
-				$(SRCPATH)/_bonus/logic/animations/orb_projectile_state_bonus.c \
-				$(SRCPATH)/_bonus/logic/animations/orb_projectile_ghost_bonus.c \
-				$(SRCPATH)/_bonus/logic/animations/orb_projectile_spawn_bonus.c \
-				$(SRCPATH)/_bonus/logic/animations/orb_projectile_update_bonus.c \
 				$(SRCPATH)/_bonus/audio/orb_audio_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
 				$(SRCPATH)/_bonus/animation/living_block_anims.c \
@@ -196,7 +229,7 @@ SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
 				$(SRCPATH)/_bonus/animation/player/player_right_hand_anims.c 
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
-OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_BONUS)/%.o)
+OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_B)/%.o)
 DEPS		:= $(OBJS:.o=.d)
 DEPS_BONUS	:= $(OBJS_BONUS:.o=.d)
 
@@ -253,7 +286,7 @@ _compile_bonus:	libft libmlx libminiaudio $(OBJS_BONUS)
 		printf "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)\n"; \
 		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
 		printf "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n\n"; \
-	elif [ $(NAME_BONUS) -ot $(LIBFT)/libft.a ] || [ $(NAME_BONUS) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH_BONUS) -name '*.o' -newer $(NAME_BONUS) 2>/dev/null)" ]; then \
+	elif [ $(NAME_BONUS) -ot $(LIBFT)/libft.a ] || [ $(NAME_BONUS) -ot $(LIBMLX)/build/libmlx42.a ] || [ -n "$(shell find $(OBJPATH_B) -name '*.o' -newer $(NAME_BONUS) 2>/dev/null)" ]; then \
 		printf "$(GREEN)✓ Linking $(NAME_BONUS)...$(RESET)\n"; \
 		$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT)/libft.a $(MLX) -o $(NAME_BONUS); \
 		printf "$(GREEN)$(BOLD)✓ $(NAME_BONUS) compiled successfully!$(RESET)\n\n"; \
@@ -268,7 +301,7 @@ $(OBJPATH)/%.o:	%.c
 		printf "$(GREEN)\r✓ Compiled %-50s$(RESET)\n" "$<" || \
 		(printf "$(RED)\r✗ Failed compiling %-50s$(RESET)\n" "$<" && exit 1)
 
-$(OBJPATH_BONUS)/%.o:	%.c
+$(OBJPATH_B)/%.o:	%.c
 	@mkdir -p $(@D)
 	@printf "$(DARK_GRAY)\rCompiling %-50s$(RESET)" "$<"
 	@$(CC) $(CFLAGS) $(BONUS_FLAG) $(INCLUDES) -o $@ -c $< && \
@@ -277,7 +310,7 @@ $(OBJPATH_BONUS)/%.o:	%.c
 
 clean:
 	@printf "$(YELLOW)Cleaning object files...$(RESET)\n"
-	@$(RM) $(OBJPATH) $(OBJPATH_BONUS)
+	@$(RM) $(OBJPATH) $(OBJPATH_B)
 	@if [ -f "$(LIBFT)/Makefile" ]; then \
 		$(MAKE) -C $(LIBFT) clean > /dev/null 2>&1; \
 	fi
@@ -318,7 +351,7 @@ libs/miniaudio.h:
 	@curl -fsSL -o libs/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
 
 libmlx:	$(LIBMLX)/CMakeLists.txt
-	@current_interval="$(MLX_SWAP_INTERVAL_VALUE)"; \
+	@current_interval="$(MLX_SWAP)"; \
 	stored_interval=""; \
 	if [ -f "$(MLX_SWAP_STAMP)" ]; then stored_interval=$$(cat "$(MLX_SWAP_STAMP)"); fi; \
 	if [ -f "$(LIBMLX)/build/libmlx42.a" ] && \
