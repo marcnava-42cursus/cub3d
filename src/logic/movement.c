@@ -14,39 +14,38 @@
 #include "render.h"
 #include "structs.h"
 
-static bool	handle_translation(t_game *game)
+static bool	get_move_vector(t_game *game, float *move_x, float *move_y)
 {
 	float	forward;
 	float	strafe;
+	float	len;
+
+	forward = (float)game->key_w_pressed - (float)game->key_s_pressed;
+	strafe = (float)game->key_d_pressed - (float)game->key_a_pressed;
+	if (forward == 0.0f && strafe == 0.0f)
+		return (false);
+	*move_x = cosf(game->cub_data.player.angle) * forward
+		+ cosf(game->cub_data.player.angle + FT_PI_2) * strafe;
+	*move_y = sinf(game->cub_data.player.angle) * forward
+		+ sinf(game->cub_data.player.angle + FT_PI_2) * strafe;
+	len = sqrtf(*move_x * *move_x + *move_y * *move_y);
+	if (len > 1.0f)
+		*move_x /= len;
+	if (len > 1.0f)
+		*move_y /= len;
+	return (true);
+}
+
+static bool	handle_translation(t_game *game)
+{
 	float	move_x;
 	float	move_y;
-	float	len;
 	float	speed;
-	float	angle;
 
 	if (!game || !game->mlx)
 		return (false);
-	forward = 0.0f;
-	strafe = 0.0f;
-	if (game->key_w_pressed)
-		forward += 1.0f;
-	if (game->key_s_pressed)
-		forward -= 1.0f;
-	if (game->key_d_pressed)
-		strafe += 1.0f;
-	if (game->key_a_pressed)
-		strafe -= 1.0f;
-	if (forward == 0.0f && strafe == 0.0f)
+	if (!get_move_vector(game, &move_x, &move_y))
 		return (false);
-	angle = game->cub_data.player.angle;
-	move_x = cosf(angle) * forward + cosf(angle + FT_PI_2) * strafe;
-	move_y = sinf(angle) * forward + sinf(angle + FT_PI_2) * strafe;
-	len = sqrtf(move_x * move_x + move_y * move_y);
-	if (len > 1.0f)
-	{
-		move_x /= len;
-		move_y /= len;
-	}
 	speed = game->move_speed * (float)game->mlx->delta_time;
 	ATTEMPT_MOVE(game, move_x * speed, move_y * speed);
 	return (true);

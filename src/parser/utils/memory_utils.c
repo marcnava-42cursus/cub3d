@@ -6,13 +6,12 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/03 12:07:45 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 00:26:32 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "structs.h"
-//temporary
 #include "render.h"
 
 void	free_map(t_map *map)
@@ -43,16 +42,6 @@ static void	free_texture_path(char **texture_path)
 	}
 }
 
-static void	free_texture_paths(t_textures *textures)
-{
-	if (!textures)
-		return ;
-	free_texture_path(&textures->north_path);
-	free_texture_path(&textures->south_path);
-	free_texture_path(&textures->west_path);
-	free_texture_path(&textures->east_path);
-}
-
 static void	free_floor_list(t_floor *head)
 {
 	t_floor	*current;
@@ -62,7 +51,10 @@ static void	free_floor_list(t_floor *head)
 	while (current)
 	{
 		next = current->next;
-		free_texture_paths(&current->textures);
+		free_texture_path(&current->textures.north_path);
+		free_texture_path(&current->textures.south_path);
+		free_texture_path(&current->textures.west_path);
+		free_texture_path(&current->textures.east_path);
 		free_textures(&current->textures);
 		free_texture_path(&current->up_path);
 		free_texture_path(&current->down_path);
