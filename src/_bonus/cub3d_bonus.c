@@ -27,6 +27,7 @@ void	cleanup_game_bonus(t_game *game)
 {
 	if (!game)
 		return;
+	bonus_audio_shutdown();
 
 	// Liberar datos del parser
 	free_cub_data(&game->cub_data);
@@ -86,6 +87,8 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		printf("Error: Failed to load 2D map textures\n");
 		return (0);
 	}
+	if (!bonus_audio_init())
+		printf("Warning: Audio bonus disabled (assets/audio/scream.mp3)\n");
 
 	return (1);
 }
