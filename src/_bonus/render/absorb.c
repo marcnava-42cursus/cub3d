@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 21:27:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:49:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,12 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 				y[1] = (int)game->double_buffer[NEXT]->height - 1;
 			if (y[0] >= y[1])
 				return ;
-			x_offset_step[0] = (float)get_effects_tex_x(&game->cub_data.effects, &rh[i]);
+			x_offset_step[0] = (float)get_effects_tex_x(&game->cub_data.effects,
+					&rh[i]);
 			fog = fog_factor(rh[i].distance);
-			x_offset_step[2] = (float)game->cub_data.effects.absorb_atlas.frame_height
-				/ (float)(rh[i].wall_bounds[1] - rh[i].wall_bounds[0] + 1);
+			x_offset_step[2] = (float)game->cub_data.effects.absorb_atlas
+				.frame_height / (float)(rh[i].wall_bounds[1]
+					- rh[i].wall_bounds[0] + 1);
 			x_offset_step[1] = (y[0] - rh[i].wall_bounds[0]) * x_offset_step[2];
 			interpolate_wall_with_absorb(game, i, y, x_offset_step, fog);
 		}
