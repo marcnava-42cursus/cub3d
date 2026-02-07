@@ -54,6 +54,18 @@ static int	find_elevator_slot(t_cub_data *data, char id)
 	return (-1);
 }
 
+static bool	is_elevator_open(t_game *game, char id)
+{
+	int	slot;
+
+	if (!game)
+		return (false);
+	slot = find_elevator_slot(&game->cub_data, id);
+	if (slot < 0 || slot >= game->cub_data.elevator_id_count)
+		return (false);
+	return (game->cub_data.elevator_orb[slot]);
+}
+
 static int	get_elevator_coords(const t_floor *floor, char id, int *x, int *y)
 {
 	int	i;
@@ -280,7 +292,8 @@ static void	handle_movement_rendering(t_game *game)
 		&& current_grid_x < (int)ft_strlen(
 			game->cub_data.map.grid[current_grid_y]))
 		cell = game->cub_data.map.grid[current_grid_y][current_grid_x];
-	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until)
+	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until
+		&& is_elevator_open(game, cell))
 	{
 		if (switch_floor(game, cell))
 		{
@@ -310,6 +323,9 @@ void	update_game_loop_bonus(void *param)
 	t_game			*game;
 	bool			moved;
 	bool			mouse_rotated;
+	bool			player_translated;
+	float			prev_x;
+	float			prev_y;
 	double			min_step;
 	int				fps_limit;
 	double			now;
@@ -321,6 +337,7 @@ void	update_game_loop_bonus(void *param)
 		return ;
 	if (is_config_modal_open(game))
 	{
+		bonus_audio_update_step_loop(false);
 		controller_handle_rebind_bonus(game);
 		controller_update_bonus(game);
 		update_config_modal(game);
@@ -349,14 +366,20 @@ void	update_game_loop_bonus(void *param)
 	refresh_key_states_bonus(game);
 	if (is_config_modal_open(game))
 	{
+		bonus_audio_update_step_loop(false);
 		update_config_modal(game);
 		return ;
 	}
 	fps_overlay_update(game);
 	if (game->mlx->delta_time <= 0.0)
 		return ;
+	prev_x = game->cub_data.player.x;
+	prev_y = game->cub_data.player.y;
 	moved = process_movement_input(game);
 	mouse_rotated = process_mouse_rotation_bonus(game);
+	player_translated = (fabsf(game->cub_data.player.x - prev_x) > 0.0001f
+			|| fabsf(game->cub_data.player.y - prev_y) > 0.0001f);
+	bonus_audio_update_step_loop(player_translated);
 	if (moved || mouse_rotated)
 		handle_movement_rendering(game);
 }

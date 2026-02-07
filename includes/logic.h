@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 22:41:48 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:17:59 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "MLX42/MLX42.h"
 # include "libft.h"
 
-# define BREAK_BLOCK_DISTANCE 4
+# define BREAK_BLOCK_DISTANCE 20
 # define PLACE_BLOCK_DISTANCE 20
 # define BASE_MOVE_SPEED 4.0f
 # define BASE_ROT_SPEED 2.5f

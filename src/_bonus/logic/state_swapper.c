@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 00:54:53 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:38:35 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,75 @@ static bool	modify_interactive_cell(t_game *game, int x, int y)
 		return (true);
 	}
 	return (false);
+}
+
+static bool	is_elevator_char_state(char c)
+{
+	const char	*set;
+	int			i;
+
+	set = "!\"·$%&/()=?¿";
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+static int	get_elevator_slot(t_cub_data *data, char id)
+{
+	int	i;
+
+	if (!data)
+		return (-1);
+	i = 0;
+	while (i < data->elevator_id_count)
+	{
+		if (data->elevator_ids[i] == id)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+static bool	has_open_elevator_state(t_cub_data *data)
+{
+	int	i;
+
+	if (!data)
+		return (false);
+	i = 0;
+	while (i < data->elevator_id_count)
+	{
+		if (data->elevator_orb[i])
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+static void	sync_elevator_door_texture(t_game *game)
+{
+	t_anim			*door;
+	unsigned int	frame_id;
+	unsigned int	width;
+
+	if (!game || !game->cub_data.effects.door_anims)
+		return ;
+	door = &game->cub_data.effects.door_anims[DOOR_OPEN];
+	if (!door->atlas)
+		return ;
+	frame_id = 0;
+	if (has_open_elevator_state(&game->cub_data))
+		frame_id = 8;
+	width = door->atlas->max_frame[X];
+	if (width == 0)
+		return ;
+	door->current_frame[X] = frame_id % width;
+	door->current_frame[Y] = frame_id / width;
 }
 
 static bool	is_valid_target_cell(t_game *game, int x, int y)
@@ -97,6 +166,59 @@ static bool	get_attachment_coords(t_game *game, t_rayhit *hit, int *x, int *y)
 	return (true);
 }
 
+static bool	handle_elevator_orb_place(t_game *game, t_rayhit *hit, char cell)
+{
+	int		slot;
+	char	payload;
+
+	if (!is_elevator_char_state(cell))
+		return (false);
+	slot = get_elevator_slot(&game->cub_data, cell);
+	if (slot < 0 || game->cub_data.elevator_orb[slot])
+		return (true);
+	payload = consume_inventory_block(&game->cub_data.player);
+	if (payload == '\0')
+		return (true);
+	if (!orb_projectile_start_elevator_place(game, hit->cell[X], hit->cell[Y],
+			payload, slot))
+	{
+		store_block_in_inventory(&game->cub_data.player, payload);
+		return (true);
+	}
+	game->cub_data.player.state = STATE_THROW;
+	if (game->menu.options.debug_mode)
+		printf("Injected orb into elevator '%c'\n", cell);
+	return (true);
+}
+
+static bool	handle_elevator_orb_take(t_game *game, t_rayhit *hit, char cell)
+{
+	int		slot;
+	char	payload;
+
+	if (!is_elevator_char_state(cell))
+		return (false);
+	slot = get_elevator_slot(&game->cub_data, cell);
+	if (slot < 0 || !game->cub_data.elevator_orb[slot])
+		return (true);
+	if (player_has_block(&game->cub_data.player))
+		return (true);
+	payload = game->cub_data.elevator_orb_payload[slot];
+	if (payload == '\0')
+		payload = '2';
+	if (!orb_projectile_start_take(game, hit->cell[X], hit->cell[Y], payload))
+		return (true);
+	game->orb.elevator_shot = true;
+	game->orb.elevator_slot = slot;
+	game->cub_data.elevator_orb[slot] = false;
+	game->cub_data.elevator_orb_payload[slot] = '\0';
+	sync_elevator_door_texture(game);
+	game->cub_data.player.state = STATE_TAKE;
+	if (game->menu.options.debug_mode)
+		printf("Removed orb from elevator '%c'\n", cell);
+	return (true);
+}
+
 /**
  * @brief Places a breakable block ('2') on the face of the wall the player
  * is looking at, if the adjacent cell is empty floor.
@@ -115,6 +237,8 @@ void	place_breakable_block(t_game *game)
 		printf("Attempting to place block\n");
 	if (orb_projectile_is_active(game))
 		return ;
+	if (game->cub_data.block.is_creating)
+		return ;
 	if (!player_has_block(&game->cub_data.player))
 		return ;
 	start.x = (game->cub_data.player.x) * WORLDMAP_TILE_SIZE;
@@ -129,6 +253,8 @@ void	place_breakable_block(t_game *game)
 		|| hit.cell[0] >= (int)ft_strlen(game->cub_data.map.grid[hit.cell[1]]))
 		return ;
 	cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];
+	if (handle_elevator_orb_place(game, &hit, cell))
+		return ;
 	if (cell != '1' && cell != '2')
 		return ;
 	if (!get_attachment_coords(game, &hit, &target_x, &target_y))
@@ -138,15 +264,48 @@ void	place_breakable_block(t_game *game)
 	cell = consume_inventory_block(&game->cub_data.player);
 	if (cell == '\0')
 		return ;
-	if (!orb_projectile_start_place(game, target_x, target_y, cell))
+	if (!orb_projectile_spawn_ghost(game, target_x, target_y))
 	{
 		store_block_in_inventory(&game->cub_data.player, cell);
 		return ;
 	}
 	game->cub_data.block.is_creating = true;
+	game->cub_data.block.pending_payload = cell;
+	game->cub_data.block.pending_x = target_x;
+	game->cub_data.block.pending_y = target_y;
+	anim_start(&game->cub_data.block.anims[ANIM_CREATE]);
 	game->cub_data.player.state = STATE_THROW;
 	if (game->menu.options.debug_mode)
-		printf("Placed block at (%d, %d)\n", target_x, target_y);
+		printf("Started block creation at (%d, %d)\n", target_x, target_y);
+}
+
+void	update_creating_block_state(t_game *game)
+{
+	t_living_block	*block;
+	char			*row;
+	char			block_cell;
+
+	if (!game || !game->cub_data.map.grid)
+		return ;
+	block = &game->cub_data.block;
+	if (!block->is_creating || !block->anims || !block->anims[ANIM_CREATE].finished)
+		return ;
+	if (block->pending_y < 0 || block->pending_y >= game->cub_data.map.height)
+		return ;
+	row = game->cub_data.map.grid[block->pending_y];
+	if (!row || block->pending_x < 0 || block->pending_x >= (int)ft_strlen(row))
+		return ;
+	if (block->pending_payload == '\0')
+		block_cell = '2';
+	else
+		block_cell = block->pending_payload;
+	if (row[block->pending_x] == ORB_GHOST_BLOCK_CELL)
+		row[block->pending_x] = block_cell;
+	block->is_creating = false;
+	block->pending_payload = '\0';
+	block->pending_x = -1;
+	block->pending_y = -1;
+	anim_start(&block->anims[ANIM_CREATE]);
 }
 
 /**
@@ -179,6 +338,8 @@ void	test_break_wall_in_front(t_game *game)
 	if (hit.hit)
 	{
 		cell = game->cub_data.map.grid[hit.cell[1]][hit.cell[0]];
+		if (handle_elevator_orb_take(game, &hit, cell))
+			return ;
 		if (cell == '2')
 		{
 			if (orb_projectile_is_active(game))

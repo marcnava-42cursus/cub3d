@@ -63,13 +63,13 @@ static int	set_east_texture(t_textures *textures, char *path)
 
 int	set_texture(t_textures *textures, const char *identifier, char *path)
 {
-	if (ft_strcmp(identifier, "NO") == 0)
+	if (ft_strcmp((char *)identifier, "NO") == 0)
 		return (set_north_texture(textures, path));
-	else if (ft_strcmp(identifier, "SO") == 0)
+	else if (ft_strcmp((char *)identifier, "SO") == 0)
 		return (set_south_texture(textures, path));
-	else if (ft_strcmp(identifier, "WE") == 0)
+	else if (ft_strcmp((char *)identifier, "WE") == 0)
 		return (set_west_texture(textures, path));
-	else if (ft_strcmp(identifier, "EA") == 0)
+	else if (ft_strcmp((char *)identifier, "EA") == 0)
 		return (set_east_texture(textures, path));
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   living_block_anims.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 05:24:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:48:01 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,20 @@ void	init_living_block_anims(t_living_block *block)
 	anim_init(&block->anims[ANIM_BREATHE], &block->atlas, true);
 	store_anim_frame_data(&block->anims[ANIM_BREATHE], breathe_frames,
 		breathe_holds, 10);
+	block->is_creating = false;
+	block->pending_payload = '\0';
+	block->pending_x = -1;
+	block->pending_y = -1;
 }
 
 void	update_living_block_anims(t_living_block *block, float delta_time)
 {
-	bool	create_finished;
 
-	create_finished = false;
+	if (!block || !block->anims)
+		return ;
 	anim_update(&block->anims[ANIM_BREATHE], delta_time);
 	if (block->is_creating)
-	{
-		create_finished = anim_update(&block->anims[ANIM_CREATE], delta_time);
-		if (create_finished)
-		{
-			block->is_creating = false;
-			anim_start(&block->anims[ANIM_CREATE]);
-		}
-	}
+		anim_update(&block->anims[ANIM_CREATE], delta_time);
 }
 
 void	free_living_block_anims(t_living_block *block)

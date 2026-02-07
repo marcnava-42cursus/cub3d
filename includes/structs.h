@@ -123,11 +123,17 @@ typedef struct s_orb_projectile
 	float		last_draw_x;
 	float		last_draw_y;
 	bool		last_draw_active;
+	bool		elevator_shot;
+	bool		elevator_place;
+	int			elevator_slot;
 }	t_orb_projectile;
 
 typedef struct s_living_block
 {
 	bool	is_creating;
+	char	pending_payload;
+	int		pending_x;
+	int		pending_y;
 	t_atlas	atlas;
 	t_anim	*anims;
 	int		current_anim;
@@ -204,6 +210,8 @@ typedef struct s_cub_data
 	char			*player_floor_path;
 	int				elevator_id_count;
 	char			elevator_ids[16];
+	bool			elevator_orb[16];
+	char			elevator_orb_payload[16];
 	t_floor			*elevator_floor_a[16];
 	t_floor			*elevator_floor_b[16];
 }	t_cub_data;

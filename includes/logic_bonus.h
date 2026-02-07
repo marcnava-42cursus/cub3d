@@ -51,6 +51,8 @@ bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 			char block);
 bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 			char block);
+bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
+			int target_y, char block, int elevator_slot);
 bool	orb_projectile_update(t_game *game, float delta_time);
 bool	orb_projectile_needs_redraw(const t_game *game);
 void	orb_projectile_mark_drawn(t_game *game);
@@ -61,6 +63,10 @@ void	orb_projectile_clear_ghost(t_game *game);
 bool	bonus_audio_init(void);
 void	bonus_audio_shutdown(void);
 void	bonus_audio_play_orb_launch(void);
+void	bonus_audio_stop_orb_launch(void);
+void	bonus_audio_update_orb_volume(const t_game *game);
+void	bonus_audio_set_step_loop(bool enabled);
+void	bonus_audio_update_step_loop(bool player_is_moving);
 
 // Config modal UI
 void	set_config_modal_visible(t_game *game, bool visible);
@@ -110,5 +116,6 @@ void	init_movement_system_bonus(t_game *game);
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
 void	place_breakable_block(t_game *game);
+void	update_creating_block_state(t_game *game);
 
 #endif

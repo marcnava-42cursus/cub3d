@@ -14,6 +14,50 @@
 #include <math.h>
 #include <string.h>
 
+static bool	is_elevator_char_collision(char c)
+{
+	const char	*set;
+	int			i;
+
+	set = "!\"·$%&/()=?¿";
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+static int	get_elevator_slot_collision(t_cub_data *data, char id)
+{
+	int	i;
+
+	if (!data)
+		return (-1);
+	i = 0;
+	while (i < data->elevator_id_count)
+	{
+		if (data->elevator_ids[i] == id)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+static bool	is_closed_elevator(t_game *game, char cell)
+{
+	int	slot;
+
+	if (!is_elevator_char_collision(cell))
+		return (false);
+	slot = get_elevator_slot_collision(&game->cub_data, cell);
+	if (slot < 0 || slot >= game->cub_data.elevator_id_count)
+		return (true);
+	return (!game->cub_data.elevator_orb[slot]);
+}
+
 bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y)
 {
 	char	*row;
@@ -33,6 +77,8 @@ bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y)
 	cell = row[cell_x];
 	if (cell == '1' || cell == '2' || cell == ORB_GHOST_BLOCK_CELL
 		|| cell == ' ')
+		return (true);
+	if (is_closed_elevator(game, cell))
 		return (true);
 	if (cell >= 'A' && cell <= 'Z' && cell != 'N'
 		&& cell != 'S' && cell != 'E' && cell != 'W')
