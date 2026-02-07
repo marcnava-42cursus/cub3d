@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:40:09 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 02:39:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:34:10 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ static void	build_door_bounds(t_rayhit *rayhit, float center,
 	rayhit->wall_bounds[1] = center + slice_height / 2;
 }
 
-static void	render_door_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
-		float center, float dist_to_proj_plane)
+static void	render_door_fill(t_game *game, t_rayhit *rayhit, unsigned int x)
 {
 	int			screen_bounds[2];
 	mlx_image_t	*img;
@@ -32,7 +31,6 @@ static void	render_door_fill(t_game *game, t_rayhit *rayhit, unsigned int x,
 	if (!rayhit->hit)
 		return ;
 	img = game->double_buffer[NEXT];
-	build_door_bounds(rayhit, center, dist_to_proj_plane);
 	screen_bounds[0] = rayhit->wall_bounds[0];
 	screen_bounds[1] = rayhit->wall_bounds[1];
 	if (screen_bounds[0] < 0)
@@ -56,7 +54,8 @@ void	render_doors(t_game *game, t_rayhit *rayhits, float center,
 	i = 0;
 	while (i < (unsigned int)game->double_buffer[NEXT]->width)
 	{
-		render_door_fill(game, &rayhits[i], i, center, dist_to_proj_plane);
+		build_door_bounds(&rayhits[i], center, dist_to_proj_plane);
+		render_door_fill(game, &rayhits[i], i);
 		i++;
 	}
 }

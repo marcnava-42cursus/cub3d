@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 15:04:59 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:31:40 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,10 @@ void	free_effects_anims(t_effects *effects);
 
 /*------------------------------ DOOR_ANIMS.C --------------------------------*/
 void	init_door_anims(t_effects *effects);
-void	update_door_anims(t_player *player, t_orb_projectile *orb,
-		t_effects *effects, float delta_time);
+
+/*-------------------------- DOOR_ANIM_STATES.C ------------------------------*/
+void	update_door_anims(t_orb_projectile *orb, t_effects *effects,
+			float delta_time);
 
 /*----------------------------- ABSORB_ANIMS.C -------------------------------*/
 void	init_absorb_anims(t_effects *effects);

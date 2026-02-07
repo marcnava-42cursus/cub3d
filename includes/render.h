@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 14:52:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:58:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@
 # define MAX_TILE_RENDER 20.0f
 
 //PLAYER_FOV (66.0f * FT_PI / 180.0f)
-# define PLAYER_FOV (66.0f * 3.141592f / 180.0f)
+# define PLAYER_FOV 1.151917f
 //TAU (2.0f * FT_PI)
-# define TAU (2.0f * 3.141592f)
+# define TAU 6.290384f
 
 # define RED 0xFF0000FF
 # define GREEN 0x00FF00FF
@@ -72,6 +72,7 @@ void		frame_to_image(mlx_image_t *img, t_atlas *atlas,
 				int coord[2], unsigned int frame[2]);
 void		hori_flip_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 				int coord[2], unsigned int frame[2]);
+
 /*-------------------------- TEXTURE_ATLAS_UTILS.C ---------------------------*/
 uint8_t		*get_pixel_start(unsigned int stride, unsigned int current_frame[2],
 				t_atlas *atlas);
@@ -81,15 +82,6 @@ uint32_t	get_corrected_color_from_pixel(uint8_t *row, unsigned int x,
 /*------------------------------ BACKGROUND.C --------------------------------*/
 void		render_bg_color(t_game *game, int sky, int ground);
 void		render_bg(t_game *game);
-
-/*------------------------------- BRESENHAM.C --------------------------------*/
-void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
-				int color);
-# ifdef BONUS
-
-void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
-				int color);
-# endif
 
 /*----------------------------- DOUBLE_BUFFER.C ------------------------------*/
 void		render_double_buffer(t_game *game);
@@ -114,13 +106,6 @@ void		paint_vertical_line_texture(int x_y_packed[3], mlx_image_t *img,
 void		paint_texture_pixel(unsigned int pixel[2], mlx_image_t *img,
 				int tex_coord[2], xpm_t *texture);
 
-# ifdef BONUS
-
-void		render_player_dynamic_advanced(t_game *game);
-void		render_map_2d_initial_advanced(t_game *game);
-void		toggle_map_overlay_advanced(t_game *game);
-# endif
-
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool		window_init(t_game *game);
 void		window_free(t_game *game);
@@ -131,7 +116,7 @@ void		render_gameplay_window(t_game *game, unsigned int buffer_width);
 /*--------------------------------- UTILS.C ----------------------------------*/
 void		save_pixel_to_image(mlx_image_t *image, unsigned int x,
 				unsigned int y, uint32_t color);
-int			t_color_to_int(t_color *color, int alpha);
+void		pack_x_ys(int x, int y[2], int x_y_packed[3]);
 float		normalize_angle(float angle);
 float		clamp(float value, float min, float max);
 void		safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);
@@ -140,17 +125,6 @@ void		safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);
 bool		world_map_init(t_game *game);
 void		set_map_overlay_visible(t_game *game, bool visible);
 void		toggle_map_overlay(t_game *game);
-
-/*---------------------------- 2D MAP RENDERING ------------------------------*/
-// Texture loading
-int			load_map_textures(t_game *game);
-void		free_map_textures(t_game *game);
-
-// 2D Map rendering
-void		render_map_2d(t_game *game);
-void		render_map_2d_initial(t_game *game);
-void		render_map_tiles_static(t_game *game);
-void		render_player_dynamic(t_game *game);
 
 /*---------------------------- PLAYER.C --------------------------------------*/
 void		render_player_overlay(t_game *game);

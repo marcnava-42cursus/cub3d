@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/07 02:24:08 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/07 21:35:35 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -201,12 +201,12 @@ SRCS_BONUS	+=	\
 				$(SRCPATH)/render/texture_atlas.c \
 				$(SRCPATH)/render/frame_to_image.c \
 				$(SRCPATH)/render/texture_atlas_utils.c \
-				$(SRCPATH)/render/player.c \
 				$(SRCPATH)/render/raycast.c \
 				$(SRCPATH)/render/rayhit.c \
 				$(SRCPATH)/render/background.c \
 				$(SRCPATH)/render/scanline_fill.c \
 				$(SRCPATH)/render/utils.c \
+				$(SRCPATH)/_bonus/render/player.c \
 				$(SRCPATH)/_bonus/render/bresenham_clipped.c \
 				$(SRCPATH)/_bonus/render/double_buffer_bonus.c \
 				$(SRCPATH)/_bonus/render/minimap.c \
@@ -234,6 +234,7 @@ SRCS_BONUS	+=	\
 				$(SRCPATH)/_bonus/animation/effects_anims.c \
 				$(SRCPATH)/_bonus/animation/orb_anims.c \
 				$(SRCPATH)/_bonus/animation/door_anims.c \
+				$(SRCPATH)/_bonus/animation/door_anim_states.c \
 				$(SRCPATH)/_bonus/animation/player/player_anim.c \
 				$(SRCPATH)/_bonus/animation/player/player_left_hand_anims.c \
 				$(SRCPATH)/_bonus/animation/player/player_right_hand_anims.c 

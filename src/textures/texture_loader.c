@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 22:43:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 17:46:15 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ void	free_textures(t_textures *textures)
 		mlx_delete_xpm42(textures->fog);
 		textures->fog = NULL;
 	}
-	atlas_free(&textures->living);
 	if (textures->custom)
 	{
 		free_custom_textures(textures->custom);

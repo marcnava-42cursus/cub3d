@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:35:49 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:06:18 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:16:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,24 @@ static void	draw_top_and_bottom_outline(unsigned int x, t_rayhit rayhit,
 		save_pixel_to_image(img, x, slice_bounds[1], color);
 }
 
-void	add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
-		float center, float dist_to_proj_plane)
+void	add_wall_outlines(t_rayhit *rh, t_game *game, float center,
+		float dist_to_proj_plane)
 {
 	unsigned int	i;
 	int				c_cell[2];
 	t_orientation	c_face;
 	int				color;
+	mlx_image_t		*img;
 
 	i = 0;
+	img = game->double_buffer[NEXT];
 	c_cell[X] = rh[img->width / 2].cell[X];
 	c_cell[Y] = rh[img->width / 2].cell[Y];
 	c_face = rh[img->width / 2].face;
 	color = GREEN;
-	if (map->grid[c_cell[Y]][c_cell[X]] == '1')
+	if (game->cub_data.map.grid[c_cell[Y]][c_cell[X]] == '1')
 		color = RED;
+	img = game->double_buffer[NEXT];
 	while (i < img->width && i < MAX_WINDOW_WIDTH)
 	{
 		if (rh[i].cell[X] == c_cell[X] && rh[i].cell[Y] == c_cell[Y]

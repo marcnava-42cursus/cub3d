@@ -6,11 +6,16 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:12:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 05:19:46 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:28:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
+
+static int	t_color_to_int(t_color *color, int alpha)
+{
+	return (color->r << 24 | color->g << 16 | color->b << 8 | alpha);
+}
 
 void	render_bg_color(t_game *game, int sky, int ground)
 {

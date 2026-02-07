@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 20:46:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:31:20 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ void	save_pixel_to_image(mlx_image_t *image, unsigned int x, unsigned int y,
 	pixelstart[3] = color & 0xFF;
 }
 
-int	t_color_to_int(t_color *color, int alpha)
+void	pack_x_ys(int x, int y[2], int x_y_packed[3])
 {
-	return (color->r << 24 | color->g << 16 | color->b << 8 | alpha);
+	x_y_packed[0] = x;
+	x_y_packed[1] = y[0];
+	x_y_packed[2] = y[1];
 }
 
 float	normalize_angle(float angle)

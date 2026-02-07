@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 13:42:51 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 17:44:03 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef enum e_elevator_state
 	ELEVATOR_CLOSED,
 	ELEVATOR_CLOSING,
 	ELEVATOR_OPENED,
-	ELEVATOR_OPENING ,
+	ELEVATOR_OPENING,
 	ELEVATOR_EATING
 }	t_elevator_state;
 

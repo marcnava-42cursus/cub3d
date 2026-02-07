@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:39:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 15:28:01 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:29:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "animation.h"
 
-static void init_eating_anim(t_effects *effects)
+static void	init_eating_anim(t_effects *effects)
 {
 	static const unsigned int	eating_frames[8] = {1, 0, 1, 0, 1, 0, 1, 0};
 	static const unsigned int	eating_holds[8] = {1, 2, 2, 1, 3, 1, 2, 1};
@@ -60,25 +60,6 @@ void	init_door_anims(t_effects *effects)
 	init_close_anims(effects);
 	init_open_anims(effects);
 	init_eating_anim(effects);
-}
-
-void	update_door_anims(t_player *player, t_orb_projectile *orb,
-		t_effects *effects, float delta_time)
-{
-	static int	last_mode = -1;
-	int			player_cell[2];
-	bool		finished;
-
-	player_cell[X] = (int)(player->x / WORLDMAP_TILE_SIZE);
-	player_cell[Y] = (int)(player->y / WORLDMAP_TILE_SIZE);
-	finished = anim_update(&effects->door_anims[effects->current_door_anim],
-			delta_time);
-	if (orb->mode != last_mode)
-	{
-		if (orb->mode == ORB_MODE_PLACE)
-			set_current_anim(effects->door_anims, &effects->current_door_anim, DOOR_OPEN);
-		else if (orb->mode == ORB_MODE_TAKE)
-			set_current_anim(effects->door_anims, &effects->current_door_anim, DOOR_CLOSE);
-	}
-	last_mode = orb->mode;
+	set_current_anim(effects->door_anims, &effects->current_door_anim,
+		DOOR_CLOSED);
 }

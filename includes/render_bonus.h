@@ -6,12 +6,15 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:52:19 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 03:18:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 20:36:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
-#include "animation.h"
+#ifndef RENDER_BONUS_H
+# define RENDER_BONUS_H
+
+# include "render.h"
+# include "animation.h"
 
 # define MINIMAP_TILE_SIZE 32
 # define MINIMAP_PLAYER_SIZE 16
@@ -45,6 +48,12 @@
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
 
+/*------------------------------- BRESENHAM.C --------------------------------*/
+void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
+				int color);
+void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
+				int color);
+
 /*--------------------------- BRESENHAM_CLIPPED.C ----------------------------*/
 void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
@@ -52,9 +61,9 @@ void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 /*------------------------- TEXTURE_MAPPING_BONUS.C --------------------------*/
 void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 				t_game *game);
-void		paint_vertical_line_texture_bonus(unsigned int x, int y[2],
-				t_game *game, xpm_t *texture, int tex_x, float tex_pos,
-				float tex_step, float fog, t_anim *anim);
+void		paint_vertical_line_texture_bonus(int x_y_packed[3], t_game *game,
+				xpm_t *texture, float x_offset_step[3], float fog,
+				t_anim *anim);
 
 /*------------------------ PAINT_PIXEL_COLOR_BONUS.C -------------------------*/
 uint32_t	get_pixel_color_bonus(t_anim *anim, xpm_t *texture,
@@ -88,8 +97,8 @@ void		render_doors(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
 
 /*------------------------------- OUTLINES.C --------------------------------*/
-void		add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
-				float center, float dist_to_proj_plane);
+void		add_wall_outlines(t_rayhit *rh, t_game *game, float center,
+				float dist_to_proj_plane);
 
 /*------------------------- FLOORS_AND_CEILINGS.C ----------------------------*/
 void		render_floors_and_ceilings(t_game *game, float center,
@@ -110,3 +119,19 @@ void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 /*------------------------------ LIVING_BLOCK.C ------------------------------*/
 void		render_living_block(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
+
+/*----------------------------- MAP_2D_BONUS.C -------------------------------*/
+void		render_player_dynamic_advanced(t_game *game);
+void		render_map_2d_initial_advanced(t_game *game);
+void		toggle_map_overlay_advanced(t_game *game);
+
+// Texture loading
+int			load_map_textures(t_game *game);
+void		free_map_textures(t_game *game);
+
+// 2D Map rendering
+void		render_map_2d(t_game *game);
+void		render_map_2d_initial(t_game *game);
+void		render_map_tiles_static(t_game *game);
+void		render_player_dynamic(t_game *game);
+#endif

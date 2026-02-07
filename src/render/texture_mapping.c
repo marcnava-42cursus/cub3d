@@ -6,14 +6,14 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 14:52:32 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:57:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static float	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
-		float original_line_height, float *step)
+static void	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
+		float x_offset_step[3])
 {
 	float	wall_x;
 
@@ -32,8 +32,12 @@ static float	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
 	else
 		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
-	*step = (float)((*texture)->texture.height / original_line_height);
-	return ((float)(wall_x * (float)(*texture)->texture.width));
+	x_offset_step[2] = (float)((*texture)->texture.height / x_offset_step[1]);
+	x_offset_step[0] = (float)(wall_x * (float)(*texture)->texture.width);
+	if ((rayhit->side == 0 && rayhit->face == NORTH)
+		|| (rayhit->side == 1 && rayhit->face == WEST))
+		x_offset_step[0] = (float)((*texture)->texture.width - x_offset_step[0]
+				- 1);
 }
 
 uint32_t	sample_texture_pixel(xpm_t *texture, int tex_x, float tex_pos)
@@ -109,17 +113,11 @@ void	render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
 		return ;
 	original_line_height = (float)(rayhit->wall_bounds[1]
 			- rayhit->wall_bounds[0] + 1);
-	x_offset_step[0] = get_tex_x(game, rayhit, &texture,
-			original_line_height, &x_offset_step[2]);
-	if ((rayhit->side == 0 && rayhit->face == NORTH)
-		|| (rayhit->side == 1 && rayhit->face == WEST))
-		x_offset_step[0] = (float)(texture->texture.width
-				- x_offset_step[0] - 1);
+	x_offset_step[1] = original_line_height;
+	get_tex_x(game, rayhit, &texture, x_offset_step);
 	x_offset_step[1] = (float)((y[0] - rayhit->wall_bounds[0])
 			* x_offset_step[2]);
-	x_y_packed[0] = x;
-	x_y_packed[1] = y[0];
-	x_y_packed[2] = y[1];
-	paint_vertical_line_texture(x_y_packed, game->double_buffer[NEXT],
-		texture, x_offset_step);
+	pack_x_ys((int)x, y, x_y_packed);	
+	paint_vertical_line_texture(x_y_packed, game->double_buffer[NEXT], texture,
+		x_offset_step);
 }
