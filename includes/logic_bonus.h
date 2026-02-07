@@ -65,8 +65,8 @@ void	audio_system_shutdown(void);
 void	audio_orb_start(void);
 void	audio_orb_stop(void);
 void	audio_orb_update_volume(const t_game *game);
-void	audio_step_set_loop(bool enabled);
-void	audio_step_update_loop(bool player_is_moving);
+bool	audio_step_set_loop(bool enabled);
+bool	audio_step_update_loop(bool player_is_moving);
 
 // Config modal UI
 void	set_config_modal_visible(t_game *game, bool visible);

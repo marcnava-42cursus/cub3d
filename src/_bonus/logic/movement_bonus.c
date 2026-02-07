@@ -25,6 +25,10 @@ void	mouse_hook_advanced(mouse_key_t button, action_t action,
 void	cursor_hook_advanced(double xpos, double ypos, void *param);
 bool	process_mouse_rotation_advanced(t_game *game);
 
+#define HEADBOB_AMPLITUDE 5.0f
+#define HEADBOB_SPEED 14.0f
+#define HEADBOB_RECOVER_SPEED 30.0f
+
 static int	is_elevator_char_logic(char c)
 {
 	const char	*set = "!\"·$%&/()=?¿";
@@ -142,6 +146,47 @@ static bool	switch_floor(t_game *game, char id)
 	printf("Elevator '%c': moved to floor %s (index %d) at (%d, %d)\n",
 		id, to->path, to->index, tx, ty);
 	return (true);
+}
+
+static float	recover_to_zero(float value, float amount)
+{
+	if (value > amount)
+		return (value - amount);
+	if (value < -amount)
+		return (value + amount);
+	return (0.0f);
+}
+
+static bool	apply_headbob_pitch(t_game *game, bool is_moving, bool step_started,
+		float previous_offset)
+{
+	float	new_offset;
+	float	max_pitch;
+
+	if (!game || !game->mlx)
+		return (false);
+	if (is_moving)
+	{
+		if (step_started)
+			game->headbob_phase = FT_PI_2;
+		new_offset = sinf(game->headbob_phase) * HEADBOB_AMPLITUDE;
+		game->headbob_phase += HEADBOB_SPEED * (float)game->mlx->delta_time;
+		while (game->headbob_phase > TWO_PI)
+			game->headbob_phase -= TWO_PI;
+	}
+	else
+	{
+		new_offset = recover_to_zero(previous_offset,
+				HEADBOB_RECOVER_SPEED * (float)game->mlx->delta_time);
+		if (new_offset == 0.0f)
+			game->headbob_phase = 0.0f;
+	}
+	game->headbob_offset = new_offset;
+	game->cub_data.player.pitch += new_offset;
+	max_pitch = game->double_buffer[NEXT]->height * 0.35f;
+	game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+			-max_pitch, max_pitch);
+	return (fabsf(new_offset - previous_offset) > 0.0001f);
 }
 
 /**
@@ -324,8 +369,11 @@ void	update_game_loop_advanced(void *param)
 	bool			moved;
 	bool			mouse_rotated;
 	bool			player_translated;
+	bool			step_started;
+	bool			headbob_changed;
 	float			prev_x;
 	float			prev_y;
+	float			prev_headbob;
 	double			min_step;
 	int				fps_limit;
 	double			now;
@@ -335,9 +383,14 @@ void	update_game_loop_advanced(void *param)
 	game = (t_game *)param;
 	if (!game || !game->mlx)
 		return ;
+	prev_headbob = game->headbob_offset;
+	if (prev_headbob != 0.0f)
+		game->cub_data.player.pitch -= prev_headbob;
 	if (is_config_modal_open(game))
 	{
 		audio_step_update_loop(false);
+		game->headbob_offset = 0.0f;
+		game->headbob_phase = 0.0f;
 		controller_handle_rebind_advanced(game);
 		controller_update_advanced(game);
 		update_config_modal(game);
@@ -367,20 +420,28 @@ void	update_game_loop_advanced(void *param)
 	if (is_config_modal_open(game))
 	{
 		audio_step_update_loop(false);
+		game->headbob_offset = 0.0f;
+		game->headbob_phase = 0.0f;
 		update_config_modal(game);
 		return ;
 	}
 	fps_overlay_update(game);
 	if (game->mlx->delta_time <= 0.0)
+	{
+		game->headbob_offset = 0.0f;
+		game->headbob_phase = 0.0f;
 		return ;
+	}
 	prev_x = game->cub_data.player.x;
 	prev_y = game->cub_data.player.y;
 	moved = process_movement_input(game);
 	mouse_rotated = process_mouse_rotation_advanced(game);
 	player_translated = (fabsf(game->cub_data.player.x - prev_x) > 0.0001f
 			|| fabsf(game->cub_data.player.y - prev_y) > 0.0001f);
-	audio_step_update_loop(player_translated);
-	if (moved || mouse_rotated)
+	step_started = audio_step_update_loop(player_translated);
+	headbob_changed = apply_headbob_pitch(game, player_translated,
+			step_started, prev_headbob);
+	if (moved || mouse_rotated || headbob_changed)
 		handle_movement_rendering(game);
 }
 
@@ -440,6 +501,8 @@ void	init_movement_system_advanced(t_game *game)
 			game->menu.options.mouse_sens);
 	game->last_mouse_x = 0.0;
 	game->last_mouse_y = 0.0;
+	game->headbob_phase = 0.0f;
+	game->headbob_offset = 0.0f;
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;

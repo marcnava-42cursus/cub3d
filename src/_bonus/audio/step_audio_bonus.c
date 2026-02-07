@@ -12,7 +12,7 @@
 
 #include "logic_bonus.h"
 
-void	audio_step_update_loop(bool player_is_moving)
+bool	audio_step_update_loop(bool player_is_moving)
 {
-	audio_step_set_loop(player_is_moving);
+	return (audio_step_set_loop(player_is_moving));
 }

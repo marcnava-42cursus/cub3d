@@ -218,13 +218,17 @@ void	audio_set_orb_volume(float volume)
 	update_orb_loop_state(audio);
 }
 
-void	audio_step_set_loop(bool enabled)
+bool	audio_step_set_loop(bool enabled)
 {
 	t_bonus_audio	*audio;
 
 	audio = audio_ctx();
 	if (!audio->initialized || !audio->step_sound_ready)
-		return ;
+		return (false);
 	if (enabled && !ma_sound_is_playing(&audio->step_sound))
+	{
 		start_step_sound(&audio->step_sound);
+		return (true);
+	}
+	return (false);
 }
