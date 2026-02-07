@@ -117,9 +117,9 @@ void		paint_horizontal_line_texture(unsigned int y, unsigned int x,
 
 # ifdef BONUS
 
-void		render_player_dynamic_bonus(t_game *game);
-void		render_map_2d_initial_bonus(t_game *game);
-void		toggle_map_overlay_bonus(t_game *game);
+void		render_player_dynamic_advanced(t_game *game);
+void		render_map_2d_initial_advanced(t_game *game);
+void		toggle_map_overlay_advanced(t_game *game);
 # endif
 
 /*--------------------------------- WINDOW.C ---------------------------------*/

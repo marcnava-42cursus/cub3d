@@ -15,7 +15,7 @@
 #include "logic_bonus.h"
 #include "render.h"
 
-void	refresh_key_states_bonus(t_game *game)
+void	refresh_key_states_advanced(t_game *game)
 {
 	if (!game || !game->mlx)
 		return ;
@@ -47,10 +47,10 @@ void	refresh_key_states_bonus(t_game *game)
 			game->menu.controls_key_codes[ACTION_LOOK_UP]);
 	game->key_down_pressed = mlx_is_key_down(game->mlx,
 			game->menu.controls_key_codes[ACTION_LOOK_DOWN]);
-	controller_update_bonus(game);
+	controller_update_advanced(game);
 }
 
-void	key_hook_bonus(mlx_key_data_t keydata, void *param)
+void	key_hook_advanced(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;
 	keys_t	menu_key;
@@ -80,7 +80,7 @@ void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 	map_key = game->menu.controls_key_codes[ACTION_MAP];
 	if (keydata.key == map_key && keydata.action == MLX_PRESS)
 	{
-		toggle_map_overlay_bonus(game);
+		toggle_map_overlay_advanced(game);
 		return ;
 	}
 	place_key = game->menu.controls_key_codes[ACTION_PLACE];
@@ -94,7 +94,7 @@ void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 	}
 }
 
-void	mouse_hook_bonus(mouse_key_t button, action_t action,
+void	mouse_hook_advanced(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param)
 {
 	t_game	*game;
@@ -117,7 +117,7 @@ void	mouse_hook_bonus(mouse_key_t button, action_t action,
 	config_option_toggle(game, index);
 }
 
-void	cursor_hook_bonus(double xpos, double ypos, void *param)
+void	cursor_hook_advanced(double xpos, double ypos, void *param)
 {
 	t_game	*game;
 	double	delta_x;
@@ -148,7 +148,7 @@ void	cursor_hook_bonus(double xpos, double ypos, void *param)
 		* game->mouse_sensitivity * pitch_boost;
 }
 
-bool	process_mouse_rotation_bonus(t_game *game)
+bool	process_mouse_rotation_advanced(t_game *game)
 {
 	float	rotation_amount;
 	float	pitch_amount;

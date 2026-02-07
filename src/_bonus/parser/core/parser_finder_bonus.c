@@ -28,10 +28,10 @@ static int	is_standard_texture(const char *line)
 	return (result);
 }
 
-static int	check_element_type_bonus(char *line, int *texture_count,
+static int	check_element_type_advanced(char *line, int *texture_count,
 		int *color_count)
 {
-	if (is_link_identifier_bonus(line))
+	if (is_link_identifier_advanced(line))
 		return (0);
 	if (is_texture_identifier(line))
 	{
@@ -56,7 +56,7 @@ static int	check_element_type_bonus(char *line, int *texture_count,
 	return (0);
 }
 
-static int	count_elements_bonus(char **lines, int line_count,
+static int	count_elements_advanced(char **lines, int line_count,
 	int *texture_count, int *color_count)
 {
 	int	i;
@@ -72,7 +72,7 @@ static int	count_elements_bonus(char **lines, int line_count,
 			i++;
 			continue ;
 		}
-		result = check_element_type_bonus(lines[i], texture_count, color_count);
+		result = check_element_type_advanced(lines[i], texture_count, color_count);
 		if (result == 1)
 			return (i);
 		if (result == -1)
@@ -86,11 +86,11 @@ static int	count_elements_bonus(char **lines, int line_count,
 	return (-1);
 }
 
-int	find_map_start_bonus(char **lines, int line_count)
+int	find_map_start_advanced(char **lines, int line_count)
 {
 	int	texture_count;
 	int	color_count;
 
-	return (count_elements_bonus(lines, line_count, &texture_count,
+	return (count_elements_advanced(lines, line_count, &texture_count,
 			&color_count));
 }

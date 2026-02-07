@@ -13,12 +13,12 @@
 #include "parser.h"
 #include "structs.h"
 
-static int	is_valid_map_char_bonus(char c)
+static int	is_valid_map_char_advanced(char c)
 {
 	return (c != ' ' && c != '\n' && c != '\t' && c >= 33 && c <= 126);
 }
 
-static int	is_walkable_char_bonus(char c)
+static int	is_walkable_char_advanced(char c)
 {
 	if (c == '0')
 		return (1);
@@ -29,7 +29,7 @@ static int	is_walkable_char_bonus(char c)
 	return (0);
 }
 
-int	validate_map_characters_bonus(t_map *map)
+int	validate_map_characters_advanced(t_map *map)
 {
 	int	x;
 	int	y;
@@ -40,7 +40,7 @@ int	validate_map_characters_bonus(t_map *map)
 		x = 0;
 		while (x < (int)ft_strlen(map->grid[y]))
 		{
-			if (!is_valid_map_char_bonus(map->grid[y][x])
+			if (!is_valid_map_char_advanced(map->grid[y][x])
 				&& map->grid[y][x] != ' ')
 			{
 				printf("Error: Invalid character '%c' at position (%d, %d)\n",
@@ -54,7 +54,7 @@ int	validate_map_characters_bonus(t_map *map)
 	return (1);
 }
 
-int	is_map_closed_bonus(t_map *map)
+int	is_map_closed_advanced(t_map *map)
 {
 	int		x;
 	int		y;
@@ -67,7 +67,7 @@ int	is_map_closed_bonus(t_map *map)
 		while (x < (int)ft_strlen(map->grid[y]))
 		{
 			c = map->grid[y][x];
-			if (is_walkable_char_bonus(c))
+			if (is_walkable_char_advanced(c))
 			{
 				if (y == 0 || y == map->height - 1)
 				{
@@ -125,7 +125,7 @@ static int	is_player_char(char c)
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
-int	find_player_position_bonus(t_map *map, t_player *player)
+int	find_player_position_advanced(t_map *map, t_player *player)
 {
 	int		x;
 	int		y;
@@ -171,18 +171,18 @@ int	find_player_position_bonus(t_map *map, t_player *player)
 	return (1);
 }
 
-int	validate_map_bonus(t_map *map, t_player *player)
+int	validate_map_advanced(t_map *map, t_player *player)
 {
-	if (!validate_map_characters_bonus(map))
+	if (!validate_map_characters_advanced(map))
 		return (0);
-	if (!find_player_position_bonus(map, player))
+	if (!find_player_position_advanced(map, player))
 		return (0);
-	if (!is_map_closed_bonus(map))
+	if (!is_map_closed_advanced(map))
 		return (0);
 	return (1);
 }
 
-int	is_map_line_bonus(const char *line)
+int	is_map_line_advanced(const char *line)
 {
 	int	i;
 	int	has_map_char;
@@ -195,7 +195,7 @@ int	is_map_line_bonus(const char *line)
 	{
 		if (line[i] != ' ' && line[i] != '\n' && line[i] != '\t')
 		{
-			if (is_valid_map_char_bonus(line[i]))
+			if (is_valid_map_char_advanced(line[i]))
 				has_map_char = 1;
 			else
 				return (0);

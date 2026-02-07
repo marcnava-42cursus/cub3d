@@ -13,7 +13,7 @@
 #include "parser.h"
 #include "structs.h"
 
-static char	*normalize_path_bonus(const char *path)
+static char	*normalize_path_advanced(const char *path)
 {
 	char	*resolved;
 
@@ -25,7 +25,7 @@ static char	*normalize_path_bonus(const char *path)
 	return (resolved);
 }
 
-static int	is_elevator_char_bonus(char c)
+static int	is_elevator_char_advanced(char c)
 {
 	const char	*set = "!\"·$%&/()=?¿";
 	int			i;
@@ -40,7 +40,7 @@ static int	is_elevator_char_bonus(char c)
 	return (0);
 }
 
-static int	collect_floor_elevators_bonus(t_floor *floor)
+static int	collect_floor_elevators_advanced(t_floor *floor)
 {
 	int		y;
 	int		x;
@@ -56,7 +56,7 @@ static int	collect_floor_elevators_bonus(t_floor *floor)
 		while (floor->map.grid[y][x])
 		{
 			id = floor->map.grid[y][x];
-			if (is_elevator_char_bonus(id))
+			if (is_elevator_char_advanced(id))
 			{
 				if (seen[(unsigned char)id])
 				{
@@ -77,7 +77,7 @@ static int	collect_floor_elevators_bonus(t_floor *floor)
 	return (1);
 }
 
-static int	register_floor_elevators_bonus(t_cub_data *data, t_floor *floor)
+static int	register_floor_elevators_advanced(t_cub_data *data, t_floor *floor)
 {
 	int	i;
 	int	slot;
@@ -120,7 +120,7 @@ static int	register_floor_elevators_bonus(t_cub_data *data, t_floor *floor)
 	return (1);
 }
 
-static t_floor	*find_floor_by_path_bonus(t_floor *head, const char *path)
+static t_floor	*find_floor_by_path_advanced(t_floor *head, const char *path)
 {
 	t_floor	*current;
 
@@ -134,7 +134,7 @@ static t_floor	*find_floor_by_path_bonus(t_floor *head, const char *path)
 	return (NULL);
 }
 
-static void	free_texture_paths_bonus(t_textures *textures)
+static void	free_texture_paths_advanced(t_textures *textures)
 {
 	if (!textures)
 		return ;
@@ -160,7 +160,7 @@ static void	free_texture_paths_bonus(t_textures *textures)
 	}
 }
 
-static void	free_floor_node_bonus(t_floor *floor)
+static void	free_floor_node_advanced(t_floor *floor)
 {
 	if (!floor)
 		return ;
@@ -172,12 +172,12 @@ static void	free_floor_node_bonus(t_floor *floor)
 		free(floor->up_path);
 	if (floor->down_path)
 		free(floor->down_path);
-	free_texture_paths_bonus(&floor->textures);
+	free_texture_paths_advanced(&floor->textures);
 	free_textures(&floor->textures);
 	free(floor);
 }
 
-static int	create_floor_from_data_bonus(char *canonical_path, t_cub_data *src,
+static int	create_floor_from_data_advanced(char *canonical_path, t_cub_data *src,
 		t_floor **out, int index)
 {
 	if (!canonical_path)
@@ -209,16 +209,16 @@ static int	create_floor_from_data_bonus(char *canonical_path, t_cub_data *src,
 	ft_bzero(&src->ceiling_color, sizeof(t_color));
 	src->up_path = NULL;
 	src->down_path = NULL;
-	if (!collect_floor_elevators_bonus(*out))
+	if (!collect_floor_elevators_advanced(*out))
 	{
-		free_floor_node_bonus(*out);
+		free_floor_node_advanced(*out);
 		*out = NULL;
 		return (0);
 	}
 	return (1);
 }
 
-static int	parse_floor_file_bonus(const char *path, int index,
+static int	parse_floor_file_advanced(const char *path, int index,
 		t_cub_data *global, t_floor **out_floor, int *player_count)
 {
 	t_cub_data	tmp;
@@ -231,7 +231,7 @@ static int	parse_floor_file_bonus(const char *path, int index,
 		printf("Error: Invalid floor file extension for %s\n", path);
 		return (0);
 	}
-	canonical = normalize_path_bonus(path);
+	canonical = normalize_path_advanced(path);
 	if (!canonical)
 		return (0);
 	init_cub_data_parser_only(&tmp);
@@ -242,7 +242,7 @@ static int	parse_floor_file_bonus(const char *path, int index,
 		free(canonical);
 		return (0);
 	}
-	if (!process_file_data_bonus(lines, line_count, &tmp))
+	if (!process_file_data_advanced(lines, line_count, &tmp))
 	{
 		free_lines(lines, line_count);
 		free(canonical);
@@ -250,15 +250,15 @@ static int	parse_floor_file_bonus(const char *path, int index,
 		return (0);
 	}
 	free_lines(lines, line_count);
-	if (!create_floor_from_data_bonus(canonical, &tmp, out_floor, index))
+	if (!create_floor_from_data_advanced(canonical, &tmp, out_floor, index))
 	{
 		free_cub_data(&tmp);
 		return (0);
 	}
 	free_cub_data(&tmp);
-	if (!register_floor_elevators_bonus(global, *out_floor))
+	if (!register_floor_elevators_advanced(global, *out_floor))
 	{
-		free_floor_node_bonus(*out_floor);
+		free_floor_node_advanced(*out_floor);
 		*out_floor = NULL;
 		return (0);
 	}
@@ -271,7 +271,7 @@ static int	parse_floor_file_bonus(const char *path, int index,
 				printf("  - First player found in: %s\n",
 					global->player_floor_path);
 			printf("  - Another player found in: %s\n", canonical);
-			free_floor_node_bonus(*out_floor);
+			free_floor_node_advanced(*out_floor);
 			*out_floor = NULL;
 			return (0);
 		}
@@ -287,7 +287,7 @@ static int	parse_floor_file_bonus(const char *path, int index,
 	return (1);
 }
 
-static int	parse_neighbor_floor_bonus(t_floor *current,
+static int	parse_neighbor_floor_advanced(t_floor *current,
 	const char *neighbor_path, int is_up, t_cub_data *data, int *player_count)
 {
 	t_floor	*neighbor;
@@ -296,10 +296,10 @@ static int	parse_neighbor_floor_bonus(t_floor *current,
 
 	if (!neighbor_path || *neighbor_path == '\0')
 		return (1);
-	normalized = normalize_path_bonus(neighbor_path);
+	normalized = normalize_path_advanced(neighbor_path);
 	if (!normalized)
 		return (0);
-	neighbor = find_floor_by_path_bonus(data->floors, normalized);
+	neighbor = find_floor_by_path_advanced(data->floors, normalized);
 	index = current->index + (is_up ? 1 : -1);
 	if (neighbor)
 	{
@@ -319,7 +319,7 @@ static int	parse_neighbor_floor_bonus(t_floor *current,
 		}
 		return (1);
 	}
-	if (!parse_floor_file_bonus(neighbor_path, index, data, &neighbor,
+	if (!parse_floor_file_advanced(neighbor_path, index, data, &neighbor,
 			player_count))
 	{
 		free(normalized);
@@ -342,28 +342,28 @@ static int	parse_neighbor_floor_bonus(t_floor *current,
 	return (1);
 }
 
-static int	parse_floor_neighbors_bonus(t_floor *floor, t_cub_data *data,
+static int	parse_floor_neighbors_advanced(t_floor *floor, t_cub_data *data,
 		int *player_count)
 {
 	if (!floor || floor->parsed_neighbors)
 		return (1);
 	floor->parsed_neighbors = 1;
-	if (!parse_neighbor_floor_bonus(floor, floor->up_path, 1, data,
+	if (!parse_neighbor_floor_advanced(floor, floor->up_path, 1, data,
 			player_count))
 		return (0);
-	if (!parse_neighbor_floor_bonus(floor, floor->down_path, 0, data,
+	if (!parse_neighbor_floor_advanced(floor, floor->down_path, 0, data,
 			player_count))
 		return (0);
-	if (floor->up && !parse_floor_neighbors_bonus(floor->up, data,
+	if (floor->up && !parse_floor_neighbors_advanced(floor->up, data,
 		player_count))
 		return (0);
 	if (floor->down
-		&& !parse_floor_neighbors_bonus(floor->down, data, player_count))
+		&& !parse_floor_neighbors_advanced(floor->down, data, player_count))
 		return (0);
 	return (1);
 }
 
-static int	validate_global_elevators_bonus(t_cub_data *data)
+static int	validate_global_elevators_advanced(t_cub_data *data)
 {
 	int	i;
 
@@ -381,23 +381,23 @@ static int	validate_global_elevators_bonus(t_cub_data *data)
 	return (1);
 }
 
-int	build_floor_graph_bonus(const char *path, t_cub_data *data)
+int	build_floor_graph_advanced(const char *path, t_cub_data *data)
 {
 	int		player_count;
 	t_floor	*root;
 	char	*canonical_root;
 
 	player_count = 0;
-	canonical_root = normalize_path_bonus(path);
+	canonical_root = normalize_path_advanced(path);
 	if (!canonical_root)
 		return (0);
-	if (!create_floor_from_data_bonus(canonical_root, data, &root, 0))
+	if (!create_floor_from_data_advanced(canonical_root, data, &root, 0))
 		return (0);
 	data->floors = root;
 	data->current_floor = root;
 	data->map = root->map;
 	data->floor_count = 1;
-	if (!register_floor_elevators_bonus(data, root))
+	if (!register_floor_elevators_advanced(data, root))
 		return (0);
 	if (root->has_player)
 	{
@@ -407,14 +407,14 @@ int	build_floor_graph_bonus(const char *path, t_cub_data *data)
 			free(data->player_floor_path);
 		data->player_floor_path = ft_strdup(path);
 	}
-	if (!parse_floor_neighbors_bonus(root, data, &player_count))
+	if (!parse_floor_neighbors_advanced(root, data, &player_count))
 		return (0);
 	if (player_count != 1)
 	{
 		printf("Error: Expected exactly one player across all floors\n");
 		return (0);
 	}
-	if (!validate_global_elevators_bonus(data))
+	if (!validate_global_elevators_advanced(data))
 		return (0);
 	data->textures = data->current_floor->textures;
 	data->floor_color = data->current_floor->floor_color;

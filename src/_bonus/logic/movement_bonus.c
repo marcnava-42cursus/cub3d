@@ -16,14 +16,14 @@
 #include "parser.h"
 
 // Prototypes for bonus functions used
-void	render_player_dynamic_bonus(t_game *game);
-void	render_map_2d_initial_bonus(t_game *game);
-void	refresh_key_states_bonus(t_game *game);
-void	key_hook_bonus(mlx_key_data_t keydata, void *param);
-void	mouse_hook_bonus(mouse_key_t button, action_t action,
+void	render_player_dynamic_advanced(t_game *game);
+void	render_map_2d_initial_advanced(t_game *game);
+void	refresh_key_states_advanced(t_game *game);
+void	key_hook_advanced(mlx_key_data_t keydata, void *param);
+void	mouse_hook_advanced(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
-void	cursor_hook_bonus(double xpos, double ypos, void *param);
-bool	process_mouse_rotation_bonus(t_game *game);
+void	cursor_hook_advanced(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_advanced(t_game *game);
 
 static int	is_elevator_char_logic(char c)
 {
@@ -156,7 +156,7 @@ void	update_player_position(t_game *game)
 	if (!game)
 		return ;
 	if (game->map_2d_visible)
-		render_player_dynamic_bonus(game);
+		render_player_dynamic_advanced(game);
 }
 
 /**
@@ -318,7 +318,7 @@ static void	handle_movement_rendering(t_game *game)
  *
  * @param param Void pointer to game structure (casted internally)
  */
-void	update_game_loop_bonus(void *param)
+void	update_game_loop_advanced(void *param)
 {
 	t_game			*game;
 	bool			moved;
@@ -337,9 +337,9 @@ void	update_game_loop_bonus(void *param)
 		return ;
 	if (is_config_modal_open(game))
 	{
-		bonus_audio_update_step_loop(false);
-		controller_handle_rebind_bonus(game);
-		controller_update_bonus(game);
+		audio_step_update_loop(false);
+		controller_handle_rebind_advanced(game);
+		controller_update_advanced(game);
 		update_config_modal(game);
 		return ;
 	}
@@ -363,10 +363,10 @@ void	update_game_loop_bonus(void *param)
 	}
 	else
 		next_tick = 0.0;
-	refresh_key_states_bonus(game);
+	refresh_key_states_advanced(game);
 	if (is_config_modal_open(game))
 	{
-		bonus_audio_update_step_loop(false);
+		audio_step_update_loop(false);
 		update_config_modal(game);
 		return ;
 	}
@@ -376,10 +376,10 @@ void	update_game_loop_bonus(void *param)
 	prev_x = game->cub_data.player.x;
 	prev_y = game->cub_data.player.y;
 	moved = process_movement_input(game);
-	mouse_rotated = process_mouse_rotation_bonus(game);
+	mouse_rotated = process_mouse_rotation_advanced(game);
 	player_translated = (fabsf(game->cub_data.player.x - prev_x) > 0.0001f
 			|| fabsf(game->cub_data.player.y - prev_y) > 0.0001f);
-	bonus_audio_update_step_loop(player_translated);
+	audio_step_update_loop(player_translated);
 	if (moved || mouse_rotated)
 		handle_movement_rendering(game);
 }
@@ -423,13 +423,13 @@ static void	init_player_angle(t_game *game)
  *
  * @param game Pointer to the game structure
  */
-void	init_movement_system_bonus(t_game *game)
+void	init_movement_system_advanced(t_game *game)
 {
 	if (!game)
 		return ;
 	init_player_angle(game);
 	init_player_parameters(game);
-	init_orb_projectile_bonus(game);
+	init_orb_projectile_advanced(game);
 	game->movement_lock_until = 0.0;
 	game->last_teleport_time = -10.0;
 	game->last_teleport_id = '\0';
@@ -444,9 +444,9 @@ void	init_movement_system_bonus(t_game *game)
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
 	init_crosshair(game);
-	mlx_key_hook(game->mlx, key_hook_bonus, game);
-	mlx_mouse_hook(game->mlx, mouse_hook_bonus, game);
-	mlx_cursor_hook(game->mlx, cursor_hook_bonus, game);
+	mlx_key_hook(game->mlx, key_hook_advanced, game);
+	mlx_mouse_hook(game->mlx, mouse_hook_advanced, game);
+	mlx_cursor_hook(game->mlx, cursor_hook_advanced, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
-	mlx_loop_hook(game->mlx, update_game_loop_bonus, game);
+	mlx_loop_hook(game->mlx, update_game_loop_advanced, game);
 }

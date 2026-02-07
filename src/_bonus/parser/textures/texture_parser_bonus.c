@@ -13,7 +13,7 @@
 #include "parser.h"
 #include "structs.h"
 
-int	is_texture_identifier_bonus(const char *line)
+int	is_texture_identifier_advanced(const char *line)
 {
 	char	*trimmed;
 	int		result;
@@ -21,7 +21,7 @@ int	is_texture_identifier_bonus(const char *line)
 	trimmed = trim_whitespace((char *)line);
 	if (!trimmed)
 		return (0);
-	if (is_link_identifier_bonus(trimmed))
+	if (is_link_identifier_advanced(trimmed))
 		return (0);
 	if (ft_strlen(trimmed) < 3)
 		return (0);
@@ -31,7 +31,7 @@ int	is_texture_identifier_bonus(const char *line)
 	return (result);
 }
 
-static char	*extract_texture_path_bonus(const char *line,
+static char	*extract_texture_path_advanced(const char *line,
 		const char *identifier)
 {
 	char	*trimmed;
@@ -84,7 +84,7 @@ static int	add_custom_texture(t_textures *textures, const char *id, char *path)
 	return (1);
 }
 
-int	parse_texture_line_bonus(const char *line, t_textures *textures)
+int	parse_texture_line_advanced(const char *line, t_textures *textures)
 {
 	char	identifier[3];
 	char	*path;
@@ -103,7 +103,7 @@ int	parse_texture_line_bonus(const char *line, t_textures *textures)
 		printf("Error: Invalid texture identifier: %s\n", identifier);
 		return (0);
 	}
-	path = extract_texture_path_bonus(line, identifier);
+	path = extract_texture_path_advanced(line, identifier);
 	if (!path)
 	{
 		printf("Error: No texture path found for %s\n", identifier);

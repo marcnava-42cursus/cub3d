@@ -114,7 +114,7 @@ static bool	controller_apply_rebind(t_game *game,
 	return (true);
 }
 
-void	controller_init_bonus(t_game *game)
+void	controller_init_advanced(t_game *game)
 {
 	if (!game)
 		return ;
@@ -126,7 +126,7 @@ void	controller_init_bonus(t_game *game)
 	controller_refresh_texts(game);
 }
 
-bool	controller_handle_rebind_bonus(t_game *game)
+bool	controller_handle_rebind_advanced(t_game *game)
 {
 	GLFWgamepadstate	state;
 	float				deadzone;

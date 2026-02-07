@@ -98,7 +98,7 @@ static void	resolve_orb_arrival(t_game *game)
 		resolve_elevator_orb_arrival(game);
 	else if (game->orb.mode == ORB_MODE_PLACE)
 		place_block_on_arrival(game);
-	bonus_audio_stop_orb_launch();
+	audio_orb_stop();
 	game->orb.active = false;
 	orb_projectile_clear_ghost(game);
 	game->orb.mode = ORB_MODE_NONE;
@@ -136,13 +136,13 @@ bool	orb_projectile_update(t_game *game, float delta_time)
 	{
 		game->orb.x = game->orb.target_x;
 		game->orb.y = game->orb.target_y;
-		bonus_audio_update_orb_volume(game);
+		audio_orb_update_volume(game);
 		resolve_orb_arrival(game);
 		return (true);
 	}
 	game->orb.x += (dx / distance) * step;
 	game->orb.y += (dy / distance) * step;
-	bonus_audio_update_orb_volume(game);
+	audio_orb_update_volume(game);
 	game->orb.needs_redraw = true;
 	return (true);
 }

@@ -63,7 +63,7 @@ static float	controller_action_value(t_game *game, int action,
 	return (0.0f);
 }
 
-void	controller_update_bonus(t_game *game)
+void	controller_update_advanced(t_game *game)
 {
 	GLFWgamepadstate	state;
 	bool				active[CONFIG_MODAL_CONTROL_COUNT];
@@ -143,7 +143,7 @@ void	controller_update_bonus(t_game *game)
 	if (place_pressed)
 		place_breakable_block(game);
 	if (map_pressed)
-		toggle_map_overlay_bonus(game);
+		toggle_map_overlay_advanced(game);
 	ft_memcpy(game->controller.prev_action_active, active, sizeof(active));
 	controller_store_raw_state(game, &state);
 }
