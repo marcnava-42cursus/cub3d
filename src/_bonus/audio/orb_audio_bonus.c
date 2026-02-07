@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 04:45:37 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:25:42 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ static t_bonus_audio	*audio_ctx(void)
 	static t_bonus_audio	audio_ctx;
 
 	return (&audio_ctx);
+}
+
+static float	clamp_audio(float value, float min, float max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
 }
 
 static bool	load_sound(ma_engine *engine, const char *path, ma_sound *sound)
@@ -47,15 +56,6 @@ static void	update_orb_loop_state(t_bonus_audio *audio)
 	if (!ma_sound_is_playing(&audio->orb_loop_sound))
 		ma_sound_start(&audio->orb_loop_sound);
 	audio->orb_loop_pending = false;
-}
-
-float	clamp_audio(float value, float min, float max)
-{
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
 }
 
 static float	step_pitch_random(void)
@@ -123,9 +123,9 @@ bool	audio_system_init(void)
 		ma_sound_set_looping(&audio->orb_end_sound, MA_FALSE);
 	if (audio->step_sound_ready)
 	{
-		ma_sound_set_volume(&audio->step_sound,
-			clamp_audio(STEP_AUDIO_VOLUME, STEP_AUDIO_VOLUME_MIN,
-				STEP_AUDIO_VOLUME_MAX));
+			ma_sound_set_volume(&audio->step_sound,
+				clamp_audio(STEP_AUDIO_VOLUME, STEP_AUDIO_VOLUME_MIN,
+					STEP_AUDIO_VOLUME_MAX));
 		ma_sound_set_looping(&audio->step_sound, MA_FALSE);
 	}
 	if (!audio->orb_init_ready && !audio->orb_loop_ready

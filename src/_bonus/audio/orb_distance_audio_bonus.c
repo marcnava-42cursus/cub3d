@@ -16,6 +16,15 @@
 #include "cub3d.h"
 #include "logic_bonus.h"
 
+static float	clamp_audio(float value, float min, float max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
+}
+
 static float	orb_distance_normalized(const t_game *game)
 {
 	float	dx;

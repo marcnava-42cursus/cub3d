@@ -14,49 +14,31 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
+static void	controller_reset_runtime_state(t_game *game)
+{
+	if (!game)
+		return ;
+	game->controller.move_forward = 0.0f;
+	game->controller.move_strafe = 0.0f;
+	game->controller.turn = 0.0f;
+	game->controller.look = 0.0f;
+	game->controller.menu_quit_held = false;
+	ft_bzero(game->controller.prev_buttons,
+		sizeof(game->controller.prev_buttons));
+	ft_bzero(game->controller.prev_axes, sizeof(game->controller.prev_axes));
+	ft_bzero(game->controller.prev_action_active,
+		sizeof(game->controller.prev_action_active));
+}
+
 static bool	controller_fill_state_from_raw(t_game *game, int jid,
 			GLFWgamepadstate *state)
 {
-	const unsigned char	*buttons;
-	const float			*axes;
-	int					button_count;
-	int					axis_count;
-	int					limit;
-	int					i;
-
 	if (!game || !state)
 		return (false);
-	button_count = 0;
-	axis_count = 0;
-	buttons = glfwGetJoystickButtons(jid, &button_count);
-	axes = glfwGetJoystickAxes(jid, &axis_count);
-	if ((!buttons || button_count <= 0) && (!axes || axis_count <= 0))
+	if (!glfwJoystickIsGamepad(jid))
 		return (false);
-	ft_bzero(state, sizeof(*state));
-	if (buttons && button_count > 0)
-	{
-		limit = button_count;
-		if (limit > CONTROLLER_BUTTON_COUNT)
-			limit = CONTROLLER_BUTTON_COUNT;
-		i = 0;
-		while (i < limit)
-		{
-			state->buttons[i] = (buttons[i] == GLFW_PRESS);
-			i++;
-		}
-	}
-	if (axes && axis_count > 0)
-	{
-		limit = axis_count;
-		if (limit > CONTROLLER_AXIS_COUNT)
-			limit = CONTROLLER_AXIS_COUNT;
-		i = 0;
-		while (i < limit)
-		{
-			state->axes[i] = axes[i];
-			i++;
-		}
-	}
+	if (!glfwGetGamepadState(jid, state))
+		return (false);
 	game->controller.connected = true;
 	game->controller.gamepad_id = jid;
 	return (true);
@@ -64,15 +46,26 @@ static bool	controller_fill_state_from_raw(t_game *game, int jid,
 
 bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 {
-	int	jid;
+	int		jid;
+	int		prev_jid;
+	bool	was_connected;
 
 	if (!game || !state)
 		return (false);
+	prev_jid = game->controller.gamepad_id;
+	was_connected = game->controller.connected;
 	jid = game->controller.gamepad_id;
 	if (jid >= 0 && glfwJoystickPresent(jid))
 	{
 		if (controller_fill_state_from_raw(game, jid, state))
+		{
+			if (!was_connected || jid != prev_jid)
+			{
+				game->controller.axis_calibrated = false;
+				controller_reset_runtime_state(game);
+			}
 			return (true);
+		}
 	}
 	jid = 0;
 	while (jid <= GLFW_JOYSTICK_LAST)
@@ -80,12 +73,21 @@ bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 		if (glfwJoystickPresent(jid))
 		{
 			if (controller_fill_state_from_raw(game, jid, state))
+			{
+				if (!was_connected || jid != prev_jid)
+				{
+					game->controller.axis_calibrated = false;
+					controller_reset_runtime_state(game);
+				}
 				return (true);
+			}
 		}
 		jid++;
 	}
 	game->controller.connected = false;
 	game->controller.gamepad_id = -1;
+	game->controller.axis_calibrated = false;
+	controller_reset_runtime_state(game);
 	return (false);
 }
 

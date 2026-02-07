@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 20:46:05 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:32:29 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ int	t_color_to_int(t_color *color, int alpha)
 
 float	normalize_angle(float angle)
 {
-	while (angle > FT_PI)
-		angle -= TAU;
-	while (angle <= -FT_PI)
+	if (!isfinite(angle))
+		return (0.0f);
+	angle = fmodf(angle + FT_PI, TAU);
+	if (angle < 0.0f)
 		angle += TAU;
-	return (angle);
+	return (angle - FT_PI);
 }
 
 float	clamp(float value, float min, float max)
