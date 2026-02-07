@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 13:38:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 14:52:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,8 @@ void		render_walls(t_game *game, t_rayhit *rayhits, float center,
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
 				t_game *game);
-void		paint_vertical_line_texture(unsigned int x, int y[2],
-				mlx_image_t *img, xpm_t *texture, int tex_x, float tex_pos,
-				float tex_step);
+void		paint_vertical_line_texture(int x_y_packed[3], mlx_image_t *img,
+				xpm_t *texture, float x_offset_step[3]);
 void		paint_texture_pixel(unsigned int pixel[2], mlx_image_t *img,
 				int tex_coord[2], xpm_t *texture);
 
