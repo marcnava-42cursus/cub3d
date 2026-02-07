@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 15:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:09:19 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,8 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 	if (config_controls_handle_key(game, keydata))
 		return ;
 	accept_key = game->menu.controls_key_codes[ACTION_ACCEPT];
-	confirm_pressed = (keydata.key == accept_key || keydata.key == MLX_KEY_SPACE);
+	confirm_pressed = (keydata.key == accept_key
+		|| keydata.key == MLX_KEY_SPACE);
 	if (keydata.key == MLX_KEY_LEFT
 		&& game->menu.current_column == CONFIG_MENU_COLUMN_RIGHT)
 	{

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/29 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 18:52:10 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void	controller_update_menu(t_game *game,
 			GLFW_GAMEPAD_BUTTON_DPAD_RIGHT);
 	confirm = controller_action_pressed(game, state, ACTION_ACCEPT);
 	tab_left = controller_button_pressed(game, state,
-				GLFW_GAMEPAD_BUTTON_LEFT_BUMPER);
+			GLFW_GAMEPAD_BUTTON_LEFT_BUMPER);
 	tab_right = controller_button_pressed(game, state,
-				GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER);
+			GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER);
 	if (game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
 	{
 		if (tab_left)

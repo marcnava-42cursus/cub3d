@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 15:12:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:13:07 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ static bool	handle_elevator_orb_place(t_game *game, t_rayhit *hit, char cell)
 		store_block_in_inventory(&game->cub_data.player, payload);
 		return (true);
 	}
-	//game->cub_data.player.state = STATE_THROW;
 	if (game->menu.options.debug_mode)
 		printf("Injected orb into elevator '%c'\n", cell);
 	return (true);
@@ -254,7 +253,8 @@ void	update_creating_block_state(t_game *game)
 	if (!game || !game->cub_data.map.grid)
 		return ;
 	block = &game->cub_data.block;
-	if (!block->is_creating || !block->anims || !block->anims[ANIM_CREATE].finished)
+	if (!block->is_creating || !block->anims
+		|| !block->anims[ANIM_CREATE].finished)
 		return ;
 	if (block->pending_y < 0 || block->pending_y >= game->cub_data.map.height)
 		return ;
@@ -327,6 +327,6 @@ void	test_break_wall_in_front(t_game *game)
 		}
 		else if (cell == 'D' || cell == 'd')
 			cell_changed = modify_interactive_cell(game, hit.cell[X],
-				hit.cell[Y]);
+					hit.cell[Y]);
 	}
 }

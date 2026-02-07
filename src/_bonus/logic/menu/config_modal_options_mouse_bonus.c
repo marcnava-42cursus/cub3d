@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:11:45 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static void	select_controls_from_mouse(t_game *game, t_menu_layout layout,
 			game->menu.controls_selected = i;
 			keycap = rect_make(layout.right.x + layout.right.w
 					- CONFIG_MODAL_CARD_PADDING - CONFIG_MODAL_KEYCAP_W,
-					row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_KEYCAP_H) / 2,
-					CONFIG_MODAL_KEYCAP_W, CONFIG_MODAL_KEYCAP_H);
+					row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_KEYCAP_H)
+					/ 2, CONFIG_MODAL_KEYCAP_W, CONFIG_MODAL_KEYCAP_H);
 			if (mx >= keycap.x && mx <= keycap.x + keycap.w)
 				config_controls_begin_rebind(game);
 			else

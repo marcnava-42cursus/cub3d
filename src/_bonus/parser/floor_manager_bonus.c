@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 16:22:57 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:12:30 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,8 +177,8 @@ static void	free_floor_node_advanced(t_floor *floor)
 	free(floor);
 }
 
-static int	create_floor_from_data_advanced(char *canonical_path, t_cub_data *src,
-		t_floor **out, int index)
+static int	create_floor_from_data_advanced(char *canonical_path,
+	t_cub_data *src, t_floor **out, int index)
 {
 	if (!canonical_path)
 		return (0);
@@ -355,7 +355,7 @@ static int	parse_floor_neighbors_advanced(t_floor *floor, t_cub_data *data,
 			player_count))
 		return (0);
 	if (floor->up && !parse_floor_neighbors_advanced(floor->up, data,
-		player_count))
+			player_count))
 		return (0);
 	if (floor->down
 		&& !parse_floor_neighbors_advanced(floor->down, data, player_count))

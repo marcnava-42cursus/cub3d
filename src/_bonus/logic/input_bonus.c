@@ -1,4 +1,4 @@
-/* ************************************************************************** */	
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   input_bonus.c                                      :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 13:43:34 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:06:19 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,11 @@ void	mouse_hook_advanced(mouse_key_t button, action_t action,
 
 void	cursor_hook_advanced(double xpos, double ypos, void *param)
 {
-	t_game	*game;
-	double	delta_x;
-	double	delta_y;
-	float	pitch_boost;
+	t_game		*game;
+	double		delta_x;
+	double		delta_y;
+	float		pitch;
+	const float	m_sens = game->mouse_sensitivity;
 
 	game = (t_game *)param;
 	if (!game)
@@ -142,10 +143,9 @@ void	cursor_hook_advanced(double xpos, double ypos, void *param)
 	delta_y = ypos - game->last_mouse_y;
 	game->last_mouse_x = xpos;
 	game->last_mouse_y = ypos;
-	pitch_boost = 220.0f;
-	game->mouse_delta_accumulated += (float)delta_x * game->mouse_sensitivity;
-	game->mouse_delta_accumulated_y += (float)(-delta_y)
-		* game->mouse_sensitivity * pitch_boost;
+	pitch = 220.0f;
+	game->mouse_delta_accumulated += (float)delta_x * m_sens;
+	game->mouse_delta_accumulated_y += ((float)(-delta_y)) * m_sens * pitch;
 }
 
 bool	process_mouse_rotation_advanced(t_game *game)
@@ -178,7 +178,7 @@ bool	process_mouse_rotation_advanced(t_game *game)
 		max_pitch = game->double_buffer[NEXT]->height * 0.35f;
 		game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
 				-max_pitch, max_pitch);
-			rotated = true;
+		rotated = true;
 	}
 	return (rotated);
 }
