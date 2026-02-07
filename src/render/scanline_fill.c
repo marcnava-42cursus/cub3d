@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 21:56:23 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:12:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:05:24 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static void	sort_vertices(vertex_t *v1, vertex_t *v2, vertex_t *v3)
 {

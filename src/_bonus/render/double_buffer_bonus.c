@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 17:32:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/30 21:15:47 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:10:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 void	render_double_buffer(t_game *game)
 {

@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:29:18 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:11:11 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:09:32 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static int	init_bresenham(int start_end[4], int dist_step[4], vertex_t *start,
 		vertex_t *end)

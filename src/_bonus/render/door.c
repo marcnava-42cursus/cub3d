@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:40:09 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 18:45:01 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:06:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static void	build_door_bounds(t_rayhit *rayhit, float center,
 		float dist_to_proj_plane)

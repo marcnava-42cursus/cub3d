@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 21:31:32 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/30 22:16:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:05:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static void	cast_rays_for_vision(vertex_t ray_endpoints[16],
 		t_minimap *minimap, vertex_t *player_position)

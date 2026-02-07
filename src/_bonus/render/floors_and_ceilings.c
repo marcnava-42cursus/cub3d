@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 11:48:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 18:43:38 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:06:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static vertex_t	get_ray_steps(t_game *game, float ray_dir[4],
 		float p, float dist_to_proj_plane)

@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:47:44 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:13:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:05:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static uint32_t	get_minimap_wall_color(char tile)
 {

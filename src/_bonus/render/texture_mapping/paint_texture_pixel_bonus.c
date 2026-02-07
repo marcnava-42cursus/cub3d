@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:48:29 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 18:46:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:04:34 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static uint32_t	sample_atlas_frame_pixel(t_atlas *atlas,
 		unsigned int current_frame[2], int tex_x, float tex_pos)

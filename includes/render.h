@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 23:35:49 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:08:15 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,19 @@
 # define FOG_TILE_START 0.5f
 # define FOG_TILE_END 9.5f
 
-# define BASE_ASPECT_RATIO (16.0f / 9.0f)
-# define CURRENT_ASPECT_RATIO (MAX_WINDOW_WIDTH / MAX_WINDOW_HEIGHT)
-# define ASPECT_SCALE (CURRENT_ASPECT_RATIO / BASE_ASPECT_RATIO)
-# define MINIMAP_DIAMETER (2.0f * MINIMAP_TILE_RADIUS + 1.0f)
-# define MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
-# define MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
-# define MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH)
-# define MINIMAP_WNDW_Y 0
-# define MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_WIDTH / 2 - MINIMAP_PLAYER_SIZE / 2)
-# define MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_HEIGHT / 2 - MINIMAP_PLAYER_SIZE / 2)
+//MINIMAP_DIAMETER (2.0f * MINIMAP_TILE_RADIUS + 1.0f)
+# define MINIMAP_DIAMETER 9.0f
+//MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
+# define MINIMAP_WIDTH 288
+//MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
+# define MINIMAP_HEIGHT 288
+//MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH - 2)
+# define MINIMAP_WNDW_X 1630
+# define MINIMAP_WNDW_Y 2
+//MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_WIDTH / 2 - MINIMAP_PLAYER_SIZE / 2)
+# define MINIMAP_CNTR_X 1766
+//MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_HEIGHT / 2 - MINIMAP_PLAYER_SIZE / 2)
+# define MINIMAP_CNTR_Y 138
 # define PLAYER_FOV (66.0f * FT_PI / 180.0f)
 # define TAU (2.0f * FT_PI)
 
@@ -90,20 +93,15 @@ typedef enum e_coord
 }	t_coord;
 
 /*----------------------------- TEXTURE_ATLAS.C ------------------------------*/
-//void		paint_current_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-//				int coord[2], unsigned int current_frame[2], float scale);
-//void		paint_hori_flip_current_frame_to_image(mlx_image_t *img,
-//				t_atlas *atlas, int coord[2], unsigned int current_frame[2],
-//				float scale);
 void		atlas_init(t_atlas *atlas, char *xpm_path, unsigned int frame_width,
 				unsigned int frame_height);
 void		atlas_free(t_atlas *atlas);
 
 /*----------------------------- FRAME_TO_IMAGE.C -----------------------------*/
 void		frame_to_image(mlx_image_t *img, t_atlas *atlas,
-			int coord[2], unsigned int frame[2]);
+				int coord[2], unsigned int frame[2]);
 void		hori_flip_frame_to_image(mlx_image_t *img, t_atlas *atlas,
-			int coord[2], unsigned int frame[2]);
+				int coord[2], unsigned int frame[2]);
 /*-------------------------- TEXTURE_ATLAS_UTILS.C ---------------------------*/
 uint8_t		*get_pixel_start(unsigned int stride, int current_frame[2],
 				t_atlas *atlas);
@@ -116,36 +114,18 @@ void		render_bg(t_game *game);
 /*------------------------------- BRESENHAM.C --------------------------------*/
 void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
+# ifdef BONUS
 void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
+# endif
 
 /*----------------------------- DOUBLE_BUFFER.C ------------------------------*/
 void		render_double_buffer(t_game *game);
-# ifdef BONUS
 
+# ifdef BONUS
 void		render_player_double_buffer(t_game *game);
 # endif
 
-/*-------------------------------- MINIMAP.C ---------------------------------*/
-void		minimap_init(t_game *game);
-void		render_minimap_bg(t_minimap *minimap);
-void		minimap_free(mlx_t *mlx, t_minimap *minimap);
-
-/*------------------------- MINIMAP_PLAYER_VISION.C --------------------------*/
-void		render_minimap_player_vision(t_minimap *minimap);
-
-/*----------------------------- SCANLINE_FILL.C ------------------------------*/
-void		fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
-				vertex_t v3);
-
-/*----------------------------- MINIMAP_TILE.C -------------------------------*/
-void		render_minimap_walls(t_minimap *minimap);
-void		render_minimap_player(t_minimap *minimap);
-
-/*----------------------------- MINIMAP_UTILS.C ------------------------------*/
-bool		is_inside_minimap_circle(int coord_x, int coord_y);
-vertex_t	rotate_point(float x, float y, float angle);
-vertex_t	world_to_minimap_vertex(t_minimap *minimap, vertex_t world);
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,
@@ -159,33 +139,6 @@ void		init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 void		render_walls(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
 
-/*--------------------------------- DOORS.C ----------------------------------*/
-void		render_doors(t_game *game, t_rayhit *rayhits, float center,
-				float dist_to_proj_plane);
-
-/*------------------------------- OUTLINES.C --------------------------------*/
-void		add_wall_outlines(t_rayhit *rh, mlx_image_t *img, t_map *map,
-				float center, float dist_to_proj_plane);
-
-/*------------------------- FLOORS_AND_CEILINGS.C ----------------------------*/
-void		render_floors_and_ceilings(t_game *game, float center,
-				float ray_dir[4], float dist_to_proj_plane);
-
-/*---------------------------------- ORB.C -----------------------------------*/
-void		render_orb(t_game *game, t_rayhit *rayhits, float center,
-				float ray_dir[4]);
-
-/*---------------------------------- FOG.C -----------------------------------*/
-float		fog_factor(float distance);
-uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
-
-/*-------------------------------- ABSORB.C ----------------------------------*/
-void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
-				float dist_to_proj_plane);
-
-/*------------------------------ LIVING_BLOCK.C ------------------------------*/
-void	render_living_block(t_game *game, t_rayhit *rayhits, float center,
-		float dist_to_proj_plane);
 
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
@@ -197,21 +150,10 @@ void		paint_horizontal_line_texture(unsigned int y, unsigned int x,
 				mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x);
 
 # ifdef BONUS
-
-void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
-				t_game *game);
-void		paint_vertical_line_texture_bonus(unsigned int x, int y[2],
-				t_game *game, xpm_t *texture, int tex_x, float tex_pos,
-				float tex_step, float fog, t_anim *anim);
-
 void		render_player_dynamic_bonus(t_game *game);
 void		render_map_2d_initial_bonus(t_game *game);
 void		toggle_map_overlay_bonus(t_game *game);
 # endif
-
-/*----------------------- PAINT_TEXTURE_PIXEL_BONUS.C ------------------------*/
-void	paint_texture_pixel_bonus(int pixel[2], t_game *game,
-		xpm_t *texture, int tex_coord[2], float fog, t_anim *anim);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
 bool		window_init(t_game *game);

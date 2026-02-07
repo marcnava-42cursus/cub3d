@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 14:53:54 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/28 18:51:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:06:44 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 float	fog_factor(float distance)
 {

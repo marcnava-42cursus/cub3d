@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:23:22 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 19:10:38 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:05:48 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 bool	is_inside_minimap_circle(int coord_x, int coord_y)
 {

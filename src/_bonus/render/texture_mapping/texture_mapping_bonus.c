@@ -6,11 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/06 19:12:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:04:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 #include "animation.h"
 
 static xpm_t	*get_custom_texture(t_custom_texture *custom, char cell,
