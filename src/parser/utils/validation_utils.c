@@ -22,7 +22,7 @@ int	validate_file_extension(const char *filename)
 	len = ft_strlen(filename);
 	if (len < 4)
 		return (0);
-	return (ft_strcmp(filename + len - 4, ".cub") == 0);
+	return (ft_strcmp((char *)(filename + len - 4), ".cub") == 0);
 }
 
 int	validate_texture_path(const char *path)

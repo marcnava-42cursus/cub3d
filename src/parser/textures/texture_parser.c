@@ -33,10 +33,10 @@ int	is_texture_identifier(const char *line)
 
 static int	is_required_texture_id(const char *identifier)
 {
-	return (ft_strcmp(identifier, "NO") == 0
-		|| ft_strcmp(identifier, "SO") == 0
-		|| ft_strcmp(identifier, "WE") == 0
-		|| ft_strcmp(identifier, "EA") == 0);
+	return (ft_strcmp((char *)identifier, "NO") == 0
+		|| ft_strcmp((char *)identifier, "SO") == 0
+		|| ft_strcmp((char *)identifier, "WE") == 0
+		|| ft_strcmp((char *)identifier, "EA") == 0);
 }
 
 static char	*get_validated_path(const char *line, const char *identifier)
