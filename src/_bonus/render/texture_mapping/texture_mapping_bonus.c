@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 12:25:02 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 15:17:22 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 	else if (texture == game->cub_data.effects.door_atlas.xpm)
 		paint_vertical_line_texture_bonus(x, rayhit->wall_bounds, game, texture,
 			tex_x, tex_offset, step, fog,
-			&game->cub_data.effects.door_anims[ANIM_BREATHE]);
+			&game->cub_data.effects.door_anims[
+			game->cub_data.effects.current_door_anim]);
 	else
 		paint_vertical_line_texture_bonus(x, rayhit->wall_bounds, game, texture,
 			tex_x, tex_offset, step, fog, NULL);

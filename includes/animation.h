@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 12:41:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 15:04:59 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ typedef enum e_orb_anim
 typedef enum e_door_anim
 {
 	DOOR_CLOSED = 0,
-	DOOR_OPEN = 1,
+	DOOR_CLOSE = 1,
 	DOOR_OPENED = 2,
-	DOOR_CLOSE = 3
+	DOOR_OPEN = 3,
+	DOOR_EATING =4
 }	t_door_anim;
 
 /*-------------------------------- ANIM.C ------------------------------------*/

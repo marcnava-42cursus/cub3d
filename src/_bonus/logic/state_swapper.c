@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 14:20:25 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 15:12:28 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ static bool	handle_elevator_orb_place(t_game *game, t_rayhit *hit, char cell)
 		store_block_in_inventory(&game->cub_data.player, payload);
 		return (true);
 	}
-	game->cub_data.player.state = STATE_THROW;
+	//game->cub_data.player.state = STATE_THROW;
 	if (game->menu.options.debug_mode)
 		printf("Injected orb into elevator '%c'\n", cell);
 	return (true);
