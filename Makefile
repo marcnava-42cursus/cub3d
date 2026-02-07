@@ -225,6 +225,7 @@ SRCS_BONUS	+=	\
 				$(SRCPATH)/_bonus/render/absorb.c \
 				$(SRCPATH)/_bonus/render/world_map_bonus.c \
 				$(SRCPATH)/_bonus/audio/orb_audio_bonus.c \
+				$(SRCPATH)/_bonus/audio/step_audio_bonus.c \
 				$(SRCPATH)/_bonus/animation/anim.c \
 				$(SRCPATH)/_bonus/animation/anim_utils.c \
 				$(SRCPATH)/_bonus/animation/living_block_anims.c \
