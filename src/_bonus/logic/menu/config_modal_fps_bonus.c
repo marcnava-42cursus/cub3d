@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 16:20:20 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:36:59 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	update_fps_label(t_game *game, double fps)
 	g_fps.label = mlx_put_string(game->mlx, text, 12, 12);
 	if (!g_fps.label)
 		return ;
-		set_image_enabled(g_fps.label, true);
+	set_image_enabled(g_fps.label, true);
 }
 
 static bool	fps_overlay_begin_sample(t_game *game, double *dt)

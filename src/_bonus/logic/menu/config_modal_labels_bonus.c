@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:14:14 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:09:56 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,18 @@ void	disable_label_group(mlx_image_t **labels, size_t count)
 }
 
 bool	update_label_text(t_game *game, mlx_image_t **label,
-			char *cache, size_t cache_size, const char *text)
+			t_label_cache cache, const char *text)
 {
 	if (!game || !game->mlx || !text)
 		return (false);
-	if (*label && ft_strncmp(cache, text, cache_size) == 0)
+	if (*label && ft_strncmp(cache.text, text, cache.size) == 0)
 		return (true);
 	if (*label)
 		mlx_delete_image(game->mlx, *label);
 	*label = mlx_put_string(game->mlx, text, 0, 0);
 	if (!*label)
 		return (false);
-	ft_strlcpy(cache, text, cache_size);
+	ft_strlcpy(cache.text, text, cache.size);
 	return (true);
 }
 
@@ -106,7 +106,8 @@ static void	settings_label_texts(const char **text)
 
 static void	hide_settings_labels(t_menu_state *menu)
 {
-	disable_label_group(menu->labels.settings_labels, CONFIG_MODAL_OPTION_COUNT);
+	disable_label_group(menu->labels.settings_labels,
+		CONFIG_MODAL_OPTION_COUNT);
 	set_image_enabled(menu->labels.settings_sections[0], false);
 	set_image_enabled(menu->labels.settings_sections[1], false);
 }
@@ -120,9 +121,11 @@ bool	ensure_settings_labels(t_game *game)
 		return (false);
 	menu = &game->menu;
 	settings_label_texts(text);
-	if (!ensure_label_image(game, &menu->labels.settings_sections[0], "GENERAL"))
+	if (!ensure_label_image(game, &menu->labels.settings_sections[0],
+			"GENERAL"))
 		return (false);
-	if (!ensure_label_image(game, &menu->labels.settings_sections[1], "TUNING"))
+	if (!ensure_label_image(game, &menu->labels.settings_sections[1],
+			"TUNING"))
 		return (false);
 	if (!ensure_label_group_text(game, menu->labels.settings_labels, text,
 			CONFIG_MODAL_OPTION_COUNT))
@@ -138,10 +141,41 @@ static bool	ensure_control_headers(t_game *game, t_menu_state *menu)
 	if (!ensure_label_image(game, &menu->labels.controls_controller_header,
 			"CONTROLLER"))
 		return (false);
-	if (!ensure_label_image(game, &menu->labels.controls_prompt, "PRESS A KEY..."))
+	if (!ensure_label_image(game, &menu->labels.controls_prompt,
+			"PRESS A KEY..."))
 		return (false);
 	if (!ensure_label_image(game, &menu->labels.controls_controller_prompt,
 			"PRESS A BUTTON..."))
+		return (false);
+	return (true);
+}
+
+static t_label_cache	label_cache(char *text, size_t size)
+{
+	t_label_cache	cache;
+
+	cache.text = text;
+	cache.size = size;
+	return (cache);
+}
+
+static bool	update_control_key_labels_at(t_game *game, t_menu_state *menu,
+				size_t i)
+{
+	if (!update_label_text(game, &menu->labels.controls_key_labels[i],
+			label_cache(menu->labels.controls_key_cache[i],
+				sizeof(menu->labels.controls_key_cache[i])),
+			config_controls_key_text(game, (int)i)))
+		return (false);
+	if (!update_label_text(game,
+			&menu->labels.controls_controller_key_labels[i],
+			label_cache(menu->labels.controls_controller_key_cache[i],
+				sizeof(menu->labels.controls_controller_key_cache[i])),
+			config_controls_controller_text(game, (int)i)))
+		return (false);
+	if (!menu->labels.controls_labels[i] || !menu->labels.controls_key_labels[i]
+		|| !menu->labels.controls_controller_labels[i]
+		|| !menu->labels.controls_controller_key_labels[i])
 		return (false);
 	return (true);
 }
@@ -153,20 +187,7 @@ static bool	update_control_key_labels(t_game *game, t_menu_state *menu)
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
 	{
-		if (!update_label_text(game, &menu->labels.controls_key_labels[i],
-				menu->labels.controls_key_cache[i],
-				sizeof(menu->labels.controls_key_cache[i]),
-				config_controls_key_text(game, (int)i)))
-			return (false);
-		if (!update_label_text(game, &menu->labels.controls_controller_key_labels[i],
-				menu->labels.controls_controller_key_cache[i],
-				sizeof(menu->labels.controls_controller_key_cache[i]),
-				config_controls_controller_text(game, (int)i)))
-			return (false);
-		if (!menu->labels.controls_labels[i]
-			|| !menu->labels.controls_key_labels[i]
-			|| !menu->labels.controls_controller_labels[i]
-			|| !menu->labels.controls_controller_key_labels[i])
+		if (!update_control_key_labels_at(game, menu, i))
 			return (false);
 		i++;
 	}
@@ -193,8 +214,10 @@ static void	control_label_texts(const char **text)
 
 static void	hide_controls_labels(t_menu_state *menu)
 {
-	disable_label_group(menu->labels.controls_labels, CONFIG_MODAL_CONTROL_COUNT);
-	disable_label_group(menu->labels.controls_key_labels, CONFIG_MODAL_CONTROL_COUNT);
+	disable_label_group(menu->labels.controls_labels,
+		CONFIG_MODAL_CONTROL_COUNT);
+	disable_label_group(menu->labels.controls_key_labels,
+		CONFIG_MODAL_CONTROL_COUNT);
 	disable_label_group(menu->labels.controls_controller_labels,
 		CONFIG_MODAL_CONTROL_COUNT);
 	disable_label_group(menu->labels.controls_controller_key_labels,
@@ -219,8 +242,8 @@ bool	ensure_controls_labels(t_game *game)
 	if (!ensure_label_group_text(game, menu->labels.controls_labels, text,
 			CONFIG_MODAL_CONTROL_COUNT))
 		return (false);
-	if (!ensure_label_group_text(game, menu->labels.controls_controller_labels, text,
-			CONFIG_MODAL_CONTROL_COUNT))
+	if (!ensure_label_group_text(game, menu->labels.controls_controller_labels,
+			text, CONFIG_MODAL_CONTROL_COUNT))
 		return (false);
 	if (!update_control_key_labels(game, menu))
 		return (false);

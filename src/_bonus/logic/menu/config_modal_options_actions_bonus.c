@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:16:01 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:52:12 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ static void	adjust_slider_option(t_game *game, int index, t_menu_state *menu)
 
 	slider = index - CONFIG_MODAL_TOGGLE_COUNT;
 	if (menu->pending_slider_index == index && menu->pending_slider_value >= 0)
-		config_option_set_slider_percent(game, slider, menu->pending_slider_value);
+		config_option_set_slider_percent(game, slider,
+			menu->pending_slider_value);
 	else
 		config_option_step_slider(game, slider, 1);
 	menu->pending_slider_index = -1;

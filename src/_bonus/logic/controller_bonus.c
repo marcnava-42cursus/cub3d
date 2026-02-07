@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 22:47:29 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:08:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static float	clamp_axis_value(float value, float deadzone)
 	return (0.0f);
 }
 
-static float	controller_axis_value(t_game *game, const GLFWgamepadstate *state,
-				t_controller_bind bind, float deadzone)
+static float	controller_axis_value(t_game *game,
+	const GLFWgamepadstate *state, t_controller_bind bind, float deadzone)
 {
 	float	value;
 
@@ -79,35 +79,36 @@ static void	controller_reset_disconnected_state(t_game *game)
 		sizeof(game->controller.prev_action_active));
 }
 
-static void	controller_collect_active(t_game *game, const GLFWgamepadstate *state,
-				float deadzone, bool active[CONFIG_MODAL_CONTROL_COUNT])
+static void	controller_collect_active(t_game *game,
+	const GLFWgamepadstate *state, float deadzone,
+	bool active[CONFIG_MODAL_CONTROL_COUNT])
 {
 	int	i;
 
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
 	{
-		active[i] = controller_action_active(game, i,
-				&game->controller.binds[i], state, deadzone);
+		active[i] = controller_action_active(game, i, state, deadzone);
 		i++;
 	}
 }
 
-static void	controller_apply_movement(t_game *game, const GLFWgamepadstate *state,
-				float deadzone)
+static void	controller_apply_movement(t_game *game,
+	const GLFWgamepadstate *state, float deadzone)
 {
-	game->controller.move_forward = controller_action_value(game, ACTION_FORWARD,
-			state, deadzone) - controller_action_value(game, ACTION_BACKWARD,
+	game->controller.move_forward = controller_action_value(
+			game, ACTION_FORWARD, state, deadzone) - controller_action_value(
+			game, ACTION_BACKWARD, state, deadzone);
+	game->controller.move_strafe = controller_action_value(
+			game, ACTION_STRAFE_RIGHT, state, deadzone)
+		- controller_action_value(game, ACTION_STRAFE_LEFT,
 			state, deadzone);
-	game->controller.move_strafe = controller_action_value(game,
-			ACTION_STRAFE_RIGHT, state, deadzone)
-		- controller_action_value(game, ACTION_STRAFE_LEFT, state, deadzone);
-	game->controller.turn = controller_action_value(game, ACTION_TURN_RIGHT,
-			state, deadzone) - controller_action_value(game, ACTION_TURN_LEFT,
-			state, deadzone);
-	game->controller.look = controller_action_value(game, ACTION_LOOK_UP,
-			state, deadzone) - controller_action_value(game, ACTION_LOOK_DOWN,
-			state, deadzone);
+	game->controller.turn = controller_action_value(
+			game, ACTION_TURN_RIGHT, state, deadzone) - controller_action_value(
+			game, ACTION_TURN_LEFT, state, deadzone);
+	game->controller.look = controller_action_value(
+			game, ACTION_LOOK_UP, state, deadzone) - controller_action_value(
+			game, ACTION_LOOK_DOWN, state, deadzone);
 }
 
 static bool	controller_handle_modal_state(t_game *game,
@@ -120,11 +121,12 @@ static bool	controller_handle_modal_state(t_game *game,
 		game->controller.menu_quit_held = false;
 	else
 	{
-		game->controller.menu_quit_held = controller_menu_hold_quit(game, state);
+		game->controller.menu_quit_held = controller_menu_hold_quit(
+				game, state);
 		controller_update_menu(game, state);
 	}
-	ft_memcpy(game->controller.prev_action_active, active, sizeof(bool)
-		* CONFIG_MODAL_CONTROL_COUNT);
+	ft_memcpy(game->controller.prev_action_active,
+		active, sizeof(bool) * CONFIG_MODAL_CONTROL_COUNT);
 	controller_store_raw_state(game, state);
 	return (true);
 }

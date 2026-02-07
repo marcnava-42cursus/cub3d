@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:33:28 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 		return ;
 	buffer[0] = '\0';
 	if (index < CONFIG_MODAL_TOGGLE_COUNT
-			|| index >= CONFIG_MODAL_OPTION_COUNT)
+		|| index >= CONFIG_MODAL_OPTION_COUNT)
 		return ;
 	slider = index - CONFIG_MODAL_TOGGLE_COUNT;
 	raw = config_option_slider_raw(game, slider);

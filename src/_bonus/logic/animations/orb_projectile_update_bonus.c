@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 19:12:05 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:38:20 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,18 @@ static void	set_elevator_orb_state(t_game *game, int slot, int index,
 		game->cub_data.elevator_orb_payload[slot] = game->orb.payload;
 		game->cub_data.map.elevator_states[index] = ELEVATOR_OPENED;
 		set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
-				ELEVATOR_OPENED);
+			ELEVATOR_OPENED);
 		set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
-				ELEVATOR_OPENED);
+			ELEVATOR_OPENED);
 		return ;
 	}
 	game->cub_data.elevator_orb[slot] = false;
 	game->cub_data.elevator_orb_payload[slot] = '\0';
 	game->cub_data.map.elevator_states[index] = ELEVATOR_CLOSED;
 	set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
-			ELEVATOR_CLOSED);
+		ELEVATOR_CLOSED);
 	set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
-			ELEVATOR_CLOSED);
+		ELEVATOR_CLOSED);
 }
 
 static void	resolve_elevator_orb_arrival(t_game *game)

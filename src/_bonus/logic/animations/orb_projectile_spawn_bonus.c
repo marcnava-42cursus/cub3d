@@ -67,8 +67,8 @@ bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 	return (true);
 }
 
-bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
-		int target_y, char block, int elevator_slot)
+bool	orb_projectile_start_elevator_place(t_game *game,
+		const int target_cell[2], char block, int elevator_slot)
 {
 	if (!game || game->orb.active)
 		return (false);
@@ -77,10 +77,10 @@ bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
 	audio_orb_start();
 	audio_orb_update_volume(game);
 	game->orb.payload = block;
-	game->orb.target_cell_x = target_x;
-	game->orb.target_cell_y = target_y;
-	game->orb.target_x = (float)target_x + 0.5f;
-	game->orb.target_y = (float)target_y + 0.5f;
+	game->orb.target_cell_x = target_cell[0];
+	game->orb.target_cell_y = target_cell[1];
+	game->orb.target_x = (float)target_cell[0] + 0.5f;
+	game->orb.target_y = (float)target_cell[1] + 0.5f;
 	game->orb.elevator_shot = true;
 	game->orb.elevator_place = true;
 	game->orb.elevator_slot = elevator_slot;

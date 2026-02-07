@@ -58,8 +58,8 @@ static void	color_to_channels(uint32_t color, uint8_t out[4])
 	out[3] = (uint8_t)color;
 }
 
-static void	gradient_row_channels(uint8_t channels[4], uint8_t top[4],
-				uint8_t bot[4], int y, int h)
+static void	gradient_row_channels(uint8_t channels[4], uint8_t colors[2][4],
+				int y, int h)
 {
 	float	t;
 
@@ -67,10 +67,10 @@ static void	gradient_row_channels(uint8_t channels[4], uint8_t top[4],
 		t = 0.0f;
 	else
 		t = (float)y / (float)(h - 1);
-	channels[0] = (uint8_t)(top[0] + (bot[0] - top[0]) * t);
-	channels[1] = (uint8_t)(top[1] + (bot[1] - top[1]) * t);
-	channels[2] = (uint8_t)(top[2] + (bot[2] - top[2]) * t);
-	channels[3] = (uint8_t)(top[3] + (bot[3] - top[3]) * t);
+	channels[0] = (uint8_t)(colors[0][0] + (colors[1][0] - colors[0][0]) * t);
+	channels[1] = (uint8_t)(colors[0][1] + (colors[1][1] - colors[0][1]) * t);
+	channels[2] = (uint8_t)(colors[0][2] + (colors[1][2] - colors[0][2]) * t);
+	channels[3] = (uint8_t)(colors[0][3] + (colors[1][3] - colors[0][3]) * t);
 }
 
 void	draw_rect(mlx_image_t *img, t_rect rect, uint32_t color)
@@ -96,18 +96,17 @@ void	draw_vertical_gradient(mlx_image_t *img, t_rect rect,
 {
 	int		yy;
 	uint8_t	channels[4];
-	uint8_t	top[4];
-	uint8_t	bot[4];
+	uint8_t	colors[2][4];
 	uint8_t	*row;
 
 	if (!clamp_rect(img, &rect))
 		return ;
-	color_to_channels(top_color, top);
-	color_to_channels(bottom_color, bot);
+	color_to_channels(top_color, colors[0]);
+	color_to_channels(bottom_color, colors[1]);
 	yy = 0;
 	while (yy < rect.h)
 	{
-		gradient_row_channels(channels, top, bot, yy, rect.h);
+		gradient_row_channels(channels, colors, yy, rect.h);
 		row = &img->pixels[((rect.y + yy) * img->width + rect.x) * 4];
 		fill_row(row, channels, rect.w);
 		yy++;

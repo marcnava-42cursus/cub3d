@@ -15,14 +15,16 @@
 #include "logic_bonus.h"
 
 bool	controller_action_active(t_game *game, int action,
-			const t_controller_bind *bind,
 			const GLFWgamepadstate *state, float deadzone)
 {
-	float	value;
+	const t_controller_bind	*bind;
+	float					value;
 
-	if (!game || !bind || !state)
+	if (!game || !state)
 		return (false);
-	(void)action;
+	if (action < 0 || action >= CONFIG_MODAL_CONTROL_COUNT)
+		return (false);
+	bind = &game->controller.binds[action];
 	if (bind->type == CONTROLLER_BIND_BUTTON)
 	{
 		if (bind->id < 0 || bind->id >= CONTROLLER_BUTTON_COUNT)
@@ -63,7 +65,7 @@ bool	controller_action_pressed(t_game *game,
 	{
 		if (bind->id < 0 || bind->id >= CONTROLLER_AXIS_COUNT)
 			return (false);
-		return (controller_action_active(game, action, bind, state,
+		return (controller_action_active(game, action, state,
 				game->controller.deadzone)
 			&& !game->controller.prev_action_active[action]);
 	}

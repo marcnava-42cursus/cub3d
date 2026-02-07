@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:47:03 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,18 @@ static void	select_controls_labels(t_game *game, int column,
 	}
 }
 
-static void	draw_controls_row(t_game *game, t_rect card, mlx_image_t *label,
-				mlx_image_t *key_label, int row_y)
+static void	draw_controls_row_label(mlx_image_t *label, t_rect card, int row_y)
+{
+	label->instances[0].x = card.x + CONFIG_MODAL_CARD_PADDING;
+	label->instances[0].y = row_y + 4;
+	set_image_enabled(label, true);
+}
+
+static t_rect	draw_controls_row_keycap(t_game *game, t_rect card, int row_y)
 {
 	t_rect		keycap;
 	t_border	border;
 
-	label->instances[0].x = card.x + CONFIG_MODAL_CARD_PADDING;
-	label->instances[0].y = row_y + 4;
-	set_image_enabled(label, true);
 	keycap = rect_make(card.x + card.w - CONFIG_MODAL_CARD_PADDING
 			- CONFIG_MODAL_KEYCAP_W,
 			row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_KEYCAP_H) / 2,
@@ -78,8 +81,15 @@ static void	draw_controls_row(t_game *game, t_rect card, mlx_image_t *label,
 	border.thickness = 1;
 	border.color = CONFIG_MODAL_KEYCAP_BORDER_COLOR;
 	draw_border(game->menu.modal, border);
-	key_label->instances[0].x = keycap.x + (keycap.w - (int)key_label->width) / 2;
-	key_label->instances[0].y = keycap.y + (keycap.h - (int)key_label->height) / 2;
+	return (keycap);
+}
+
+static void	draw_controls_row_key_label(mlx_image_t *key_label, t_rect keycap)
+{
+	key_label->instances[0].x = keycap.x
+		+ (keycap.w - (int)key_label->width) / 2;
+	key_label->instances[0].y = keycap.y
+		+ (keycap.h - (int)key_label->height) / 2;
 	set_image_enabled(key_label, true);
 }
 
@@ -101,7 +111,9 @@ static void	draw_controls_rows(t_game *game, t_rect card, int column)
 		row_y = menu_layout_row_y(card, i);
 		if (selected == i)
 			draw_row_highlight(game, card, row_y);
-		draw_controls_row(game, card, labels[i], key_labels[i], row_y);
+		draw_controls_row_label(labels[i], card, row_y);
+		draw_controls_row_key_label(key_labels[i],
+			draw_controls_row_keycap(game, card, row_y));
 		i++;
 	}
 }

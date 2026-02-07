@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:34:29 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,19 @@ void	draw_card(t_game *game, t_rect card)
 void	draw_row_highlight(t_game *game, t_rect card, int row_y)
 {
 	t_rect	highlight;
+	t_rect	accent;
 
 	highlight = rect_make(card.x + 6, row_y + 2, card.w - 12,
 			CONFIG_MODAL_ROW_HEIGHT - 4);
+	accent = rect_make(highlight.x, highlight.y, 3, highlight.h);
 	draw_rect(game->menu.modal, highlight, CONFIG_MODAL_ACCENT_SOFT);
-	draw_rect(game->menu.modal, rect_make(highlight.x, highlight.y,
-			3, highlight.h), CONFIG_MODAL_ACCENT_COLOR);
+	draw_rect(game->menu.modal, accent, CONFIG_MODAL_ACCENT_COLOR);
 }
 
-void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
-				bool selected)
+static t_rect	toggle_knob_rect(t_rect rect, bool enabled)
 {
-	t_border	border;
-	t_rect		knob;
+	t_rect	knob;
 
-	draw_rect(game->menu.modal, rect, enabled
-		? CONFIG_MODAL_TOGGLE_ON_COLOR : CONFIG_MODAL_TOGGLE_OFF_COLOR);
-	border.area = rect;
-	border.thickness = 1;
-	border.color = CONFIG_MODAL_CARD_BORDER_DARK;
-	draw_border(game->menu.modal, border);
 	knob.w = rect.h - 4;
 	knob.h = rect.h - 4;
 	knob.y = rect.y + 2;
@@ -56,14 +49,39 @@ void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
 		knob.x = rect.x + rect.w - knob.w - 2;
 	else
 		knob.x = rect.x + 2;
+	return (knob);
+}
+
+static void	draw_selected_knob_border(t_game *game, t_rect knob)
+{
+	t_border	border;
+
+	border.area = knob;
+	border.thickness = 1;
+	border.color = CONFIG_MODAL_ACCENT_COLOR;
+	draw_border(game->menu.modal, border);
+}
+
+void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
+				bool selected)
+{
+	t_border	border;
+	t_rect		knob;
+	uint32_t	color;
+
+	if (enabled)
+		color = CONFIG_MODAL_TOGGLE_ON_COLOR;
+	else
+		color = CONFIG_MODAL_TOGGLE_OFF_COLOR;
+	draw_rect(game->menu.modal, rect, color);
+	border.area = rect;
+	border.thickness = 1;
+	border.color = CONFIG_MODAL_CARD_BORDER_DARK;
+	draw_border(game->menu.modal, border);
+	knob = toggle_knob_rect(rect, enabled);
 	draw_rect(game->menu.modal, knob, CONFIG_MODAL_SLIDER_KNOB_COLOR);
 	if (selected)
-	{
-		border.area = knob;
-		border.thickness = 1;
-		border.color = CONFIG_MODAL_ACCENT_COLOR;
-			draw_border(game->menu.modal, border);
-	}
+		draw_selected_knob_border(game, knob);
 }
 
 static int	slider_knob_x(t_rect track, int value)

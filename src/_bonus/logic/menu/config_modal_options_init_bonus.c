@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:10:57 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:35:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	config_options_init(t_game *game)
 		MLX_KEY_E, MLX_KEY_R, MLX_KEY_ESCAPE, MLX_KEY_M,
 		MLX_KEY_ENTER, MLX_KEY_Q
 	};
-		static const char	*defaults[CONFIG_MODAL_CONTROL_COUNT] = {
-			"W", "S", "D", "A", "RIGHT", "LEFT", "UP", "DOWN",
-			"E", "R", "ESC", "M", "ENTER", "Q"
-		};
+	static const char	*defaults[CONFIG_MODAL_CONTROL_COUNT] = {
+		"W", "S", "D", "A", "RIGHT", "LEFT", "UP", "DOWN",
+		"E", "R", "ESC", "M", "ENTER", "Q"
+	};
 	t_menu_state		*menu;
 
 	if (!game)

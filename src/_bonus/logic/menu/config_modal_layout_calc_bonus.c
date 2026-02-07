@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/06 18:45:16 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:35:01 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ t_rect	menu_layout_slider_rect(t_menu_layout layout, int row_y)
 	return (rect_make(layout.right.x + layout.right.w
 			- CONFIG_MODAL_CARD_PADDING - CONFIG_MODAL_SLIDER_VALUE_W
 			- CONFIG_MODAL_SLIDER_VALUE_GAP - layout.slider_w,
-				row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_SLIDER_H) / 2,
-				layout.slider_w, CONFIG_MODAL_SLIDER_H));
+			row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_SLIDER_H) / 2,
+			layout.slider_w, CONFIG_MODAL_SLIDER_H));
 }
 
 static void	layout_compute_panel(t_menu_layout *layout, t_menu_state *menu)

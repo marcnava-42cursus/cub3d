@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 16:18:53 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:04:24 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,8 @@ static void	apply_floor_switch(t_game *game, t_floor *to, int tx, int ty)
 	game->last_grid_y = ty;
 }
 
-static bool	resolve_floor_destination(t_game *game, char id, t_floor **to,
-				int *tx, int *ty, double *now)
+static bool	resolve_floor_destination(t_game *game, char id,
+				t_elevator_target *target, double *now)
 {
 	int	slot;
 
@@ -136,12 +136,13 @@ static bool	resolve_floor_destination(t_game *game, char id, t_floor **to,
 	if (slot < 0)
 		return (false);
 	*now = mlx_get_time();
-	*to = get_target_floor(game, slot);
-	if (!*to)
+	target->floor = get_target_floor(game, slot);
+	if (!target->floor)
 		return (false);
-	if (!get_elevator_coords(*to, id, tx, ty))
+	if (!get_elevator_coords(target->floor, id, &target->x, &target->y))
 	{
-		printf("Error: Elevator '%c' missing target coords in %s\n", id, (*to)->path);
+		printf("Error: Elevator '%c' missing target coords in %s\n",
+			id, target->floor->path);
 		return (false);
 	}
 	return (true);
@@ -149,21 +150,19 @@ static bool	resolve_floor_destination(t_game *game, char id, t_floor **to,
 
 static bool	switch_floor(t_game *game, char id)
 {
-	t_floor	*to;
-	int		tx;
-	int		ty;
-	double	now;
+	t_elevator_target	target;
+	double				now;
 
-	if (!resolve_floor_destination(game, id, &to, &tx, &ty, &now))
+	if (!resolve_floor_destination(game, id, &target, &now))
 		return (false);
-	if (!load_target_floor_textures(game, to))
+	if (!load_target_floor_textures(game, target.floor))
 		return (false);
-	apply_floor_switch(game, to, tx, ty);
+	apply_floor_switch(game, target.floor, target.x, target.y);
 	game->last_teleport_time = now;
 	game->last_teleport_id = id;
 	game->movement_lock_until = now + 1.0;
 	printf("Elevator '%c': moved to floor %s (index %d) at (%d, %d)\n",
-		id, to->path, to->index, tx, ty);
+		id, target.floor->path, target.floor->index, target.x, target.y);
 	return (true);
 }
 
@@ -300,7 +299,8 @@ static bool	apply_rotation_input(t_game *game)
 	{
 		game->cub_data.player.angle += game->rot_speed
 			* (float)game->mlx->delta_time * turn;
-		game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
+		game->cub_data.player.angle = normalize_angle(
+				game->cub_data.player.angle);
 		moved = true;
 	}
 	return (moved);
@@ -404,6 +404,32 @@ static void	reset_headbob_state(t_game *game)
 	game->headbob_phase = 0.0f;
 }
 
+static vertex_t	capture_player_position(t_game *game)
+{
+	vertex_t	snapshot;
+
+	snapshot.x = game->cub_data.player.x;
+	snapshot.y = game->cub_data.player.y;
+	return (snapshot);
+}
+
+static bool	player_translated_since(t_game *game,
+				vertex_t prev)
+{
+	return (fabsf(game->cub_data.player.x - prev.x) > 0.0001f
+		|| fabsf(game->cub_data.player.y - prev.y) > 0.0001f);
+}
+
+static bool	update_step_audio_and_headbob(t_game *game, bool player_translated,
+				float prev_headbob)
+{
+	bool	step_started;
+
+	step_started = audio_step_update_loop(player_translated);
+	return (apply_headbob_pitch(game, player_translated, step_started,
+			prev_headbob));
+}
+
 static bool	handle_modal_loop(t_game *game)
 {
 	if (!is_config_modal_open(game))
@@ -447,27 +473,22 @@ static bool	throttle_fps_loop(t_game *game, double *next_tick, int *last_limit)
 
 static bool	update_motion_frame(t_game *game, float prev_headbob)
 {
-	bool	moved;
-	bool	mouse_rotated;
-	bool	player_translated;
-	bool	step_started;
-	bool	headbob_changed;
-	float	prev_x;
-	float	prev_y;
+	bool				moved;
+	bool				mouse_rotated;
+	bool				player_translated;
+	bool				headbob_changed;
+	vertex_t			prev;
 
 	if (game->mlx->delta_time <= 0.0)
 	{
 		reset_headbob_state(game);
 		return (false);
 	}
-	prev_x = game->cub_data.player.x;
-	prev_y = game->cub_data.player.y;
+	prev = capture_player_position(game);
 	moved = process_movement_input(game);
 	mouse_rotated = process_mouse_rotation_advanced(game);
-	player_translated = (fabsf(game->cub_data.player.x - prev_x) > 0.0001f
-			|| fabsf(game->cub_data.player.y - prev_y) > 0.0001f);
-	step_started = audio_step_update_loop(player_translated);
-	headbob_changed = apply_headbob_pitch(game, player_translated, step_started,
+	player_translated = player_translated_since(game, prev);
+	headbob_changed = update_step_audio_and_headbob(game, player_translated,
 			prev_headbob);
 	if (moved || mouse_rotated || headbob_changed)
 		handle_movement_rendering(game);
@@ -534,8 +555,8 @@ static void	init_player_angle(t_game *game)
 		game->cub_data.player.angle = FT_PI / 2.0f;
 	else if (game->cub_data.player.orientation == EAST)
 		game->cub_data.player.angle = 0.0f;
-		else if (game->cub_data.player.orientation == WEST)
-			game->cub_data.player.angle = FT_PI;
+	else if (game->cub_data.player.orientation == WEST)
+		game->cub_data.player.angle = FT_PI;
 }
 
 static void	init_movement_runtime(t_game *game)
@@ -546,7 +567,8 @@ static void	init_movement_runtime(t_game *game)
 	game->mouse_initialized = false;
 	game->mouse_delta_accumulated = 0.0f;
 	game->mouse_delta_accumulated_y = 0.0f;
-	game->mouse_sensitivity = config_mouse_sens_value(game->menu.options.mouse_sens);
+	game->mouse_sensitivity = config_mouse_sens_value(
+			game->menu.options.mouse_sens);
 	game->last_mouse_x = 0.0;
 	game->last_mouse_y = 0.0;
 	game->headbob_phase = 0.0f;

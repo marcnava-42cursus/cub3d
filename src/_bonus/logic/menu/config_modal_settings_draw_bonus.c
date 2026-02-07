@@ -70,8 +70,17 @@ static void	draw_settings_slider_label(t_game *game, t_menu_layout layout,
 	set_image_enabled(game->menu.labels.settings_labels[option], true);
 }
 
+static t_label_cache	slider_value_cache(t_game *game, int i)
+{
+	t_label_cache	cache;
+
+	cache.text = game->menu.labels.slider_value_cache[i];
+	cache.size = sizeof(game->menu.labels.slider_value_cache[i]);
+	return (cache);
+}
+
 static bool	draw_settings_slider_value(t_game *game, t_menu_layout layout,
-				t_rect slider_rect, int i, int row_y)
+				t_rect slider_rect, int i)
 {
 	t_rect	value_rect;
 	char	value_text[CONFIG_MODAL_SLIDER_VALUE_LEN];
@@ -79,12 +88,11 @@ static bool	draw_settings_slider_value(t_game *game, t_menu_layout layout,
 	config_option_slider_text(game, CONFIG_MODAL_TOGGLE_COUNT + i, value_text,
 		sizeof(value_text));
 	if (!update_label_text(game, &game->menu.labels.slider_value_labels[i],
-			game->menu.labels.slider_value_cache[i],
-			sizeof(game->menu.labels.slider_value_cache[i]), value_text))
+			slider_value_cache(game, i), value_text))
 		return (false);
 	value_rect = rect_make(slider_rect.x + slider_rect.w
-			+ CONFIG_MODAL_SLIDER_VALUE_GAP, row_y
-			+ (CONFIG_MODAL_ROW_HEIGHT
+			+ CONFIG_MODAL_SLIDER_VALUE_GAP, slider_rect.y
+			+ (CONFIG_MODAL_SLIDER_H
 				- (int)game->menu.labels.slider_value_labels[i]->height) / 2,
 			CONFIG_MODAL_SLIDER_VALUE_W,
 			(int)game->menu.labels.slider_value_labels[i]->height);
@@ -116,7 +124,7 @@ static void	draw_settings_slider_item(t_game *game, t_menu_layout layout, int i)
 	slider_rect = menu_layout_slider_rect(layout, row_y);
 	draw_slider(game, slider_rect, config_option_slider_value(game, option),
 		selected);
-	if (!draw_settings_slider_value(game, layout, slider_rect, i, row_y))
+	if (!draw_settings_slider_value(game, layout, slider_rect, i))
 		return ;
 }
 

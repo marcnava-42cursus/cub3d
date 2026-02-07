@@ -56,15 +56,30 @@ static void	controller_on_connection_change(t_game *game, int jid,
 	}
 }
 
-static bool	controller_try_jid(t_game *game, int jid, int prev_jid,
-				bool was_connected, GLFWgamepadstate *state)
+static bool	controller_try_jid(t_game *game, int jid, GLFWgamepadstate *state)
 {
 	if (!glfwJoystickPresent(jid))
 		return (false);
 	if (!controller_fill_state_from_raw(game, jid, state))
 		return (false);
-	controller_on_connection_change(game, jid, prev_jid, was_connected);
 	return (true);
+}
+
+static int	controller_find_active_jid(t_game *game, GLFWgamepadstate *state)
+{
+	int	jid;
+
+	jid = game->controller.gamepad_id;
+	if (jid >= 0 && controller_try_jid(game, jid, state))
+		return (jid);
+	jid = 0;
+	while (jid <= GLFW_JOYSTICK_LAST)
+	{
+		if (controller_try_jid(game, jid, state))
+			return (jid);
+		jid++;
+	}
+	return (-1);
 }
 
 bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
@@ -77,16 +92,11 @@ bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 		return (false);
 	prev_jid = game->controller.gamepad_id;
 	was_connected = game->controller.connected;
-	jid = game->controller.gamepad_id;
-	if (jid >= 0 && controller_try_jid(game, jid, prev_jid, was_connected,
-			state))
-		return (true);
-	jid = 0;
-	while (jid <= GLFW_JOYSTICK_LAST)
+	jid = controller_find_active_jid(game, state);
+	if (jid >= 0)
 	{
-		if (controller_try_jid(game, jid, prev_jid, was_connected, state))
-			return (true);
-		jid++;
+		controller_on_connection_change(game, jid, prev_jid, was_connected);
+		return (true);
 	}
 	game->controller.connected = false;
 	game->controller.gamepad_id = -1;

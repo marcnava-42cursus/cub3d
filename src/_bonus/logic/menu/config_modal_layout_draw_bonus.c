@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:10:48 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,34 @@ static void	draw_menu_item_border(mlx_image_t *img, t_rect item)
 
 	border.area = item;
 	border.thickness = 1;
-	border.color = CONFIG_MODAL_MENU_ITEM_BORDER_COLOR;
+	border.color = CONFIG_MODAL_MENU_ITEM_BRD_COLOR;
 	draw_border(img, border);
 }
 
 static void	draw_menu_labels(t_game *game, t_rect card)
 {
 	t_menu_state	*menu;
-	int	i;
+	int				i;
+	t_rect			item;
+	int				row_y;
 
 	menu = &game->menu;
 	i = 0;
 	while (i < CONFIG_MENU_SECTION_COUNT)
 	{
-		t_rect	item;
-		int		row_y;
-
-		row_y = card.y + CONFIG_MODAL_CARD_PADDING
-			+ i * (CONFIG_MODAL_MENU_ITEM_H + CONFIG_MODAL_MENU_ITEM_GAP);
-		item = rect_make(card.x + CONFIG_MODAL_CARD_PADDING, row_y,
-				card.w - CONFIG_MODAL_CARD_PADDING * 2, CONFIG_MODAL_MENU_ITEM_H);
-		draw_rect(game->menu.modal, item, (menu->current_tab == i)
-			? CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR : CONFIG_MODAL_MENU_ITEM_COLOR);
+		row_y = card.y + CONFIG_MODAL_CARD_PADDING + i
+			* (CONFIG_MODAL_MENU_ITEM_H + CONFIG_MODAL_MENU_ITEM_GAP);
+		item = rect_make(card.x + CONFIG_MODAL_CARD_PADDING, row_y, card.w
+				- CONFIG_MODAL_CARD_PADDING * 2, CONFIG_MODAL_MENU_ITEM_H);
+		if (menu->current_tab == i)
+			draw_rect(game->menu.modal, item, CONFIG_MODAL_MENU_ITEM_ACT_COLOR);
+		else
+			draw_rect(game->menu.modal, item, CONFIG_MODAL_MENU_ITEM_COLOR);
 		draw_menu_item_border(game->menu.modal, item);
 		menu->labels.menu_entries[i]->instances[0].x = item.x
 			+ CONFIG_MODAL_CARD_PADDING;
-		menu->labels.menu_entries[i]->instances[0].y = item.y
-			+ (item.h - (int)menu->labels.menu_entries[i]->height) / 2;
+		menu->labels.menu_entries[i]->instances[0].y = item.y + (item.h
+				- (int)menu->labels.menu_entries[i]->height) / 2;
 		set_image_enabled(menu->labels.menu_entries[i], true);
 		i++;
 	}

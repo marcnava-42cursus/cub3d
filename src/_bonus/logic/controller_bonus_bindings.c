@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 19:26:25 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:04:41 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <math.h>
 
 static void	write_prefixed_int(char *buffer, size_t size,
-		const char *prefix, int value, const char *suffix)
+		const char *prefix, int value)
 {
 	char	*num;
 
@@ -26,8 +26,14 @@ static void	write_prefixed_int(char *buffer, size_t size,
 		return ;
 	ft_strlcat(buffer, num, size);
 	free(num);
-	if (suffix)
-		ft_strlcat(buffer, suffix, size);
+}
+
+static void	append_axis_sign(char *buffer, size_t size, int dir)
+{
+	if (dir < 0)
+		ft_strlcat(buffer, "-", size);
+	else
+		ft_strlcat(buffer, "+", size);
 }
 
 static const char	*controller_bind_text(const t_controller_bind *bind,
@@ -43,13 +49,13 @@ static const char	*controller_bind_text(const t_controller_bind *bind,
 	}
 	if (bind->type == CONTROLLER_BIND_BUTTON)
 	{
-		write_prefixed_int(buffer, size, "B", bind->id, NULL);
+		write_prefixed_int(buffer, size, "B", bind->id);
 		return (buffer);
 	}
 	if (bind->type == CONTROLLER_BIND_AXIS)
 	{
-		write_prefixed_int(buffer, size, "A", bind->id,
-			(bind->dir < 0) ? "-" : "+");
+		write_prefixed_int(buffer, size, "A", bind->id);
+		append_axis_sign(buffer, size, bind->dir);
 		return (buffer);
 	}
 	ft_strlcpy(buffer, "-", size);
@@ -160,7 +166,8 @@ static bool	controller_detect_pressed_button(t_game *game,
 	i = 0;
 	while (i < CONTROLLER_BUTTON_COUNT)
 	{
-		if (state->buttons[i] == GLFW_PRESS && !game->controller.prev_buttons[i])
+		if (state->buttons[i] == GLFW_PRESS
+			&& !game->controller.prev_buttons[i])
 		{
 			*bind = controller_bind_button(i);
 			return (true);
@@ -181,9 +188,13 @@ static bool	controller_detect_pressed_axis(t_game *game,
 	while (i < CONTROLLER_AXIS_COUNT)
 	{
 		value = controller_axis_delta(game, state, i);
-		if (fabsf(value) > deadzone && fabsf(game->controller.prev_axes[i]) <= deadzone)
+		if (fabsf(value) > deadzone && fabsf(game->controller.prev_axes[i])
+			<= deadzone)
 		{
-			*bind = controller_bind_axis(i, (value >= 0.0f) ? 1 : -1);
+			if (value >= 0.0f)
+				*bind = controller_bind_axis(i, 1);
+			else
+				*bind = controller_bind_axis(i, -1);
 			return (true);
 		}
 		i++;
@@ -199,14 +210,14 @@ static void	controller_refresh_prev_actions(t_game *game,
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
 	{
-		game->controller.prev_action_active[i] = controller_action_active(game, i,
-				&game->controller.binds[i], state, deadzone);
+		game->controller.prev_action_active[i] = controller_action_active(
+				game, i, state, deadzone);
 		i++;
 	}
 }
 
-static bool	controller_find_new_bind(t_game *game, const GLFWgamepadstate *state,
-				float deadzone, t_controller_bind *bind)
+static bool	controller_find_new_bind(t_game *game,
+	const GLFWgamepadstate *state, float deadzone, t_controller_bind *bind)
 {
 	bind->type = CONTROLLER_BIND_NONE;
 	bind->id = -1;
@@ -216,8 +227,8 @@ static bool	controller_find_new_bind(t_game *game, const GLFWgamepadstate *state
 	return (controller_detect_pressed_axis(game, state, deadzone, bind));
 }
 
-static bool	controller_finalize_rebind(t_game *game, const GLFWgamepadstate *state,
-				float deadzone, t_controller_bind bind)
+static bool	controller_finalize_rebind(t_game *game,
+	const GLFWgamepadstate *state, float deadzone, t_controller_bind bind)
 {
 	if (!controller_apply_rebind(game, bind))
 	{

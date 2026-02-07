@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 15:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:53:16 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ static void	draw_gear_ring(mlx_image_t *img, t_icon icon, int outer, int inner)
 					icon.color);
 			dx++;
 		}
-			dy++;
-		}
+		dy++;
+	}
 }
 
-static void	draw_controls_icon_marks(mlx_image_t *img, t_rect body, int w, int h)
+static void	draw_controls_icon_marks(mlx_image_t *img, t_rect body,
+	int w, int h)
 {
 	draw_rect(img, rect_make(body.x + w / 4 - h / 6,
 			body.y + h / 2 - h / 6, h / 3, h / 3), 0x000000FF);

@@ -51,8 +51,8 @@ bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 			char block);
 bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 			char block);
-bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
-			int target_y, char block, int elevator_slot);
+bool	orb_projectile_start_elevator_place(t_game *game,
+			const int target_cell[2], char block, int elevator_slot);
 bool	orb_projectile_update(t_game *game, float delta_time);
 bool	orb_projectile_needs_redraw(const t_game *game);
 void	orb_projectile_mark_drawn(t_game *game);
@@ -93,7 +93,6 @@ float	controller_axis_delta(const t_game *game,
 void	controller_store_raw_state(t_game *game,
 			const GLFWgamepadstate *state);
 bool	controller_action_active(t_game *game, int action,
-			const struct s_controller_bind *bind,
 			const GLFWgamepadstate *state, float deadzone);
 bool	controller_action_pressed(t_game *game,
 			const GLFWgamepadstate *state, int action);

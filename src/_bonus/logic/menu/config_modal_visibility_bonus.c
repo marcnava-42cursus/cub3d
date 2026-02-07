@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 15:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:54:04 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static void	close_config_modal(t_game *game)
 {
 	game->menu.open = false;
 	clear_input_state(game);
-	disable_label_group(game->menu.labels.menu_entries, CONFIG_MENU_SECTION_COUNT);
+	disable_label_group(game->menu.labels.menu_entries,
+		CONFIG_MENU_SECTION_COUNT);
 	hide_settings_options(game);
 	hide_controls_options(game);
 	config_controls_cancel_rebind(game);

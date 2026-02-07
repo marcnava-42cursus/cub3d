@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 19:09:19 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:10:24 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ static bool	update_quit_hold_state(t_game *game)
 {
 	bool	holding_q;
 
-	holding_q = mlx_is_key_down(game->mlx, game->menu.controls_key_codes[ACTION_QUIT])
+	holding_q = mlx_is_key_down(
+			game->mlx, game->menu.controls_key_codes[ACTION_QUIT])
 		|| game->controller.menu_quit_held;
 	if (game->menu.controls_rebinding)
 		holding_q = false;
@@ -226,7 +227,7 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 		return ;
 	accept_key = game->menu.controls_key_codes[ACTION_ACCEPT];
 	confirm_pressed = (keydata.key == accept_key
-		|| keydata.key == MLX_KEY_SPACE);
+			|| keydata.key == MLX_KEY_SPACE);
 	if (handle_modal_column_navigation(game, keydata))
 		return ;
 	if (handle_left_column_keys(game, confirm_pressed, keydata))
