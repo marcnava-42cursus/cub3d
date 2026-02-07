@@ -6,29 +6,15 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 04:31:11 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 04:45:37 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logic_bonus.h"
+#include <stdint.h>
 #include <string.h>
-#include "miniaudio.h"
 
-#define ORB_LAUNCH_AUDIO_PATH "./assets/audio/scream.mp3"
-#define STEP_AUDIO_PATH "./assets/audio/step.mp3"
-#define STEP_AUDIO_VOLUME 0.10f
-#define STEP_AUDIO_VOLUME_MIN 0.0f
-#define STEP_AUDIO_VOLUME_MAX 1.0f
-
-typedef struct s_bonus_audio
-{
-	bool		initialized;
-	bool		orb_sound_ready;
-	bool		step_sound_ready;
-	ma_engine	engine;
-	ma_sound	orb_launch_sound;
-	ma_sound	step_sound;
-}	t_bonus_audio;
+#include "audio.h"
+#include "logic_bonus.h"
 
 static t_bonus_audio	*bonus_audio_ctx(void)
 {
@@ -54,6 +40,45 @@ static float	clamp_volume(float value)
 	return (value);
 }
 
+static float	clamp_pitch(float value)
+{
+	if (value < STEP_AUDIO_PITCH_ABS_MIN)
+		return (STEP_AUDIO_PITCH_ABS_MIN);
+	if (value > STEP_AUDIO_PITCH_ABS_MAX)
+		return (STEP_AUDIO_PITCH_ABS_MAX);
+	return (value);
+}
+
+static float	step_pitch_random(void)
+{
+	static uint32_t	seed;
+	float			min_pitch;
+	float			max_pitch;
+	float			tmp;
+	float			t;
+
+	if (seed == 0)
+		seed = (uint32_t)(mlx_get_time() * 1000000.0) + 1u;
+	min_pitch = clamp_pitch(STEP_AUDIO_PITCH_MIN);
+	max_pitch = clamp_pitch(STEP_AUDIO_PITCH_MAX);
+	if (min_pitch > max_pitch)
+	{
+		tmp = min_pitch;
+		min_pitch = max_pitch;
+		max_pitch = tmp;
+	}
+	seed = seed * 1664525u + 1013904223u;
+	t = (float)(seed & 0x00FFFFFFu) / 16777215.0f;
+	return (min_pitch + (max_pitch - min_pitch) * t);
+}
+
+static void	start_step_sound(ma_sound *step_sound)
+{
+	ma_sound_set_pitch(step_sound, step_pitch_random());
+	ma_sound_seek_to_pcm_frame(step_sound, 0);
+	ma_sound_start(step_sound);
+}
+
 bool	bonus_audio_init(void)
 {
 	t_bonus_audio	*audio;
@@ -71,7 +96,7 @@ bool	bonus_audio_init(void)
 	if (audio->step_sound_ready)
 	{
 		ma_sound_set_volume(&audio->step_sound, clamp_volume(STEP_AUDIO_VOLUME));
-		ma_sound_set_looping(&audio->step_sound, MA_TRUE);
+		ma_sound_set_looping(&audio->step_sound, MA_FALSE);
 	}
 	if (!audio->orb_sound_ready && !audio->step_sound_ready)
 	{
@@ -116,15 +141,6 @@ void	bonus_audio_set_step_loop(bool enabled)
 	audio = bonus_audio_ctx();
 	if (!audio->initialized || !audio->step_sound_ready)
 		return ;
-	if (enabled)
-	{
-		ma_sound_set_looping(&audio->step_sound, MA_TRUE);
-		if (!ma_sound_is_playing(&audio->step_sound))
-		{
-			ma_sound_seek_to_pcm_frame(&audio->step_sound, 0);
-			ma_sound_start(&audio->step_sound);
-		}
-	}
-	else if (ma_sound_is_playing(&audio->step_sound))
-		ma_sound_set_looping(&audio->step_sound, MA_FALSE);
+	if (enabled && !ma_sound_is_playing(&audio->step_sound))
+		start_step_sound(&audio->step_sound);
 }
