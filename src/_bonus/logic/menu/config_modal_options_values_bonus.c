@@ -13,7 +13,20 @@
 #include "config_bonus.h"
 #include "structs.h"
 #include "logic_bonus.h"
-#include <stdio.h>
+
+static void	write_int_value(char *buffer, size_t buffer_size, int value)
+{
+	char	*num;
+
+	if (!buffer || buffer_size == 0)
+		return ;
+	buffer[0] = '\0';
+	num = ft_itoa(value);
+	if (!num)
+		return ;
+	ft_strlcpy(buffer, num, buffer_size);
+	free(num);
+}
 
 static int	clamp_value(int value, int min, int max)
 {
@@ -152,16 +165,15 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 			raw = 5;
 		value = config_fps_limit_value(raw);
 		if (value < 0)
-			snprintf(buffer, buffer_size, "UNLIMITED");
+			ft_strlcpy(buffer, "UNLIMITED", buffer_size);
 		else
-			snprintf(buffer, buffer_size, "%d", value);
+			write_int_value(buffer, buffer_size, value);
 		return ;
 	}
 	if (slider == CONFIG_SLIDER_QUALITY)
 	{
-		snprintf(buffer, buffer_size, "%s",
-			config_quality_label(raw));
+		ft_strlcpy(buffer, config_quality_label(raw), buffer_size);
 		return ;
 	}
-	snprintf(buffer, buffer_size, "%d", raw);
+	write_int_value(buffer, buffer_size, raw);
 }

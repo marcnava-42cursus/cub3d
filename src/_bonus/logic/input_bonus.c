@@ -123,7 +123,7 @@ void	cursor_hook_advanced(double xpos, double ypos, void *param)
 	double		delta_x;
 	double		delta_y;
 	float		pitch;
-	const float	m_sens = game->mouse_sensitivity;
+	float		m_sens;
 
 	game = (t_game *)param;
 	if (!game)
@@ -132,6 +132,7 @@ void	cursor_hook_advanced(double xpos, double ypos, void *param)
 		return ;
 	if (!game->mlx)
 		return ;
+	m_sens = game->mouse_sensitivity;
 	if (!game->mouse_initialized)
 	{
 		game->last_mouse_x = xpos;
@@ -155,7 +156,7 @@ bool	process_mouse_rotation_advanced(t_game *game)
 	float	max_pitch;
 	bool	rotated;
 
-	if (is_config_modal_open(game) || !game)
+	if (!game || is_config_modal_open(game))
 		return (false);
 	if (game->mouse_delta_accumulated == 0.0f
 		&& game->mouse_delta_accumulated_y == 0.0f)

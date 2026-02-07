@@ -494,7 +494,7 @@ static void	draw_rotated_player(t_game *game, int dst_x, int dst_y)
 				x++;
 				continue ;
 			}
-			memcpy(&color, src_px, sizeof(uint32_t));
+			ft_memcpy(&color, src_px, sizeof(uint32_t));
 			dst_pixels[dest_y * layer_w + dest_x] = color;
 			x++;
 		}

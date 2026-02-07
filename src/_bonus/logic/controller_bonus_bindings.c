@@ -14,7 +14,21 @@
 #include "structs.h"
 #include "logic_bonus.h"
 #include <math.h>
-#include <stdio.h>
+
+static void	write_prefixed_int(char *buffer, size_t size,
+		const char *prefix, int value, const char *suffix)
+{
+	char	*num;
+
+	ft_strlcpy(buffer, prefix, size);
+	num = ft_itoa(value);
+	if (!num)
+		return ;
+	ft_strlcat(buffer, num, size);
+	free(num);
+	if (suffix)
+		ft_strlcat(buffer, suffix, size);
+}
 
 static const char	*controller_bind_text(const t_controller_bind *bind,
 		char *buffer, size_t size)
@@ -29,12 +43,13 @@ static const char	*controller_bind_text(const t_controller_bind *bind,
 	}
 	if (bind->type == CONTROLLER_BIND_BUTTON)
 	{
-		snprintf(buffer, size, "B%d", bind->id);
+		write_prefixed_int(buffer, size, "B", bind->id, NULL);
 		return (buffer);
 	}
 	if (bind->type == CONTROLLER_BIND_AXIS)
 	{
-		snprintf(buffer, size, "A%d%s", bind->id, (bind->dir < 0) ? "-" : "+");
+		write_prefixed_int(buffer, size, "A", bind->id,
+			(bind->dir < 0) ? "-" : "+");
 		return (buffer);
 	}
 	ft_strlcpy(buffer, "-", size);

@@ -27,14 +27,20 @@ int	validate_file_extension(const char *filename)
 
 int	validate_texture_path(const char *path)
 {
-	FILE	*file;
+	int		fd;
+	char	dummy;
 
 	if (!path || ft_strlen(path) == 0)
 		return (0);
-	file = fopen(path, "r");
-	if (!file)
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
 		return (0);
-	fclose(file);
+	if (read(fd, &dummy, 1) < 0)
+	{
+		close(fd);
+		return (0);
+	}
+	close(fd);
 	return (1);
 }
 

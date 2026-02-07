@@ -13,7 +13,22 @@
 #include "config_bonus.h"
 #include "structs.h"
 #include "logic_bonus.h"
-#include <stdio.h>
+
+static void	write_prefixed_int(char *buffer, size_t buffer_size,
+		const char *prefix, int value)
+{
+	char	*num;
+
+	if (!buffer || buffer_size == 0)
+		return ;
+	buffer[0] = '\0';
+	ft_strlcpy(buffer, prefix, buffer_size);
+	num = ft_itoa(value);
+	if (!num)
+		return ;
+	ft_strlcat(buffer, num, buffer_size);
+	free(num);
+}
 
 static const char	*key_name_from_mlx(keys_t key, char *buffer,
 			size_t buffer_size)
@@ -32,7 +47,7 @@ static const char	*key_name_from_mlx(keys_t key, char *buffer,
 	}
 	if (key >= MLX_KEY_F1 && key <= MLX_KEY_F12)
 	{
-		snprintf(buffer, buffer_size, "F%d", 1 + (key - MLX_KEY_F1));
+		write_prefixed_int(buffer, buffer_size, "F", 1 + (key - MLX_KEY_F1));
 		return (buffer);
 	}
 	if (key == MLX_KEY_SPACE)
@@ -79,7 +94,7 @@ static const char	*key_name_from_mlx(keys_t key, char *buffer,
 		return (",");
 	if (key == MLX_KEY_PERIOD)
 		return (".");
-	snprintf(buffer, buffer_size, "KEY%d", (int)key);
+	write_prefixed_int(buffer, buffer_size, "KEY", (int)key);
 	return (buffer);
 }
 

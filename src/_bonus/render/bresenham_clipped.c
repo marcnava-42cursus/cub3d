@@ -19,8 +19,8 @@ static int	init_bresenham(int start_end[4], int dist_step[4], vertex_t *start,
 	start_end[Y] = (int)start->y;
 	start_end[U] = (int)end->x;
 	start_end[V] = (int)end->y;
-	dist_step[X] = abs(start_end[U] - start_end[X]);
-	dist_step[Y] = abs(start_end[V] - start_end[Y]);
+	dist_step[X] = ft_abs(start_end[U] - start_end[X]);
+	dist_step[Y] = ft_abs(start_end[V] - start_end[Y]);
 	if (start_end[X] < start_end[U])
 		dist_step[U] = 1;
 	else

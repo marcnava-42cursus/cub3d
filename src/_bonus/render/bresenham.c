@@ -131,8 +131,8 @@ void	bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 	b_start[Y] = (int)start->y;
 	b_end[X] = (int)end->x;
 	b_end[Y] = (int)end->y;
-	dist[X] = abs(b_end[X] - b_start[X]);
-	dist[Y] = abs(b_end[Y] - b_start[Y]);
+	dist[X] = ft_abs(b_end[X] - b_start[X]);
+	dist[Y] = ft_abs(b_end[Y] - b_start[Y]);
 	if (b_start[X] < b_end[X])
 		step[X] = 1;
 	else
