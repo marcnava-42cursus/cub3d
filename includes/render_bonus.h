@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:52:19 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 20:36:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:43:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ void		render_minimap_player_vision(t_minimap *minimap);
 void		fill_triangle_scanline(mlx_image_t *img, vertex_t v1, vertex_t v2,
 				vertex_t v3);
 
-/*----------------------------- MINIMAP_TILE.C -------------------------------*/
+/*---------------------------- MINIMAP_WALLS.C -------------------------------*/
 void		render_minimap_walls(t_minimap *minimap);
+
+/*--------------------------- MINIMAP_PLAYER.C -------------------------------*/
 void		render_minimap_player(t_minimap *minimap);
 
 /*----------------------------- MINIMAP_UTILS.C ------------------------------*/

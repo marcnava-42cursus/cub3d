@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/07 21:35:35 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/07 22:43:33 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -211,7 +211,8 @@ SRCS_BONUS	+=	\
 				$(SRCPATH)/_bonus/render/double_buffer_bonus.c \
 				$(SRCPATH)/_bonus/render/minimap.c \
 				$(SRCPATH)/_bonus/render/minimap_player_vision.c \
-				$(SRCPATH)/_bonus/render/minimap_tile.c \
+				$(SRCPATH)/_bonus/render/minimap_walls.c \
+				$(SRCPATH)/_bonus/render/minimap_player.c \
 				$(SRCPATH)/_bonus/render/minimap_utils.c \
 				$(SRCPATH)/_bonus/render/outlines.c \
 				$(SRCPATH)/_bonus/render/window_bonus.c \

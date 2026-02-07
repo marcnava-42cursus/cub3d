@@ -6,22 +6,11 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 22:58:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 21:00:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:07:14 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_bonus.h"
-
-static void	build_wall_bounds(t_rayhit *rayhit, float center,
-		float dist_to_proj_plane)
-{
-	int	slice_height;
-
-	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane
-			/ rayhit->distance);
-	rayhit->wall_bounds[0] = center - slice_height / 2;
-	rayhit->wall_bounds[1] = center + slice_height / 2;
-}
 
 static void	render_living_block_creation_line(t_rayhit *rayhit, unsigned int x,
 		t_game *game)

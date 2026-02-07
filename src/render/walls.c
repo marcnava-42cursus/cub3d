@@ -6,22 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:42:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:06:42 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
-static void	build_wall_bounds(t_rayhit *rayhit, float center,
-		float dist_to_proj_plane)
-{
-	int	slice_height;
-
-	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane
-			/ rayhit->distance);
-	rayhit->wall_bounds[0] = center - slice_height / 2;
-	rayhit->wall_bounds[1] = center + slice_height / 2;
-}
 
 static void	render_wall_fill(t_game *game, t_rayhit *rayhit, unsigned int x)
 {

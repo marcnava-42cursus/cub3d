@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 21:40:53 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:06:12 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ float	normalize_angle(float angle)
 	if (angle < 0.0f)
 		angle += TAU;
 	return (angle - FT_PI);
+}
+
+void	build_wall_bounds(t_rayhit *rayhit, float center,
+		float dist_to_proj_plane)
+{
+	int	slice_height;
+
+	slice_height = (int)(WORLDMAP_TILE_SIZE * dist_to_proj_plane
+			/ rayhit->distance);
+	rayhit->wall_bounds[0] = center - slice_height / 2;
+	rayhit->wall_bounds[1] = center + slice_height / 2;
 }
 
 float	clamp(float value, float min, float max)
