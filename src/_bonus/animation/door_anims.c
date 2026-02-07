@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:39:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 02:43:34 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 12:43:32 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,26 @@ void	init_door_anims(t_effects *effects)
 	init_open_anims(effects);
 }
 
-//void	update_door_anims(t_player *player, t_effects *effects,
-//		float delta_time)
-//{
-//	int	player[2];
-//
-//	player[X] = (int)(player->x / WORLDMAP_TILE_SIZE);
-//	player[Y] = (int)(player->y / WORLDMAP_TILE_SIZE);
-//	if (/*distance between player and door is below 3 tiles*/)		
-//	{
-//		if (current_door_anim == DOOR_CLOSED)
-//			set_door_anim(&door_anims, current_door_anim, DOOR_OPEN);
-//		else if (current_door_anim == DOOR_CLOSE && finished)
-//			set_door_anim(&door_anims current_door_anim, DOOR_CLOSED);
-//	}
-//}
+void	update_door_anims(t_player *player, t_orb_projectile *orb,
+		t_effects *effects, float delta_time)
+{
+	int		player_cell[2];
+	bool	finished;
+
+	player_cell[X] = (int)(player->x / WORLDMAP_TILE_SIZE);
+	player_cell[Y] = (int)(player->y / WORLDMAP_TILE_SIZE);
+	finished = anim_update(&effects->door_anims[effects->current_door_anim],
+			delta_time);
+	if (orb->elevator_place)
+	{
+		set_current_anim(effects->door_anims, &effects->current_door_anim,
+			DOOR_OPEN);
+	}
+	//if (/*distance between player and door is below 3 tiles*/)		
+	//{
+	//	if (current_door_anim == DOOR_CLOSED)
+	//		set_current_anim(&door_anims, current_door_anim, DOOR_OPEN);
+	//	else if (current_door_anim == DOOR_CLOSE && finished)
+	//		set_current_anim(&door_anims current_door_anim, DOOR_CLOSED);
+	//}
+}

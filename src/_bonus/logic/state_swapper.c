@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 01:38:35 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 12:44:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ static bool	handle_elevator_orb_take(t_game *game, t_rayhit *hit, char cell)
 	game->orb.elevator_slot = slot;
 	game->cub_data.elevator_orb[slot] = false;
 	game->cub_data.elevator_orb_payload[slot] = '\0';
-	sync_elevator_door_texture(game);
+	//sync_elevator_door_texture(game);
 	game->cub_data.player.state = STATE_TAKE;
 	if (game->menu.options.debug_mode)
 		printf("Removed orb from elevator '%c'\n", cell);

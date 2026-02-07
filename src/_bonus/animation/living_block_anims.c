@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 05:48:01 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 12:12:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	init_living_block_anims(t_living_block *block)
 
 void	update_living_block_anims(t_living_block *block, float delta_time)
 {
-
 	if (!block || !block->anims)
 		return ;
 	anim_update(&block->anims[ANIM_BREATHE], delta_time);

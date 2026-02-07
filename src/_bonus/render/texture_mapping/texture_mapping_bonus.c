@@ -6,51 +6,60 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 03:17:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 12:25:02 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_bonus.h"
 #include "animation.h"
 
+static xpm_t *get_texture_from_cell(t_game *game, t_rayhit *rayhit, int source_wh[2])
+{
+	char	cell_char;
+	xpm_t	*texture;
+
+	texture = NULL;
+	cell_char = game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]];
+	if (rayhit->face == NORTH)
+		texture = game->cub_data.textures.north;
+	else if (rayhit->face == SOUTH)
+		texture = game->cub_data.textures.south;
+	else if (rayhit->face == EAST)
+		texture = game->cub_data.textures.east;
+	else if (rayhit->face == WEST)
+		texture = game->cub_data.textures.west;
+	if (cell_char == '2')
+		texture = game->cub_data.block.atlas.xpm;
+	else if (ft_strchr("!\"·$%&/()=?", cell_char))
+		texture = game->cub_data.effects.door_atlas.xpm;
+	if (texture == game->cub_data.block.atlas.xpm)
+	{
+		source_wh[0] = game->cub_data.block.atlas.frame_width;
+		source_wh[1] = game->cub_data.block.atlas.frame_height;
+	}
+	else if (texture == game->cub_data.effects.door_atlas.xpm)
+	{
+		source_wh[0] = game->cub_data.effects.door_atlas.frame_width;
+		source_wh[1] = game->cub_data.effects.door_atlas.frame_height;
+	}
+	else if (texture)
+	{
+		source_wh[0] = texture->texture.width;
+		source_wh[1] = texture->texture.height;
+	}
+	return(texture);
+}
+
 static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
 		float *original_line_height)
 {
 	int		tex_x;
 	float	wall_x;
-	char	cell_char;
 	int		source_wh[2];
 
-	cell_char = game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]];
-	if (rayhit->face == NORTH)
-		*texture = game->cub_data.textures.north;
-	else if (rayhit->face == SOUTH)
-		*texture = game->cub_data.textures.south;
-	else if (rayhit->face == EAST)
-		*texture = game->cub_data.textures.east;
-	else if (rayhit->face == WEST)
-		*texture = game->cub_data.textures.west;
-	else
-		*texture = NULL;
-	if (cell_char == '2')
-		*texture = game->cub_data.block.atlas.xpm;
-	else if (ft_strchr("!\"·$%&/()=?", cell_char))
-		*texture = game->cub_data.effects.door_atlas.xpm;
-	if (*texture == game->cub_data.block.atlas.xpm)
-	{
-		source_wh[0] = game->cub_data.block.atlas.frame_width;
-		source_wh[1] = game->cub_data.block.atlas.frame_height;
-	}
-	else if (*texture == game->cub_data.effects.door_atlas.xpm)
-	{
-		source_wh[0] = game->cub_data.effects.door_atlas.frame_width;
-		source_wh[1] = game->cub_data.effects.door_atlas.frame_height;
-	}
-	else
-	{
-		source_wh[0] = (*texture)->texture.width;
-		source_wh[1] = (*texture)->texture.height;
-	}
+	*texture = get_texture_from_cell(game, rayhit, source_wh);
+	if (!texture)
+		return (-1);
 	if (rayhit->side == 0)
 		wall_x = rayhit->position.y / WORLDMAP_TILE_SIZE;
 	else
@@ -104,6 +113,8 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 	if (y_unclipped[0] >= y_unclipped[1])
 		return ;
 	tex_x = get_tex_x(game, rayhit, &texture, &step);
+	if (tex_x == -1)
+		return ;
 	tex_offset = (rayhit->wall_bounds[0] - y_unclipped[0]) * step;
 	fog = fog_factor(rayhit->distance);
 	if (texture == game->cub_data.block.atlas.xpm)
