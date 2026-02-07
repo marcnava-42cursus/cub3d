@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 05:17:59 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 07:03:13 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "MLX42/MLX42.h"
 # include "libft.h"
 
-# define BREAK_BLOCK_DISTANCE 20
+# define BREAK_BLOCK_DISTANCE 4
 # define PLACE_BLOCK_DISTANCE 20
 # define BASE_MOVE_SPEED 4.0f
 # define BASE_ROT_SPEED 2.5f
@@ -102,28 +102,28 @@ void	init_movement_system(t_game *game);
 
 # ifdef BONUS
 
-bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
-bool	collides_with_wall_bonus(t_game *game, float x, float y);
-void	attempt_move_bonus(t_game *game, float step_x, float step_y);
-void	refresh_key_states_bonus(t_game *game);
-void	key_hook_bonus(mlx_key_data_t keydata, void *param);
-void	mouse_hook_bonus(mouse_key_t button, action_t action,
+bool	is_cell_blocking_advanced(t_game *game, int cell_x, int cell_y);
+bool	collides_with_wall_advanced(t_game *game, float x, float y);
+void	attempt_move_advanced(t_game *game, float step_x, float step_y);
+void	refresh_key_states_advanced(t_game *game);
+void	key_hook_advanced(mlx_key_data_t keydata, void *param);
+void	mouse_hook_advanced(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
-void	cursor_hook_bonus(double xpos, double ypos, void *param);
-bool	process_mouse_rotation_bonus(t_game *game);
-void	update_game_loop_bonus(void *param);
-void	init_movement_system_bonus(t_game *game);
+void	cursor_hook_advanced(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_advanced(t_game *game);
+void	update_game_loop_advanced(void *param);
+void	init_movement_system_advanced(t_game *game);
 
-#  define IS_CELL_BLOCKING is_cell_blocking_bonus
-#  define COLLIDES_WITH_WALL collides_with_wall_bonus
-#  define ATTEMPT_MOVE attempt_move_bonus
-#  define REFRESH_KEY_STATES refresh_key_states_bonus
-#  define KEY_HOOK key_hook_bonus
-#  define MOUSE_HOOK mouse_hook_bonus
-#  define CURSOR_HOOK cursor_hook_bonus
-#  define PROCESS_MOUSE_ROTATION process_mouse_rotation_bonus
-#  define UPDATE_GAME_LOOP update_game_loop_bonus
-#  define INIT_MOVEMENT_SYSTEM init_movement_system_bonus
+#  define IS_CELL_BLOCKING is_cell_blocking_advanced
+#  define COLLIDES_WITH_WALL collides_with_wall_advanced
+#  define ATTEMPT_MOVE attempt_move_advanced
+#  define REFRESH_KEY_STATES refresh_key_states_advanced
+#  define KEY_HOOK key_hook_advanced
+#  define MOUSE_HOOK mouse_hook_advanced
+#  define CURSOR_HOOK cursor_hook_advanced
+#  define PROCESS_MOUSE_ROTATION process_mouse_rotation_advanced
+#  define UPDATE_GAME_LOOP update_game_loop_advanced
+#  define INIT_MOVEMENT_SYSTEM init_movement_system_advanced
 
 # else
 

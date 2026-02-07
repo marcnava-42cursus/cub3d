@@ -13,7 +13,7 @@
 #include "parser.h"
 #include "structs.h"
 
-int	is_link_identifier_bonus(const char *line)
+int	is_link_identifier_advanced(const char *line)
 {
 	char	*trimmed;
 

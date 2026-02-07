@@ -13,41 +13,12 @@
 #include "cub3d.h"
 #include "logic_bonus.h"
 
-static void	set_door_texture_state(t_game *game, bool open)
+static void	set_floor_elevator_state(t_floor *floor, int index,
+			t_elevator_state state)
 {
-	t_anim			*door;
-	unsigned int	frame_id;
-	unsigned int	width;
-
-	if (!game || !game->cub_data.effects.door_anims)
+	if (!floor || index < 0 || index >= ELEVATOR_STATE_SLOTS)
 		return ;
-	door = &game->cub_data.effects.door_anims[DOOR_OPEN];
-	if (!door->atlas)
-		return ;
-	frame_id = 0;
-	if (open)
-		frame_id = 8;
-	width = door->atlas->max_frame[X];
-	if (width == 0)
-		return ;
-	door->current_frame[X] = frame_id % width;
-	door->current_frame[Y] = frame_id / width;
-}
-
-static bool	has_open_elevator(t_game *game)
-{
-	int	i;
-
-	if (!game)
-		return (false);
-	i = 0;
-	while (i < game->cub_data.elevator_id_count)
-	{
-		if (game->cub_data.elevator_orb[i])
-			return (true);
-		i++;
-	}
-	return (false);
+	floor->map.elevator_states[index] = state;
 }
 
 static void	place_block_on_arrival(t_game *game)
@@ -73,21 +44,36 @@ static void	place_block_on_arrival(t_game *game)
 static void	resolve_elevator_orb_arrival(t_game *game)
 {
 	int	slot;
+	int	index;
+	char	elevator_id;
 
 	slot = game->orb.elevator_slot;
 	if (slot < 0 || slot >= game->cub_data.elevator_id_count)
+		return ;
+	elevator_id = game->cub_data.elevator_ids[slot];
+	index = get_elevator_index(elevator_id);
+	if (index < 0 || index >= ELEVATOR_STATE_SLOTS)
 		return ;
 	if (game->orb.elevator_place)
 	{
 		game->cub_data.elevator_orb[slot] = true;
 		game->cub_data.elevator_orb_payload[slot] = game->orb.payload;
+		game->cub_data.map.elevator_states[index] = ELEVATOR_OPENED;
+		set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
+			ELEVATOR_OPENED);
+		set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
+			ELEVATOR_OPENED);
 	}
 	else
 	{
 		game->cub_data.elevator_orb[slot] = false;
 		game->cub_data.elevator_orb_payload[slot] = '\0';
+		game->cub_data.map.elevator_states[index] = ELEVATOR_CLOSED;
+		set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
+			ELEVATOR_CLOSED);
+		set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
+			ELEVATOR_CLOSED);
 	}
-	set_door_texture_state(game, has_open_elevator(game));
 }
 
 static void	resolve_orb_arrival(t_game *game)
@@ -98,7 +84,7 @@ static void	resolve_orb_arrival(t_game *game)
 		resolve_elevator_orb_arrival(game);
 	else if (game->orb.mode == ORB_MODE_PLACE)
 		place_block_on_arrival(game);
-	bonus_audio_stop_orb_launch();
+	audio_orb_stop();
 	game->orb.active = false;
 	orb_projectile_clear_ghost(game);
 	game->orb.mode = ORB_MODE_NONE;
@@ -136,13 +122,13 @@ bool	orb_projectile_update(t_game *game, float delta_time)
 	{
 		game->orb.x = game->orb.target_x;
 		game->orb.y = game->orb.target_y;
-		bonus_audio_update_orb_volume(game);
+		audio_orb_update_volume(game);
 		resolve_orb_arrival(game);
 		return (true);
 	}
 	game->orb.x += (dx / distance) * step;
 	game->orb.y += (dy / distance) * step;
-	bonus_audio_update_orb_volume(game);
+	audio_orb_update_volume(game);
 	game->orb.needs_redraw = true;
 	return (true);
 }

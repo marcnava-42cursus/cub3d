@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/06 23:53:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 13:42:51 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,24 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
+typedef enum e_elevator_state
+{
+	ELEVATOR_CLOSED,
+	ELEVATOR_CLOSING,
+	ELEVATOR_OPENED,
+	ELEVATOR_OPENING ,
+	ELEVATOR_EATING
+}	t_elevator_state;
+
+# define ELEVATOR_STATE_SLOTS 12 // elevators: ! " · $ % & ( ) = ? ¿
+
 // Estructura para el mapa
 typedef struct s_map
 {
 	char	**grid;
 	int		width;
 	int		height;
+	int		elevator_states[ELEVATOR_STATE_SLOTS];
 }	t_map;
 
 typedef struct s_link_info
@@ -105,27 +117,27 @@ void	print_cub_data(const t_cub_data *data);
 // Bonus functions
 # ifdef BONUS
 
-int		validate_map_bonus(t_map *map, t_player *player);
-int		validate_map_characters_bonus(t_map *map);
-int		is_map_closed_bonus(t_map *map);
-int		find_player_position_bonus(t_map *map, t_player *player);
-int		is_map_line_bonus(const char *line);
-int		is_texture_identifier_bonus(const char *line);
-int		parse_texture_line_bonus(const char *line, t_textures *textures);
-int		find_map_start_bonus(char **lines, int line_count);
-int		is_link_identifier_bonus(const char *line);
-int		build_floor_graph_bonus(const char *path, t_cub_data *data);
-int		process_file_data_bonus(char **lines, int line_count, t_cub_data *data);
+int		validate_map_advanced(t_map *map, t_player *player);
+int		validate_map_characters_advanced(t_map *map);
+int		is_map_closed_advanced(t_map *map);
+int		find_player_position_advanced(t_map *map, t_player *player);
+int		is_map_line_advanced(const char *line);
+int		is_texture_identifier_advanced(const char *line);
+int		parse_texture_line_advanced(const char *line, t_textures *textures);
+int		find_map_start_advanced(char **lines, int line_count);
+int		is_link_identifier_advanced(const char *line);
+int		build_floor_graph_advanced(const char *path, t_cub_data *data);
+int		process_file_data_advanced(char **lines, int line_count, t_cub_data *data);
 
 // Remap functions to bonus versions
-#  define validate_map validate_map_bonus
-#  define validate_map_characters validate_map_characters_bonus
-#  define is_map_closed is_map_closed_bonus
-#  define find_player_position find_player_position_bonus
-#  define is_map_line is_map_line_bonus
-#  define is_texture_identifier is_texture_identifier_bonus
-#  define parse_texture_line parse_texture_line_bonus
-#  define find_map_start find_map_start_bonus
+#  define validate_map validate_map_advanced
+#  define validate_map_characters validate_map_characters_advanced
+#  define is_map_closed is_map_closed_advanced
+#  define find_player_position find_player_position_advanced
+#  define is_map_line is_map_line_advanced
+#  define is_texture_identifier is_texture_identifier_advanced
+#  define parse_texture_line parse_texture_line_advanced
+#  define find_map_start find_map_start_advanced
 
 # endif
 

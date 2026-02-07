@@ -6,59 +6,28 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 14:12:51 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 14:41:43 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic_bonus.h"
 #include <math.h>
 #include <string.h>
 
-static bool	is_elevator_char_collision(char c)
-{
-	const char	*set;
-	int			i;
-
-	set = "!\"·$%&/()=?¿";
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-static int	get_elevator_slot_collision(t_cub_data *data, char id)
-{
-	int	i;
-
-	if (!data)
-		return (-1);
-	i = 0;
-	while (i < data->elevator_id_count)
-	{
-		if (data->elevator_ids[i] == id)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
 static bool	is_closed_elevator(t_game *game, char cell)
 {
-	int	slot;
+	int	index;
 
-	if (!is_elevator_char_collision(cell))
-		return (false);
-	slot = get_elevator_slot_collision(&game->cub_data, cell);
-	if (slot < 0 || slot >= game->cub_data.elevator_id_count)
+	if (!game)
 		return (true);
-	return (!game->cub_data.elevator_orb[slot]);
+	index = get_elevator_index(cell);
+	if (index < 0 || index >= ELEVATOR_STATE_SLOTS)
+		return (false);
+	return (game->cub_data.map.elevator_states[index] != ELEVATOR_OPENED);
 }
 
-bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y)
+bool	is_cell_blocking_advanced(t_game *game, int cell_x, int cell_y)
 {
 	char	*row;
 	int		row_len;
@@ -86,7 +55,7 @@ bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y)
 	return (false);
 }
 
-bool	collides_with_wall_bonus(t_game *game, float x, float y)
+bool	collides_with_wall_advanced(t_game *game, float x, float y)
 {
 	const float	r = game->player_radius;
 	float		sx[4];
@@ -106,7 +75,7 @@ bool	collides_with_wall_bonus(t_game *game, float x, float y)
 	i = 0;
 	while (i < 4)
 	{
-		if (is_cell_blocking_bonus(game, (int)floorf(sx[i]),
+		if (is_cell_blocking_advanced(game, (int)floorf(sx[i]),
 				(int)floorf(sy[i])))
 			return (true);
 		i++;
@@ -114,7 +83,7 @@ bool	collides_with_wall_bonus(t_game *game, float x, float y)
 	return (false);
 }
 
-void	attempt_move_bonus(t_game *game, float step_x, float step_y)
+void	attempt_move_advanced(t_game *game, float step_x, float step_y)
 {
 	float	nx;
 	float	ny;
@@ -123,8 +92,8 @@ void	attempt_move_bonus(t_game *game, float step_x, float step_y)
 		return ;
 	nx = game->cub_data.player.x + step_x;
 	ny = game->cub_data.player.y + step_y;
-	if (!collides_with_wall_bonus(game, nx, game->cub_data.player.y))
+	if (!collides_with_wall_advanced(game, nx, game->cub_data.player.y))
 		game->cub_data.player.x = nx;
-	if (!collides_with_wall_bonus(game, game->cub_data.player.x, ny))
+	if (!collides_with_wall_advanced(game, game->cub_data.player.x, ny))
 		game->cub_data.player.y = ny;
 }

@@ -16,18 +16,18 @@
 #include <string.h>
 
 // Prototypes for bonus functions
-int		parse_cub_file_bonus(const char *filename, t_cub_data *data);
+int		parse_cub_file_advanced(const char *filename, t_cub_data *data);
 int		load_map_textures_bonus(t_game *game);
-void	init_movement_system_bonus(t_game *game);
+void	init_movement_system_advanced(t_game *game);
 void	set_map_overlay_visible_bonus(t_game *game, bool visible);
 bool	window_init_bonus(t_game *game);
 void	window_free_bonus(t_game *game);
 
-void	cleanup_game_bonus(t_game *game)
+void	cleanup_game_advanced(t_game *game)
 {
 	if (!game)
 		return;
-	bonus_audio_shutdown();
+	audio_system_shutdown();
 
 	// Liberar datos del parser
 	free_cub_data(&game->cub_data);
@@ -36,11 +36,11 @@ void	cleanup_game_bonus(t_game *game)
 		window_free_bonus(game);
 }
 
-int	init_game_bonus(t_game *game, const char *map_file)
+int	init_game_advanced(t_game *game, const char *map_file)
 {
 	config_options_init(game);
 	// Parsear el archivo .cub (Bonus)
-	if (!parse_cub_file_bonus(map_file, &game->cub_data))
+	if (!parse_cub_file_advanced(map_file, &game->cub_data))
 	{
 		printf("Error: Failed to parse map file %s\n", map_file);
 		return (0);
@@ -90,8 +90,8 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		printf("Error: Failed to load 2D map textures\n");
 		return (0);
 	}
-	if (!bonus_audio_init())
-		printf("Warning: Audio bonus disabled (assets/audio/scream.mp3)\n");
+	if (!audio_system_init())
+		printf("Warning: Audio bonus disabled (assets/audio/orb_*.mp3)\n");
 
 	return (1);
 }
@@ -112,13 +112,13 @@ static void render_loop(void *param)
 		game->mlx->delta_time);
 	render_double_buffer(game);
 	if (orb_moved && game->map_2d_visible)
-		render_player_dynamic_bonus(game);
+		render_player_dynamic_advanced(game);
 }
 
-int	run_game_bonus(t_game *game)
+int	run_game_advanced(t_game *game)
 {
     // Inicializar sistema de movimiento (Bonus)
-    init_movement_system_bonus(game);
+    init_movement_system_advanced(game);
 
 	// Iniciar loop de MLX
 	mlx_loop_hook(game->mlx, render_loop, (void *)game);
@@ -143,16 +143,16 @@ int main(int argc, char **argv)
 	memset(&game, 0, sizeof(t_game));
 	if (!validate_args(argc, argv))
 		return (1);
-	if (!init_game_bonus(&game, argv[1]))
+	if (!init_game_advanced(&game, argv[1]))
 	{
-		cleanup_game_bonus(&game);
+		cleanup_game_advanced(&game);
 		return (1);
 	}
-	if (!run_game_bonus(&game))
+	if (!run_game_advanced(&game))
 	{
-		cleanup_game_bonus(&game);
+		cleanup_game_advanced(&game);
 		return (1);
 	}
-	cleanup_game_bonus(&game);
+	cleanup_game_advanced(&game);
 	return (0);
 }

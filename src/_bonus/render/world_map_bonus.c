@@ -13,7 +13,7 @@
 #include "render.h"
 
 // Prototype for the bonus renderer
-void	render_map_2d_initial_bonus(t_game *game);
+void	render_map_2d_initial_advanced(t_game *game);
 
 static void	clear_image(mlx_image_t *img)
 {
@@ -82,7 +82,7 @@ void	set_map_overlay_visible_bonus(t_game *game, bool visible)
 		}
 		map_set_image_enabled(game->map_layer, true);
 		map_set_image_enabled(game->player_layer, true);
-		render_map_2d_initial_bonus(game);
+		render_map_2d_initial_advanced(game);
 	}
 	else
 	{
@@ -92,7 +92,7 @@ void	set_map_overlay_visible_bonus(t_game *game, bool visible)
 	game->map_2d_visible = visible;
 }
 
-void	toggle_map_overlay_bonus(t_game *game)
+void	toggle_map_overlay_advanced(t_game *game)
 {
 	if (!game)
 		return ;

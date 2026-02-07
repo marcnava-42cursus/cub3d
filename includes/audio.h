@@ -17,12 +17,15 @@
 
 # include "miniaudio.h"
 
-# define ORB_LAUNCH_AUDIO_PATH "./assets/audio/scream.mp3"
+# define ORB_INIT_AUDIO_PATH "./assets/audio/orb_init.mp3"
+# define ORB_LOOP_AUDIO_PATH "./assets/audio/orb_loop.mp3"
+# define ORB_END_AUDIO_PATH "./assets/audio/orb_end.mp3"
 # define STEP_AUDIO_PATH "./assets/audio/step.mp3"
 
-# define ORB_AUDIO_VOLUME_MIN 0.0f
-# define ORB_AUDIO_VOLUME_MAX 1.25f
-# define ORB_AUDIO_MAX_DISTANCE 8.0f
+# define ORB_AUDIO_VOLUME_MIN 0.03f
+# define ORB_AUDIO_VOLUME_MAX 1.80f
+# define ORB_AUDIO_MAX_DISTANCE 12.0f
+# define ORB_AUDIO_CURVE_EXPONENT 2.2f
 
 # define STEP_AUDIO_VOLUME 0.25f
 # define STEP_AUDIO_VOLUME_MIN 0.0f
@@ -36,13 +39,19 @@
 typedef struct s_bonus_audio
 {
 	bool		initialized;
-	bool		orb_sound_ready;
+	bool		orb_init_ready;
+	bool		orb_loop_ready;
+	bool		orb_end_ready;
+	bool		orb_loop_pending;
 	bool		step_sound_ready;
 	ma_engine	engine;
-	ma_sound	orb_launch_sound;
+	ma_sound	orb_init_sound;
+	ma_sound	orb_loop_sound;
+	ma_sound	orb_end_sound;
 	ma_sound	step_sound;
 }	t_bonus_audio;
 
-void	bonus_audio_set_orb_volume(float volume);
+float	clamp_audio(float value, float min, float max);
+void	audio_set_orb_volume(float volume);
 
 #endif

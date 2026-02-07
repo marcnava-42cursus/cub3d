@@ -63,7 +63,7 @@ void	config_options_init(t_game *game)
 	config_option_set_slider_raw(game, CONFIG_SLIDER_QUALITY,
 		menu->options.quality_index);
 	ft_bzero(&menu->labels, sizeof(menu->labels));
-	controller_init_bonus(game);
+	controller_init_advanced(game);
 }
 
 void	config_options_reset(t_game *game)

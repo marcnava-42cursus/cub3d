@@ -547,7 +547,7 @@ void	render_map_2d_bonus(t_game *game)
 	orb_projectile_mark_drawn(game);
 }
 
-void	render_map_2d_initial_bonus(t_game *game)
+void	render_map_2d_initial_advanced(t_game *game)
 {
 	render_map_tiles(game);
 	render_player(game);
@@ -559,7 +559,7 @@ void	render_map_tiles_static_bonus(t_game *game)
 	render_map_tiles(game);
 }
 
-void	render_player_dynamic_bonus(t_game *game)
+void	render_player_dynamic_advanced(t_game *game)
 {
 	bool	player_changed;
 	bool	orb_changed;

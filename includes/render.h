@@ -116,9 +116,9 @@ void		paint_texture_pixel(unsigned int pixel[2], mlx_image_t *img,
 
 # ifdef BONUS
 
-void		render_player_dynamic_bonus(t_game *game);
-void		render_map_2d_initial_bonus(t_game *game);
-void		toggle_map_overlay_bonus(t_game *game);
+void		render_player_dynamic_advanced(t_game *game);
+void		render_map_2d_initial_advanced(t_game *game);
+void		toggle_map_overlay_advanced(t_game *game);
 # endif
 
 /*--------------------------------- WINDOW.C ---------------------------------*/

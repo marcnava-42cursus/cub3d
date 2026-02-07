@@ -1,0 +1,98 @@
+{
+   glfw_leaks
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_cond
+   Memcheck:Cond
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_jump
+   Memcheck:Jump
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_free
+   Memcheck:Free
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_value1
+   Memcheck:Value1
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_value2
+   Memcheck:Value2
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_value4
+   Memcheck:Value4
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_value8
+   Memcheck:Value8
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_value16
+   Memcheck:Value16
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_addr1
+   Memcheck:Addr1
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_addr2
+   Memcheck:Addr2
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_addr4
+   Memcheck:Addr4
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_addr8
+   Memcheck:Addr8
+   ...
+   obj:*/libglfw.so*
+}
+
+{
+   glfw_addr16
+   Memcheck:Addr16
+   ...
+   obj:*/libglfw.so*
+}

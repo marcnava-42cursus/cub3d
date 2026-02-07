@@ -6,14 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:15:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 12:44:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 14:20:25 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "structs.h"
 #include "logic_bonus.h"
-#include "render.h"
 
 /**
  * @brief Apply interaction to the targeted cell.
@@ -43,20 +42,21 @@ static bool	modify_interactive_cell(t_game *game, int x, int y)
 	return (false);
 }
 
-static bool	is_elevator_char_state(char c)
+int	get_elevator_index(char elevator_id)
 {
 	const char	*set;
-	int			i;
+	char		*pos;
 
 	set = "!\"·$%&/()=?¿";
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (true);
-		i++;
-	}
-	return (false);
+	pos = ft_strchr(set, elevator_id);
+	if (!pos)
+		return (-1);
+	return ((int)(pos - set));
+}
+
+static bool	is_elevator(char c)
+{
+	return (get_elevator_index(c) >= 0);
 }
 
 static int	get_elevator_slot(t_cub_data *data, char id)
@@ -73,43 +73,6 @@ static int	get_elevator_slot(t_cub_data *data, char id)
 		i++;
 	}
 	return (-1);
-}
-
-static bool	has_open_elevator_state(t_cub_data *data)
-{
-	int	i;
-
-	if (!data)
-		return (false);
-	i = 0;
-	while (i < data->elevator_id_count)
-	{
-		if (data->elevator_orb[i])
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-static void	sync_elevator_door_texture(t_game *game)
-{
-	t_anim			*door;
-	unsigned int	frame_id;
-	unsigned int	width;
-
-	if (!game || !game->cub_data.effects.door_anims)
-		return ;
-	door = &game->cub_data.effects.door_anims[DOOR_OPEN];
-	if (!door->atlas)
-		return ;
-	frame_id = 0;
-	if (has_open_elevator_state(&game->cub_data))
-		frame_id = 8;
-	width = door->atlas->max_frame[X];
-	if (width == 0)
-		return ;
-	door->current_frame[X] = frame_id % width;
-	door->current_frame[Y] = frame_id / width;
 }
 
 static bool	is_valid_target_cell(t_game *game, int x, int y)
@@ -171,7 +134,7 @@ static bool	handle_elevator_orb_place(t_game *game, t_rayhit *hit, char cell)
 	int		slot;
 	char	payload;
 
-	if (!is_elevator_char_state(cell))
+	if (!is_elevator(cell))
 		return (false);
 	slot = get_elevator_slot(&game->cub_data, cell);
 	if (slot < 0 || game->cub_data.elevator_orb[slot])
@@ -194,9 +157,10 @@ static bool	handle_elevator_orb_place(t_game *game, t_rayhit *hit, char cell)
 static bool	handle_elevator_orb_take(t_game *game, t_rayhit *hit, char cell)
 {
 	int		slot;
+	int		elevator_index;
 	char	payload;
 
-	if (!is_elevator_char_state(cell))
+	if (!is_elevator(cell))
 		return (false);
 	slot = get_elevator_slot(&game->cub_data, cell);
 	if (slot < 0 || !game->cub_data.elevator_orb[slot])
@@ -212,7 +176,9 @@ static bool	handle_elevator_orb_take(t_game *game, t_rayhit *hit, char cell)
 	game->orb.elevator_slot = slot;
 	game->cub_data.elevator_orb[slot] = false;
 	game->cub_data.elevator_orb_payload[slot] = '\0';
-	//sync_elevator_door_texture(game);
+	elevator_index = get_elevator_index(cell);
+	if (elevator_index >= 0 && elevator_index < ELEVATOR_STATE_SLOTS)
+		game->cub_data.map.elevator_states[elevator_index] = ELEVATOR_CLOSED;
 	game->cub_data.player.state = STATE_TAKE;
 	if (game->menu.options.debug_mode)
 		printf("Removed orb from elevator '%c'\n", cell);
