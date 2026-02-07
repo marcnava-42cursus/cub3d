@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:39:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 10:57:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 02:43:34 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ void	init_door_anims(t_effects *effects)
 	init_open_anims(effects);
 }
 
-void	update_door_anims(t_player *player, t_effects *effects,
-		float delta_time)
-{
-	//int	player[2];
-
-	//player[X] = (int)(player->x / WORLDMAP_TILE_SIZE);
-	//player[Y] = (int)(player->y / WORLDMAP_TILE_SIZE);
-	//if (/*distance between player and door is below 3 tiles*/)		
-	//{
-	//	if (current_door_anim == DOOR_CLOSED)
-	//		set_door_anim(&door_anims, current_door_anim, DOOR_OPEN);
-	//	else if (current_door_anim == DOOR_CLOSE && finished)
-	//		set_door_anim(&door_anims current_door_anim, DOOR_CLOSED);
-	//}
-}
+//void	update_door_anims(t_player *player, t_effects *effects,
+//		float delta_time)
+//{
+//	int	player[2];
+//
+//	player[X] = (int)(player->x / WORLDMAP_TILE_SIZE);
+//	player[Y] = (int)(player->y / WORLDMAP_TILE_SIZE);
+//	if (/*distance between player and door is below 3 tiles*/)		
+//	{
+//		if (current_door_anim == DOOR_CLOSED)
+//			set_door_anim(&door_anims, current_door_anim, DOOR_OPEN);
+//		else if (current_door_anim == DOOR_CLOSE && finished)
+//			set_door_anim(&door_anims current_door_anim, DOOR_CLOSED);
+//	}
+//}

@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 17:27:44 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/13 18:16:09 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 02:59:49 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-uint8_t	*get_pixel_start(unsigned int stride, int current_frame[2],
+uint8_t	*get_pixel_start(unsigned int stride, unsigned int current_frame[2],
 		t_atlas *atlas)
 {
 	uint8_t			*pixel_start;

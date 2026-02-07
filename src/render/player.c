@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 15:22:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 19:55:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 03:03:22 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 
 static void	render_left_hand(mlx_image_t *buffer, int buffer_x_center,
 		t_player *player)

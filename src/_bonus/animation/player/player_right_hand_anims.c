@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/03 12:04:08 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:37:34 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static void	init_empty_and_hold(t_player *player)
 
 static void	init_take_and_throw(t_player *player)
 {
-	static const unsigned int	take_frames[4] = {4, 6, 7};
-	static const unsigned int	take_holds[4] = {1, 1, 2};
-	static const unsigned int	throw_frames[2] = {6, 7};
-	static const unsigned int	throw_holds[2] = {1, 2};
+	static const unsigned int	take_frames[4] = {4, 6, 8, 0};
+	static const unsigned int	take_holds[4] = {1, 1, 2, 2};
+	static const unsigned int	throw_frames[3] = {5, 3, 8};
+	static const unsigned int	throw_holds[3] = {3, 1, 5};
 
 	anim_init(&player->right_hand_anims[ANIM_TAKE], &player->hand_atlas, false);
 	store_anim_frame_data(&player->right_hand_anims[ANIM_TAKE], take_frames,

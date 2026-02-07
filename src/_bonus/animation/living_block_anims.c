@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:24:26 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 00:50:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:24:36 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	init_living_block_anims(t_living_block *block)
 {
 	static const unsigned int	create_frames[9] = {7, 8, 9, 10, 11, 12, 13,
 		14, 15};
-	static const unsigned int	create_holds[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+	static const unsigned int	create_holds[9] = {1, 1, 2, 2, 1, 2, 3, 4, 6};
 	static const unsigned int	breathe_frames[10] = {0, 1, 2, 3, 4, 6, 2, 5,
 		2, 5};
 	static const unsigned int	breathe_holds[10] = {4, 1, 2, 3, 6, 1, 1, 1, 1,
@@ -33,7 +33,7 @@ void	init_living_block_anims(t_living_block *block)
 		breathe_holds, 10);
 }
 
-void	update_living_block_anims(t_living_block *block, t_orb_projectile *orb, float delta_time)
+void	update_living_block_anims(t_living_block *block, float delta_time)
 {
 	bool	create_finished;
 

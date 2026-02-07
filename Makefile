@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/06 23:31:02 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/07 02:24:08 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -195,7 +195,7 @@ SRCS_BONUS	+=	\
 
 SRCS_BONUS	+=	\
 				$(SRCPATH)/_bonus/render/texture_mapping/texture_mapping_bonus.c \
-				$(SRCPATH)/_bonus/render/texture_mapping/paint_texture_pixel_bonus.c \
+				$(SRCPATH)/_bonus/render/texture_mapping/paint_pixel_color_bonus.c \
 				$(SRCPATH)/_bonus/render/living_block.c \
 				$(SRCPATH)/textures/texture_loader.c \
 				$(SRCPATH)/render/texture_atlas.c \

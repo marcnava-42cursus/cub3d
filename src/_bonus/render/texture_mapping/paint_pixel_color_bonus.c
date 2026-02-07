@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   paint_texture_pixel_bonus.c                        :+:      :+:    :+:   */
+/*   paint_pixel_color_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:48:29 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 02:00:58 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 03:16:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,22 +93,27 @@ static uint32_t	lerp_pixel_and_fog_bonus(int coord[2],
 	return (fog_sample);
 }
 
-void	paint_texture_pixel_bonus(int pixel[2], t_game *game,
-		xpm_t *texture, int tex_coord[2], float fog, t_anim *anim)
+uint32_t	get_pixel_color_bonus(t_anim *anim, xpm_t *texture,
+		int tex_coord[2])
 {
 	uint32_t	pixel_color;
-	xpm_t		*fog_texture;
-	uint32_t	fog_sample;
-	mlx_image_t	*img;
 
 	if (anim)
 		pixel_color = sample_atlas_frame_pixel(
 				anim->atlas, anim->current_frame, tex_coord[X], tex_coord[Y]);
 	else
 		pixel_color = sample_texture_pixel(texture, tex_coord[X], tex_coord[Y]);
+	return (pixel_color);
+}
+
+void	paint_pixel_color_bonus(t_game *game, int pixel[2],
+		uint32_t pixel_color, float fog)
+{
+	xpm_t		*fog_texture;
+	uint32_t	fog_sample;
+
 	fog_texture = game->cub_data.textures.fog;
 	fog_sample = lerp_pixel_and_fog_bonus(pixel, pixel_color,
 			fog_texture, fog);
-	img = game->double_buffer[NEXT];
-	safe_put_pixel(img, pixel[X], pixel[Y], fog_sample);
+	safe_put_pixel(game->double_buffer[NEXT], pixel[X], pixel[Y], fog_sample);
 }

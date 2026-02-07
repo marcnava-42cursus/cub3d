@@ -6,13 +6,13 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 12:12:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/27 06:16:15 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:19:46 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-static void	render_bg_color(t_game *game, int sky, int ground)
+void	render_bg_color(t_game *game, int sky, int ground)
 {
 	unsigned int	pixel[2];
 

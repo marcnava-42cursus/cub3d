@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:06:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:27:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,32 @@ static int	get_effects_tex_x(t_effects *effects, t_rayhit *rayhit)
 		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
 	return ((int)(wall_x * (float)frame_width));
+}
+
+static void	interpolate_wall_with_absorb(t_game *game, unsigned int x,
+		int y[2], int tex_x, float tex_offset, float step, float fog)
+{
+	int			pixel[2];
+	int			tex_coord[2];
+	uint32_t	pixel_color;
+
+	pixel[X] = (int)x;
+	pixel[Y] = y[0];
+	tex_coord[X] = tex_x;
+	while (pixel[Y] <= y[1])
+	{
+		tex_coord[Y] = (int)tex_offset;
+		pixel_color = get_pixel_color_bonus(
+				&game->cub_data.effects.absorb_anims[
+				game->cub_data.effects.current_absorb_anim],
+				game->cub_data.effects.absorb_atlas.xpm, tex_coord);
+		pixel_color = rgba_color_lerp(game->double_buffer[NEXT]->pixels[
+				(pixel[Y] * game->double_buffer[NEXT]->width + pixel[X]) * 4],
+				pixel_color, 0.5f);
+		paint_pixel_color_bonus(game, pixel, pixel_color, fog);
+		pixel[Y]++;
+		tex_offset += step;
+	}
 }
 
 void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
@@ -51,7 +77,7 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 	{
 		if (rh[i].cell[X] == c_cell[X] && rh[i].cell[Y] == c_cell[Y]
 			&& rh[i].face == c_face && rh[game->double_buffer[NEXT]->width / 2]
-				.distance <= 300.0f)
+			.distance <= 300.0f)
 		{
 			y[0] = rh[i].wall_bounds[0];
 			y[1] = rh[i].wall_bounds[1];
@@ -66,13 +92,9 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 			step = (float)game->cub_data.effects.absorb_atlas.frame_height
 				/ (float)(rh[i].wall_bounds[1] - rh[i].wall_bounds[0] + 1);
 			tex_offset = (y[0] - rh[i].wall_bounds[0]) * step;
-			paint_vertical_line_texture_bonus(i, y, game,
-					game->cub_data.effects.absorb_atlas.xpm,
-					tex_x, tex_offset, step, fog,
-					&game->cub_data.effects.absorb_anims[
-					game->cub_data.effects.current_absorb_anim]);	
+			interpolate_wall_with_absorb(game, i, y, tex_x, tex_offset, step,
+				fog);
 		}
 		i++;
 	}
 }
-

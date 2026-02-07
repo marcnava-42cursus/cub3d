@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 22:58:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:07:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 03:20:34 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	render_living_block_creation_line(t_rayhit *rayhit, unsigned int x,
 	float				wall_x;
 	int					y_unclipped[2];
 
+	texture = NULL;
 	y_unclipped[0] = rayhit->wall_bounds[0];
 	y_unclipped[1] = rayhit->wall_bounds[1];
 	line_height = (float)(y_unclipped[1] - y_unclipped[0] + 1);
@@ -64,7 +65,7 @@ static void	render_living_block_creations(t_game *game, t_rayhit *rayhit, int i)
 	mlx_image_t	*img;
 
 	if (!rayhit->hit
-			|| game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]] != '3')
+		|| game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]] != '3')
 		return ;
 	img = game->double_buffer[NEXT];
 	screen_bounds[0] = rayhit->wall_bounds[0];

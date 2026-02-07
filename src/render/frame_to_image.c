@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 11:23:30 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 19:53:50 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 03:01:29 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,11 @@ void	hori_flip_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 	stride = atlas->xpm->texture.width * atlas->xpm->texture.bytes_per_pixel;
 	pixel_start = get_pixel_start(stride, frame, atlas);
 	pixel[Y] = 0;
-	while (pixel[Y] < (int)atlas->frame_height)
+	while (pixel[Y] < atlas->frame_height)
 	{
 		row = pixel_start + pixel[Y] * stride;
 		pixel[X] = 0;
-		while (get_hori_flip(atlas, pixel[X]) >= 0
-			&& pixel[X] < (int)atlas->frame_width)
+		while (pixel[X] < atlas->frame_width)
 		{
 			safe_put_pixel(img, coord[X] + pixel[X], coord[Y] + pixel[Y],
 				get_corrected_color_from_pixel(row, get_hori_flip(atlas,

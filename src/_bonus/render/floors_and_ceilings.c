@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 11:48:38 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:06:28 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 03:19:21 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,15 @@ static vertex_t	get_ray_steps(t_game *game, float ray_dir[4],
 static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
 		float fog)
 {
-	float			f[2];
-	int				t[2];
-	int				pixel[2];
+	float		f[2];
+	int			t[2];
+	int			pixel[2];
+	uint32_t	pixel_color;
 
 	fog = fog_factor(fog);
 	pixel[X] = 0;
 	pixel[Y] = (unsigned int)y;
-	while (pixel[X] < game->double_buffer[NEXT]->width)
+	while (pixel[X] < (int)game->double_buffer[NEXT]->width)
 	{
 		f[X] = ray_steps.x - floorf(ray_steps.x);
 		f[Y] = ray_steps.y - floorf(ray_steps.y);
@@ -48,7 +49,8 @@ static void	render_fill(t_game *game, int y, xpm_t *texture, vertex_t ray_steps,
 		t[Y] = (int)(f[Y] * texture->texture.height);
 		t[X] = (int)clamp((float)(t[X]), 0.0f, texture->texture.width - 1);
 		t[Y] = (int)clamp((float)(t[Y]), 0.0f, texture->texture.height - 1);
-		paint_texture_pixel_bonus(pixel, game, texture, t, fog, NULL);
+		pixel_color = get_pixel_color_bonus(NULL, texture, t);
+		paint_pixel_color_bonus(game, pixel, pixel_color, fog);
 		ray_steps.x += ray_steps.u;
 		ray_steps.y += ray_steps.v;
 		pixel[X]++;
@@ -75,7 +77,7 @@ void	render_floors_and_ceilings(t_game *game, float center, float ray_dir[4],
 		i++;
 	}
 	i++;
-	while (i < game->double_buffer[NEXT]->height)
+	while (i < (int)game->double_buffer[NEXT]->height)
 	{
 		ray_steps = get_ray_steps(game, ray_dir, i - center + 1, dist_to_proj_plane);
 		dist[X] = (ray_steps.x - game->cub_data.player.x) * WORLDMAP_TILE_SIZE;

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:06:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 02:36:56 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	render_orb(t_game *game, t_rayhit *rayhits, float center,
 	int		draw_x[2];
 
 	if (!game->orb.active || game->orb.mode == ORB_MODE_PLACE
-			|| !set_cam_x_y(game, cam, ray_dir))
+		|| !set_cam_x_y(game, cam, ray_dir))
 		return ;
 	screen_x = (int)(game->double_buffer[NEXT]->width / 2)
 		* (1 + cam[X] / cam[Y]);

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 10:57:37 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 02:00:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:20:42 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	render_gameplay_window(t_game *game, unsigned int buffer_width)
 	float			ray_dir[4];
 	float			dist_to_proj_plane;
 
-	render_bg(game);
+	render_bg_color(game, FOG_COLOR, FOG_COLOR);
 	rayhits = ft_calloc(buffer_width, sizeof(t_rayhit));
 	i = 0;
 	while (i < buffer_width)

@@ -6,11 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:36:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/01/13 16:53:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 03:04:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "render.h"
+#include "render_bonus.h"
 #include "logic_bonus.h"
 #include <math.h>
 #include <stdint.h>

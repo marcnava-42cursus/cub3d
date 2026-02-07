@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:16:51 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 05:20:06 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,41 +21,14 @@
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
-# define PLAYER_REF_WIDTH 960.0f
-# define PLAYER_REF_HEIGHT 540.0f
 # define RESOLUTION_SCALE 0.25f
-# define MINIMAP_TILE_SIZE 32
-# define MINIMAP_PLAYER_SIZE 16
-# define MINIMAP_TILE_RADIUS 4
-# define MINIMAP_RAYS 15
-# define TEXTURE_WIDTH 64
-# define TEXTURE_HEIGHT 64
-# define HAND_TEXTURE_WIDTH 192
-# define HAND_TEXTURE_HEIGHT 192
-# define THUMB_TEXTURE_WIDTH 96
-# define THUMB_TEXTURE_HEIGHT 160
-# define WEAPON_TEXTURE_WIDTH 128
-# define WEAPON_TEXTURE_HEIGHT 128
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_TILE_RENDER 20.0f
-# define FOG_TILE_START 0.5f
-# define FOG_TILE_END 9.5f
 
-//MINIMAP_DIAMETER (2.0f * MINIMAP_TILE_RADIUS + 1.0f)
-# define MINIMAP_DIAMETER 9.0f
-//MINIMAP_WIDTH (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
-# define MINIMAP_WIDTH 288
-//MINIMAP_HEIGHT (MINIMAP_DIAMETER * MINIMAP_TILE_SIZE)
-# define MINIMAP_HEIGHT 288
-//MINIMAP_WNDW_X (MAX_WINDOW_WIDTH - MINIMAP_WIDTH - 2)
-# define MINIMAP_WNDW_X 1630
-# define MINIMAP_WNDW_Y 2
-//MINIMAP_CNTR_X (MINIMAP_WNDW_X + MINIMAP_WIDTH / 2 - MINIMAP_PLAYER_SIZE / 2)
-# define MINIMAP_CNTR_X 1766
-//MINIMAP_CNTR_Y (MINIMAP_WNDW_Y + MINIMAP_HEIGHT / 2 - MINIMAP_PLAYER_SIZE / 2)
-# define MINIMAP_CNTR_Y 138
-# define PLAYER_FOV (66.0f * FT_PI / 180.0f)
-# define TAU (2.0f * FT_PI)
+//PLAYER_FOV (66.0f * FT_PI / 180.0f)
+# define PLAYER_FOV (66.0f * 3.141592f / 180.0f)
+//TAU (2.0f * FT_PI)
+# define TAU (2.0f * 3.141592f)
 
 # define RED 0xFF0000FF
 # define GREEN 0x00FF00FF
@@ -70,9 +43,6 @@
 # define ORANGE 0xFF7F00FF
 # define TRANSPARENT_BLUE 0x0000FF44
 # define FOG_COLOR 0xAA3333FF
-
-// Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
-# define TILE_SIZE 64
 
 // Render order for gameplay buffers
 typedef enum e_render_order
@@ -103,18 +73,20 @@ void		frame_to_image(mlx_image_t *img, t_atlas *atlas,
 void		hori_flip_frame_to_image(mlx_image_t *img, t_atlas *atlas,
 				int coord[2], unsigned int frame[2]);
 /*-------------------------- TEXTURE_ATLAS_UTILS.C ---------------------------*/
-uint8_t		*get_pixel_start(unsigned int stride, int current_frame[2],
+uint8_t		*get_pixel_start(unsigned int stride, unsigned int current_frame[2],
 				t_atlas *atlas);
 uint32_t	get_corrected_color_from_pixel(uint8_t *row, unsigned int x,
 				t_atlas *atlas);
 
 /*------------------------------ BACKGROUND.C --------------------------------*/
+void		render_bg_color(t_game *game, int sky, int ground);
 void		render_bg(t_game *game);
 
 /*------------------------------- BRESENHAM.C --------------------------------*/
 void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
 # ifdef BONUS
+
 void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
 # endif
@@ -134,7 +106,6 @@ void		init_rayhit(t_rayhit *rayhit, vertex_t start, vertex_t *direction,
 void		render_walls(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
 
-
 /*---------------------------- TEXTURE_MAPPING.C -----------------------------*/
 void		render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
 				t_game *game);
@@ -145,6 +116,7 @@ void		paint_horizontal_line_texture(unsigned int y, unsigned int x,
 				mlx_image_t *img, xpm_t *texture, int tex_y, float tex_x);
 
 # ifdef BONUS
+
 void		render_player_dynamic_bonus(t_game *game);
 void		render_map_2d_initial_bonus(t_game *game);
 void		toggle_map_overlay_bonus(t_game *game);
