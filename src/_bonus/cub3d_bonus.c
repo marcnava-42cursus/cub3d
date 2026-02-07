@@ -104,8 +104,9 @@ static void render_loop(void *param)
 	game = (t_game *)param;
 	orb_moved = orb_projectile_update(game, game->mlx->delta_time);
 	update_player_anims(&game->cub_data.player, game->mlx->delta_time);
-	update_living_block_anims(&game->cub_data.block, &game->orb, 
+	update_living_block_anims(&game->cub_data.block, &game->orb,
 		game->mlx->delta_time);
+	update_creating_block_state(game);
 	update_absorb_anims(&game->cub_data.player, &game->cub_data.effects,
 		game->mlx->delta_time);
 	update_orb_anims(&game->orb, &game->cub_data.effects,

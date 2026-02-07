@@ -54,6 +54,18 @@ static int	find_elevator_slot(t_cub_data *data, char id)
 	return (-1);
 }
 
+static bool	is_elevator_open(t_game *game, char id)
+{
+	int	slot;
+
+	if (!game)
+		return (false);
+	slot = find_elevator_slot(&game->cub_data, id);
+	if (slot < 0 || slot >= game->cub_data.elevator_id_count)
+		return (false);
+	return (game->cub_data.elevator_orb[slot]);
+}
+
 static int	get_elevator_coords(const t_floor *floor, char id, int *x, int *y)
 {
 	int	i;
@@ -280,7 +292,8 @@ static void	handle_movement_rendering(t_game *game)
 		&& current_grid_x < (int)ft_strlen(
 			game->cub_data.map.grid[current_grid_y]))
 		cell = game->cub_data.map.grid[current_grid_y][current_grid_x];
-	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until)
+	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until
+		&& is_elevator_open(game, cell))
 	{
 		if (switch_floor(game, cell))
 		{

@@ -51,6 +51,8 @@ bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 			char block);
 bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 			char block);
+bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
+			int target_y, char block, int elevator_slot);
 bool	orb_projectile_update(t_game *game, float delta_time);
 bool	orb_projectile_needs_redraw(const t_game *game);
 void	orb_projectile_mark_drawn(t_game *game);
@@ -110,5 +112,6 @@ void	init_movement_system_bonus(t_game *game);
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
 void	place_breakable_block(t_game *game);
+void	update_creating_block_state(t_game *game);
 
 #endif
