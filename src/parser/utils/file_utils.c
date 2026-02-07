@@ -15,17 +15,22 @@
 
 int	count_file_lines(const char *filename)
 {
-	FILE	*file;
+	int		fd;
 	int		count;
-	char	buffer[MAX_LINE_LEN];
+	char	*line;
 
 	count = 0;
-	file = fopen(filename, "r");
-	if (!file)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 		return (-1);
-	while (fgets(buffer, MAX_LINE_LEN, file))
+	line = get_next_line(fd);
+	while (line)
+	{
 		count++;
-	fclose(file);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
 	return (count);
 }
 
@@ -50,22 +55,25 @@ static void	free_partial_lines(char **lines, int count)
 	free(lines);
 }
 
-static int	read_lines_from_file(FILE *file, char **lines, int line_count)
+static int	read_lines_from_file(int fd, char **lines, int line_count)
 {
-	char	buffer[MAX_LINE_LEN];
 	int		count;
+	char	*line;
 
 	count = 0;
-	while (fgets(buffer, MAX_LINE_LEN, file) && count < line_count)
+	line = get_next_line(fd);
+	while (line && count < line_count)
 	{
-		lines[count] = malloc(ft_strlen(buffer) + 1);
-		if (!lines[count])
-		{
-			free_partial_lines(lines, count);
-			return (0);
-		}
-		ft_strlcpy(lines[count], buffer, ft_strlen(buffer) + 1);
+		lines[count] = line;
 		count++;
+		line = get_next_line(fd);
+	}
+	if (line)
+		free(line);
+	if (count != line_count)
+	{
+		free_partial_lines(lines, count);
+		return (0);
 	}
 	lines[count] = NULL;
 	return (1);
@@ -73,7 +81,7 @@ static int	read_lines_from_file(FILE *file, char **lines, int line_count)
 
 char	**read_file_lines(const char *filename, int *line_count)
 {
-	FILE	*file;
+	int		fd;
 	char	**lines;
 
 	*line_count = count_file_lines(filename);
@@ -82,17 +90,17 @@ char	**read_file_lines(const char *filename, int *line_count)
 	lines = allocate_lines(*line_count);
 	if (!lines)
 		return (NULL);
-	file = fopen(filename, "r");
-	if (!file)
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
 	{
 		free(lines);
 		return (NULL);
 	}
-	if (!read_lines_from_file(file, lines, *line_count))
+	if (!read_lines_from_file(fd, lines, *line_count))
 	{
-		fclose(file);
+		close(fd);
 		return (NULL);
 	}
-	fclose(file);
+	close(fd);
 	return (lines);
 }

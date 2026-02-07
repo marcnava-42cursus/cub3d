@@ -15,36 +15,62 @@
 
 static int	convert_token_to_int(char *token)
 {
-	char	*endptr;
-	int		value;
+	long	value;
+	int		sign;
 
 	while (*token == ' ' || *token == '\t')
 		token++;
 	if (*token == '\0')
 		return (-1);
-	value = strtol(token, &endptr, 10);
-	if (*endptr != '\0' || endptr == token)
+	sign = 1;
+	if (*token == '+' || *token == '-')
+	{
+		if (*token == '-')
+			sign = -1;
+		token++;
+	}
+	if (!ft_isdigit(*token))
 		return (-1);
-	return (value);
+	value = 0;
+	while (ft_isdigit(*token))
+	{
+		value = (value * 10) + (*token - '0');
+		if (value > 2147483647L)
+			return (-1);
+		token++;
+	}
+	while (*token == ' ' || *token == '\t')
+		token++;
+	if (*token != '\0')
+		return (-1);
+	return ((int)(value * sign));
 }
 
 static int	extract_rgb_tokens(char *str_copy, int *values)
 {
 	char	*token;
-	char	*saveptr;
+	char	*comma;
 	int		count;
 	int		value;
 
 	count = 0;
-	token = strtok_r(str_copy, ",", &saveptr);
-	while (token && count < 3)
+	token = str_copy;
+	while (token)
 	{
+		if (count >= 3)
+			return (0);
+		comma = ft_strchr(token, ',');
+		if (comma)
+			*comma = '\0';
 		value = convert_token_to_int(token);
 		if (value == -1)
 			return (0);
 		values[count] = value;
 		count++;
-		token = strtok_r(NULL, ",", &saveptr);
+		if (!comma)
+			token = NULL;
+		else
+			token = comma + 1;
 	}
 	return (count);
 }

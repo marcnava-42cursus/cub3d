@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/04 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:12:47 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ static int	count_elements_advanced(char **lines, int line_count,
 			i++;
 			continue ;
 		}
-		result = check_element_type_advanced(lines[i], texture_count, color_count);
+		result = check_element_type_advanced(lines[i], texture_count,
+			color_count);
 		if (result == 1)
 			return (i);
 		if (result == -1)

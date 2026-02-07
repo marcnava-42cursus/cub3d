@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:13:30 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 18:53:29 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 		config_option_slider_text(game, CONFIG_MODAL_TOGGLE_COUNT + i,
 			value_text, sizeof(value_text));
 		if (update_label_text(game,
-					&game->menu.labels.slider_value_labels[i],
-					game->menu.labels.slider_value_cache[i],
-					sizeof(game->menu.labels.slider_value_cache[i]),
-					value_text))
+				&game->menu.labels.slider_value_labels[i],
+				game->menu.labels.slider_value_cache[i],
+				sizeof(game->menu.labels.slider_value_cache[i]),
+				value_text))
 		{
 			value_rect = rect_make(slider_rect.x + slider_rect.w
 					+ CONFIG_MODAL_SLIDER_VALUE_GAP,
@@ -118,7 +118,7 @@ static void	draw_settings_sliders(t_game *game, t_menu_layout layout)
 			game->menu.labels.slider_value_labels[i]->instances[0].y
 				= value_rect.y;
 			set_image_enabled(game->menu.labels.slider_value_labels[i],
-					true);
+				true);
 		}
 		i++;
 	}

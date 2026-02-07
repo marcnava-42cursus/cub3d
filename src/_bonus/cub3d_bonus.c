@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 17:40:57 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:40:33 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 
-	memset(&game, 0, sizeof(t_game));
+	ft_memset(&game, 0, sizeof(t_game));
 	if (!validate_args(argc, argv))
 		return (1);
 	if (!init_game_advanced(&game, argv[1]))

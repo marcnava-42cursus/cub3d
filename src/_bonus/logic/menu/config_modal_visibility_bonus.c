@@ -71,6 +71,9 @@ void	set_config_modal_visible(t_game *game, bool visible)
 		set_image_enabled(game->menu.modal, true);
 		game->menu.open = true;
 		clear_input_state(game);
+		if (game->mlx->window && glfwRawMouseMotionSupported())
+			glfwSetInputMode((GLFWwindow *)game->mlx->window,
+				GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
 		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 		return ;
 	}
@@ -84,6 +87,9 @@ void	set_config_modal_visible(t_game *game, bool visible)
 	set_image_enabled(game->menu.modal, false);
 	set_image_enabled(game->menu.quit_label, false);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
+	if (game->mlx->window && glfwRawMouseMotionSupported())
+		glfwSetInputMode((GLFWwindow *)game->mlx->window,
+			GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 }
 
 void	toggle_config_modal(t_game *game)

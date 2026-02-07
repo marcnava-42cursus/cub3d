@@ -6,23 +6,84 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 16:22:57 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:12:30 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "structs.h"
 
+static void	free_path_tokens(char **tokens, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
 static char	*normalize_path_advanced(const char *path)
 {
-	char	*resolved;
+	char	**tokens;
+	char	*normalized;
+	size_t	size;
+	int		i;
+	int		top;
+	bool	abs_path;
 
 	if (!path)
 		return (NULL);
-	resolved = realpath(path, NULL);
-	if (!resolved)
-		return (ft_strdup(path));
-	return (resolved);
+	tokens = ft_split(path, '/');
+	if (!tokens)
+		return (NULL);
+	abs_path = (path[0] == '/');
+	top = 0;
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i][0] == '\0'
+			|| (tokens[i][0] == '.' && tokens[i][1] == '\0'))
+			free(tokens[i]);
+		else if (tokens[i][0] == '.' && tokens[i][1] == '.'
+			&& tokens[i][2] == '\0')
+		{
+			if (top > 0 && ft_strcmp(tokens[top - 1], "..") != 0)
+			{
+				free(tokens[--top]);
+				free(tokens[i]);
+			}
+			else if (!abs_path)
+				tokens[top++] = tokens[i];
+			else
+				free(tokens[i]);
+		}
+		else
+			tokens[top++] = tokens[i];
+		i++;
+	}
+	size = ft_strlen(path) + 3;
+	normalized = malloc(size);
+	if (!normalized)
+		return (free_path_tokens(tokens, top), NULL);
+	normalized[0] = '\0';
+	if (abs_path)
+		ft_strlcpy(normalized, "/", size);
+	i = 0;
+	while (i < top)
+	{
+		if (normalized[0] != '\0'
+			&& normalized[ft_strlen(normalized) - 1] != '/')
+			ft_strlcat(normalized, "/", size);
+		ft_strlcat(normalized, tokens[i], size);
+		i++;
+	}
+	if (normalized[0] == '\0')
+		ft_strlcpy(normalized, abs_path ? "/" : ".", size);
+	return (free_path_tokens(tokens, top), normalized);
 }
 
 static int	is_elevator_char_advanced(char c)
@@ -177,8 +238,8 @@ static void	free_floor_node_advanced(t_floor *floor)
 	free(floor);
 }
 
-static int	create_floor_from_data_advanced(char *canonical_path, t_cub_data *src,
-		t_floor **out, int index)
+static int	create_floor_from_data_advanced(char *canonical_path,
+	t_cub_data *src, t_floor **out, int index)
 {
 	if (!canonical_path)
 		return (0);
@@ -355,7 +416,7 @@ static int	parse_floor_neighbors_advanced(t_floor *floor, t_cub_data *data,
 			player_count))
 		return (0);
 	if (floor->up && !parse_floor_neighbors_advanced(floor->up, data,
-		player_count))
+			player_count))
 		return (0);
 	if (floor->down
 		&& !parse_floor_neighbors_advanced(floor->down, data, player_count))

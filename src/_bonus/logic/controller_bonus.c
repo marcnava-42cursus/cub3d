@@ -84,6 +84,8 @@ void	controller_update_advanced(t_game *game)
 		game->controller.move_strafe = 0.0f;
 		game->controller.turn = 0.0f;
 		game->controller.look = 0.0f;
+		ft_bzero(game->controller.prev_action_active,
+			sizeof(game->controller.prev_action_active));
 		return ;
 	}
 	if (!game->controller.axis_calibrated)

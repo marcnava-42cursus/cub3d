@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/22 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 19:12:05 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void	place_block_on_arrival(t_game *game)
 
 static void	resolve_elevator_orb_arrival(t_game *game)
 {
-	int	slot;
-	int	index;
+	int		slot;
+	int		index;
 	char	elevator_id;
 
 	slot = game->orb.elevator_slot;

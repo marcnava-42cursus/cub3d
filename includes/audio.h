@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 21:25:48 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_bonus_audio
 	ma_sound	step_sound;
 }	t_bonus_audio;
 
-float	clamp_audio(float value, float min, float max);
 void	audio_set_orb_volume(float volume);
 
 #endif

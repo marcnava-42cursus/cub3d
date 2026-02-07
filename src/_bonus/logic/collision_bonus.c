@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 14:41:43 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 20:03:35 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	is_cell_blocking_advanced(t_game *game, int cell_x, int cell_y)
 	row = game->cub_data.map.grid[cell_y];
 	if (!row)
 		return (true);
-	row_len = strlen(row);
+	row_len = ft_strlen(row);
 	if (cell_x >= row_len)
 		return (true);
 	cell = row[cell_x];

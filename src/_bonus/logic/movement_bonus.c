@@ -501,5 +501,8 @@ void	init_movement_system_advanced(t_game *game)
 	mlx_mouse_hook(game->mlx, mouse_hook_advanced, game);
 	mlx_cursor_hook(game->mlx, cursor_hook_advanced, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
+	if (game->mlx->window && glfwRawMouseMotionSupported())
+		glfwSetInputMode((GLFWwindow *)game->mlx->window,
+			GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 	mlx_loop_hook(game->mlx, update_game_loop_advanced, game);
 }
