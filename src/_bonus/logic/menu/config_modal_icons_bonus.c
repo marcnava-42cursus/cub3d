@@ -32,8 +32,22 @@ static void	draw_gear_ring(mlx_image_t *img, t_icon icon, int outer, int inner)
 					icon.color);
 			dx++;
 		}
-		dy++;
-	}
+			dy++;
+		}
+}
+
+static void	draw_controls_icon_marks(mlx_image_t *img, t_rect body, int w, int h)
+{
+	draw_rect(img, rect_make(body.x + w / 4 - h / 6,
+			body.y + h / 2 - h / 6, h / 3, h / 3), 0x000000FF);
+	draw_rect(img, rect_make(body.x + w / 4 - h / 6,
+			body.y + h / 2 - h / 18, h / 3, h / 9), 0x000000FF);
+	draw_rect(img, rect_make(body.x + w / 4 - h / 18,
+			body.y + h / 2 - h / 6, h / 9, h / 3), 0x000000FF);
+	draw_rect(img, rect_make(body.x + 3 * w / 4, body.y + h / 2 - h / 5,
+			h / 5, h / 5), 0x000000FF);
+	draw_rect(img, rect_make(body.x + 3 * w / 4 - (h / 5) * 3 / 2,
+			body.y + h / 2 + (h / 5) / 2, h / 5, h / 5), 0x000000FF);
 }
 
 void	draw_settings_icon(mlx_image_t *img, t_icon icon)
@@ -66,8 +80,6 @@ void	draw_controls_icon(mlx_image_t *img, t_icon icon)
 {
 	int		w;
 	int		h;
-	int		pad_size;
-	int		btn;
 	t_rect	body;
 
 	if (!img || icon.size <= 0)
@@ -75,23 +87,10 @@ void	draw_controls_icon(mlx_image_t *img, t_icon icon)
 	w = icon.size;
 	h = (icon.size * 2) / 3;
 	body = rect_make(icon.cx - w / 2, icon.cy - h / 2, w, h);
-	pad_size = h / 3;
-	btn = h / 5;
 	draw_rect(img, body, icon.color);
 	draw_rect(img, rect_make(body.x - w / 6, body.y + h / 4,
 			w / 6, h / 2), icon.color);
 	draw_rect(img, rect_make(body.x + w, body.y + h / 4,
 			w / 6, h / 2), icon.color);
-	draw_rect(img, rect_make(body.x + w / 4 - pad_size / 2,
-			body.y + h / 2 - pad_size / 2, pad_size, pad_size), 0x000000FF);
-	draw_rect(img, rect_make(body.x + w / 4 - pad_size / 2,
-			body.y + h / 2 - pad_size / 6, pad_size, pad_size / 3),
-		0x000000FF);
-	draw_rect(img, rect_make(body.x + w / 4 - pad_size / 6,
-			body.y + h / 2 - pad_size / 2, pad_size / 3, pad_size),
-		0x000000FF);
-	draw_rect(img, rect_make(body.x + 3 * w / 4, body.y + h / 2 - btn,
-			btn, btn), 0x000000FF);
-	draw_rect(img, rect_make(body.x + 3 * w / 4 - btn * 3 / 2,
-			body.y + h / 2 + btn / 2, btn, btn), 0x000000FF);
+	draw_controls_icon_marks(img, body, w, h);
 }

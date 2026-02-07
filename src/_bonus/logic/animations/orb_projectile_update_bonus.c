@@ -41,6 +41,29 @@ static void	place_block_on_arrival(t_game *game)
 	row[x] = game->orb.payload;
 }
 
+static void	set_elevator_orb_state(t_game *game, int slot, int index,
+				bool opened)
+{
+	if (opened)
+	{
+		game->cub_data.elevator_orb[slot] = true;
+		game->cub_data.elevator_orb_payload[slot] = game->orb.payload;
+		game->cub_data.map.elevator_states[index] = ELEVATOR_OPENED;
+		set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
+				ELEVATOR_OPENED);
+		set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
+				ELEVATOR_OPENED);
+		return ;
+	}
+	game->cub_data.elevator_orb[slot] = false;
+	game->cub_data.elevator_orb_payload[slot] = '\0';
+	game->cub_data.map.elevator_states[index] = ELEVATOR_CLOSED;
+	set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
+			ELEVATOR_CLOSED);
+	set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
+			ELEVATOR_CLOSED);
+}
+
 static void	resolve_elevator_orb_arrival(t_game *game)
 {
 	int		slot;
@@ -54,26 +77,7 @@ static void	resolve_elevator_orb_arrival(t_game *game)
 	index = get_elevator_index(elevator_id);
 	if (index < 0 || index >= ELEVATOR_STATE_SLOTS)
 		return ;
-	if (game->orb.elevator_place)
-	{
-		game->cub_data.elevator_orb[slot] = true;
-		game->cub_data.elevator_orb_payload[slot] = game->orb.payload;
-		game->cub_data.map.elevator_states[index] = ELEVATOR_OPENED;
-		set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
-			ELEVATOR_OPENED);
-		set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
-			ELEVATOR_OPENED);
-	}
-	else
-	{
-		game->cub_data.elevator_orb[slot] = false;
-		game->cub_data.elevator_orb_payload[slot] = '\0';
-		game->cub_data.map.elevator_states[index] = ELEVATOR_CLOSED;
-		set_floor_elevator_state(game->cub_data.elevator_floor_a[slot], index,
-			ELEVATOR_CLOSED);
-		set_floor_elevator_state(game->cub_data.elevator_floor_b[slot], index,
-			ELEVATOR_CLOSED);
-	}
+	set_elevator_orb_state(game, slot, index, game->orb.elevator_place);
 }
 
 static void	resolve_orb_arrival(t_game *game)
@@ -95,6 +99,31 @@ static void	resolve_orb_arrival(t_game *game)
 	game->orb.needs_redraw = true;
 }
 
+static void	update_orb_target_for_take(t_game *game)
+{
+	if (game->orb.mode == ORB_MODE_TAKE && !game->orb.elevator_place)
+	{
+		game->orb.target_x = game->cub_data.player.x;
+		game->orb.target_y = game->cub_data.player.y;
+	}
+}
+
+static bool	finish_orb_if_reached(t_game *game, float distance, float step)
+{
+	if (distance <= 0.0001f)
+	{
+		resolve_orb_arrival(game);
+		return (true);
+	}
+	if (distance > step)
+		return (false);
+	game->orb.x = game->orb.target_x;
+	game->orb.y = game->orb.target_y;
+	audio_orb_update_volume(game);
+	resolve_orb_arrival(game);
+	return (true);
+}
+
 bool	orb_projectile_update(t_game *game, float delta_time)
 {
 	float	dx;
@@ -104,28 +133,13 @@ bool	orb_projectile_update(t_game *game, float delta_time)
 
 	if (!game || !game->orb.active || delta_time <= 0.0f)
 		return (false);
-	if (game->orb.mode == ORB_MODE_TAKE && !game->orb.elevator_place)
-	{
-		game->orb.target_x = game->cub_data.player.x;
-		game->orb.target_y = game->cub_data.player.y;
-	}
+	update_orb_target_for_take(game);
 	dx = game->orb.target_x - game->orb.x;
 	dy = game->orb.target_y - game->orb.y;
 	distance = sqrtf(dx * dx + dy * dy);
-	if (distance <= 0.0001f)
-	{
-		resolve_orb_arrival(game);
-		return (true);
-	}
 	step = game->orb.speed * delta_time;
-	if (distance <= step)
-	{
-		game->orb.x = game->orb.target_x;
-		game->orb.y = game->orb.target_y;
-		audio_orb_update_volume(game);
-		resolve_orb_arrival(game);
+	if (finish_orb_if_reached(game, distance, step))
 		return (true);
-	}
 	game->orb.x += (dx / distance) * step;
 	game->orb.y += (dy / distance) * step;
 	audio_orb_update_volume(game);

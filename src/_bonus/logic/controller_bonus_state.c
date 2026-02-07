@@ -31,7 +31,7 @@ static void	controller_reset_runtime_state(t_game *game)
 }
 
 static bool	controller_fill_state_from_raw(t_game *game, int jid,
-			GLFWgamepadstate *state)
+				GLFWgamepadstate *state)
 {
 	if (!game || !state)
 		return (false);
@@ -41,6 +41,29 @@ static bool	controller_fill_state_from_raw(t_game *game, int jid,
 		return (false);
 	game->controller.connected = true;
 	game->controller.gamepad_id = jid;
+	return (true);
+}
+
+static void	controller_on_connection_change(t_game *game, int jid,
+				int prev_jid, bool was_connected)
+{
+	if (!game)
+		return ;
+	if (!was_connected || jid != prev_jid)
+	{
+		game->controller.axis_calibrated = false;
+		controller_reset_runtime_state(game);
+	}
+}
+
+static bool	controller_try_jid(t_game *game, int jid, int prev_jid,
+				bool was_connected, GLFWgamepadstate *state)
+{
+	if (!glfwJoystickPresent(jid))
+		return (false);
+	if (!controller_fill_state_from_raw(game, jid, state))
+		return (false);
+	controller_on_connection_change(game, jid, prev_jid, was_connected);
 	return (true);
 }
 
@@ -55,33 +78,14 @@ bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 	prev_jid = game->controller.gamepad_id;
 	was_connected = game->controller.connected;
 	jid = game->controller.gamepad_id;
-	if (jid >= 0 && glfwJoystickPresent(jid))
-	{
-		if (controller_fill_state_from_raw(game, jid, state))
-		{
-			if (!was_connected || jid != prev_jid)
-			{
-				game->controller.axis_calibrated = false;
-				controller_reset_runtime_state(game);
-			}
-			return (true);
-		}
-	}
+	if (jid >= 0 && controller_try_jid(game, jid, prev_jid, was_connected,
+			state))
+		return (true);
 	jid = 0;
 	while (jid <= GLFW_JOYSTICK_LAST)
 	{
-		if (glfwJoystickPresent(jid))
-		{
-			if (controller_fill_state_from_raw(game, jid, state))
-			{
-				if (!was_connected || jid != prev_jid)
-				{
-					game->controller.axis_calibrated = false;
-					controller_reset_runtime_state(game);
-				}
-				return (true);
-			}
-		}
+		if (controller_try_jid(game, jid, prev_jid, was_connected, state))
+			return (true);
 		jid++;
 	}
 	game->controller.connected = false;

@@ -38,16 +38,13 @@ void	draw_row_highlight(t_game *game, t_rect card, int row_y)
 }
 
 void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
-			bool selected)
+				bool selected)
 {
 	t_border	border;
 	t_rect		knob;
-	uint32_t	track;
 
-	track = CONFIG_MODAL_TOGGLE_OFF_COLOR;
-	if (enabled)
-		track = CONFIG_MODAL_TOGGLE_ON_COLOR;
-	draw_rect(game->menu.modal, rect, track);
+	draw_rect(game->menu.modal, rect, enabled
+		? CONFIG_MODAL_TOGGLE_ON_COLOR : CONFIG_MODAL_TOGGLE_OFF_COLOR);
 	border.area = rect;
 	border.thickness = 1;
 	border.color = CONFIG_MODAL_CARD_BORDER_DARK;
@@ -65,8 +62,21 @@ void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
 		border.area = knob;
 		border.thickness = 1;
 		border.color = CONFIG_MODAL_ACCENT_COLOR;
-		draw_border(game->menu.modal, border);
+			draw_border(game->menu.modal, border);
 	}
+}
+
+static int	slider_knob_x(t_rect track, int value)
+{
+	int	knob_x;
+
+	knob_x = track.x + (track.w - 1) * value / 100
+		- CONFIG_MODAL_SLIDER_KNOB / 2;
+	if (knob_x < track.x)
+		knob_x = track.x;
+	if (knob_x + CONFIG_MODAL_SLIDER_KNOB > track.x + track.w)
+		knob_x = track.x + track.w - CONFIG_MODAL_SLIDER_KNOB;
+	return (knob_x);
 }
 
 void	draw_slider(t_game *game, t_rect track, int value, bool selected)
@@ -74,19 +84,12 @@ void	draw_slider(t_game *game, t_rect track, int value, bool selected)
 	t_rect		fill;
 	t_rect		knob;
 	t_border	border;
-	int			knob_x;
 
 	draw_rect(game->menu.modal, track, CONFIG_MODAL_SLIDER_TRACK_COLOR);
 	fill = track;
 	fill.w = (track.w * value) / 100;
 	draw_rect(game->menu.modal, fill, CONFIG_MODAL_SLIDER_FILL_COLOR);
-	knob_x = track.x + (track.w - 1) * value / 100
-		- CONFIG_MODAL_SLIDER_KNOB / 2;
-	if (knob_x < track.x)
-		knob_x = track.x;
-	if (knob_x + CONFIG_MODAL_SLIDER_KNOB > track.x + track.w)
-		knob_x = track.x + track.w - CONFIG_MODAL_SLIDER_KNOB;
-	knob = rect_make(knob_x,
+	knob = rect_make(slider_knob_x(track, value),
 			track.y + track.h / 2 - CONFIG_MODAL_SLIDER_KNOB / 2,
 			CONFIG_MODAL_SLIDER_KNOB, CONFIG_MODAL_SLIDER_KNOB);
 	draw_rect(game->menu.modal, knob, CONFIG_MODAL_SLIDER_KNOB_COLOR);

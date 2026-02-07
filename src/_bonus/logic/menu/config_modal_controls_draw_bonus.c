@@ -45,55 +45,63 @@ static void	draw_controls_prompt(t_game *game, t_rect card, int column)
 		set_image_enabled(prompt, false);
 }
 
-static void	draw_controls_rows(t_game *game, t_rect card, int column)
+static void	select_controls_labels(t_game *game, int column,
+				mlx_image_t ***labels, mlx_image_t ***key_labels)
 {
-	t_rect		keycap;
-	t_border	border;
-	int			i;
-	int			row_y;
-	int			selected;
-	mlx_image_t	**labels;
-	mlx_image_t	**key_labels;
-
-	selected = config_controls_selected(game);
-	if (game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
-		selected = -1;
 	if (column == CONTROLS_COLUMN_CONTROLLER)
 	{
-		labels = game->menu.labels.controls_controller_labels;
-		key_labels = game->menu.labels.controls_controller_key_labels;
+		*labels = game->menu.labels.controls_controller_labels;
+		*key_labels = game->menu.labels.controls_controller_key_labels;
 	}
 	else
 	{
-		labels = game->menu.labels.controls_labels;
-		key_labels = game->menu.labels.controls_key_labels;
+		*labels = game->menu.labels.controls_labels;
+		*key_labels = game->menu.labels.controls_key_labels;
 	}
+}
+
+static void	draw_controls_row(t_game *game, t_rect card, mlx_image_t *label,
+				mlx_image_t *key_label, int row_y)
+{
+	t_rect		keycap;
+	t_border	border;
+
+	label->instances[0].x = card.x + CONFIG_MODAL_CARD_PADDING;
+	label->instances[0].y = row_y + 4;
+	set_image_enabled(label, true);
+	keycap = rect_make(card.x + card.w - CONFIG_MODAL_CARD_PADDING
+			- CONFIG_MODAL_KEYCAP_W,
+			row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_KEYCAP_H) / 2,
+			CONFIG_MODAL_KEYCAP_W, CONFIG_MODAL_KEYCAP_H);
+	draw_rect(game->menu.modal, keycap, CONFIG_MODAL_KEYCAP_COLOR);
+	border.area = keycap;
+	border.thickness = 1;
+	border.color = CONFIG_MODAL_KEYCAP_BORDER_COLOR;
+	draw_border(game->menu.modal, border);
+	key_label->instances[0].x = keycap.x + (keycap.w - (int)key_label->width) / 2;
+	key_label->instances[0].y = keycap.y + (keycap.h - (int)key_label->height) / 2;
+	set_image_enabled(key_label, true);
+}
+
+static void	draw_controls_rows(t_game *game, t_rect card, int column)
+{
+	mlx_image_t	**labels;
+	mlx_image_t	**key_labels;
+	int			i;
+	int			selected;
+	int			row_y;
+
+	select_controls_labels(game, column, &labels, &key_labels);
+	selected = config_controls_selected(game);
+	if (game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
+		selected = -1;
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
 	{
 		row_y = menu_layout_row_y(card, i);
 		if (selected == i)
 			draw_row_highlight(game, card, row_y);
-		labels[i]->instances[0].x = card.x
-			+ CONFIG_MODAL_CARD_PADDING;
-		labels[i]->instances[0].y = row_y + 4;
-		set_image_enabled(labels[i], true);
-		keycap = rect_make(card.x + card.w - CONFIG_MODAL_CARD_PADDING
-				- CONFIG_MODAL_KEYCAP_W,
-				row_y + (CONFIG_MODAL_ROW_HEIGHT - CONFIG_MODAL_KEYCAP_H) / 2,
-				CONFIG_MODAL_KEYCAP_W, CONFIG_MODAL_KEYCAP_H);
-		draw_rect(game->menu.modal, keycap, CONFIG_MODAL_KEYCAP_COLOR);
-		border.area = keycap;
-		border.thickness = 1;
-		border.color = CONFIG_MODAL_KEYCAP_BORDER_COLOR;
-		draw_border(game->menu.modal, border);
-		key_labels[i]->instances[0].x = keycap.x
-			+ (keycap.w
-				- (int)key_labels[i]->width) / 2;
-		key_labels[i]->instances[0].y = keycap.y
-			+ (keycap.h
-				- (int)key_labels[i]->height) / 2;
-		set_image_enabled(key_labels[i], true);
+		draw_controls_row(game, card, labels[i], key_labels[i], row_y);
 		i++;
 	}
 }

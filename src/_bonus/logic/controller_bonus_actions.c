@@ -43,42 +43,35 @@ bool	controller_action_active(t_game *game, int action,
 }
 
 bool	controller_action_pressed(t_game *game,
-			const GLFWgamepadstate *state, int action)
+				const GLFWgamepadstate *state, int action)
 {
-	t_controller_bind	bind;
-	float				deadzone;
-	float				value;
-	float				prev;
+	const t_controller_bind	*bind;
 
 	if (!game || !state)
 		return (false);
 	if (action < 0 || action >= CONFIG_MODAL_CONTROL_COUNT)
 		return (false);
-	bind = game->controller.binds[action];
-	deadzone = game->controller.deadzone;
-	if (bind.type == CONTROLLER_BIND_BUTTON)
+	bind = &game->controller.binds[action];
+	if (bind->type == CONTROLLER_BIND_BUTTON)
 	{
-		if (bind.id < 0 || bind.id >= CONTROLLER_BUTTON_COUNT)
+		if (bind->id < 0 || bind->id >= CONTROLLER_BUTTON_COUNT)
 			return (false);
-		return (state->buttons[bind.id] == GLFW_PRESS
-			&& !game->controller.prev_buttons[bind.id]);
+		return (state->buttons[bind->id] == GLFW_PRESS
+			&& !game->controller.prev_buttons[bind->id]);
 	}
-	if (bind.type == CONTROLLER_BIND_AXIS)
+	if (bind->type == CONTROLLER_BIND_AXIS)
 	{
-		if (bind.id < 0 || bind.id >= CONTROLLER_AXIS_COUNT)
+		if (bind->id < 0 || bind->id >= CONTROLLER_AXIS_COUNT)
 			return (false);
-		value = controller_axis_delta(game, state, bind.id);
-		prev = game->controller.prev_axes[bind.id];
-		if (bind.dir < 0)
-			return (value < -deadzone && prev >= -deadzone);
-		if (bind.dir > 0)
-			return (value > deadzone && prev <= deadzone);
+		return (controller_action_active(game, action, bind, state,
+				game->controller.deadzone)
+			&& !game->controller.prev_action_active[action]);
 	}
 	return (false);
 }
 
 bool	controller_button_pressed(t_game *game,
-			const GLFWgamepadstate *state, int button)
+				const GLFWgamepadstate *state, int button)
 {
 	if (!game || !state)
 		return (false);

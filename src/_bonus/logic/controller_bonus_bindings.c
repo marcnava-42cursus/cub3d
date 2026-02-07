@@ -140,15 +140,8 @@ void	controller_init_advanced(t_game *game)
 	controller_refresh_texts(game);
 }
 
-bool	controller_handle_rebind_advanced(t_game *game)
+static bool	controller_rebind_mode_active(t_game *game)
 {
-	GLFWgamepadstate	state;
-	float				deadzone;
-	float				value;
-	t_controller_bind	bind;
-	bool				found;
-	int					i;
-
 	if (!game || !game->menu.open)
 		return (false);
 	if (game->menu.current_tab != CONFIG_MENU_CONTROLLER_CONTROLS)
@@ -156,62 +149,103 @@ bool	controller_handle_rebind_advanced(t_game *game)
 	if (!game->menu.controls_rebinding
 		|| game->menu.controls_rebind_column != CONTROLS_COLUMN_CONTROLLER)
 		return (false);
+	return (true);
+}
+
+static bool	controller_detect_pressed_button(t_game *game,
+				const GLFWgamepadstate *state, t_controller_bind *bind)
+{
+	int	i;
+
+	i = 0;
+	while (i < CONTROLLER_BUTTON_COUNT)
+	{
+		if (state->buttons[i] == GLFW_PRESS && !game->controller.prev_buttons[i])
+		{
+			*bind = controller_bind_button(i);
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+static bool	controller_detect_pressed_axis(t_game *game,
+				const GLFWgamepadstate *state, float deadzone,
+				t_controller_bind *bind)
+{
+	float	value;
+	int		i;
+
+	i = 0;
+	while (i < CONTROLLER_AXIS_COUNT)
+	{
+		value = controller_axis_delta(game, state, i);
+		if (fabsf(value) > deadzone && fabsf(game->controller.prev_axes[i]) <= deadzone)
+		{
+			*bind = controller_bind_axis(i, (value >= 0.0f) ? 1 : -1);
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+static void	controller_refresh_prev_actions(t_game *game,
+				const GLFWgamepadstate *state, float deadzone)
+{
+	int	i;
+
+	i = 0;
+	while (i < CONFIG_MODAL_CONTROL_COUNT)
+	{
+		game->controller.prev_action_active[i] = controller_action_active(game, i,
+				&game->controller.binds[i], state, deadzone);
+		i++;
+	}
+}
+
+static bool	controller_find_new_bind(t_game *game, const GLFWgamepadstate *state,
+				float deadzone, t_controller_bind *bind)
+{
+	bind->type = CONTROLLER_BIND_NONE;
+	bind->id = -1;
+	bind->dir = 0;
+	if (controller_detect_pressed_button(game, state, bind))
+		return (true);
+	return (controller_detect_pressed_axis(game, state, deadzone, bind));
+}
+
+static bool	controller_finalize_rebind(t_game *game, const GLFWgamepadstate *state,
+				float deadzone, t_controller_bind bind)
+{
+	if (!controller_apply_rebind(game, bind))
+	{
+		controller_store_raw_state(game, state);
+		return (false);
+	}
+	controller_refresh_prev_actions(game, state, deadzone);
+	controller_store_raw_state(game, state);
+	return (true);
+}
+
+bool	controller_handle_rebind_advanced(t_game *game)
+{
+	GLFWgamepadstate	state;
+	float				deadzone;
+	t_controller_bind	bind;
+
+	if (!controller_rebind_mode_active(game))
+		return (false);
 	if (!controller_poll_state(game, &state))
 		return (false);
 	if (!game->controller.axis_calibrated)
 		controller_calibrate_axes(game, &state);
 	deadzone = game->controller.deadzone;
-	found = false;
-	bind.type = CONTROLLER_BIND_NONE;
-	bind.id = -1;
-	bind.dir = 0;
-	i = 0;
-	while (i < CONTROLLER_BUTTON_COUNT)
+	if (!controller_find_new_bind(game, &state, deadzone, &bind))
 	{
-		if (state.buttons[i] == GLFW_PRESS
-			&& !game->controller.prev_buttons[i])
-		{
-			bind = controller_bind_button(i);
-			found = true;
-			break ;
-		}
-		i++;
-	}
-	if (!found)
-	{
-		i = 0;
-		while (i < CONTROLLER_AXIS_COUNT)
-		{
-			value = controller_axis_delta(game, &state, i);
-			if (fabsf(value) > deadzone
-				&& fabsf(game->controller.prev_axes[i]) <= deadzone)
-			{
-				bind = controller_bind_axis(i,
-						(value >= 0.0f) ? 1 : -1);
-				found = true;
-				break ;
-			}
-			i++;
-		}
-	}
-	if (found)
-	{
-		if (!controller_apply_rebind(game, bind))
-		{
-			controller_store_raw_state(game, &state);
-			return (false);
-		}
-		i = 0;
-		while (i < CONFIG_MODAL_CONTROL_COUNT)
-		{
-			game->controller.prev_action_active[i]
-				= controller_action_active(game, i,
-					&game->controller.binds[i], &state, deadzone);
-			i++;
-		}
 		controller_store_raw_state(game, &state);
-		return (true);
+		return (false);
 	}
-	controller_store_raw_state(game, &state);
-	return (false);
+	return (controller_finalize_rebind(game, &state, deadzone, bind));
 }

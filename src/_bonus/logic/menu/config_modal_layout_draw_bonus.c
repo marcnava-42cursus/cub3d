@@ -14,40 +14,40 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
+static void	draw_menu_item_border(mlx_image_t *img, t_rect item)
+{
+	t_border	border;
+
+	border.area = item;
+	border.thickness = 1;
+	border.color = CONFIG_MODAL_MENU_ITEM_BORDER_COLOR;
+	draw_border(img, border);
+}
+
 static void	draw_menu_labels(t_game *game, t_rect card)
 {
 	t_menu_state	*menu;
-	t_border		border;
-	t_rect			item;
-	mlx_image_t		*label;
-	uint32_t		color;
-	int				i;
-	int				row_y;
+	int	i;
 
 	menu = &game->menu;
-	border.thickness = 1;
-	border.color = CONFIG_MODAL_MENU_ITEM_BORDER_COLOR;
 	i = 0;
 	while (i < CONFIG_MENU_SECTION_COUNT)
 	{
+		t_rect	item;
+		int		row_y;
+
 		row_y = card.y + CONFIG_MODAL_CARD_PADDING
 			+ i * (CONFIG_MODAL_MENU_ITEM_H + CONFIG_MODAL_MENU_ITEM_GAP);
 		item = rect_make(card.x + CONFIG_MODAL_CARD_PADDING, row_y,
-				card.w - CONFIG_MODAL_CARD_PADDING * 2,
-				CONFIG_MODAL_MENU_ITEM_H);
-		color = CONFIG_MODAL_MENU_ITEM_COLOR;
-		if (menu->current_tab == i)
-			color = CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR;
-		draw_rect(game->menu.modal, item, color);
-		border.area = item;
-		draw_border(game->menu.modal, border);
-		label = menu->labels.menu_entries[i];
-		if (!label)
-			return ;
-		label->instances[0].x = item.x + CONFIG_MODAL_CARD_PADDING;
-		label->instances[0].y = item.y
-			+ (item.h - (int)label->height) / 2;
-		set_image_enabled(label, true);
+				card.w - CONFIG_MODAL_CARD_PADDING * 2, CONFIG_MODAL_MENU_ITEM_H);
+		draw_rect(game->menu.modal, item, (menu->current_tab == i)
+			? CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR : CONFIG_MODAL_MENU_ITEM_COLOR);
+		draw_menu_item_border(game->menu.modal, item);
+		menu->labels.menu_entries[i]->instances[0].x = item.x
+			+ CONFIG_MODAL_CARD_PADDING;
+		menu->labels.menu_entries[i]->instances[0].y = item.y
+			+ (item.h - (int)menu->labels.menu_entries[i]->height) / 2;
+		set_image_enabled(menu->labels.menu_entries[i], true);
 		i++;
 	}
 }
@@ -73,6 +73,19 @@ static void	draw_quit_section(t_game *game, t_rect panel)
 	set_image_enabled(game->menu.quit_label, true);
 }
 
+static void	draw_current_tab_content(t_game *game, t_menu_layout layout)
+{
+	if (game->menu.current_tab == CONFIG_MENU_GENERAL
+		|| game->menu.current_tab == CONFIG_MENU_TUNING)
+	{
+		draw_settings_options(game, layout.panel);
+		hide_controls_options(game);
+		return ;
+	}
+	hide_settings_options(game);
+	draw_controls_options(game, layout.panel);
+}
+
 void	draw_modal_layout(t_game *game)
 {
 	t_menu_layout	layout;
@@ -95,16 +108,6 @@ void	draw_modal_layout(t_game *game)
 		CONFIG_MODAL_CARD_BORDER_LIGHT, CONFIG_MODAL_CARD_BORDER_DARK);
 	draw_card(game, layout.left);
 	draw_menu_labels(game, layout.left);
-	if (game->menu.current_tab == CONFIG_MENU_GENERAL
-		|| game->menu.current_tab == CONFIG_MENU_TUNING)
-	{
-		draw_settings_options(game, layout.panel);
-		hide_controls_options(game);
-	}
-	else
-	{
-		hide_settings_options(game);
-		draw_controls_options(game, layout.panel);
-	}
+	draw_current_tab_content(game, layout);
 	draw_quit_section(game, layout.panel);
 }

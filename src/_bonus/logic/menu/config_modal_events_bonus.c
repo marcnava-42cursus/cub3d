@@ -96,17 +96,11 @@ void	render_quit_button(t_game *game)
 		draw_progress_border(game->menu.modal, border, progress);
 }
 
-void	update_config_modal(t_game *game)
+static bool	update_quit_hold_state(t_game *game)
 {
-	int32_t	mouse_x;
-	int32_t	mouse_y;
 	bool	holding_q;
-	bool	dragging;
 
-	if (!game || !game->mlx || !game->menu.open)
-		return ;
-	holding_q = mlx_is_key_down(game->mlx,
-			game->menu.controls_key_codes[ACTION_QUIT])
+	holding_q = mlx_is_key_down(game->mlx, game->menu.controls_key_codes[ACTION_QUIT])
 		|| game->controller.menu_quit_held;
 	if (game->menu.controls_rebinding)
 		holding_q = false;
@@ -114,11 +108,22 @@ void	update_config_modal(t_game *game)
 		game->menu.quit_hold_time += game->mlx->delta_time;
 	else
 		game->menu.quit_hold_time = 0.0;
-	if (game->menu.quit_hold_time >= CONFIG_MODAL_QUIT_HOLD_SECONDS)
-	{
-		mlx_close_window(game->mlx);
+	if (game->menu.quit_hold_time < CONFIG_MODAL_QUIT_HOLD_SECONDS)
+		return (false);
+	mlx_close_window(game->mlx);
+	return (true);
+}
+
+void	update_config_modal(t_game *game)
+{
+	int32_t	mouse_x;
+	int32_t	mouse_y;
+	bool	dragging;
+
+	if (!game || !game->mlx || !game->menu.open)
 		return ;
-	}
+	if (update_quit_hold_state(game))
+		return ;
 	mlx_get_mouse_pos(game->mlx, &mouse_x, &mouse_y);
 	game->menu.quit_hover = is_quit_hovered(game, mouse_x, mouse_y);
 	dragging = config_option_drag_update(game, mouse_x, mouse_y,
@@ -131,28 +136,15 @@ void	update_config_modal(t_game *game)
 	render_quit_button(game);
 }
 
-void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
+static bool	handle_modal_column_navigation(t_game *game, mlx_key_data_t keydata)
 {
-	keys_t	accept_key;
-	bool	confirm_pressed;
-	int		column;
-
-	if (!game || !game->menu.open)
-		return ;
-	if (keydata.action != MLX_PRESS)
-		return ;
-	if (config_controls_handle_key(game, keydata))
-		return ;
-	accept_key = game->menu.controls_key_codes[ACTION_ACCEPT];
-	confirm_pressed = (keydata.key == accept_key
-		|| keydata.key == MLX_KEY_SPACE);
 	if (keydata.key == MLX_KEY_LEFT
 		&& game->menu.current_column == CONFIG_MENU_COLUMN_RIGHT)
 	{
 		config_controls_cancel_rebind(game);
 		game->menu.current_column = CONFIG_MENU_COLUMN_LEFT;
 		draw_modal_layout(game);
-		return ;
+		return (true);
 	}
 	if (keydata.key == MLX_KEY_RIGHT
 		&& game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
@@ -160,37 +152,53 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 		config_controls_cancel_rebind(game);
 		game->menu.current_column = CONFIG_MENU_COLUMN_RIGHT;
 		draw_modal_layout(game);
-		return ;
+		return (true);
 	}
-	if (game->menu.current_column == CONFIG_MENU_COLUMN_LEFT)
+	return (false);
+}
+
+static bool	handle_left_column_keys(t_game *game, bool confirm_pressed,
+				mlx_key_data_t keydata)
+{
+	if (game->menu.current_column != CONFIG_MENU_COLUMN_LEFT)
+		return (false);
+	if (keydata.key == MLX_KEY_UP)
+		advance_menu_section(game, -1);
+	else if (keydata.key == MLX_KEY_DOWN)
+		advance_menu_section(game, 1);
+	else if (confirm_pressed)
 	{
-		if (keydata.key == MLX_KEY_UP)
-			advance_menu_section(game, -1);
-		else if (keydata.key == MLX_KEY_DOWN)
-			advance_menu_section(game, 1);
-		else if (confirm_pressed)
-		{
-			game->menu.current_column = CONFIG_MENU_COLUMN_RIGHT;
-			draw_modal_layout(game);
-		}
-		return ;
+		game->menu.current_column = CONFIG_MENU_COLUMN_RIGHT;
+		draw_modal_layout(game);
 	}
-	if (game->menu.current_tab == CONFIG_MENU_KEYBOARD_CONTROLS
-		|| game->menu.current_tab == CONFIG_MENU_CONTROLLER_CONTROLS)
-	{
-		if (game->menu.current_tab == CONFIG_MENU_CONTROLLER_CONTROLS)
-			column = CONTROLS_COLUMN_CONTROLLER;
-		else
-			column = CONTROLS_COLUMN_KEYBOARD;
-		game->menu.controls_column = column;
-		if (keydata.key == MLX_KEY_UP)
-			config_controls_select(game, -1);
-		else if (keydata.key == MLX_KEY_DOWN)
-			config_controls_select(game, 1);
-		else if (confirm_pressed)
-			config_controls_begin_rebind(game);
-		return ;
-	}
+	return (true);
+}
+
+static bool	handle_controls_tab_keys(t_game *game, bool confirm_pressed,
+				mlx_key_data_t keydata)
+{
+	int	column;
+
+	if (game->menu.current_tab != CONFIG_MENU_KEYBOARD_CONTROLS
+		&& game->menu.current_tab != CONFIG_MENU_CONTROLLER_CONTROLS)
+		return (false);
+	if (game->menu.current_tab == CONFIG_MENU_CONTROLLER_CONTROLS)
+		column = CONTROLS_COLUMN_CONTROLLER;
+	else
+		column = CONTROLS_COLUMN_KEYBOARD;
+	game->menu.controls_column = column;
+	if (keydata.key == MLX_KEY_UP)
+		config_controls_select(game, -1);
+	else if (keydata.key == MLX_KEY_DOWN)
+		config_controls_select(game, 1);
+	else if (confirm_pressed)
+		config_controls_begin_rebind(game);
+	return (true);
+}
+
+static void	handle_settings_tab_keys(t_game *game, bool confirm_pressed,
+				mlx_key_data_t keydata)
+{
 	if (keydata.key == MLX_KEY_UP)
 		config_option_select(game, -1);
 	else if (keydata.key == MLX_KEY_DOWN)
@@ -203,4 +211,27 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
 	else if (keydata.key == MLX_KEY_D
 		&& game->menu.current_tab == CONFIG_MENU_TUNING)
 		config_option_adjust(game, 1);
+}
+
+void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata)
+{
+	keys_t	accept_key;
+	bool	confirm_pressed;
+
+	if (!game || !game->menu.open)
+		return ;
+	if (keydata.action != MLX_PRESS)
+		return ;
+	if (config_controls_handle_key(game, keydata))
+		return ;
+	accept_key = game->menu.controls_key_codes[ACTION_ACCEPT];
+	confirm_pressed = (keydata.key == accept_key
+		|| keydata.key == MLX_KEY_SPACE);
+	if (handle_modal_column_navigation(game, keydata))
+		return ;
+	if (handle_left_column_keys(game, confirm_pressed, keydata))
+		return ;
+	if (handle_controls_tab_keys(game, confirm_pressed, keydata))
+		return ;
+	handle_settings_tab_keys(game, confirm_pressed, keydata);
 }

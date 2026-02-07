@@ -19,12 +19,25 @@
  *
  * @param game Game state structure
  */
+static void	draw_crosshair_segment(t_game *game, int center_x, int center_y,
+				int offset, uint32_t color)
+{
+	int	thickness;
+
+	thickness = -1;
+	while (thickness <= 1)
+	{
+		mlx_put_pixel(game->crosshair, center_x + offset, center_y + thickness, color);
+		mlx_put_pixel(game->crosshair, center_x + thickness, center_y + offset, color);
+		thickness++;
+	}
+}
+
 static void	draw_crosshair(t_game *game)
 {
 	int			center_x;
 	int			center_y;
 	int			i;
-	int			thickness;
 	uint32_t	color;
 
 	if (!game || !game->crosshair)
@@ -40,15 +53,7 @@ static void	draw_crosshair(t_game *game)
 			i++;
 			continue ;
 		}
-		thickness = -1;
-		while (thickness <= 1)
-		{
-			mlx_put_pixel(game->crosshair, center_x + i,
-				center_y + thickness, color);
-			mlx_put_pixel(game->crosshair, center_x + thickness,
-				center_y + i, color);
-			thickness++;
-		}
+		draw_crosshair_segment(game, center_x, center_y, i, color);
 		i++;
 	}
 }

@@ -80,46 +80,39 @@ static int	get_elevator_coords(const t_floor *floor, char id, int *x, int *y)
 	return (0);
 }
 
-static bool	switch_floor(t_game *game, char id)
+static t_floor	*get_target_floor(t_game *game, int slot)
 {
-	int		slot;
 	t_floor	*from;
 	t_floor	*to;
-	int		tx;
-	int		ty;
-	double	now;
 
-	if (!game || !game->cub_data.current_floor)
-		return (false);
-	slot = find_elevator_slot(&game->cub_data, id);
-	if (slot < 0)
-		return (false);
-	now = mlx_get_time();
 	from = game->cub_data.current_floor;
 	to = game->cub_data.elevator_floor_a[slot];
 	if (to == from)
 		to = game->cub_data.elevator_floor_b[slot];
 	if (!to || to == from)
-		return (false);
-	if (!get_elevator_coords(to, id, &tx, &ty))
-	{
-		printf("Error: Elevator '%c' missing target coords in %s\n",
-			id, to->path);
-		return (false);
-	}
+		return (NULL);
+	return (to);
+}
+
+static bool	load_target_floor_textures(t_game *game, t_floor *to)
+{
 	game->cub_data.textures = to->textures;
 	game->cub_data.floor_color = to->floor_color;
 	game->cub_data.ceiling_color = to->ceiling_color;
-	if (!to->textures_loaded)
+	if (to->textures_loaded)
+		return (true);
+	if (!load_textures(&game->cub_data.textures))
 	{
-		if (!load_textures(&game->cub_data.textures))
-		{
-			printf("Error: Failed to load textures for floor %s\n", to->path);
-			return (false);
-		}
-		to->textures = game->cub_data.textures;
-		to->textures_loaded = true;
+		printf("Error: Failed to load textures for floor %s\n", to->path);
+		return (false);
 	}
+	to->textures = game->cub_data.textures;
+	to->textures_loaded = true;
+	return (true);
+}
+
+static void	apply_floor_switch(t_game *game, t_floor *to, int tx, int ty)
+{
 	game->cub_data.current_floor = to;
 	game->cub_data.map = to->map;
 	game->cub_data.player_floor_index = to->index;
@@ -128,8 +121,44 @@ static bool	switch_floor(t_game *game, char id)
 	game->cub_data.player_floor_path = ft_strdup(to->path);
 	game->cub_data.player.x = (float)tx + 0.5f;
 	game->cub_data.player.y = (float)ty + 0.5f;
-	game->last_grid_x = (int)tx;
-	game->last_grid_y = (int)ty;
+	game->last_grid_x = tx;
+	game->last_grid_y = ty;
+}
+
+static bool	resolve_floor_destination(t_game *game, char id, t_floor **to,
+				int *tx, int *ty, double *now)
+{
+	int	slot;
+
+	if (!game || !game->cub_data.current_floor)
+		return (false);
+	slot = find_elevator_slot(&game->cub_data, id);
+	if (slot < 0)
+		return (false);
+	*now = mlx_get_time();
+	*to = get_target_floor(game, slot);
+	if (!*to)
+		return (false);
+	if (!get_elevator_coords(*to, id, tx, ty))
+	{
+		printf("Error: Elevator '%c' missing target coords in %s\n", id, (*to)->path);
+		return (false);
+	}
+	return (true);
+}
+
+static bool	switch_floor(t_game *game, char id)
+{
+	t_floor	*to;
+	int		tx;
+	int		ty;
+	double	now;
+
+	if (!resolve_floor_destination(game, id, &to, &tx, &ty, &now))
+		return (false);
+	if (!load_target_floor_textures(game, to))
+		return (false);
+	apply_floor_switch(game, to, tx, ty);
 	game->last_teleport_time = now;
 	game->last_teleport_id = id;
 	game->movement_lock_until = now + 1.0;
@@ -147,14 +176,11 @@ static float	recover_to_zero(float value, float amount)
 	return (0.0f);
 }
 
-static bool	apply_headbob_pitch(t_game *game, bool is_moving, bool step_started,
-		float previous_offset)
+static float	compute_headbob_offset(t_game *game, bool is_moving,
+				bool step_started, float previous_offset)
 {
 	float	new_offset;
-	float	max_pitch;
 
-	if (!game || !game->mlx)
-		return (false);
 	if (is_moving)
 	{
 		if (step_started)
@@ -163,14 +189,25 @@ static bool	apply_headbob_pitch(t_game *game, bool is_moving, bool step_started,
 		game->headbob_phase += HEADBOB_SPEED * (float)game->mlx->delta_time;
 		while (game->headbob_phase > TWO_PI)
 			game->headbob_phase -= TWO_PI;
+		return (new_offset);
 	}
-	else
-	{
-		new_offset = recover_to_zero(previous_offset,
-				HEADBOB_RECOVER_SPEED * (float)game->mlx->delta_time);
-		if (new_offset == 0.0f)
-			game->headbob_phase = 0.0f;
-	}
+	new_offset = recover_to_zero(previous_offset,
+			HEADBOB_RECOVER_SPEED * (float)game->mlx->delta_time);
+	if (new_offset == 0.0f)
+		game->headbob_phase = 0.0f;
+	return (new_offset);
+}
+
+static bool	apply_headbob_pitch(t_game *game, bool is_moving, bool step_started,
+		float previous_offset)
+{
+	float	new_offset;
+	float	max_pitch;
+
+	if (!game || !game->mlx)
+		return (false);
+	new_offset = compute_headbob_offset(game, is_moving, step_started,
+			previous_offset);
 	game->headbob_offset = new_offset;
 	game->cub_data.player.pitch += new_offset;
 	max_pitch = game->double_buffer[NEXT]->height * 0.35f;
@@ -206,88 +243,81 @@ void	update_player_position(t_game *game)
  * @param game Game state structure
  * @return bool True if any movement occurred
 */
-static bool	process_movement_input(t_game *game)
+static void	read_move_axes(t_game *game, float *forward, float *strafe)
 {
-	bool	moved;
-	float	forward;
-	float	strafe;
+	*forward = 0.0f;
+	*strafe = 0.0f;
+	if (game->key_w_pressed)
+		*forward += 1.0f;
+	if (game->key_s_pressed)
+		*forward -= 1.0f;
+	if (game->key_d_pressed)
+		*strafe += 1.0f;
+	if (game->key_a_pressed)
+		*strafe -= 1.0f;
+	*forward += game->controller.move_forward;
+	*strafe += game->controller.move_strafe;
+	*forward = clamp(*forward, -1.0f, 1.0f);
+	*strafe = clamp(*strafe, -1.0f, 1.0f);
+}
+
+static bool	apply_translation_input(t_game *game, float forward, float strafe)
+{
 	float	move_x;
 	float	move_y;
 	float	len;
 	float	speed;
 	float	angle;
-	float	turn;
-	float	look;
-	float	max_pitch;
-	float	pitch_delta;
 
-	if (!game)
+	if (forward == 0.0f && strafe == 0.0f)
 		return (false);
+	angle = game->cub_data.player.angle;
+	move_x = cosf(angle) * forward + cosf(angle + FT_PI_2) * strafe;
+	move_y = sinf(angle) * forward + sinf(angle + FT_PI_2) * strafe;
+	len = sqrtf(move_x * move_x + move_y * move_y);
+	if (len > 1.0f)
+	{
+		move_x /= len;
+		move_y /= len;
+	}
+	speed = game->move_speed * (float)game->mlx->delta_time;
+	ATTEMPT_MOVE(game, move_x * speed, move_y * speed);
+	return (true);
+}
+
+static bool	apply_rotation_input(t_game *game)
+{
+	bool	moved;
+	float	turn;
+
 	moved = false;
-	forward = 0.0f;
-	strafe = 0.0f;
-	if (game->key_w_pressed)
-		forward += 1.0f;
-	if (game->key_s_pressed)
-		forward -= 1.0f;
-	if (game->key_d_pressed)
-		strafe += 1.0f;
-	if (game->key_a_pressed)
-		strafe -= 1.0f;
-	forward += game->controller.move_forward;
-	strafe += game->controller.move_strafe;
-	if (forward > 1.0f)
-		forward = 1.0f;
-	if (forward < -1.0f)
-		forward = -1.0f;
-	if (strafe > 1.0f)
-		strafe = 1.0f;
-	if (strafe < -1.0f)
-		strafe = -1.0f;
-	if (forward != 0.0f || strafe != 0.0f)
-	{
-		angle = game->cub_data.player.angle;
-		move_x = cosf(angle) * forward + cosf(angle + FT_PI_2) * strafe;
-		move_y = sinf(angle) * forward + sinf(angle + FT_PI_2) * strafe;
-		len = sqrtf(move_x * move_x + move_y * move_y);
-		if (len > 1.0f)
-		{
-			move_x /= len;
-			move_y /= len;
-		}
-		speed = game->move_speed * (float)game->mlx->delta_time;
-		ATTEMPT_MOVE(game, move_x * speed, move_y * speed);
-		moved = true;
-	}
 	if (game->key_left_pressed)
-	{
-		rotate_player(game, false);
-		moved = true;
-	}
+		moved = (rotate_player(game, false), true);
 	if (game->key_right_pressed)
-	{
-		rotate_player(game, true);
-		moved = true;
-	}
+		moved = (rotate_player(game, true), true);
 	turn = game->controller.turn;
 	if (turn > EPSILON || turn < -EPSILON)
 	{
 		game->cub_data.player.angle += game->rot_speed
 			* (float)game->mlx->delta_time * turn;
-		game->cub_data.player.angle = normalize_angle(
-				game->cub_data.player.angle);
+		game->cub_data.player.angle = normalize_angle(game->cub_data.player.angle);
 		moved = true;
 	}
+	return (moved);
+}
+
+static bool	apply_pitch_input(t_game *game)
+{
+	bool	moved;
+	float	look;
+	float	max_pitch;
+	float	pitch_delta;
+
+	moved = false;
 	if (game->key_up_pressed)
-	{
-		pitch_player(game, true);
-		moved = true;
-	}
+		moved = (pitch_player(game, true), true);
 	if (game->key_down_pressed)
-	{
-		pitch_player(game, false);
-		moved = true;
-	}
+		moved = (pitch_player(game, false), true);
 	look = game->controller.look;
 	if (look > EPSILON || look < -EPSILON)
 	{
@@ -299,6 +329,47 @@ static bool	process_movement_input(t_game *game)
 		moved = true;
 	}
 	return (moved);
+}
+
+static bool	process_movement_input(t_game *game)
+{
+	bool	moved;
+	float	forward;
+	float	strafe;
+
+	if (!game)
+		return (false);
+	moved = false;
+	read_move_axes(game, &forward, &strafe);
+	moved = apply_translation_input(game, forward, strafe) || moved;
+	moved = apply_rotation_input(game) || moved;
+	moved = apply_pitch_input(game) || moved;
+	return (moved);
+}
+
+static char	get_player_cell(t_game *game)
+{
+	int	x;
+	int	y;
+
+	if (!game || !game->cub_data.map.grid)
+		return (' ');
+	x = (int)floor(game->cub_data.player.x);
+	y = (int)floor(game->cub_data.player.y);
+	if (y < 0 || y >= game->cub_data.map.height)
+		return (' ');
+	if (x < 0 || x >= (int)ft_strlen(game->cub_data.map.grid[y]))
+		return (' ');
+	return (game->cub_data.map.grid[y][x]);
+}
+
+static void	try_switch_on_elevator(t_game *game, char cell, double now)
+{
+	if (!is_elevator_char_logic(cell))
+		return ;
+	if (now < game->movement_lock_until || !is_elevator_open(game, cell))
+		return ;
+	switch_floor(game, cell);
 }
 
 /**
@@ -313,36 +384,94 @@ static bool	process_movement_input(t_game *game)
  */
 static void	handle_movement_rendering(t_game *game)
 {
-	int		current_grid_x;
-	int		current_grid_y;
 	char	cell;
 	double	now;
 
 	if (!game)
 		return ;
 	now = mlx_get_time();
-	current_grid_x = (int)floor(game->cub_data.player.x);
-	current_grid_y = (int)floor(game->cub_data.player.y);
-	cell = ' ';
-	if (game->cub_data.map.grid && current_grid_y >= 0
-		&& current_grid_y < game->cub_data.map.height
-		&& current_grid_x >= 0
-		&& current_grid_x < (int)ft_strlen(
-			game->cub_data.map.grid[current_grid_y]))
-		cell = game->cub_data.map.grid[current_grid_y][current_grid_x];
-	if (is_elevator_char_logic(cell) && now >= game->movement_lock_until
-		&& is_elevator_open(game, cell))
-	{
-		if (switch_floor(game, cell))
-		{
-			current_grid_x = (int)floor(game->cub_data.player.x);
-			current_grid_y = (int)floor(game->cub_data.player.y);
-		}
-	}
+	cell = get_player_cell(game);
+	try_switch_on_elevator(game, cell, now);
 	/*
 	if (game->map_2d_visible)
 		update_player_position(game);
 	*/
+}
+
+static void	reset_headbob_state(t_game *game)
+{
+	game->headbob_offset = 0.0f;
+	game->headbob_phase = 0.0f;
+}
+
+static bool	handle_modal_loop(t_game *game)
+{
+	if (!is_config_modal_open(game))
+		return (false);
+	audio_step_update_loop(false);
+	reset_headbob_state(game);
+	controller_handle_rebind_advanced(game);
+	controller_update_advanced(game);
+	update_config_modal(game);
+	return (true);
+}
+
+static bool	throttle_fps_loop(t_game *game, double *next_tick, int *last_limit)
+{
+	double	now;
+	double	min_step;
+	int		fps_limit;
+
+	fps_limit = config_fps_limit_value(game->menu.options.fps_limit_index);
+	if (fps_limit != *last_limit)
+	{
+		*next_tick = 0.0;
+		*last_limit = fps_limit;
+	}
+	if (fps_limit <= 0)
+	{
+		*next_tick = 0.0;
+		return (false);
+	}
+	now = mlx_get_time();
+	min_step = 1.0 / (double)fps_limit;
+	if (*next_tick <= 0.0)
+		*next_tick = now + min_step;
+	if (now < *next_tick)
+		return (true);
+	*next_tick += min_step;
+	while (now >= *next_tick)
+		*next_tick += min_step;
+	return (false);
+}
+
+static bool	update_motion_frame(t_game *game, float prev_headbob)
+{
+	bool	moved;
+	bool	mouse_rotated;
+	bool	player_translated;
+	bool	step_started;
+	bool	headbob_changed;
+	float	prev_x;
+	float	prev_y;
+
+	if (game->mlx->delta_time <= 0.0)
+	{
+		reset_headbob_state(game);
+		return (false);
+	}
+	prev_x = game->cub_data.player.x;
+	prev_y = game->cub_data.player.y;
+	moved = process_movement_input(game);
+	mouse_rotated = process_mouse_rotation_advanced(game);
+	player_translated = (fabsf(game->cub_data.player.x - prev_x) > 0.0001f
+			|| fabsf(game->cub_data.player.y - prev_y) > 0.0001f);
+	step_started = audio_step_update_loop(player_translated);
+	headbob_changed = apply_headbob_pitch(game, player_translated, step_started,
+			prev_headbob);
+	if (moved || mouse_rotated || headbob_changed)
+		handle_movement_rendering(game);
+	return (true);
 }
 
 /**
@@ -361,17 +490,7 @@ static void	handle_movement_rendering(t_game *game)
 void	update_game_loop_advanced(void *param)
 {
 	t_game			*game;
-	bool			moved;
-	bool			mouse_rotated;
-	bool			player_translated;
-	bool			step_started;
-	bool			headbob_changed;
-	float			prev_x;
-	float			prev_y;
 	float			prev_headbob;
-	double			min_step;
-	int				fps_limit;
-	double			now;
 	static double	next_tick = 0.0;
 	static int		last_limit = -2;
 
@@ -381,63 +500,20 @@ void	update_game_loop_advanced(void *param)
 	prev_headbob = game->headbob_offset;
 	if (prev_headbob != 0.0f)
 		game->cub_data.player.pitch -= prev_headbob;
-	if (is_config_modal_open(game))
-	{
-		audio_step_update_loop(false);
-		game->headbob_offset = 0.0f;
-		game->headbob_phase = 0.0f;
-		controller_handle_rebind_advanced(game);
-		controller_update_advanced(game);
-		update_config_modal(game);
+	if (handle_modal_loop(game))
 		return ;
-	}
-	fps_limit = config_fps_limit_value(game->menu.options.fps_limit_index);
-	if (fps_limit != last_limit)
-	{
-		next_tick = 0.0;
-		last_limit = fps_limit;
-	}
-	if (fps_limit > 0)
-	{
-		now = mlx_get_time();
-		min_step = 1.0 / (double)fps_limit;
-		if (next_tick <= 0.0)
-			next_tick = now + min_step;
-		if (now < next_tick)
-			return ;
-		next_tick += min_step;
-		while (now >= next_tick)
-			next_tick += min_step;
-	}
-	else
-		next_tick = 0.0;
+	if (throttle_fps_loop(game, &next_tick, &last_limit))
+		return ;
 	refresh_key_states_advanced(game);
 	if (is_config_modal_open(game))
 	{
 		audio_step_update_loop(false);
-		game->headbob_offset = 0.0f;
-		game->headbob_phase = 0.0f;
+		reset_headbob_state(game);
 		update_config_modal(game);
 		return ;
 	}
 	fps_overlay_update(game);
-	if (game->mlx->delta_time <= 0.0)
-	{
-		game->headbob_offset = 0.0f;
-		game->headbob_phase = 0.0f;
-		return ;
-	}
-	prev_x = game->cub_data.player.x;
-	prev_y = game->cub_data.player.y;
-	moved = process_movement_input(game);
-	mouse_rotated = process_mouse_rotation_advanced(game);
-	player_translated = (fabsf(game->cub_data.player.x - prev_x) > 0.0001f
-			|| fabsf(game->cub_data.player.y - prev_y) > 0.0001f);
-	step_started = audio_step_update_loop(player_translated);
-	headbob_changed = apply_headbob_pitch(game, player_translated,
-			step_started, prev_headbob);
-	if (moved || mouse_rotated || headbob_changed)
-		handle_movement_rendering(game);
+	update_motion_frame(game, prev_headbob);
 }
 
 /**
@@ -458,8 +534,38 @@ static void	init_player_angle(t_game *game)
 		game->cub_data.player.angle = FT_PI / 2.0f;
 	else if (game->cub_data.player.orientation == EAST)
 		game->cub_data.player.angle = 0.0f;
-	else if (game->cub_data.player.orientation == WEST)
-		game->cub_data.player.angle = FT_PI;
+		else if (game->cub_data.player.orientation == WEST)
+			game->cub_data.player.angle = FT_PI;
+}
+
+static void	init_movement_runtime(t_game *game)
+{
+	game->movement_lock_until = 0.0;
+	game->last_teleport_time = -10.0;
+	game->last_teleport_id = '\0';
+	game->mouse_initialized = false;
+	game->mouse_delta_accumulated = 0.0f;
+	game->mouse_delta_accumulated_y = 0.0f;
+	game->mouse_sensitivity = config_mouse_sens_value(game->menu.options.mouse_sens);
+	game->last_mouse_x = 0.0;
+	game->last_mouse_y = 0.0;
+	game->headbob_phase = 0.0f;
+	game->headbob_offset = 0.0f;
+	game->last_player_angle = game->cub_data.player.angle;
+	game->last_grid_x = -1;
+	game->last_grid_y = -1;
+}
+
+static void	install_movement_hooks(t_game *game)
+{
+	mlx_key_hook(game->mlx, key_hook_advanced, game);
+	mlx_mouse_hook(game->mlx, mouse_hook_advanced, game);
+	mlx_cursor_hook(game->mlx, cursor_hook_advanced, game);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
+	if (game->mlx->window && glfwRawMouseMotionSupported())
+		glfwSetInputMode((GLFWwindow *)game->mlx->window,
+			GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+	mlx_loop_hook(game->mlx, update_game_loop_advanced, game);
 }
 
 /**
@@ -486,28 +592,7 @@ void	init_movement_system_advanced(t_game *game)
 	init_player_angle(game);
 	init_player_parameters(game);
 	init_orb_projectile_advanced(game);
-	game->movement_lock_until = 0.0;
-	game->last_teleport_time = -10.0;
-	game->last_teleport_id = '\0';
-	game->mouse_initialized = false;
-	game->mouse_delta_accumulated = 0.0f;
-	game->mouse_delta_accumulated_y = 0.0f;
-	game->mouse_sensitivity = config_mouse_sens_value(
-			game->menu.options.mouse_sens);
-	game->last_mouse_x = 0.0;
-	game->last_mouse_y = 0.0;
-	game->headbob_phase = 0.0f;
-	game->headbob_offset = 0.0f;
-	game->last_player_angle = game->cub_data.player.angle;
-	game->last_grid_x = -1;
-	game->last_grid_y = -1;
+	init_movement_runtime(game);
 	init_crosshair(game);
-	mlx_key_hook(game->mlx, key_hook_advanced, game);
-	mlx_mouse_hook(game->mlx, mouse_hook_advanced, game);
-	mlx_cursor_hook(game->mlx, cursor_hook_advanced, game);
-	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
-	if (game->mlx->window && glfwRawMouseMotionSupported())
-		glfwSetInputMode((GLFWwindow *)game->mlx->window,
-			GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-	mlx_loop_hook(game->mlx, update_game_loop_advanced, game);
+	install_movement_hooks(game);
 }
