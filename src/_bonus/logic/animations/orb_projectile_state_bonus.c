@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "logic_bonus.h"
 
 static void	set_default_door_texture_state(t_game *game)
 {
@@ -35,6 +36,7 @@ void	init_orb_projectile_bonus(t_game *game)
 
 	if (!game)
 		return ;
+	bonus_audio_stop_orb_launch();
 	ft_bzero(&game->orb, sizeof(t_orb_projectile));
 	game->orb.speed = ORB_PROJECTILE_DEFAULT_SPEED;
 	game->orb.mode = ORB_MODE_NONE;

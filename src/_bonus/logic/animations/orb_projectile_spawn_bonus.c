@@ -32,6 +32,7 @@ bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 		return (false);
 	orb_projectile_activate(game, ORB_MODE_TAKE,
 		(float)cell_x + 0.5f, (float)cell_y + 0.5f);
+	bonus_audio_update_orb_volume(game);
 	bonus_audio_play_orb_launch();
 	game->orb.payload = block;
 	game->orb.target_cell_x = -1;
@@ -53,6 +54,7 @@ bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 		return (false);
 	orb_projectile_activate(game, ORB_MODE_PLACE,
 		game->cub_data.player.x, game->cub_data.player.y);
+	bonus_audio_update_orb_volume(game);
 	bonus_audio_play_orb_launch();
 	game->orb.payload = block;
 	game->orb.target_cell_x = target_x;
@@ -72,6 +74,7 @@ bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
 		return (false);
 	orb_projectile_activate(game, ORB_MODE_TAKE,
 		game->cub_data.player.x, game->cub_data.player.y);
+	bonus_audio_update_orb_volume(game);
 	bonus_audio_play_orb_launch();
 	game->orb.payload = block;
 	game->orb.target_cell_x = target_x;

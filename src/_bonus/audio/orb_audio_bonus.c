@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "miniaudio_implementation.h"
 #include "audio.h"
 #include "logic_bonus.h"
 
@@ -93,6 +94,11 @@ bool	bonus_audio_init(void)
 			&audio->orb_launch_sound);
 	audio->step_sound_ready = load_sound(&audio->engine, STEP_AUDIO_PATH,
 			&audio->step_sound);
+	if (audio->orb_sound_ready)
+	{
+		ma_sound_set_looping(&audio->orb_launch_sound, MA_TRUE);
+		ma_sound_set_volume(&audio->orb_launch_sound, ORB_AUDIO_VOLUME_MAX);
+	}
 	if (audio->step_sound_ready)
 	{
 		ma_sound_set_volume(&audio->step_sound, clamp_volume(STEP_AUDIO_VOLUME));
@@ -132,6 +138,31 @@ void	bonus_audio_play_orb_launch(void)
 	ma_sound_stop(&audio->orb_launch_sound);
 	ma_sound_seek_to_pcm_frame(&audio->orb_launch_sound, 0);
 	ma_sound_start(&audio->orb_launch_sound);
+}
+
+void	bonus_audio_stop_orb_launch(void)
+{
+	t_bonus_audio	*audio;
+
+	audio = bonus_audio_ctx();
+	if (!audio->initialized || !audio->orb_sound_ready)
+		return ;
+	ma_sound_stop(&audio->orb_launch_sound);
+	ma_sound_seek_to_pcm_frame(&audio->orb_launch_sound, 0);
+}
+
+void	bonus_audio_set_orb_volume(float volume)
+{
+	t_bonus_audio	*audio;
+
+	audio = bonus_audio_ctx();
+	if (!audio->initialized || !audio->orb_sound_ready)
+		return ;
+	if (volume < ORB_AUDIO_VOLUME_MIN)
+		volume = ORB_AUDIO_VOLUME_MIN;
+	if (volume > ORB_AUDIO_VOLUME_MAX)
+		volume = ORB_AUDIO_VOLUME_MAX;
+	ma_sound_set_volume(&audio->orb_launch_sound, volume);
 }
 
 void	bonus_audio_set_step_loop(bool enabled)

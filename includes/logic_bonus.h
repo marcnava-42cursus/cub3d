@@ -63,6 +63,8 @@ void	orb_projectile_clear_ghost(t_game *game);
 bool	bonus_audio_init(void);
 void	bonus_audio_shutdown(void);
 void	bonus_audio_play_orb_launch(void);
+void	bonus_audio_stop_orb_launch(void);
+void	bonus_audio_update_orb_volume(const t_game *game);
 void	bonus_audio_set_step_loop(bool enabled);
 void	bonus_audio_update_step_loop(bool player_is_moving);
 

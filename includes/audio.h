@@ -15,11 +15,14 @@
 
 # include <stdbool.h>
 
-# define MINIAUDIO_IMPLEMENTATION
 # include "miniaudio.h"
 
 # define ORB_LAUNCH_AUDIO_PATH "./assets/audio/scream.mp3"
 # define STEP_AUDIO_PATH "./assets/audio/step.mp3"
+
+# define ORB_AUDIO_VOLUME_MIN 0.0f
+# define ORB_AUDIO_VOLUME_MAX 1.25f
+# define ORB_AUDIO_MAX_DISTANCE 8.0f
 
 # define STEP_AUDIO_VOLUME 0.25f
 # define STEP_AUDIO_VOLUME_MIN 0.0f
@@ -39,5 +42,7 @@ typedef struct s_bonus_audio
 	ma_sound	orb_launch_sound;
 	ma_sound	step_sound;
 }	t_bonus_audio;
+
+void	bonus_audio_set_orb_volume(float volume);
 
 #endif
