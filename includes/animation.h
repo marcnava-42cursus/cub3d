@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 22:23:57 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/06 23:36:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:39:18 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "MLX42/MLX42.h"
 # include "MLX42/MLX42_Int.h"
 # include "structs.h"
-# include "render.h"
+# include "render_bonus.h"
 # include "libft.h"
 
 # define FPS 12.0f

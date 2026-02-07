@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 01:04:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:53:37 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	paint_vertical_line_texture_bonus(unsigned int x, int y[2],
 		float fog, t_anim *anim)
 {
 	int	pixel[2];
-	int				tex_coord[2];
+	int	tex_coord[2];
 
 	pixel[X] = (int)x;
 	pixel[Y] = y[0];

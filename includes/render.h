@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:08:15 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 01:16:51 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,6 @@ void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 
 /*----------------------------- DOUBLE_BUFFER.C ------------------------------*/
 void		render_double_buffer(t_game *game);
-
-# ifdef BONUS
-void		render_player_double_buffer(t_game *game);
-# endif
-
 
 /*-------------------------------- RAYCAST.C ---------------------------------*/
 t_rayhit	raycast_world(const t_map *map, vertex_t start, float angle,

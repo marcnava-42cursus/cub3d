@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:48:29 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:04:34 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 02:00:58 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,6 @@ void	paint_texture_pixel_bonus(int pixel[2], t_game *game,
 	fog_texture = game->cub_data.textures.fog;
 	fog_sample = lerp_pixel_and_fog_bonus(pixel, pixel_color,
 			fog_texture, fog);
-	img	= game->double_buffer[NEXT];
+	img = game->double_buffer[NEXT];
 	safe_put_pixel(img, pixel[X], pixel[Y], fog_sample);
 }
