@@ -31,17 +31,7 @@ bool	process_mouse_rotation_advanced(t_game *game);
 
 static int	is_elevator_char_logic(char c)
 {
-	const char	*set = "!\"·$%&/()=?¿";
-	int			i;
-
-	i = 0;
-	while (set[i])
-	{
-		if (set[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
+	return (get_elevator_index(c) >= 0);
 }
 
 static int	find_elevator_slot(t_cub_data *data, char id)
@@ -60,14 +50,14 @@ static int	find_elevator_slot(t_cub_data *data, char id)
 
 static bool	is_elevator_open(t_game *game, char id)
 {
-	int	slot;
+	int	index;
 
 	if (!game)
 		return (false);
-	slot = find_elevator_slot(&game->cub_data, id);
-	if (slot < 0 || slot >= game->cub_data.elevator_id_count)
+	index = get_elevator_index(id);
+	if (index < 0 || index >= ELEVATOR_STATE_SLOTS)
 		return (false);
-	return (game->cub_data.elevator_orb[slot]);
+	return (game->cub_data.map.elevator_states[index] == ELEVATOR_OPENED);
 }
 
 static int	get_elevator_coords(const t_floor *floor, char id, int *x, int *y)

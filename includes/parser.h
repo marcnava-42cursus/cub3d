@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/06 23:53:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 13:42:51 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,24 @@ typedef struct s_color
 	int	b;
 }	t_color;
 
+typedef enum e_elevator_state
+{
+	ELEVATOR_CLOSED,
+	ELEVATOR_CLOSING,
+	ELEVATOR_OPENED,
+	ELEVATOR_OPENING ,
+	ELEVATOR_EATING
+}	t_elevator_state;
+
+# define ELEVATOR_STATE_SLOTS 12 // elevators: ! " · $ % & ( ) = ? ¿
+
 // Estructura para el mapa
 typedef struct s_map
 {
 	char	**grid;
 	int		width;
 	int		height;
+	int		elevator_states[ELEVATOR_STATE_SLOTS];
 }	t_map;
 
 typedef struct s_link_info

@@ -78,6 +78,9 @@ void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata);
 // World map overlay
 void	toggle_map_overlay_advanced(t_game *game);
 
+// Elevator helpers
+int		get_elevator_index(char elevator_id);
+
 // Controller (raw)
 void	controller_init_advanced(t_game *game);
 void	controller_update_advanced(t_game *game);
