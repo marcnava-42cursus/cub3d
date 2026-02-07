@@ -106,7 +106,7 @@ static void	controller_set_default_binds(t_game *game)
 	game->controller.binds[ACTION_BREAK] = controller_bind_axis(2, 1);
 	game->controller.binds[ACTION_PLACE] = controller_bind_axis(5, 1);
 	game->controller.binds[ACTION_MENU] = controller_bind_button(7);
-	game->controller.binds[ACTION_MAP] = controller_bind_button(6);
+	/* game->controller.binds[ACTION_MAP] = controller_bind_button(6); */
 	game->controller.binds[ACTION_ACCEPT] = controller_bind_button(0);
 	game->controller.binds[ACTION_QUIT] = controller_bind_button(1);
 }

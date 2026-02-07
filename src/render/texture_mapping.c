@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_mapping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 19:57:41 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:33:34 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	render_texture_line(t_rayhit *rayhit, unsigned int x, int y[2],
 	get_tex_x(game, rayhit, &texture, x_offset_step);
 	x_offset_step[1] = (float)((y[0] - rayhit->wall_bounds[0])
 			* x_offset_step[2]);
-	pack_x_ys((int)x, y, x_y_packed);	
+	pack_x_ys((int)x, y, x_y_packed);
 	paint_vertical_line_texture(x_y_packed, game->double_buffer[NEXT], texture,
 		x_offset_step);
 }

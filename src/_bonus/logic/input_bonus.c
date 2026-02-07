@@ -56,7 +56,7 @@ void	key_hook_advanced(mlx_key_data_t keydata, void *param)
 	keys_t	menu_key;
 	keys_t	break_key;
 	keys_t	place_key;
-	keys_t	map_key;
+	/* keys_t	map_key; */
 
 	game = (t_game *)param;
 	if (!game)
@@ -77,12 +77,14 @@ void	key_hook_advanced(mlx_key_data_t keydata, void *param)
 		config_modal_handle_key(game, keydata);
 		return ;
 	}
+	/*
 	map_key = game->menu.controls_key_codes[ACTION_MAP];
 	if (keydata.key == map_key && keydata.action == MLX_PRESS)
 	{
 		toggle_map_overlay_advanced(game);
 		return ;
 	}
+	*/
 	place_key = game->menu.controls_key_codes[ACTION_PLACE];
 	if (keydata.key == place_key && keydata.action == MLX_PRESS)
 		place_breakable_block(game);

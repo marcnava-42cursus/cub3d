@@ -17,7 +17,7 @@
 
 // Prototypes for bonus functions
 int		parse_cub_file_advanced(const char *filename, t_cub_data *data);
-int		load_map_textures_bonus(t_game *game);
+/* int	load_map_textures_bonus(t_game *game); */
 void	init_movement_system_advanced(t_game *game);
 void	set_map_overlay_visible_bonus(t_game *game, bool visible);
 bool	window_init_bonus(t_game *game);
@@ -85,11 +85,13 @@ int	init_game_advanced(t_game *game, const char *map_file)
 		printf("Error: Failed to initialize window\n");
 		return (0);
 	}
+	/*
 	if (!load_map_textures_bonus(game))
 	{
 		printf("Error: Failed to load 2D map textures\n");
 		return (0);
 	}
+	*/
 	if (!audio_system_init())
 		printf("Warning: Audio bonus disabled (assets/audio/orb_*.mp3)\n");
 
@@ -99,10 +101,9 @@ int	init_game_advanced(t_game *game, const char *map_file)
 static void render_loop(void *param)
 {
 	t_game	*game;
-	bool	orb_moved;
 
 	game = (t_game *)param;
-	orb_moved = orb_projectile_update(game, game->mlx->delta_time);
+	(void)orb_projectile_update(game, game->mlx->delta_time);
 	update_player_anims(&game->cub_data.player, game->mlx->delta_time);
 	update_living_block_anims(&game->cub_data.block, game->mlx->delta_time);
 	update_creating_block_state(game);
@@ -113,8 +114,10 @@ static void render_loop(void *param)
 	update_door_anims(&game->orb, &game->cub_data.effects,
 		game->mlx->delta_time);
 	render_double_buffer(game);
+	/*
 	if (orb_moved && game->map_2d_visible)
 		render_player_dynamic_advanced(game);
+	*/
 }
 
 int	run_game_advanced(t_game *game)

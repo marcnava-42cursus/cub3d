@@ -16,8 +16,8 @@
 #include "parser.h"
 
 // Prototypes for bonus functions used
-void	render_player_dynamic_advanced(t_game *game);
-void	render_map_2d_initial_advanced(t_game *game);
+/* void	render_player_dynamic_advanced(t_game *game); */
+/* void	render_map_2d_initial_advanced(t_game *game); */
 void	refresh_key_states_advanced(t_game *game);
 void	key_hook_advanced(mlx_key_data_t keydata, void *param);
 void	mouse_hook_advanced(mouse_key_t button, action_t action,
@@ -188,10 +188,13 @@ static bool	apply_headbob_pitch(t_game *game, bool is_moving, bool step_started,
  */
 void	update_player_position(t_game *game)
 {
+	(void)game;
+	/*
 	if (!game)
 		return ;
 	if (game->map_2d_visible)
 		render_player_dynamic_advanced(game);
+	*/
 }
 
 /**
@@ -336,8 +339,10 @@ static void	handle_movement_rendering(t_game *game)
 			current_grid_y = (int)floor(game->cub_data.player.y);
 		}
 	}
+	/*
 	if (game->map_2d_visible)
 		update_player_position(game);
+	*/
 }
 
 /**

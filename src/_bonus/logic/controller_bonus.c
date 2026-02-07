@@ -70,7 +70,7 @@ void	controller_update_advanced(t_game *game)
 	bool				break_pressed;
 	bool				place_pressed;
 	bool				menu_pressed;
-	bool				map_pressed;
+	/* bool				map_pressed; */
 	bool				allow_menu_toggle;
 	float				deadzone;
 	int					i;
@@ -138,14 +138,18 @@ void	controller_update_advanced(t_game *game)
 		&& !game->controller.prev_action_active[ACTION_BREAK];
 	place_pressed = active[ACTION_PLACE]
 		&& !game->controller.prev_action_active[ACTION_PLACE];
+	/*
 	map_pressed = active[ACTION_MAP]
 		&& !game->controller.prev_action_active[ACTION_MAP];
+	*/
 	if (break_pressed)
 		test_break_wall_in_front(game);
 	if (place_pressed)
 		place_breakable_block(game);
+	/*
 	if (map_pressed)
 		toggle_map_overlay_advanced(game);
+	*/
 	ft_memcpy(game->controller.prev_action_active, active, sizeof(active));
 	controller_store_raw_state(game, &state);
 }

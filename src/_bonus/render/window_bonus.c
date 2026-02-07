@@ -13,8 +13,8 @@
 #include "render_bonus.h"
 
 // Prototypes
-bool	world_map_init_bonus(t_game *game);
-void	free_map_textures_bonus(t_game *game);
+/* bool	world_map_init_bonus(t_game *game); */
+/* void	free_map_textures_bonus(t_game *game); */
 
 bool	window_init_bonus(t_game *game)
 {
@@ -37,19 +37,23 @@ bool	window_init_bonus(t_game *game)
 	game->double_buffer[CURRENT] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
 	mlx_image_to_window(game->mlx, game->double_buffer[CURRENT], 0, 0);
+	/*
 	if (!world_map_init_bonus(game))
 		return (false);
+	*/
 	minimap_init(game);
 	return (true);
 }
 
 void	window_free_bonus(t_game *game)
 {
-	free_map_textures_bonus(game);
+	/* free_map_textures_bonus(game); */
+	/*
 	if (game->map_layer)
 		mlx_delete_image(game->mlx, game->map_layer);
 	if (game->player_layer)
 		mlx_delete_image(game->mlx, game->player_layer);
+	*/
 	if (game->double_buffer[NEXT])
 		mlx_delete_image(game->mlx, game->double_buffer[NEXT]);
 	if (game->double_buffer[CURRENT])
