@@ -85,14 +85,12 @@ bool	handle_modal_overlay_loop(t_game *game)
  */
 void	update_game_loop_bonus(void *param)
 {
-	t_game			*game;
-	float			prev_headbob;
-	float			prev_jump;
-	double			next_tick;
-	int				last_limit;
+	t_game				*game;
+	float				prev_headbob;
+	float				prev_jump;
+	static double		next_tick = 0.0;
+	static int			last_limit = -2;
 
-	next_tick = 0.0;
-	last_limit = -2;
 	game = (t_game *)param;
 	if (!game || !game->mlx)
 		return ;
