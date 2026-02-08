@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 19:12:47 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:57:17 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_standard_texture(const char *line)
 }
 
 static int	check_element_type_advanced(char *line, int *texture_count,
-		int *color_count)
+			int *color_count)
 {
 	if (is_link_identifier_advanced(line))
 		return (0);
@@ -56,11 +56,24 @@ static int	check_element_type_advanced(char *line, int *texture_count,
 	return (0);
 }
 
+static int	handle_count_result_advanced(int result)
+{
+	if (result == 1)
+		return (1);
+	if (result == -1)
+	{
+		printf("Error: Map found before all textures are defined\n");
+		return (-1);
+	}
+	return (0);
+}
+
 static int	count_elements_advanced(char **lines, int line_count,
-	int *texture_count, int *color_count)
+		int *texture_count, int *color_count)
 {
 	int	i;
 	int	result;
+	int	status;
 
 	*texture_count = 0;
 	*color_count = 0;
@@ -73,14 +86,12 @@ static int	count_elements_advanced(char **lines, int line_count,
 			continue ;
 		}
 		result = check_element_type_advanced(lines[i], texture_count,
-			color_count);
-		if (result == 1)
+				color_count);
+		status = handle_count_result_advanced(result);
+		if (status == 1)
 			return (i);
-		if (result == -1)
-		{
-			printf("Error: Map found before all textures are defined\n");
+		if (status == -1)
 			return (-1);
-		}
 		i++;
 	}
 	printf("Error: Map section not found\n");

@@ -43,48 +43,57 @@ static int	store_link_path_advanced(char **slot, char *path, const char *label)
 	return (1);
 }
 
-static int	parse_link_line_advanced(const char *line, t_cub_data *data)
+static int	resolve_link_target_advanced(char *trimmed, t_cub_data *data,
+		t_link_info *info)
 {
-	char		*path;
-	size_t		id_len;
-	char		**target;
-	const char	*label;
-	char		*trimmed;
-
-	target = NULL;
-	label = "";
-	trimmed = trim_whitespace((char *)line);
-	if (!trimmed)
-		return (0);
 	if (ft_strncmp(trimmed, "UP", 2) == 0
 		&& (trimmed[2] == '\0' || trimmed[2] == ' '))
 	{
-		id_len = 2;
-		target = &data->up_path;
-		label = "UP";
-	}
-	else if (ft_strncmp(trimmed, "DOWN", 4) == 0
-		&& (trimmed[4] == '\0' || trimmed[4] == ' '))
-	{
-		id_len = 4;
-		target = &data->down_path;
-		label = "DOWN";
-	}
-	if (!target)
-		return (0);
-	path = extract_link_path_advanced(trimmed, id_len);
-	if (!path || *path == '\0')
-	{
-		free(path);
+		info->id_len = 2;
+		info->target = &data->up_path;
+		info->label = "UP";
 		return (1);
 	}
+	if (ft_strncmp(trimmed, "DOWN", 4) == 0
+		&& (trimmed[4] == '\0' || trimmed[4] == ' '))
+	{
+		info->id_len = 4;
+		info->target = &data->down_path;
+		info->label = "DOWN";
+		return (1);
+	}
+	return (0);
+}
+
+static int	validate_link_path_advanced(char *path, const char *label)
+{
+	if (!path || *path == '\0')
+		return (free(path), 1);
 	if (!validate_file_extension(path))
 	{
 		printf("Error: %s path must be a .cub file\n", label);
 		free(path);
 		return (0);
 	}
-	return (store_link_path_advanced(target, path, label));
+	return (1);
+}
+
+static int	parse_link_line_advanced(const char *line, t_cub_data *data)
+{
+	char		*path;
+	char		*trimmed;
+	t_link_info	info;
+
+	ft_bzero(&info, sizeof(info));
+	trimmed = trim_whitespace((char *)line);
+	if (!trimmed)
+		return (0);
+	if (!resolve_link_target_advanced(trimmed, data, &info))
+		return (0);
+	path = extract_link_path_advanced(trimmed, info.id_len);
+	if (!validate_link_path_advanced(path, info.label))
+		return (0);
+	return (store_link_path_advanced(info.target, path, info.label));
 }
 
 static void	apply_default_colors_advanced(t_cub_data *data)
@@ -103,6 +112,18 @@ static void	apply_default_colors_advanced(t_cub_data *data)
 	}
 }
 
+static int	parse_element_line_advanced(char *line, t_cub_data *data)
+{
+	if (is_link_identifier_advanced(line))
+		return (parse_link_line_advanced(line, data));
+	if (is_texture_identifier(line))
+		return (parse_texture_line(line, &data->textures));
+	if (is_color_identifier(line))
+		return (parse_color_line(line, &data->floor_color,
+				&data->ceiling_color));
+	return (1);
+}
+
 static int	parse_elements(char **lines, int map_start, t_cub_data *data)
 {
 	int	i;
@@ -115,22 +136,8 @@ static int	parse_elements(char **lines, int map_start, t_cub_data *data)
 			i++;
 			continue ;
 		}
-		if (is_link_identifier_advanced(lines[i]))
-		{
-			if (!parse_link_line_advanced(lines[i], data))
-				return (0);
-		}
-		else if (is_texture_identifier(lines[i]))
-		{
-			if (!parse_texture_line(lines[i], &data->textures))
-				return (0);
-		}
-		else if (is_color_identifier(lines[i]))
-		{
-			if (!parse_color_line(lines[i], &data->floor_color,
-					&data->ceiling_color))
-				return (0);
-		}
+		if (!parse_element_line_advanced(lines[i], data))
+			return (0);
 		i++;
 	}
 	return (1);
@@ -143,6 +150,23 @@ static int	validate_parsed_data(const t_cub_data *data)
 		return (0);
 	if (!data->map.grid || data->map.height == 0 || data->map.width == 0)
 		return (0);
+	return (1);
+}
+
+static int	parse_map_with_errors_advanced(char **lines, int map_start,
+		t_cub_data *data, const char *e)
+{
+	apply_default_colors_advanced(data);
+	if (!parse_map_section(lines, map_start, data))
+	{
+		printf("%sFailed parsing map section\n", e);
+		return (0);
+	}
+	if (!validate_parsed_data(data))
+	{
+		printf("%sParsed data invalid (missing textures)\n", e);
+		return (0);
+	}
 	return (1);
 }
 
@@ -162,17 +186,8 @@ int	process_file_data_advanced(char **lines, int line_count, t_cub_data *data)
 		printf("%sFailed parsing elements before map\n", e);
 		return (0);
 	}
-	apply_default_colors_advanced(data);
-	if (!parse_map_section(lines, map_start, data))
-	{
-		printf("%sFailed parsing map section\n", e);
+	if (!parse_map_with_errors_advanced(lines, map_start, data, e))
 		return (0);
-	}
-	if (!validate_parsed_data(data))
-	{
-		printf("%sParsed data invalid (missing textures)\n", e);
-		return (0);
-	}
 	return (1);
 }
 

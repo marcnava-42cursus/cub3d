@@ -84,25 +84,54 @@ static int	add_custom_texture(t_textures *textures, const char *id, char *path)
 	return (1);
 }
 
-int	parse_texture_line_advanced(const char *line, t_textures *textures)
+static int	extract_identifier_advanced(const char *line, char identifier[3])
 {
-	char	identifier[3];
-	char	*path;
 	char	*trimmed;
 
 	trimmed = trim_whitespace((char *)line);
-	if (!trimmed)
-		return (0);
-	if (ft_strlen(trimmed) < 3)
+	if (!trimmed || ft_strlen(trimmed) < 3)
 		return (0);
 	identifier[0] = trimmed[0];
 	identifier[1] = trimmed[1];
 	identifier[2] = '\0';
+	return (1);
+}
+
+static int	validate_identifier_advanced(const char *identifier)
+{
 	if (!ft_isalpha(identifier[1]) || !ft_isgraph(identifier[0]))
 	{
 		printf("Error: Invalid texture identifier: %s\n", identifier);
 		return (0);
 	}
+	return (1);
+}
+
+static int	assign_texture_path_advanced(t_textures *textures,
+		char *identifier, char *path)
+{
+	if (ft_strcmp(identifier, "NO") == 0 && !textures->north_path)
+		textures->north_path = path;
+	else if (ft_strcmp(identifier, "SO") == 0 && !textures->south_path)
+		textures->south_path = path;
+	else if (ft_strcmp(identifier, "WE") == 0 && !textures->west_path)
+		textures->west_path = path;
+	else if (ft_strcmp(identifier, "EA") == 0 && !textures->east_path)
+		textures->east_path = path;
+	else if (!add_custom_texture(textures, identifier, path))
+		return (free(path), 0);
+	return (1);
+}
+
+int	parse_texture_line_advanced(const char *line, t_textures *textures)
+{
+	char	identifier[3];
+	char	*path;
+
+	if (!extract_identifier_advanced(line, identifier))
+		return (0);
+	if (!validate_identifier_advanced(identifier))
+		return (0);
 	path = extract_texture_path_advanced(line, identifier);
 	if (!path)
 	{
@@ -115,21 +144,5 @@ int	parse_texture_line_advanced(const char *line, t_textures *textures)
 		free(path);
 		return (0);
 	}
-	if (ft_strcmp(identifier, "NO") == 0 && !textures->north_path)
-		textures->north_path = path;
-	else if (ft_strcmp(identifier, "SO") == 0 && !textures->south_path)
-		textures->south_path = path;
-	else if (ft_strcmp(identifier, "WE") == 0 && !textures->west_path)
-		textures->west_path = path;
-	else if (ft_strcmp(identifier, "EA") == 0 && !textures->east_path)
-		textures->east_path = path;
-	else
-	{
-		if (!add_custom_texture(textures, identifier, path))
-		{
-			free(path);
-			return (0);
-		}
-	}
-	return (1);
+	return (assign_texture_path_advanced(textures, identifier, path));
 }
