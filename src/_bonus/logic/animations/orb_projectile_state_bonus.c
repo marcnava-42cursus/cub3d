@@ -29,7 +29,7 @@ static void	set_default_door_texture_state(t_game *game)
 	door->current_frame[Y] = 0;
 }
 
-void	init_orb_projectile_advanced(t_game *game)
+void	init_orb_projectile_bonus(t_game *game)
 {
 	int	i;
 

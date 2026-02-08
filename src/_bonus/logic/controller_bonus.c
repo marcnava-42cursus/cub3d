@@ -187,7 +187,7 @@ static void	controller_try_toggle_menu(t_game *game,
 		toggle_config_modal(game);
 }
 
-void	controller_update_advanced(t_game *game)
+void	controller_update_bonus(t_game *game)
 {
 	GLFWgamepadstate	state;
 	bool				active[CONFIG_MODAL_CONTROL_COUNT];

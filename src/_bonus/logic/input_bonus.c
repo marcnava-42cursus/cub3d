@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 22:46:31 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:45:49 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	update_movement_keys(t_game *game)
 			game->menu.controls_key_codes[ACTION_LOOK_DOWN]);
 }
 
-void	refresh_key_states_advanced(t_game *game)
+void	refresh_key_states_bonus(t_game *game)
 {
 	if (!game || !game->mlx)
 		return ;
@@ -61,7 +61,7 @@ void	refresh_key_states_advanced(t_game *game)
 		return ;
 	}
 	update_movement_keys(game);
-	controller_update_advanced(game);
+	controller_update_bonus(game);
 }
 
 static bool	handle_modal_key_input(t_game *game, mlx_key_data_t keydata)
@@ -105,11 +105,10 @@ static void	handle_place_break_input(t_game *game, mlx_key_data_t keydata)
 		test_break_wall_in_front(game);
 }
 
-void	key_hook_advanced(mlx_key_data_t keydata, void *param)
+void	key_hook_bonus(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;
 
-	/* keys_t	map_key; */
 	game = (t_game *)param;
 	if (!game)
 		return ;
@@ -117,21 +116,13 @@ void	key_hook_advanced(mlx_key_data_t keydata, void *param)
 		return ;
 	if (keydata.key == MLX_KEY_SPACE && keydata.action == MLX_PRESS)
 	{
-		trigger_jump_advanced(game);
+		trigger_jump_bonus(game);
 		return ;
 	}
-	/*
-	map_key = game->menu.controls_key_codes[ACTION_MAP];
-	if (keydata.key == map_key && keydata.action == MLX_PRESS)
-	{
-		toggle_map_overlay_advanced(game);
-		return ;
-	}
-	*/
 	handle_place_break_input(game, keydata);
 }
 
-void	mouse_hook_advanced(mouse_key_t button, action_t action,
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param)
 {
 	t_game	*game;
@@ -154,7 +145,7 @@ void	mouse_hook_advanced(mouse_key_t button, action_t action,
 	config_option_toggle(game, index);
 }
 
-void	cursor_hook_advanced(double xpos, double ypos, void *param)
+void	cursor_hook_bonus(double xpos, double ypos, void *param)
 {
 	t_game		*game;
 	double		delta_x;
@@ -201,7 +192,7 @@ static bool	apply_mouse_pitch(t_game *game, float pitch_amount)
 	return (true);
 }
 
-bool	process_mouse_rotation_advanced(t_game *game)
+bool	process_mouse_rotation_bonus(t_game *game)
 {
 	float	rotation_amount;
 	float	pitch_amount;

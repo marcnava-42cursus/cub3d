@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   link_utils_bonus.c                                 :+:      :+:    :+:   */
+/*   map_validation_line_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:34:51 by marcnava         ###   ########.fr       */
+/*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
+/*   Updated: 2026/02/08 03:33:14 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "structs.h"
 
-int	is_link_identifier_bonus(const char *line)
+int	is_map_line_bonus(const char *line)
 {
-	char	*trimmed;
+	int	i;
+	int	has_map_char;
 
-	trimmed = trim_whitespace((char *)line);
-	if (!trimmed || *trimmed == '\0')
+	if (!line || ft_strlen(line) == 0)
 		return (0);
-	if (ft_strncmp(trimmed, "UP", 2) == 0
-		&& (trimmed[2] == '\0' || trimmed[2] == ' '))
-		return (1);
-	if (ft_strncmp(trimmed, "DOWN", 4) == 0
-		&& (trimmed[4] == '\0' || trimmed[4] == ' '))
-		return (1);
-	return (0);
+	has_map_char = 0;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\n' && line[i] != '\t')
+		{
+			if (is_valid_map_char_bonus(line[i]))
+				has_map_char = 1;
+			else
+				return (0);
+		}
+		i++;
+	}
+	return (has_map_char);
 }

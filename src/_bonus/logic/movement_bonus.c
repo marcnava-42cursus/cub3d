@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 00:04:24 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:47:18 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,12 @@
 #include "structs.h"
 #include "parser.h"
 
-// Prototypes for bonus functions used
-/* void	render_player_dynamic_advanced(t_game *game); */
-/* void	render_map_2d_initial_advanced(t_game *game); */
-void	refresh_key_states_advanced(t_game *game);
-void	key_hook_advanced(mlx_key_data_t keydata, void *param);
-void	mouse_hook_advanced(mouse_key_t button, action_t action,
+void	refresh_key_states_bonus(t_game *game);
+void	key_hook_bonus(mlx_key_data_t keydata, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
-void	cursor_hook_advanced(double xpos, double ypos, void *param);
-bool	process_mouse_rotation_advanced(t_game *game);
+void	cursor_hook_bonus(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_bonus(t_game *game);
 
 #define HEADBOB_AMPLITUDE 5.0f
 #define HEADBOB_SPEED 14.0f
@@ -204,35 +201,19 @@ static bool	apply_headbob_pitch(t_game *game, bool is_moving, bool step_started,
 {
 	float	new_offset;
 	float	max_pitch;
+	float	prev_pitch;
 
 	if (!game || !game->mlx)
 		return (false);
 	new_offset = compute_headbob_offset(game, is_moving, step_started,
 			previous_offset);
 	game->headbob_offset = new_offset;
-	game->cub_data.player.pitch += new_offset;
+	prev_pitch = game->cub_data.player.pitch;
 	max_pitch = game->double_buffer[NEXT]->height * 0.35f;
-	game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+	game->cub_data.player.pitch = clamp(prev_pitch + new_offset,
 			-max_pitch, max_pitch);
+	game->headbob_applied = game->cub_data.player.pitch - prev_pitch;
 	return (fabsf(new_offset - previous_offset) > 0.0001f);
-}
-
-/**
- * @brief Updates only the player position display
- *
- * This is called when the map overlay is visible and the player moves.
- *
- * @param game Pointer to the game structure
- */
-void	update_player_position(t_game *game)
-{
-	(void)game;
-	/*
-	if (!game)
-		return ;
-	if (game->map_2d_visible)
-		render_player_dynamic_advanced(game);
-	*/
 }
 
 /**
@@ -394,16 +375,13 @@ static void	handle_movement_rendering(t_game *game)
 	now = mlx_get_time();
 	cell = get_player_cell(game);
 	try_switch_on_elevator(game, cell, now);
-	/*
-	if (game->map_2d_visible)
-		update_player_position(game);
-	*/
 }
 
 static void	reset_headbob_state(t_game *game)
 {
 	game->headbob_offset = 0.0f;
 	game->headbob_phase = 0.0f;
+	game->headbob_applied = 0.0f;
 }
 
 static void	reset_jump_state(t_game *game)
@@ -411,6 +389,19 @@ static void	reset_jump_state(t_game *game)
 	game->jump_active = false;
 	game->jump_offset = 0.0f;
 	game->jump_velocity = 0.0f;
+	game->jump_applied = 0.0f;
+}
+
+static void	clear_pitch_offsets(t_game *game)
+{
+	if (!game)
+		return ;
+	if (game->headbob_applied != 0.0f)
+		game->cub_data.player.pitch -= game->headbob_applied;
+	if (game->jump_applied != 0.0f)
+		game->cub_data.player.pitch -= game->jump_applied;
+	game->headbob_applied = 0.0f;
+	game->jump_applied = 0.0f;
 }
 
 static vertex_t	capture_player_position(t_game *game)
@@ -442,6 +433,7 @@ static bool	update_step_audio_and_headbob(t_game *game, bool player_translated,
 static bool	update_jump_pitch(t_game *game, float prev_jump)
 {
 	float	max_pitch;
+	float	prev_pitch;
 
 	if (!game || !game->mlx)
 		return (false);
@@ -452,14 +444,15 @@ static bool	update_jump_pitch(t_game *game, float prev_jump)
 		if (game->jump_offset <= 0.0f && game->jump_velocity < 0.0f)
 			reset_jump_state(game);
 	}
-	game->cub_data.player.pitch += game->jump_offset;
+	prev_pitch = game->cub_data.player.pitch;
 	max_pitch = game->double_buffer[NEXT]->height * 0.35f;
-	game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+	game->cub_data.player.pitch = clamp(prev_pitch + game->jump_offset,
 			-max_pitch, max_pitch);
+	game->jump_applied = game->cub_data.player.pitch - prev_pitch;
 	return (fabsf(game->jump_offset - prev_jump) > 0.0001f);
 }
 
-void	trigger_jump_advanced(t_game *game)
+void	trigger_jump_bonus(t_game *game)
 {
 	if (!game || !game->mlx || game->jump_active)
 		return ;
@@ -472,11 +465,12 @@ static bool	handle_modal_loop(t_game *game)
 {
 	if (!is_config_modal_open(game))
 		return (false);
+	clear_pitch_offsets(game);
 	audio_step_update_loop(false);
 	reset_headbob_state(game);
 	reset_jump_state(game);
-	controller_handle_rebind_advanced(game);
-	controller_update_advanced(game);
+	controller_handle_rebind_bonus(game);
+	controller_update_bonus(game);
 	update_config_modal(game);
 	return (true);
 }
@@ -510,29 +504,43 @@ static bool	throttle_fps_loop(t_game *game, double *next_tick, int *last_limit)
 	return (false);
 }
 
-static bool	update_motion_frame(t_game *game, float prev_headbob, float prev_jump)
+static bool	update_motion_frame(t_game *game, float prev_headbob,
+				float prev_jump)
 {
-	bool				moved;
-	bool				mouse_rotated;
-	bool				player_translated;
-	bool				headbob_changed;
-	bool				jump_changed;
-	vertex_t			prev;
+	bool		moved;
+	bool		mouse_rotated;
+	bool		headbob_changed;
+	bool		jump_changed;
+	vertex_t	prev;
 
 	if (game->mlx->delta_time <= 0.0)
 	{
+		clear_pitch_offsets(game);
 		reset_headbob_state(game);
+		reset_jump_state(game);
 		return (false);
 	}
+	clear_pitch_offsets(game);
 	prev = capture_player_position(game);
 	moved = process_movement_input(game);
-	mouse_rotated = process_mouse_rotation_advanced(game);
-	player_translated = player_translated_since(game, prev);
-	headbob_changed = update_step_audio_and_headbob(game, player_translated,
-			prev_headbob);
+	mouse_rotated = process_mouse_rotation_bonus(game);
+	headbob_changed = update_step_audio_and_headbob(game,
+			player_translated_since(game, prev), prev_headbob);
 	jump_changed = update_jump_pitch(game, prev_jump);
 	if (moved || mouse_rotated || headbob_changed || jump_changed)
 		handle_movement_rendering(game);
+	return (true);
+}
+
+static bool	handle_modal_overlay_loop(t_game *game)
+{
+	if (!is_config_modal_open(game))
+		return (false);
+	clear_pitch_offsets(game);
+	audio_step_update_loop(false);
+	reset_headbob_state(game);
+	reset_jump_state(game);
+	update_config_modal(game);
 	return (true);
 }
 
@@ -549,7 +557,7 @@ static bool	update_motion_frame(t_game *game, float prev_headbob, float prev_jum
  *
  * @param param Void pointer to game structure (casted internally)
  */
-void	update_game_loop_advanced(void *param)
+void	update_game_loop_bonus(void *param)
 {
 	t_game			*game;
 	float			prev_headbob;
@@ -562,23 +570,12 @@ void	update_game_loop_advanced(void *param)
 		return ;
 	prev_headbob = game->headbob_offset;
 	prev_jump = game->jump_offset;
-	if (prev_headbob != 0.0f)
-		game->cub_data.player.pitch -= prev_headbob;
-	if (prev_jump != 0.0f)
-		game->cub_data.player.pitch -= prev_jump;
-	if (handle_modal_loop(game))
+	if (handle_modal_loop(game)
+		|| throttle_fps_loop(game, &next_tick, &last_limit))
 		return ;
-	if (throttle_fps_loop(game, &next_tick, &last_limit))
+	refresh_key_states_bonus(game);
+	if (handle_modal_overlay_loop(game))
 		return ;
-	refresh_key_states_advanced(game);
-	if (is_config_modal_open(game))
-	{
-		audio_step_update_loop(false);
-		reset_headbob_state(game);
-		reset_jump_state(game);
-		update_config_modal(game);
-		return ;
-	}
 	fps_overlay_update(game);
 	update_motion_frame(game, prev_headbob, prev_jump);
 }
@@ -619,9 +616,11 @@ static void	init_movement_runtime(t_game *game)
 	game->last_mouse_y = 0.0;
 	game->headbob_phase = 0.0f;
 	game->headbob_offset = 0.0f;
+	game->headbob_applied = 0.0f;
 	game->jump_active = false;
 	game->jump_offset = 0.0f;
 	game->jump_velocity = 0.0f;
+	game->jump_applied = 0.0f;
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;
@@ -629,14 +628,14 @@ static void	init_movement_runtime(t_game *game)
 
 static void	install_movement_hooks(t_game *game)
 {
-	mlx_key_hook(game->mlx, key_hook_advanced, game);
-	mlx_mouse_hook(game->mlx, mouse_hook_advanced, game);
-	mlx_cursor_hook(game->mlx, cursor_hook_advanced, game);
+	mlx_key_hook(game->mlx, key_hook_bonus, game);
+	mlx_mouse_hook(game->mlx, mouse_hook_bonus, game);
+	mlx_cursor_hook(game->mlx, cursor_hook_bonus, game);
 	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
 	if (game->mlx->window && glfwRawMouseMotionSupported())
 		glfwSetInputMode((GLFWwindow *)game->mlx->window,
 			GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-	mlx_loop_hook(game->mlx, update_game_loop_advanced, game);
+	mlx_loop_hook(game->mlx, update_game_loop_bonus, game);
 }
 
 /**
@@ -656,13 +655,13 @@ static void	install_movement_hooks(t_game *game)
  *
  * @param game Pointer to the game structure
  */
-void	init_movement_system_advanced(t_game *game)
+void	init_movement_system_bonus(t_game *game)
 {
 	if (!game)
 		return ;
 	init_player_angle(game);
 	init_player_parameters(game);
-	init_orb_projectile_advanced(game);
+	init_orb_projectile_bonus(game);
 	init_movement_runtime(game);
 	init_crosshair(game);
 	install_movement_hooks(game);

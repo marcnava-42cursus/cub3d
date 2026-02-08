@@ -23,22 +23,22 @@
 struct	s_controller_bind;
 
 // Collision bonus
-bool	is_cell_blocking_advanced(t_game *game, int cell_x, int cell_y);
-bool	collides_with_wall_advanced(t_game *game, float x, float y);
-void	attempt_move_advanced(t_game *game, float step_x, float step_y);
+bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
+bool	collides_with_wall_bonus(t_game *game, float x, float y);
+void	attempt_move_bonus(t_game *game, float step_x, float step_y);
 
 // Input bonus
-void	refresh_key_states_advanced(t_game *game);
-void	key_hook_advanced(mlx_key_data_t keydata, void *param);
-void	mouse_hook_advanced(mouse_key_t button, action_t action,
+void	refresh_key_states_bonus(t_game *game);
+void	key_hook_bonus(mlx_key_data_t keydata, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
-void	cursor_hook_advanced(double xpos, double ypos, void *param);
-bool	process_mouse_rotation_advanced(t_game *game);
+void	cursor_hook_bonus(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_bonus(t_game *game);
 
 // Movement bonus
-void	update_game_loop_advanced(void *param);
-void	init_movement_system_advanced(t_game *game);
-void	trigger_jump_advanced(t_game *game);
+void	update_game_loop_bonus(void *param);
+void	init_movement_system_bonus(t_game *game);
+void	trigger_jump_bonus(t_game *game);
 
 // Inventory
 bool	player_has_block(const t_player *player);
@@ -46,7 +46,7 @@ bool	store_block_in_inventory(t_player *player, char block);
 char	consume_inventory_block(t_player *player);
 
 // Orb projectile
-void	init_orb_projectile_advanced(t_game *game);
+void	init_orb_projectile_bonus(t_game *game);
 bool	orb_projectile_is_active(const t_game *game);
 bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 			char block);
@@ -77,15 +77,15 @@ void	update_config_modal(t_game *game);
 void	config_modal_handle_key(t_game *game, mlx_key_data_t keydata);
 
 // World map overlay
-void	toggle_map_overlay_advanced(t_game *game);
+void	toggle_map_overlay_bonus(t_game *game);
 
 // Elevator helpers
 int		get_elevator_index(char elevator_id);
 
 // Controller (raw)
-void	controller_init_advanced(t_game *game);
-void	controller_update_advanced(t_game *game);
-bool	controller_handle_rebind_advanced(t_game *game);
+void	controller_init_bonus(t_game *game);
+void	controller_update_bonus(t_game *game);
+bool	controller_handle_rebind_bonus(t_game *game);
 bool	controller_poll_state(t_game *game, GLFWgamepadstate *state);
 void	controller_calibrate_axes(t_game *game,
 			const GLFWgamepadstate *state);
@@ -104,18 +104,18 @@ bool	controller_menu_hold_quit(t_game *game,
 void	controller_update_menu(t_game *game,
 			const GLFWgamepadstate *state);
 
-bool	is_cell_blocking_advanced(t_game *game, int cell_x, int cell_y);
-bool	collides_with_wall_advanced(t_game *game, float x, float y);
-void	attempt_move_advanced(t_game *game, float step_x, float step_y);
-void	refresh_key_states_advanced(t_game *game);
-void	key_hook_advanced(mlx_key_data_t keydata, void *param);
-void	mouse_hook_advanced(mouse_key_t button, action_t action,
+bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
+bool	collides_with_wall_bonus(t_game *game, float x, float y);
+void	attempt_move_bonus(t_game *game, float step_x, float step_y);
+void	refresh_key_states_bonus(t_game *game);
+void	key_hook_bonus(mlx_key_data_t keydata, void *param);
+void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
-void	cursor_hook_advanced(double xpos, double ypos, void *param);
-bool	process_mouse_rotation_advanced(t_game *game);
-void	update_game_loop_advanced(void *param);
-void	init_movement_system_advanced(t_game *game);
-void	trigger_jump_advanced(t_game *game);
+void	cursor_hook_bonus(double xpos, double ypos, void *param);
+bool	process_mouse_rotation_bonus(t_game *game);
+void	update_game_loop_bonus(void *param);
+void	init_movement_system_bonus(t_game *game);
+void	trigger_jump_bonus(t_game *game);
 			
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);

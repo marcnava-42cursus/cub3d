@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 00:04:41 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:48:22 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ static void	controller_set_default_binds(t_game *game)
 	game->controller.binds[ACTION_BREAK] = controller_bind_axis(2, 1);
 	game->controller.binds[ACTION_PLACE] = controller_bind_axis(5, 1);
 	game->controller.binds[ACTION_MENU] = controller_bind_button(7);
-	/* game->controller.binds[ACTION_MAP] = controller_bind_button(6); */
 	game->controller.binds[ACTION_ACCEPT] = controller_bind_button(0);
 	game->controller.binds[ACTION_QUIT] = controller_bind_button(1);
 }
@@ -134,7 +133,7 @@ static bool	controller_apply_rebind(t_game *game,
 	return (true);
 }
 
-void	controller_init_advanced(t_game *game)
+void	controller_init_bonus(t_game *game)
 {
 	if (!game)
 		return ;
@@ -240,7 +239,7 @@ static bool	controller_finalize_rebind(t_game *game,
 	return (true);
 }
 
-bool	controller_handle_rebind_advanced(t_game *game)
+bool	controller_handle_rebind_bonus(t_game *game)
 {
 	GLFWgamepadstate	state;
 	float				deadzone;

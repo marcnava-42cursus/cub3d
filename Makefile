@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/08 02:29:19 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/08 03:54:25 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -144,12 +144,27 @@ SRCS_BONUS	+=	\
 				$(PARSER)/utils/debug_text_utils.c \
 				$(PARSER_B)/core/parser_init_bonus.c \
 				$(PARSER_B)/core/parser_orchestrator_bonus.c \
+				$(PARSER_B)/core/parser_orchestrator_links_bonus.c \
+				$(PARSER_B)/core/parser_orchestrator_elements_bonus.c \
 				$(PARSER_B)/link_utils_bonus.c \
-				$(PARSER_B)/floor_manager_bonus.c \
+				$(PARSER_B)/floor/floor_path_tokens_bonus.c \
+				$(PARSER_B)/floor/floor_path_normalize_bonus.c \
+				$(PARSER_B)/floor/floor_elevator_collect_bonus.c \
+				$(PARSER_B)/floor/floor_elevator_register_bonus.c \
+				$(PARSER_B)/floor/floor_node_bonus.c \
+				$(PARSER_B)/floor/floor_parse_bonus.c \
+				$(PARSER_B)/floor/floor_neighbors_bonus.c \
+				$(PARSER_B)/floor/floor_graph_bonus.c \
 				$(PARSER_B)/core/parser_finder_bonus.c \
-				$(PARSER_B)/map/map_validation_bonus.c \
-				$(PARSER_B)/textures/texture_parser_bonus.c \
-				$(PARSER_B)/utils/memory_utils_bonus.c
+				$(PARSER_B)/map/map_validation_chars_bonus.c \
+				$(PARSER_B)/map/map_validation_closed_bonus.c \
+				$(PARSER_B)/map/map_validation_line_bonus.c \
+				$(PARSER_B)/map/map_validation_player_bonus.c \
+					$(PARSER_B)/textures/texture_identifier_bonus.c \
+					$(PARSER_B)/textures/texture_parse_bonus.c \
+					$(PARSER_B)/utils/memory_data_bonus.c \
+					$(PARSER_B)/utils/memory_data_helpers_bonus.c \
+					$(PARSER_B)/utils/memory_lines_bonus.c
 
 SRCS_BONUS	+=	\
 				$(LOGIC)/texture_loader.c \
@@ -217,7 +232,6 @@ SRCS_BONUS	+=	\
 				$(RENDER_B)/minimap_utils.c \
 				$(RENDER_B)/outlines.c \
 				$(RENDER_B)/window_bonus.c \
-				$(RENDER_B)/map_2d_bonus.c \
 				$(RENDER_B)/gameplay_window_bonus.c \
 				$(RENDER_B)/walls_bonus.c \
 				$(RENDER_B)/floors_and_ceilings.c \
@@ -277,12 +291,12 @@ export ASCII_ART
 .DEFAULT_GOAL := all
 
 all:
-	@echo "$$ASCII_ART"
+	@printf "$$ASCII_ART\n"
 	@$(MAKE) _compile BONUS_FLAG=""
 
 bonus:
-	@echo "$$ASCII_ART"
-	@echo "$(YELLOW)$(BOLD)>>> BONUS MODE ENABLED <<<$(RESET)"
+	@printf "$$ASCII_ART\n"
+	@printf "$(YELLOW)$(BOLD)>>> BONUS MODE ENABLED <<<$(RESET)\n"
 	@$(MAKE) _compile_bonus BONUS_FLAG="-D BONUS"
 
 _compile:	libft libmlx $(OBJS)

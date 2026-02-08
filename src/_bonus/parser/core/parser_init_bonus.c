@@ -6,12 +6,11 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/02 16:55:59 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 03:30:18 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include "structs.h"
 #include "paths.h"
 #include "animation.h"
 
