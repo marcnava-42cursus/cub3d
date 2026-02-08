@@ -1,7 +1,0 @@
-{
-   llvm_reachable_leaks
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   ...
-   obj:*/libLLVM.so*
-}

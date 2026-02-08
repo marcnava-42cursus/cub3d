@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:28:07 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	process_file_data_bonus(char **lines, int line_count, t_cub_data *data)
 	int			map_start;
 	const char	*error_prefix;
 
-	error_prefix = "Error: ";
+	error_prefix = "Error\n";
 	map_start = FIND_MAP_START(lines, line_count);
 	if (map_start == -1)
 	{
@@ -43,14 +43,14 @@ int	parse_cub_file_bonus(const char *filename, t_cub_data *data)
 
 	if (!validate_file_extension(filename))
 	{
-		printf("Error: Invalid file extension. Expected .cub\n");
+		printf("Error\nInvalid file extension. Expected .cub\n");
 		return (0);
 	}
 	init_cub_data(data);
 	lines = read_file_lines(filename, &line_count);
 	if (!lines)
 	{
-		printf("Error: Could not read file %s\n", filename);
+		printf("Error\nCould not read file %s\n", filename);
 		return (0);
 	}
 	if (!process_file_data_bonus(lines, line_count, data))

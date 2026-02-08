@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 13:59:38 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	init_game_bonus(t_game *game, const char *map_file)
 	sync_current_floor_textures_bonus(game);
 	if (!window_init_bonus(game))
 	{
-		printf("Error: Failed to initialize window\n");
+		printf("Error\nFailed to initialize window\n");
 		return (0);
 	}
 	if (!audio_system_init())

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:33:17 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	process_player_cell_bonus(t_map *map, t_player *player,
 		return (1);
 	if (*found)
 	{
-		printf("Error: Multiple player positions found\n");
+		printf("Error\nMultiple player positions found\n");
 		return (0);
 	}
 	set_player_from_cell_bonus(player, map->grid[pos[1]][pos[0]],

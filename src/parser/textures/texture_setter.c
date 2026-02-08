@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:50:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/03 19:04:19 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	set_north_texture(t_textures *textures, char *path)
 {
 	if (textures->north_path)
 	{
-		printf("Error: North texture already defined\n");
+		printf("Error\nNorth texture already defined\n");
 		free(path);
 		return (0);
 	}
@@ -29,7 +29,7 @@ static int	set_south_texture(t_textures *textures, char *path)
 {
 	if (textures->south_path)
 	{
-		printf("Error: South texture already defined\n");
+		printf("Error\nSouth texture already defined\n");
 		free(path);
 		return (0);
 	}
@@ -41,7 +41,7 @@ static int	set_west_texture(t_textures *textures, char *path)
 {
 	if (textures->west_path)
 	{
-		printf("Error: West texture already defined\n");
+		printf("Error\nWest texture already defined\n");
 		free(path);
 		return (0);
 	}
@@ -53,7 +53,7 @@ static int	set_east_texture(t_textures *textures, char *path)
 {
 	if (textures->east_path)
 	{
-		printf("Error: East texture already defined\n");
+		printf("Error\nEast texture already defined\n");
 		free(path);
 		return (0);
 	}

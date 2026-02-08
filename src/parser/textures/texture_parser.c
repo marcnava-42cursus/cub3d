@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:50:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 19:45:19 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ static char	*get_validated_path(const char *line, const char *identifier)
 	if (!ft_isalpha(identifier[1])
 		|| (!ft_isalpha(identifier[0]) && !ft_isdigit(identifier[0])))
 	{
-		printf("Error: Invalid texture identifier: %s\n", identifier);
+		printf("Error\nInvalid texture identifier: %s\n", identifier);
 		return (NULL);
 	}
 	path = extract_texture_path(line, identifier);
 	if (!path)
 	{
-		printf("Error: No texture path found for %s\n", identifier);
+		printf("Error\nNo texture path found for %s\n", identifier);
 		return (NULL);
 	}
 	if (!validate_texture_path(path))
 	{
-		printf("Error: Invalid texture path: %s\n", path);
+		printf("Error\nInvalid texture path: %s\n", path);
 		free(path);
 		return (NULL);
 	}
@@ -80,7 +80,7 @@ int	parse_texture_line(const char *line, t_textures *textures)
 		return (0);
 	if (!is_required_texture_id(identifier))
 	{
-		printf("Error: Invalid texture identifier in mandatory: %s\n",
+		printf("Error\nInvalid texture identifier in mandatory: %s\n",
 			identifier);
 		return (0);
 	}

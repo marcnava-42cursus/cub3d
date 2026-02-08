@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 02:20:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 20:41:20 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	print_cub_data(const t_cub_data *data)
 {
 	if (!data)
 	{
-		printf("Error: NULL data\n");
+		printf("Error\nNULL data\n");
 		return ;
 	}
 	printf("=== CUB FILE DATA ===\n");

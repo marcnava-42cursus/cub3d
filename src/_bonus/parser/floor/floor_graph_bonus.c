@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:30:53 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	validate_global_elevators_bonus(t_cub_data *data)
 	{
 		if (!data->elevator_floor_a[i] || !data->elevator_floor_b[i])
 		{
-			printf("Error: Elevator '%c' is not paired between two floors\n",
+			printf("Error\nElevator '%c' is not paired between two floors\n",
 				data->elevator_ids[i]);
 			return (0);
 		}
@@ -55,7 +55,7 @@ int	validate_player_presence_bonus(t_cub_data *data)
 {
 	if (!data->player_floor_path)
 	{
-		printf("Error: Expected exactly one player across all floors\n");
+		printf("Error\nExpected exactly one player across all floors\n");
 		return (0);
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 15:29:27 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	validate_map_characters(t_map *map)
 			if (!is_valid_map_char(map->grid[y][x])
 				&& map->grid[y][x] != ' ')
 			{
-				printf("Error: Invalid character '%c' at position (%d, %d)\n",
+				printf("Error\nInvalid character '%c' at position (%d, %d)\n",
 					map->grid[y][x], x, y);
 				return (0);
 			}

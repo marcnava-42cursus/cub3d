@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 13:58:42 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int	init_game(t_game *game, const char *map_file)
 {
 	if (!parse_cub_file(map_file, &game->cub_data))
 	{
-		printf("Error: Failed to parse map file %s\n", map_file);
+		printf("Error\nFailed to parse map file %s\n", map_file);
 		return (0);
 	}
 	if (!load_textures(&game->cub_data.textures))
 	{
-		printf("Error: Failed to load textures\n");
+		printf("Error\nFailed to load textures\n");
 		free_cub_data(&game->cub_data);
 		return (0);
 	}
@@ -33,7 +33,7 @@ int	init_game(t_game *game, const char *map_file)
 	}
 	if (!window_init(game))
 	{
-		printf("Error: Failed to initialize window\n");
+		printf("Error\nFailed to initialize window\n");
 		return (0);
 	}
 	return (1);

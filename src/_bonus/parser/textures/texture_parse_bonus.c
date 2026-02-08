@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:34:32 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ int	parse_texture_line_bonus(const char *line, t_textures *textures)
 	path = extract_texture_path_bonus(line, identifier);
 	if (!path)
 	{
-		printf("Error: No texture path found for %s\n", identifier);
+		printf("Error\nNo texture path found for %s\n", identifier);
 		return (0);
 	}
 	if (!validate_texture_path(path))
 	{
-		printf("Error: Invalid texture path: %s\n", path);
+		printf("Error\nInvalid texture path: %s\n", path);
 		free(path);
 		return (0);
 	}

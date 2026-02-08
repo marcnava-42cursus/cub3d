@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ static int	count_elements(char **lines, int line_count,
 			return (i);
 		if (result == -1)
 		{
-			printf("Error: Map found before all textures are defined\n");
+			printf("Error\nMap found before all textures are defined\n");
 			return (-1);
 		}
 		i++;
 	}
-	printf("Error: Map section not found\n");
+	printf("Error\nMap section not found\n");
 	return (-1);
 }
 

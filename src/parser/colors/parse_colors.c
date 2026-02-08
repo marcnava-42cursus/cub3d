@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 03:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/04 20:39:19 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	validate_identifier(char identifier)
 {
 	if (identifier != 'F' && identifier != 'C')
 	{
-		printf("Error: Invalid color identifier: %c\n", identifier);
+		printf("Error\nInvalid color identifier: %c\n", identifier);
 		return (0);
 	}
 	return (1);

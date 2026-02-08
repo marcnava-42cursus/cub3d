@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:31:56 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	find_or_create_elevator_slot_bonus(t_cub_data *data, char id)
 	}
 	if (data->elevator_id_count >= 16)
 	{
-		printf("Error: Too many elevator identifiers\n");
+		printf("Error\nToo many elevator identifiers\n");
 		return (-1);
 	}
 	data->elevator_ids[slot] = id;
@@ -45,7 +45,7 @@ static int	register_floor_in_slot_bonus(t_cub_data *data, t_floor *floor,
 		&& data->elevator_floor_b[slot]
 		&& data->elevator_floor_b[slot] != floor)
 	{
-		printf("Error: Elevator '%c' appears in more than two floors\n", id);
+		printf("Error\nElevator '%c' appears in more than two floors\n", id);
 		return (0);
 	}
 	return (1);

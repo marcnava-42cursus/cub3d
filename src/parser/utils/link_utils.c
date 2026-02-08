@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int	parse_link_line(const char *line, t_cub_data *data)
 	trimmed = trim_whitespace((char *)line);
 	if (!trimmed)
 		return (0);
-	printf("Error: Link identifiers (UP/DOWN) are not allowed in mandatory\n");
+	printf("Error\nLink identifiers (UP/DOWN) are not allowed in mandatory\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/13 15:25:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int	find_player_position(t_map *map, t_player *player)
 		y++;
 	}
 	if (player_count == 0)
-		return (printf("Error: No player position found in map\n"), 0);
+		return (printf("Error\nNo player position found in map\n"), 0);
 	if (player_count > 1)
-		return (printf("Error: Multiple player positions found in map\n"), 0);
+		return (printf("Error\nMultiple player positions found in map\n"), 0);
 	return (1);
 }

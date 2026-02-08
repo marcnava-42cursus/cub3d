@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:30:53 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	prepare_tmp_floor_parse_bonus(const char *path, char *canonical,
 	lines = read_file_lines(canonical, &line_count);
 	if (!lines)
 	{
-		printf("Error: Could not read floor file %s\n", path);
+		printf("Error\nCould not read floor file %s\n", path);
 		return (0);
 	}
 	if (!process_file_data_bonus(lines, line_count, tmp))
@@ -72,7 +72,7 @@ int	handle_floor_player_bonus(t_cub_data *global,
 		return (1);
 	if (global->player_floor_path)
 	{
-		printf("Error: Multiple player positions across floors\n");
+		printf("Error\nMultiple player positions across floors\n");
 		printf("  - First player found in: %s\n", global->player_floor_path);
 		printf("  - Another player found in: %s\n", (*out_floor)->path);
 		free_floor_node_bonus(*out_floor);
@@ -92,7 +92,7 @@ int	parse_floor_file_bonus(const char *path, int index,
 
 	if (!validate_file_extension(path))
 	{
-		printf("Error: Invalid floor file extension for %s\n", path);
+		printf("Error\nInvalid floor file extension for %s\n", path);
 		return (0);
 	}
 	canonical = normalize_path_bonus(path);

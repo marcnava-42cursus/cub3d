@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:30:04 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	register_floor_elevator_bonus(t_floor *floor, int seen[256],
 {
 	if (seen[(unsigned char)id])
 	{
-		printf("Error: Duplicate elevator '%c' in floor %s\n", id, floor->path);
+		printf("Error\nDuplicate elevator '%c' in floor %s\n", id, floor->path);
 		return (0);
 	}
 	seen[(unsigned char)id] = 1;

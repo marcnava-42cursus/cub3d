@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 02:35:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 21:42:47 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static bool	load_texture(xpm_t **xpm, char *path)
 {
 	if (!path)
 	{
-		printf("Error: Path not found: %s\n", path);
+		printf("Error\nPath not found: %s\n", path);
 		return (false);
 	}
 	*xpm = mlx_load_xpm42(path);
 	if (!*xpm)
 	{
-		printf("Error: Failed to load texture: %s\n", path);
+		printf("Error\nFailed to load texture: %s\n", path);
 		return (false);
 	}
 	return (true);

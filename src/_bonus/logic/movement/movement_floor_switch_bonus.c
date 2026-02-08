@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_bonus.c                                   :+:      :+:    :+:   */
+/*   movement_floor_switch_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 02:47:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	load_target_floor_textures(t_game *game, t_floor *to)
 		return (true);
 	if (!load_textures(&game->cub_data.textures))
 	{
-		printf("Error: Failed to load textures for floor %s\n", to->path);
+		printf("Error\nFailed to load textures for floor %s\n", to->path);
 		return (false);
 	}
 	to->textures = game->cub_data.textures;
@@ -77,7 +77,7 @@ bool	resolve_floor_destination(t_game *game, char id,
 		return (false);
 	if (!get_elevator_coords(target->floor, id, &target->x, &target->y))
 	{
-		printf("Error: Elevator '%c' missing target coords in %s\n",
+		printf("Error\nElevator '%c' missing target coords in %s\n",
 			id, target->floor->path);
 		return (false);
 	}

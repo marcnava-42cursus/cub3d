@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 14:20:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 14:20:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ bool	load_map_and_textures_bonus(t_game *game, const char *map_file)
 {
 	if (!parse_cub_file_bonus(map_file, &game->cub_data))
 	{
-		printf("Error: Failed to parse map file %s\n", map_file);
+		printf("Error\nFailed to parse map file %s\n", map_file);
 		return (false);
 	}
 	if (!load_textures(&game->cub_data.textures))
 	{
-		printf("Error: Failed to load textures\n");
+		printf("Error\nFailed to load textures\n");
 		free_cub_data(&game->cub_data);
 		return (false);
 	}

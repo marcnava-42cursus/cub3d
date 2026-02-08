@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 15:30:15 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,18 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 	while (lines[i])
 	{
 		if (is_empty_line(lines[i]))
-			return (printf("Error: Empty line inside map\n"), 0);
+			return (printf("Error\nEmpty line inside map\n"), 0);
 		if (!IS_MAP_LINE(lines[i]))
-			return (printf("Error: Invalid line after map start\n"), 0);
+			return (printf("Error\nInvalid line after map start\n"), 0);
 		map_end = i;
 		i++;
 	}
 	if (map_end < start_line)
-		return (printf("Error: Invalid map section\n"), 0);
+		return (printf("Error\nInvalid map section\n"), 0);
 	data->map.height = map_end - start_line + 1;
 	data->map.width = calculate_map_width(lines, start_line, map_end);
 	if (data->map.height <= 0 || data->map.width <= 0)
-		return (printf("Error: Invalid map dimensions\n"), 0);
+		return (printf("Error\nInvalid map dimensions\n"), 0);
 	if (!fill_map_grid(lines, start_line, data))
 		return (0);
 	return (VALIDATE_MAP(&data->map, &data->player));

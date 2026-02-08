@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:30:28 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	store_link_path_bonus(char **slot, char *path, const char *label)
 {
 	if (*slot)
 	{
-		printf("Error: Duplicate %s definition\n", label);
+		printf("Error\nDuplicate %s definition\n", label);
 		free(path);
 		return (0);
 	}
@@ -66,7 +66,7 @@ static int	validate_link_path_bonus(char *path, const char *label)
 		return (free(path), 1);
 	if (!validate_file_extension(path))
 	{
-		printf("Error: %s path must be a .cub file\n", label);
+		printf("Error\n%s path must be a .cub file\n", label);
 		free(path);
 		return (0);
 	}

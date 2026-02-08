@@ -6,12 +6,12 @@ MAP="${2:-maps/example.cub}"
 LOG="${3:-valgrind_clean.log}"
 
 if [[ ! -x "$BIN" ]]; then
-	echo "Error: '$BIN' no existe o no es ejecutable." >&2
+	echo "Error\n'$BIN' no existe o no es ejecutable." >&2
 	exit 1
 fi
 
 if [[ ! -f "$MAP" ]]; then
-	echo "Error: mapa '$MAP' no existe." >&2
+	echo "Error\nmapa '$MAP' no existe." >&2
 	exit 1
 fi
 

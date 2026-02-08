@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/23 19:42:24 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	check_border_integrity(t_map *map, int x, int y)
 	{
 		if (map->grid[y][x] != '1')
 		{
-			printf("Error: Map not closed at border (%d, %d)\n", x, y);
+			printf("Error\nMap not closed at border (%d, %d)\n", x, y);
 			return (0);
 		}
 	}
@@ -37,7 +37,7 @@ static int	check_neighbor_integrity(t_map *map, int x, int y)
 		|| (x < (int)ft_strlen(map->grid[y]) - 1
 			&& map->grid[y][x + 1] == ' '))
 	{
-		printf("Error: Map not closed - space adjacent at (%d, %d)\n", x, y);
+		printf("Error\nMap not closed - space adjacent at (%d, %d)\n", x, y);
 		return (0);
 	}
 	return (1);

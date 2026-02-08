@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 03:45:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:33:10 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ static int	validate_walkable_cell_bonus(t_map *map, char c, int x, int y)
 {
 	if (is_walkable_on_border_bonus(map, x, y))
 	{
-		printf("Error: Walkable char '%c' at border (%d, %d)\n", c, x, y);
+		printf("Error\nWalkable char '%c' at border (%d, %d)\n", c, x, y);
 		return (0);
 	}
 	if (has_adjacent_space_bonus(map, x, y))
 	{
-		printf("Error: Map not closed - space adjacent at (%d, %d)\n", x, y);
+		printf("Error\nMap not closed - space adjacent at (%d, %d)\n", x, y);
 		return (0);
 	}
 	return (1);

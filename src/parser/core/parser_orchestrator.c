@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 17:57:42 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:23:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ int	process_file_data(char **lines, int line_count, t_cub_data *data)
 
 	map_start = FIND_MAP_START(lines, line_count);
 	if (map_start == -1)
-		return (error_message("Error: Map section not found"));
+		return (error_message("Error\nMap section not found"));
 	if (!parse_elements(lines, map_start, data))
-		return (error_message("Error: Failed parsing elements before map"));
+		return (error_message("Error\nFailed parsing elements before map"));
 	if (!parse_map_section(lines, map_start, data))
-		return (error_message("Error: Failed parsing map section"));
+		return (error_message("Error\nFailed parsing map section"));
 	if (!finalize_parsed_data(data))
 		return (error_message(
-				"Error: Parsed data invalid (missing textures/map/player)"));
+				"Error\nParsed data invalid (missing textures/map/player)"));
 	return (1);
 }
 
@@ -86,14 +86,14 @@ int	parse_cub_file(const char *filename, t_cub_data *data)
 
 	if (!validate_file_extension(filename))
 	{
-		printf("Error: Invalid file extension. Expected .cub\n");
+		printf("Error\nInvalid file extension. Expected .cub\n");
 		return (0);
 	}
 	init_cub_data(data);
 	lines = read_file_lines(filename, &line_count);
 	if (!lines)
 	{
-		printf("Error: Could not read file %s\n", filename);
+		printf("Error\nCould not read file %s\n", filename);
 		return (0);
 	}
 	if (!process_file_data(lines, line_count, data))
