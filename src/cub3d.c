@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/03 12:07:04 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:44:43 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 
 int	init_game(t_game *game, const char *map_file)
 {
-	// Parsear el archivo .cub
 	if (!parse_cub_file(map_file, &game->cub_data))
 	{
 		printf("Error: Failed to parse map file %s\n", map_file);
 		return (0);
 	}
-
-	// Cargar texturas XPM
 	if (!load_textures(&game->cub_data.textures))
 	{
 		printf("Error: Failed to load textures\n");
@@ -34,8 +31,6 @@ int	init_game(t_game *game, const char *map_file)
 		game->cub_data.current_floor->textures = game->cub_data.textures;
 		game->cub_data.current_floor->textures_loaded = true;
 	}
-
-	// Inicializar ventana MLX
 	if (!window_init(game))
 	{
 		printf("Error: Failed to initialize window\n");
@@ -48,12 +43,7 @@ void	cleanup_game(t_game *game)
 {
 	if (!game)
 		return;
-
-	// Liberar datos del parser
 	free_cub_data(&game->cub_data);
-
-	// Aquí se liberarían otros recursos del juego
-	// como ventanas MLX, texturas cargadas, etc.
 	if (game->mlx)
 		window_free(game);
 }
@@ -68,17 +58,9 @@ static void render_loop(void *param)
 
 int	run_game(t_game *game)
 {
-    // Inicializar sistema de movimiento
 	INIT_MOVEMENT_SYSTEM(game);
-
-	// Iniciar loop de MLX
-	// Aquí iría el game loop principal
-	// - Procesamiento de input
-	// - Lógica del juego
-	// - Rendering
 	mlx_loop_hook(game->mlx, render_loop, (void *)game);
 	mlx_loop(game->mlx);
-
 	return (1);
 }
 

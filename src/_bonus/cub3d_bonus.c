@@ -6,14 +6,15 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 05:45:49 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:49:43 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include "cub3d.h"
 #include "config_bonus.h"
 #include "logic_bonus.h"
-#include <string.h>
+#include "paths.h"
 
 // Prototypes for bonus functions
 int		parse_cub_file_bonus(const char *filename, t_cub_data *data);
@@ -43,10 +44,7 @@ void	cleanup_game_bonus(t_game *game)
 		return;
 	audio_system_shutdown();
 	free_bonus_assets_bonus(game);
-
-	// Liberar datos del parser
 	free_cub_data(&game->cub_data);
-
 	if (game->mlx)
 		window_free_bonus(game);
 }
@@ -54,35 +52,26 @@ void	cleanup_game_bonus(t_game *game)
 int	init_game_bonus(t_game *game, const char *map_file)
 {
 	config_options_init(game);
-	// Parsear el archivo .cub (Bonus)
 	if (!parse_cub_file_bonus(map_file, &game->cub_data))
 	{
 		printf("Error: Failed to parse map file %s\n", map_file);
 		return (0);
 	}
-
-	// Cargar texturas XPM (Shared)
 	if (!load_textures(&game->cub_data.textures))
 	{
 		printf("Error: Failed to load textures\n");
 		free_cub_data(&game->cub_data);
 		return (0);
 	}
-	atlas_init(&game->cub_data.player.hand_atlas,
-		"./assets/textures/player/test_hand_atlas.xpm42",
+	atlas_init(&game->cub_data.player.hand_atlas, HAND_ATLAS,
 		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&game->cub_data.player.thumb_atlas,
-		"./assets/textures/player/test_thumb.xpm42",
+	atlas_init(&game->cub_data.player.thumb_atlas, THUMB,
 		HAND_TEXTURE_WIDTH, HAND_TEXTURE_HEIGHT);
-	atlas_init(&game->cub_data.effects.orb_atlas,
-		"./assets/textures/player/test_weapon.xpm42",
+	atlas_init(&game->cub_data.effects.orb_atlas, WEAPON,
 		WEAPON_TEXTURE_WIDTH, WEAPON_TEXTURE_HEIGHT);
-	atlas_init(&game->cub_data.effects.absorb_atlas,
-		"./assets/textures/effects/absorb_effect_32_colors.xpm42", 128, 128);
-	atlas_init(&game->cub_data.effects.door_atlas,
-			"./assets/textures/walls/door.xpm42", 128, 128);
-	atlas_init(&game->cub_data.block.atlas,
-			"./assets/textures/walls/test_living_flesh_atlas.xpm42", 128, 128);
+	atlas_init(&game->cub_data.effects.absorb_atlas, ABSORB_32, 128, 128);
+	atlas_init(&game->cub_data.effects.door_atlas, DOOR, 128, 128);
+	atlas_init(&game->cub_data.block.atlas, LIVING_FLESH, 128, 128);
 	init_player_anims(&game->cub_data.player);
 	init_living_block_anims(&game->cub_data.block);
 	init_absorb_anims(&game->cub_data.effects);
@@ -93,23 +82,13 @@ int	init_game_bonus(t_game *game, const char *map_file)
 		game->cub_data.current_floor->textures = game->cub_data.textures;
 		game->cub_data.current_floor->textures_loaded = true;
 	}
-
-	// Inicializar ventana MLX (Bonus version)
 	if (!window_init_bonus(game))
 	{
 		printf("Error: Failed to initialize window\n");
 		return (0);
 	}
-	/*
-	if (!load_map_textures_bonus(game))
-	{
-		printf("Error: Failed to load 2D map textures\n");
-		return (0);
-	}
-	*/
 	if (!audio_system_init())
 		printf("Warning: Audio bonus disabled (assets/audio/orb_*.mp3)\n");
-
 	return (1);
 }
 
@@ -128,18 +107,11 @@ static void render_loop(void *param)
 		game->mlx->delta_time);
 	update_door_anims(&game->cub_data, &game->orb, game->mlx->delta_time);
 	render_double_buffer(game);
-	/*
-	if (orb_moved && game->map_2d_visible)
-		render_player_dynamic_bonus(game);
-	*/
 }
 
 int	run_game_bonus(t_game *game)
 {
-    // Inicializar sistema de movimiento (Bonus)
-    init_movement_system_bonus(game);
-
-	// Iniciar loop de MLX
+	init_movement_system_bonus(game);
 	mlx_loop_hook(game->mlx, render_loop, (void *)game);
 	mlx_loop(game->mlx);
 	return (1);

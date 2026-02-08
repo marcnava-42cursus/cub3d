@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 18:07:12 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:17:46 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:15:10 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ typedef struct s_fps_overlay
 	double		accum;
 	int			frames;
 	double		last_time;
-} 	t_fps_overlay;
+}	t_fps_overlay;
 
-# define TWO_PI (2.0f * FT_PI)
+# define TWO_PI 6.28318530718
 # define MOUSE_SMOOTHING 10.0f
 
 # ifdef DEBUG_FPS
@@ -104,7 +104,7 @@ void	init_movement_system(t_game *game);
 bool	is_cell_blocking_bonus(t_game *game, int cell_x, int cell_y);
 bool	collides_with_wall_bonus(t_game *game, float x, float y);
 void	attempt_move_bonus(t_game *game, float step_x, float step_y);
-void	refresh_key_states_bonus(t_game *game);
+// void	refresh_key_states_bonus(t_game *game);
 void	key_hook_bonus(mlx_key_data_t keydata, void *param);
 void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);

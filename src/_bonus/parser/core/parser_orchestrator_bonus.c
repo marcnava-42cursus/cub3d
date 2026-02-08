@@ -20,7 +20,7 @@ int	process_file_data_bonus(char **lines, int line_count, t_cub_data *data)
 	const char	*error_prefix;
 
 	error_prefix = "Error: ";
-	map_start = find_map_start(lines, line_count);
+	map_start = FIND_MAP_START(lines, line_count);
 	if (map_start == -1)
 	{
 		printf("%sMap section not found\n", error_prefix);

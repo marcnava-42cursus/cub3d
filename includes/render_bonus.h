@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:52:19 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 12:30:57 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:16:23 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
 
-typedef struct	s_vert_line
+typedef struct s_vert_line
 {
 	t_game	*game;
 	xpm_t	*texture;
@@ -60,8 +60,8 @@ typedef struct	s_vert_line
 }	t_vert_line;
 
 /*------------------------------- BRESENHAM.C --------------------------------*/
-void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
-				int color);
+// void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
+// 				int color);
 void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
 
@@ -138,17 +138,17 @@ void		render_living_block(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
 
 /*----------------------------- MAP_2D_BONUS.C -------------------------------*/
-void		render_player_dynamic_bonus(t_game *game);
-void		render_map_2d_initial_bonus(t_game *game);
-void		toggle_map_overlay_bonus(t_game *game);
+// void		render_player_dynamic_bonus(t_game *game);
+// void		render_map_2d_initial_bonus(t_game *game);
 
-// Texture loading
-int			load_map_textures(t_game *game);
-void		free_map_textures(t_game *game);
+// // Texture loading
+// int			load_map_textures(t_game *game);
+// void		free_map_textures(t_game *game);
 
-// 2D Map rendering
-void		render_map_2d(t_game *game);
-void		render_map_2d_initial(t_game *game);
-void		render_map_tiles_static(t_game *game);
-void		render_player_dynamic(t_game *game);
+// // 2D Map rendering
+// void		render_map_2d(t_game *game);
+// void		render_map_2d_initial(t_game *game);
+// void		render_map_tiles_static(t_game *game);
+// void		render_player_dynamic(t_game *game);
+
 #endif

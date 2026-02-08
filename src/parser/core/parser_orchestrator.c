@@ -32,8 +32,8 @@ static int	parse_elements(char **lines, int map_start, t_cub_data *data)
 		if (is_link_identifier(lines[i])
 			&& !parse_link_line(lines[i], data))
 			return (0);
-		if (is_texture_identifier(lines[i])
-			&& !parse_texture_line(lines[i], &data->textures))
+		if (IS_TEXTURE_IDENTIFIER(lines[i])
+			&& !PARSE_TEXTURE_LINE(lines[i], &data->textures))
 			return (0);
 		if (is_color_identifier(lines[i])
 			&& !parse_color_line(lines[i], &data->floor_color,
@@ -66,7 +66,7 @@ int	process_file_data(char **lines, int line_count, t_cub_data *data)
 {
 	int	map_start;
 
-	map_start = find_map_start(lines, line_count);
+	map_start = FIND_MAP_START(lines, line_count);
 	if (map_start == -1)
 		return (error_message("Error: Map section not found"));
 	if (!parse_elements(lines, map_start, data))

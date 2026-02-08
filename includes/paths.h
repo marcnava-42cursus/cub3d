@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 16:24:10 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 15:42:34 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:49:22 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,8 @@
 # define THUMB "./assets/textures/player/test_thumb.xpm42"
 # define WEAPON "./assets/textures/player/test_weapon.xpm42"
 # define GHOST_BLOCK "./assets/textures/west_wall.xpm42"
+# define ABSORB_32 "./assets/textures/effects/absorb_effect_32_colors.xpm42"
+# define DOOR "./assets/textures/walls/door.xpm42"
+# define LIVING_FLESH "./assets/textures/walls/test_living_flesh_atlas.xpm42"
 
 #endif

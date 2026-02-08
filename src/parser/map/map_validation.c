@@ -81,11 +81,11 @@ int	is_map_closed(t_map *map)
 
 int	validate_map(t_map *map, t_player *player)
 {
-	if (!validate_map_characters(map))
+	if (!VALIDATE_MAP_CHARACTERS(map))
 		return (0);
-	if (!find_player_position(map, player))
+	if (!FIND_PLAYER_POSITION(map, player))
 		return (0);
-	if (!is_map_closed(map))
+	if (!IS_MAP_CLOSED(map))
 		return (0);
 	return (1);
 }

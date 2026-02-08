@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:42:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 17:45:37 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:49:36 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,38 @@
 # include "MLX42/MLX42.h"
 # include "MLX42/MLX42_Int.h"
 # include "logic.h"
-# include "parser.h"
 # include "config_bonus.h"
 
 # define MAX_LINE_LEN 1024
 # define MAX_PATH_LEN 512
 # define ORB_PROJECTILE_DEFAULT_SPEED 6.0f
 # define ORB_GHOST_BLOCK_CELL '3'
+
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_color;
+
+typedef enum e_elevator_state
+{
+	ELEVATOR_CLOSED,
+	ELEVATOR_CLOSING,
+	ELEVATOR_OPENED,
+	ELEVATOR_OPENING,
+	ELEVATOR_EATING
+}	t_elevator_state;
+
+# define ELEVATOR_STATE_SLOTS 12 // elevators: ! " · $ % & ( ) = ? ¿
+
+typedef struct s_map
+{
+	char	**grid;
+	int		width;
+	int		height;
+	int		elevator_states[ELEVATOR_STATE_SLOTS];
+}	t_map;
 
 // Forward declaration for custom texture entries
 typedef struct s_custom_texture	t_custom_texture;
@@ -150,12 +175,12 @@ typedef struct s_effects
 {
 	t_atlas	absorb_atlas;
 	t_atlas	orb_atlas;
-	t_atlas door_atlas;
+	t_atlas	door_atlas;
 	t_anim	*absorb_anims;
 	t_anim	*orb_anims;
 	t_anim	*door_anims;
-	int		current_absorb_anim; 
-	int		current_orb_anim; 
+	int		current_absorb_anim;
+	int		current_orb_anim;
 	int		current_door_anim;
 }	t_effects;
 
@@ -258,7 +283,7 @@ typedef struct s_game
 
 	// Capas separadas para el renderizado 2D
 	mlx_image_t			*map_layer;		// Capa estática del mapa
-	mlx_image_t			*player_layer;		// Capa dinámica del jugador
+	mlx_image_t			*player_layer;	// Capa dinámica del jugador
 	// Texturas 2D
 	t_map_textures		textures_2d;
 	// Variables para seguimiento de estado del jugador
@@ -287,19 +312,19 @@ typedef struct s_game
 	bool				key_up_pressed;
 	bool				key_down_pressed;
 	// Variables de control de mouse
-	double		last_mouse_x;
-	double		last_mouse_y;
-	bool		mouse_initialized;
-	float		mouse_delta_accumulated;
-	float		mouse_delta_accumulated_y;
-	float		mouse_sensitivity;
-	float		headbob_phase;
-	float		headbob_offset;
-	float		headbob_applied;
-	bool		jump_active;
-	float		jump_offset;
-	float		jump_velocity;
-	float		jump_applied;
+	double				last_mouse_x;
+	double				last_mouse_y;
+	bool				mouse_initialized;
+	float				mouse_delta_accumulated;
+	float				mouse_delta_accumulated_y;
+	float				mouse_sensitivity;
+	float				headbob_phase;
+	float				headbob_offset;
+	float				headbob_applied;
+	bool				jump_active;
+	float				jump_offset;
+	float				jump_velocity;
+	float				jump_applied;
 
 	// Datos de renderizado (raycast, sprites, etc.)
 	mlx_image_t			*double_buffer[2];

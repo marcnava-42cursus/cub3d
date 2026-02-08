@@ -104,7 +104,7 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 	{
 		if (is_empty_line(lines[i]))
 			return (printf("Error: Empty line inside map\n"), 0);
-		if (!is_map_line(lines[i]))
+		if (!IS_MAP_LINE(lines[i]))
 			return (printf("Error: Invalid line after map start\n"), 0);
 		map_end = i;
 		i++;
@@ -117,5 +117,5 @@ int	parse_map_section(char **lines, int start_line, t_cub_data *data)
 		return (printf("Error: Invalid map dimensions\n"), 0);
 	if (!fill_map_grid(lines, start_line, data))
 		return (0);
-	return (validate_map(&data->map, &data->player));
+	return (VALIDATE_MAP(&data->map, &data->player));
 }

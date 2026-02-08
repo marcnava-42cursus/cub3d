@@ -32,7 +32,7 @@ static int	check_element_type(char *line, int *texture_count, int *color_count)
 {
 	if (is_link_identifier(line))
 		return (0);
-	if (is_texture_identifier(line))
+	if (IS_TEXTURE_IDENTIFIER(line))
 	{
 		if (is_standard_texture(line))
 			(*texture_count)++;
@@ -43,9 +43,9 @@ static int	check_element_type(char *line, int *texture_count, int *color_count)
 		(*color_count)++;
 		return (0);
 	}
-	if (is_map_line(line) && *texture_count == 4)
+	if (IS_MAP_LINE(line) && *texture_count == 4)
 		return (1);
-	if (!is_texture_identifier(line) && !is_color_identifier(line)
+	if (!IS_TEXTURE_IDENTIFIER(line) && !is_color_identifier(line)
 		&& !is_empty_line(line))
 	{
 		if (*texture_count < 4)

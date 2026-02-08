@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 00:40:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:50:32 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:21:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,8 @@
 # include <string.h>
 # include <math.h>
 # include <stdbool.h>
-
+# include "structs.h"
 # include "libft.h"
-
-typedef struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
-
-typedef enum e_elevator_state
-{
-	ELEVATOR_CLOSED,
-	ELEVATOR_CLOSING,
-	ELEVATOR_OPENED,
-	ELEVATOR_OPENING,
-	ELEVATOR_EATING
-}	t_elevator_state;
-
-# define ELEVATOR_STATE_SLOTS 12 // elevators: ! " · $ % & ( ) = ? ¿
-
-typedef struct s_map
-{
-	char	**grid;
-	int		width;
-	int		height;
-	int		elevator_states[ELEVATOR_STATE_SLOTS];
-}	t_map;
 
 typedef struct s_link_info
 {
@@ -174,28 +148,26 @@ int		build_floor_graph_bonus(const char *path, t_cub_data *data);
 int		process_file_data_bonus(char **lines, int line_count,
 			t_cub_data *data);
 
-#  define validate_map validate_map_bonus
-#  define validate_map_characters validate_map_characters_bonus
-#  define is_map_closed is_map_closed_bonus
-#  define find_player_position find_player_position_bonus
-#  define is_map_line is_map_line_bonus
-#  define is_texture_identifier is_texture_identifier_bonus
-#  define parse_texture_line parse_texture_line_bonus
-#  define find_map_start find_map_start_bonus
+#  define VALIDATE_MAP validate_map_bonus
+#  define VALIDATE_MAP_CHARACTERS validate_map_characters_bonus
+#  define IS_MAP_CLOSED is_map_closed_bonus
+#  define FIND_PLAYER_POSITION find_player_position_bonus
+#  define IS_MAP_LINE is_map_line_bonus
+#  define IS_TEXTURE_IDENTIFIER is_texture_identifier_bonus
+#  define PARSE_TEXTURE_LINE parse_texture_line_bonus
+#  define FIND_MAP_START find_map_start_bonus
 
 # else
 
-#  define validate_map validate_map
-#  define validate_map_characters validate_map_characters
-#  define is_map_closed is_map_closed
-#  define find_player_position find_player_position
-#  define is_map_line is_map_line
-#  define is_texture_identifier is_texture_identifier
-#  define parse_texture_line parse_texture_line
-#  define find_map_start find_map_start
+#  define VALIDATE_MAP validate_map
+#  define VALIDATE_MAP_CHARACTERS validate_map_characters
+#  define IS_MAP_CLOSED is_map_closed
+#  define FIND_PLAYER_POSITION find_player_position
+#  define IS_MAP_LINE is_map_line
+#  define IS_TEXTURE_IDENTIFIER is_texture_identifier
+#  define PARSE_TEXTURE_LINE parse_texture_line
+#  define FIND_MAP_START find_map_start
 
 # endif
-
-# include "structs.h"
 
 #endif

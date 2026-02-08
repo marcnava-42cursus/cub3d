@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 00:01:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:59:47 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_game	t_game;
 # define CONFIG_MODAL_QUIT_BTN_W 160
 # define CONFIG_MODAL_QUIT_BTN_H 52
 # define CONFIG_MODAL_QUIT_HOLD_SECONDS 1.2
-# define CONFIG_MODAL_QUIT_PROGRESS_COLOR 0xB33000FF
+# define CONFIG_MODAL_QUIT_PROGRESS_COLOR 0xC33000FF
 # define CONFIG_MODAL_QUIT_PROGRESS_THICKNESS 4
 
 # define ICON_COLOR 0xFFFFFFFF
@@ -202,33 +202,33 @@ typedef struct s_menu_labels
 
 typedef struct s_menu_state
 {
-	bool		open;
-	bool		attached;
-	int			current_tab;
-	int			current_column;
-	mlx_image_t	*modal;
-	int32_t		quit_x;
-	int32_t		quit_y;
-	int32_t		quit_w;
-	int32_t		quit_h;
-	bool		quit_hover;
-	double		quit_hold_time;
-	mlx_image_t	*quit_label;
+	bool				open;
+	bool				attached;
+	int					current_tab;
+	int					current_column;
+	mlx_image_t			*modal;
+	int32_t				quit_x;
+	int32_t				quit_y;
+	int32_t				quit_w;
+	int32_t				quit_h;
+	bool				quit_hover;
+	double				quit_hold_time;
+	mlx_image_t			*quit_label;
 	t_config_options	options;
-	int			pending_slider_index;
-	int			pending_slider_value;
-	int			slider_drag_index;
-	int			controls_selected;
-	int			controls_column;
-	int			controls_rebind_column;
-	bool		controls_rebinding;
-	int			controls_rebind_target;
-	keys_t		controls_key_codes[CONFIG_MODAL_CONTROL_COUNT];
-	char		controls_key_text[CONFIG_MODAL_CONTROL_COUNT]
-		[CONFIG_MODAL_KEY_LABEL_LEN];
-	char		controls_controller_text[CONFIG_MODAL_CONTROL_COUNT]
-		[CONFIG_MODAL_KEY_LABEL_LEN];
-	t_menu_labels	labels;
+	int					pending_slider_index;
+	int					pending_slider_value;
+	int					slider_drag_index;
+	int					controls_selected;
+	int					controls_column;
+	int					controls_rebind_column;
+	bool				controls_rebinding;
+	int					controls_rebind_target;
+	keys_t				controls_key_codes[CONFIG_MODAL_CONTROL_COUNT];
+	char				controls_key_text[CONFIG_MODAL_CONTROL_COUNT]
+	[CONFIG_MODAL_KEY_LABEL_LEN];
+	char				controls_controller_text[CONFIG_MODAL_CONTROL_COUNT]
+	[CONFIG_MODAL_KEY_LABEL_LEN];
+	t_menu_labels		labels;
 }	t_menu_state;
 
 typedef enum e_controller_bind_type
@@ -247,19 +247,19 @@ typedef struct s_controller_bind
 
 typedef struct s_controller_state
 {
-	bool			connected;
-	int				gamepad_id;
-	float			deadzone;
-	float			move_forward;
-	float			move_strafe;
-	float			turn;
-	float			look;
-	bool			axis_calibrated;
-	float			axis_center[CONTROLLER_AXIS_COUNT];
-	bool			menu_quit_held;
-	bool			prev_buttons[CONTROLLER_BUTTON_COUNT];
-	float			prev_axes[CONTROLLER_AXIS_COUNT];
-	bool			prev_action_active[CONFIG_MODAL_CONTROL_COUNT];
+	bool				connected;
+	int					gamepad_id;
+	float				deadzone;
+	float				move_forward;
+	float				move_strafe;
+	float				turn;
+	float				look;
+	bool				axis_calibrated;
+	float				axis_center[CONTROLLER_AXIS_COUNT];
+	bool				menu_quit_held;
+	bool				prev_buttons[CONTROLLER_BUTTON_COUNT];
+	float				prev_axes[CONTROLLER_AXIS_COUNT];
+	bool				prev_action_active[CONFIG_MODAL_CONTROL_COUNT];
 	t_controller_bind	binds[CONFIG_MODAL_CONTROL_COUNT];
 }	t_controller_state;
 
@@ -279,130 +279,139 @@ typedef struct s_label_cache
 	size_t	size;
 }	t_label_cache;
 
-t_rect	rect_make(int x, int y, int w, int h);
-void	set_image_enabled(mlx_image_t *img, bool enabled);
-void	draw_rect(mlx_image_t *img, t_rect rect, uint32_t color);
-void	draw_border(mlx_image_t *img, t_border border);
-void	draw_bevel_border(mlx_image_t *img, t_border border, uint32_t light,
-			uint32_t dark);
-void	draw_progress_border(mlx_image_t *img, t_border border,
-			float progress);
-void	draw_vertical_gradient(mlx_image_t *img, t_rect rect,
-			uint32_t top_color, uint32_t bottom_color);
-void	draw_settings_icon(mlx_image_t *img, t_icon icon);
-void	draw_controls_icon(mlx_image_t *img, t_icon icon);
-void	disable_label_group(mlx_image_t **labels, size_t count);
-bool	update_label_text(t_game *game, mlx_image_t **label,
-			t_label_cache cache, const char *text);
-bool	ensure_menu_labels(t_game *game);
-bool	ensure_settings_labels(t_game *game);
-bool	ensure_controls_labels(t_game *game);
-void	draw_card(t_game *game, t_rect card);
-void	draw_row_highlight(t_game *game, t_rect card, int row_y);
-void	draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
-			bool selected);
-void	draw_slider(t_game *game, t_rect track, int value, bool selected);
-int		menu_layout_row_y(t_rect card, int index);
-t_rect	menu_layout_slider_rect(t_menu_layout layout, int row_y);
+t_rect			rect_make(int x, int y, int w, int h);
+void			set_image_enabled(mlx_image_t *img, bool enabled);
+void			draw_rect(mlx_image_t *img, t_rect rect, uint32_t color);
+void			draw_border(mlx_image_t *img, t_border border);
+void			draw_bevel_border(mlx_image_t *img, t_border border,
+					uint32_t light, uint32_t dark);
+void			draw_progress_border(mlx_image_t *img, t_border border,
+					float progress);
+void			draw_vertical_gradient(mlx_image_t *img, t_rect rect,
+					uint32_t top_color, uint32_t bottom_color);
+void			draw_settings_icon(mlx_image_t *img, t_icon icon);
+void			draw_controls_icon(mlx_image_t *img, t_icon icon);
+void			disable_label_group(mlx_image_t **labels, size_t count);
+bool			update_label_text(t_game *game, mlx_image_t **label,
+					t_label_cache cache, const char *text);
+bool			ensure_menu_labels(t_game *game);
+bool			ensure_settings_labels(t_game *game);
+bool			ensure_controls_labels(t_game *game);
+void			draw_card(t_game *game, t_rect card);
+void			draw_row_highlight(t_game *game, t_rect card, int row_y);
+void			draw_toggle_switch(t_game *game, t_rect rect, bool enabled,
+					bool selected);
+void			draw_slider(t_game *game, t_rect track, int value,
+					bool selected);
+int				menu_layout_row_y(t_rect card, int index);
+t_rect			menu_layout_slider_rect(t_menu_layout layout, int row_y);
 t_menu_layout	menu_layout_build(t_menu_state *menu);
-void	render_quit_button(t_game *game);
-void	draw_modal_layout(t_game *game);
-void	draw_settings_options(t_game *game, t_rect panel);
-void	draw_controls_options(t_game *game, t_rect panel);
-void	draw_settings_sliders_bonus(t_game *game, t_menu_layout layout);
-void	config_controls_draw_rows_bonus(t_game *game, t_rect card, int column);
-void	hide_settings_options(t_game *game);
-void	hide_controls_options(t_game *game);
-void	config_options_init(t_game *game);
-void	config_options_reset(t_game *game);
-void	config_option_toggle(t_game *game, int index);
-void	config_option_adjust(t_game *game, int delta);
-void	config_option_select(t_game *game, int delta);
-int		config_option_from_pos(t_game *game, int32_t mx, int32_t my);
-bool	config_option_toggle_state(t_game *game, int index);
-int		config_option_slider_value(t_game *game, int index);
-int		config_option_slider_raw(t_game *game, int slider);
-void	config_option_set_slider_raw(t_game *game, int slider, int value);
-int		config_fps_limit_value(int index);
-float	config_mouse_sens_value(int raw);
-float	config_quality_scale_value_bonus(int index);
-void	config_option_set_slider_percent(t_game *game, int slider,
-			int percent);
-void	config_option_step_slider(t_game *game, int slider, int delta);
-void	config_option_slider_text(t_game *game, int index, char *buffer,
-			size_t buffer_size);
-bool	config_option_drag_update(t_game *game, int32_t mx, int32_t my,
-			bool mouse_down);
-void	config_modal_sync_settings_selection_bonus(t_game *game);
-void	config_modal_advance_section_bonus(t_game *game, int delta);
-bool	config_modal_handle_column_navigation_bonus(t_game *game,
-			mlx_key_data_t keydata);
-bool	config_modal_handle_left_column_keys_bonus(t_game *game,
-			bool confirm_pressed, mlx_key_data_t keydata);
-bool	config_modal_handle_controls_tab_keys_bonus(t_game *game,
-			bool confirm_pressed, mlx_key_data_t keydata);
-void	config_mouse_sync_settings_selection_bonus(t_menu_state *menu);
-int		config_mouse_menu_section_from_pos_bonus(t_menu_layout layout,
-			int32_t mx, int32_t my);
-bool	config_mouse_point_in_row_bonus(t_rect area, int row_y,
-			int32_t mx, int32_t my);
-bool	config_mouse_select_controls_row_bonus(t_game *game,
-			t_menu_layout layout, int row, int32_t mx);
-void	config_mouse_select_controls_from_mouse_bonus(t_game *game,
-			t_menu_layout layout, int32_t mx, int32_t my);
-int		config_mouse_select_general_option_bonus(t_menu_state *menu,
-			t_menu_layout layout, int32_t mx, int32_t my);
-int		config_mouse_clear_tuning_slider_selection_bonus(t_game *game,
-			t_menu_state *menu);
-void	config_mouse_set_tuning_slider_pending_bonus(t_menu_state *menu,
-			t_rect slider, int option, int32_t mx);
-int		config_mouse_select_tuning_row_bonus(t_game *game,
-			t_menu_layout layout, int option, int32_t mx);
-int		config_mouse_select_tuning_option_bonus(t_game *game,
-			t_menu_layout layout, int32_t mx, int32_t my);
-bool	config_mouse_handle_section_click_bonus(t_game *game, int section);
-void	config_mouse_reset_slider_drag_state_bonus(t_menu_state *menu);
-void	config_mouse_find_slider_drag_target_bonus(t_menu_state *menu,
-			t_menu_layout layout, int32_t mx, int32_t my);
-int		config_mouse_slider_percent_from_mouse_bonus(t_rect slider, int32_t mx);
-bool	config_mouse_prepare_slider_drag_bonus(t_game *game,
-			t_menu_layout *layout, int32_t mx, int32_t my);
-bool	config_mouse_apply_slider_drag_bonus(t_game *game,
-			t_menu_layout layout, t_menu_state *menu, int32_t mx);
-void	config_controls_select(t_game *game, int delta);
-void	config_controls_set_column(t_game *game, int delta);
-void	config_controls_begin_rebind(t_game *game);
-void	config_controls_cancel_rebind(t_game *game);
-bool	config_controls_handle_key(t_game *game, mlx_key_data_t keydata);
-int		config_controls_selected(t_game *game);
-int		config_controls_column(t_game *game);
-int		config_controls_rebind_column(t_game *game);
-bool	config_controls_is_rebinding(t_game *game);
-const char	*config_controls_key_text(t_game *game, int index);
-const char	*config_controls_controller_text(t_game *game, int index);
-bool	*config_toggle_value_ptr_bonus(t_game *game, int index);
-const char	*config_toggle_name_bonus(int index);
-void	config_toggle_option_value_bonus(t_game *game, int index, bool *toggle);
-bool	config_ensure_label_image_bonus(t_game *game, mlx_image_t **label,
-			const char *text);
-bool	config_ensure_label_group_text_bonus(t_game *game, mlx_image_t **labels,
-			const char **text, size_t count);
-bool	config_ensure_control_headers_bonus(t_game *game, t_menu_state *menu);
-bool	config_update_control_key_labels_bonus(t_game *game, t_menu_state *menu);
-void	config_write_prefixed_int_bonus(char *buffer, size_t buffer_size,
-			const char *prefix, int value);
-const char	*config_key_name_literal_nav_bonus(keys_t key);
-const char	*config_key_name_literal_modifiers_bonus(keys_t key);
-const char	*config_key_name_literal_punct_bonus(keys_t key);
-const char	*config_key_name_alnum_or_fn_bonus(keys_t key, char *buffer,
-			size_t buffer_size);
-const char	*config_key_name_from_mlx_bonus(keys_t key, char *buffer,
-			size_t buffer_size);
-void	config_cancel_rebind_and_redraw_bonus(t_game *game);
-bool	config_handle_controller_rebind_key_bonus(t_game *game,
-			mlx_key_data_t keydata);
-bool	config_is_invalid_rebind_target_bonus(const t_menu_state *menu);
-bool	config_handle_keyboard_rebind_cancel_bonus(t_game *game,
-			t_menu_state *menu, mlx_key_data_t keydata);
+void			render_quit_button(t_game *game);
+void			draw_modal_layout(t_game *game);
+void			draw_settings_options(t_game *game, t_rect panel);
+void			draw_controls_options(t_game *game, t_rect panel);
+void			draw_settings_sliders_bonus(t_game *game, t_menu_layout layout);
+void			config_controls_draw_rows_bonus(t_game *game, t_rect card,
+					int column);
+void			hide_settings_options(t_game *game);
+void			hide_controls_options(t_game *game);
+void			config_options_init(t_game *game);
+void			config_options_reset(t_game *game);
+void			config_option_toggle(t_game *game, int index);
+void			config_option_adjust(t_game *game, int delta);
+void			config_option_select(t_game *game, int delta);
+int				config_option_from_pos(t_game *game, int32_t mx, int32_t my);
+bool			config_option_toggle_state(t_game *game, int index);
+int				config_option_slider_value(t_game *game, int index);
+int				config_option_slider_raw(t_game *game, int slider);
+void			config_option_set_slider_raw(t_game *game, int slider,
+					int value);
+int				config_fps_limit_value(int index);
+float			config_mouse_sens_value(int raw);
+float			config_quality_scale_value_bonus(int index);
+void			config_option_set_slider_percent(t_game *game, int slider,
+					int percent);
+void			config_option_step_slider(t_game *game, int slider, int delta);
+void			config_option_slider_text(t_game *game, int index, char *buffer,
+					size_t buffer_size);
+bool			config_option_drag_update(t_game *game, int32_t mx, int32_t my,
+					bool mouse_down);
+void			config_modal_sync_settings_selection_bonus(t_game *game);
+void			config_modal_advance_section_bonus(t_game *game, int delta);
+bool			config_modal_handle_column_navigation_bonus(t_game *game,
+					mlx_key_data_t keydata);
+bool			config_modal_handle_left_column_keys_bonus(t_game *game,
+					bool confirm_pressed, mlx_key_data_t keydata);
+bool			config_modal_handle_controls_tab_keys_bonus(t_game *game,
+					bool confirm_pressed, mlx_key_data_t keydata);
+void			config_mouse_sync_settings_selection_bonus(t_menu_state *menu);
+int				config_mouse_menu_section_from_pos_bonus(t_menu_layout layout,
+					int32_t mx, int32_t my);
+bool			config_mouse_point_in_row_bonus(t_rect area, int row_y,
+					int32_t mx, int32_t my);
+bool			config_mouse_select_controls_row_bonus(t_game *game,
+					t_menu_layout layout, int row, int32_t mx);
+void			config_mouse_select_controls_from_mouse_bonus(t_game *game,
+					t_menu_layout layout, int32_t mx, int32_t my);
+int				config_mouse_select_general_option_bonus(t_menu_state *menu,
+					t_menu_layout layout, int32_t mx, int32_t my);
+int				config_mouse_clear_tuning_slider_selection_bonus(t_game *game,
+					t_menu_state *menu);
+void			config_mouse_set_tuning_slider_pending_bonus(t_menu_state *menu,
+					t_rect slider, int option, int32_t mx);
+int				config_mouse_select_tuning_row_bonus(t_game *game,
+					t_menu_layout layout, int option, int32_t mx);
+int				config_mouse_select_tuning_option_bonus(t_game *game,
+					t_menu_layout layout, int32_t mx, int32_t my);
+bool			config_mouse_handle_section_click_bonus(t_game *game,
+					int section);
+void			config_mouse_reset_slider_drag_state_bonus(t_menu_state *menu);
+void			config_mouse_find_slider_drag_target_bonus(t_menu_state *menu,
+					t_menu_layout layout, int32_t mx, int32_t my);
+int				config_mouse_slider_percent_from_mouse_bonus(t_rect slider,
+					int32_t mx);
+bool			config_mouse_prepare_slider_drag_bonus(t_game *game,
+					t_menu_layout *layout, int32_t mx, int32_t my);
+bool			config_mouse_apply_slider_drag_bonus(t_game *game,
+					t_menu_layout layout, t_menu_state *menu, int32_t mx);
+void			config_controls_select(t_game *game, int delta);
+void			config_controls_set_column(t_game *game, int delta);
+void			config_controls_begin_rebind(t_game *game);
+void			config_controls_cancel_rebind(t_game *game);
+bool			config_controls_handle_key(t_game *game,
+					mlx_key_data_t keydata);
+int				config_controls_selected(t_game *game);
+int				config_controls_column(t_game *game);
+int				config_controls_rebind_column(t_game *game);
+bool			config_controls_is_rebinding(t_game *game);
+const char		*config_controls_key_text(t_game *game, int index);
+const char		*config_controls_controller_text(t_game *game, int index);
+bool			*config_toggle_value_ptr_bonus(t_game *game, int index);
+const char		*config_toggle_name_bonus(int index);
+void			config_toggle_option_value_bonus(t_game *game, int index,
+					bool *toggle);
+bool			config_ensure_label_image_bonus(t_game *game,
+					mlx_image_t **label, const char *text);
+bool			config_ensure_label_group_text_bonus(t_game *game,
+					mlx_image_t **labels, const char **text, size_t count);
+bool			config_ensure_control_headers_bonus(t_game *game,
+					t_menu_state *menu);
+bool			config_update_control_key_labels_bonus(t_game *game,
+					t_menu_state *menu);
+void			config_write_prefixed_int_bonus(char *buffer,
+					size_t buffer_size, const char *prefix, int value);
+const char		*config_key_name_literal_nav_bonus(keys_t key);
+const char		*config_key_name_literal_modifiers_bonus(keys_t key);
+const char		*config_key_name_literal_punct_bonus(keys_t key);
+const char		*config_key_name_alnum_or_fn_bonus(keys_t key, char *buffer,
+					size_t buffer_size);
+const char		*config_key_name_from_mlx_bonus(keys_t key, char *buffer,
+					size_t buffer_size);
+void			config_cancel_rebind_and_redraw_bonus(t_game *game);
+bool			config_handle_controller_rebind_key_bonus(t_game *game,
+					mlx_key_data_t keydata);
+bool			config_is_invalid_rebind_target_bonus(const t_menu_state *menu);
+bool			config_handle_keyboard_rebind_cancel_bonus(t_game *game,
+					t_menu_state *menu, mlx_key_data_t keydata);
 
 #endif

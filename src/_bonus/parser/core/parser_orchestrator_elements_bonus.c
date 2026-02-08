@@ -32,8 +32,8 @@ static int	parse_element_line_bonus(char *line, t_cub_data *data)
 {
 	if (is_link_identifier_bonus(line))
 		return (parse_link_line_bonus(line, data));
-	if (is_texture_identifier(line))
-		return (parse_texture_line(line, &data->textures));
+	if (IS_TEXTURE_IDENTIFIER(line))
+		return (PARSE_TEXTURE_LINE(line, &data->textures));
 	if (is_color_identifier(line))
 		return (parse_color_line(line, &data->floor_color,
 				&data->ceiling_color));

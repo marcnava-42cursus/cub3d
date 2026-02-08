@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 12:27:31 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:16:31 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ void		build_wall_bounds(t_rayhit *rayhit, float center,
 void		safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/
-bool		world_map_init(t_game *game);
-void		set_map_overlay_visible(t_game *game, bool visible);
-void		toggle_map_overlay(t_game *game);
+// bool		world_map_init(t_game *game);
+// void		set_map_overlay_visible(t_game *game, bool visible);
+// void		toggle_map_overlay(t_game *game);
 
 /*---------------------------- PLAYER.C --------------------------------------*/
 void		render_player_overlay(t_game *game);

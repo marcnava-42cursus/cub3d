@@ -12,6 +12,7 @@
 
 #include "logic.h"
 #include "structs.h"
+#include <math.h>
 
 /**
  * @brief Moves the player forward or backward in the direction they're facing
