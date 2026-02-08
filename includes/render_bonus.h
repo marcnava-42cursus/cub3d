@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:52:19 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 13:52:50 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 14:10:41 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,25 +147,10 @@ float		fog_factor(float distance);
 uint32_t	rgba_color_lerp(uint32_t color_1, uint32_t color_2, float t);
 
 /*-------------------------------- ABSORB.C ----------------------------------*/
-void		render_absorb_effects(t_game *game, t_rayhit *rh, float center,
-				float dist_to_proj_plane);
+void		render_absorb_effects(t_game *game, t_rayhit *rh);
 
 /*------------------------------ LIVING_BLOCK.C ------------------------------*/
 void		render_living_block(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
-
-/*----------------------------- MAP_2D_BONUS.C -------------------------------*/
-// void		render_player_dynamic_bonus(t_game *game);
-// void		render_map_2d_initial_bonus(t_game *game);
-
-// // Texture loading
-// int			load_map_textures(t_game *game);
-// void		free_map_textures(t_game *game);
-
-// // 2D Map rendering
-// void		render_map_2d(t_game *game);
-// void		render_map_2d_initial(t_game *game);
-// void		render_map_tiles_static(t_game *game);
-// void		render_player_dynamic(t_game *game);
 
 #endif

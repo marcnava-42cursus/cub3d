@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 11:50:53 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 14:10:16 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ static void	lerp(t_game *game, int x_y_packed[3], float x_offset_step[3],
 	}
 }
 
-void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
-		float dist_to_proj_plane)
+void	render_absorb_effects(t_game *game, t_rayhit *rh)
 {
 	unsigned int	i;
 	int				c_cell[2];

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 10:51:39 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 12:47:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 14:11:09 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ void	render_walls(t_game *game, t_rayhit *rayhits, float center,
 		render_wall_fill(game, &rayhits[i], i);
 		i++;
 	}
-	render_absorb_effects(game, rayhits, center, dist_to_proj_plane);
+	render_absorb_effects(game, rayhits);
 }
