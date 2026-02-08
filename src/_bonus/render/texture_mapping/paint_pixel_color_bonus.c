@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   paint_pixel_color_bonus.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 12:48:29 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 03:23:24 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:31:49 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

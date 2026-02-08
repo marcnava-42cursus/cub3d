@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 22:08:22 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:27:31 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void		pack_x_ys(int x, int y[2], int x_y_packed[3]);
 float		normalize_angle(float angle);
 void		build_wall_bounds(t_rayhit *rayhit, float center,
 				float dist_to_proj_plane);
-float		clamp(float value, float min, float max);
 void		safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color);
 
 /*--------------------------------- WINDOW.C ---------------------------------*/

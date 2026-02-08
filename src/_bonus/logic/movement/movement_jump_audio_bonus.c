@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_bonus.c                                   :+:      :+:    :+:   */
+/*   movement_jump_audio_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 02:47:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:31:39 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic_bonus.h"
 #include "render.h"
-
 #include "structs.h"
-
 #include "parser.h"
 
 void	refresh_key_states_bonus(t_game *game);

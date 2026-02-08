@@ -6,13 +6,14 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 17:59:43 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:28:26 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic.h"
 #include "structs.h"
 #include "render.h"
+#include "utils.h"
 
 /**
  * @brief Rotates the player's camera view left or right

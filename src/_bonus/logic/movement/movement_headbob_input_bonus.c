@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement_bonus.c                                   :+:      :+:    :+:   */
+/*   movement_headbob_input_bonus.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 12:01:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 02:47:18 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:31:35 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "logic_bonus.h"
 #include "render.h"
-
 #include "structs.h"
-
 #include "parser.h"
 
-void	refresh_key_states_bonus(t_game *game);
 void	key_hook_bonus(mlx_key_data_t keydata, void *param);
 void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
 void	cursor_hook_bonus(double xpos, double ypos, void *param);
 bool	process_mouse_rotation_bonus(t_game *game);
-
-#define HEADBOB_AMPLITUDE 5.0f
-#define HEADBOB_SPEED 14.0f
-#define HEADBOB_RECOVER_SPEED 30.0f
-#define JUMP_PITCH_IMPULSE 700.0f
-#define GRAVITY 2200.0f
 
 float	compute_headbob_offset(t_game *game, bool is_moving,
 				bool step_started, float previous_offset)

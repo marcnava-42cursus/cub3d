@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 23:31:07 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 22:06:12 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:19:09 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,6 @@ void	build_wall_bounds(t_rayhit *rayhit, float center,
 			/ rayhit->distance);
 	rayhit->wall_bounds[0] = center - slice_height / 2;
 	rayhit->wall_bounds[1] = center + slice_height / 2;
-}
-
-float	clamp(float value, float min, float max)
-{
-	if (value < min)
-		value = min;
-	if (value > max)
-		value = max;
-	return (value);
 }
 
 void	safe_put_pixel(mlx_image_t *img, int x, int y, unsigned int color)

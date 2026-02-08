@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   orb_audio_bonus.c                                  :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 12:27:08 by marcnava         ###   ########.fr       */
+/*   Created: 2026/02/08 12:19:35 by marcnava          #+#    #+#             */
+/*   Updated: 2026/02/08 12:19:49 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniaudio_implementation.h"
-#include "audio.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-t_bonus_audio	*audio_ctx(void)
-{
-	static t_bonus_audio	audio_ctx;
+float	clamp(float value, float min, float max);
 
-	return (&audio_ctx);
-}
+#endif

@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/08 05:45:57 by marcnava         ###   ########.fr        #
+#    Updated: 2026/02/08 12:34:44 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ LIBPATH		:=	libs
 
 # Folders
 BONUS		:=	$(SRCPATH)/_bonus
+UTILS		:=	$(SRCPATH)/utils
 PARSER		:=	$(SRCPATH)/parser
 LOGIC		:=	$(SRCPATH)/logic
 RENDER		:=	$(SRCPATH)/render
@@ -77,6 +78,9 @@ MLX			:=	$(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 # Source files
 SRCS		:=	$(SRCPATH)/cub3d.c
+
+SRCS		+=	\
+				$(UTILS)/utils.c
 
 SRCS		+=	\
 				$(PARSER)/core/parser_init.c \
@@ -128,6 +132,9 @@ SRCS		+=	\
 
 # Bonus source files
 SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c
+
+SRCS_BONUS	+=	\
+				$(UTILS)/utils.c
 
 SRCS_BONUS	+=	\
 				$(PARSER)/map/map_parser.c \
@@ -286,6 +293,8 @@ SRCS_BONUS	+=	\
 
 SRCS_BONUS	+=	\
 				$(AUDIO)/orb_audio_bonus.c \
+				$(AUDIO)/orb_audio_system_bonus.c \
+				$(AUDIO)/orb_audio_orb_bonus.c \
 				$(AUDIO)/orb_distance_audio_bonus.c \
 				$(AUDIO)/step_audio_bonus.c
 

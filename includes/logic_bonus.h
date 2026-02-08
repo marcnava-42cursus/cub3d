@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 04:20:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 12:31:22 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@
 # include "MLX42/MLX42_Int.h"
 # include "logic.h"
 # include "config_bonus.h"
+# include "utils.h"
 
 # define EPSILON 0.01f
+
+# define HEADBOB_AMPLITUDE 5.0f
+# define HEADBOB_SPEED 14.0f
+# define HEADBOB_RECOVER_SPEED 30.0f
+# define JUMP_PITCH_IMPULSE 700.0f
+# define GRAVITY 2200.0f
 
 struct	s_controller_bind;
 typedef struct s_cub_data				t_cub_data;
@@ -34,7 +41,6 @@ bool	collides_with_wall_bonus(t_game *game, float x, float y);
 void	attempt_move_bonus(t_game *game, float step_x, float step_y);
 
 // Input bonus
-void	refresh_key_states_bonus(t_game *game);
 void	key_hook_bonus(mlx_key_data_t keydata, void *param);
 void	mouse_hook_bonus(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
