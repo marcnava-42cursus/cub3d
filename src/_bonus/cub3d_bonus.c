@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 21:40:33 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 03:53:23 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ static void render_loop(void *param)
 		game->mlx->delta_time);
 	update_orb_anims(&game->orb, &game->cub_data.effects,
 		game->mlx->delta_time);
-	update_door_anims(&game->orb, &game->cub_data.effects,
-		game->mlx->delta_time);
+	update_door_anims(&game->cub_data, &game->orb, game->mlx->delta_time);
 	render_double_buffer(game);
 	/*
 	if (orb_moved && game->map_2d_visible)

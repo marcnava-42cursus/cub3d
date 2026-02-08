@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 22:50:13 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 03:12:30 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,39 @@ static int	get_effects_tex_x(t_effects *effects, t_rayhit *rayhit)
 	return ((int)(wall_x * (float)frame_width));
 }
 
-static void	interpolate_wall_with_absorb(t_game *game, unsigned int x,
-		int y[2], float x_offset_step[3], float fog)
+static void	pack_x_offset_step(float x_offset_step[3], t_rayhit *rayhit,
+		t_game *game, int x_y_packed[3])
+{
+	int				y[2];
+
+	y[0] = rayhit->wall_bounds[0];
+	y[1] = rayhit->wall_bounds[1];
+	if (y[0] < 0)
+		y[0] = 0;
+	if (y[1] >= (int)game->double_buffer[NEXT]->height)
+		y[1] = (int)game->double_buffer[NEXT]->height - 1;
+	if (y[0] >= y[1])
+		return ;
+	x_offset_step[0] = (float)get_effects_tex_x(&game->cub_data.effects,
+			rayhit);
+	x_offset_step[2] = (float)game->cub_data.effects.absorb_atlas
+		.frame_height / (float)(rayhit->wall_bounds[1] - rayhit->wall_bounds[0]
+			+ 1);
+	x_offset_step[1] = (y[0] - rayhit->wall_bounds[0]) * x_offset_step[2];
+	pack_x_ys(0, y, x_y_packed);
+}
+
+static void	interpolate_wall_with_absorb(t_game *game, int x_y_packed[3],
+		float x_offset_step[3], float fog)
 {
 	int			pixel[2];
 	int			tex_coord[2];
 	uint32_t	pixel_color;
 
-	pixel[X] = (int)x;
-	pixel[Y] = y[0];
+	pixel[X] = x_y_packed[0];
+	pixel[Y] = x_y_packed[1];
 	tex_coord[X] = (int)x_offset_step[0];
-	while (pixel[Y] <= y[1])
+	while (pixel[Y] <= x_y_packed[2])
 	{
 		tex_coord[Y] = (int)x_offset_step[1];
 		pixel_color = get_pixel_color_bonus(
@@ -58,9 +80,8 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 	unsigned int	i;
 	int				c_cell[2];
 	t_orientation	c_face;
-	float			fog;
 	float			x_offset_step[3];
-	int				y[2];
+	int				x_y_packed[3];
 
 	i = 0;
 	c_cell[X] = rh[game->double_buffer[NEXT]->width / 2].cell[X];
@@ -75,22 +96,10 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 			&& rh[i].face == c_face && rh[game->double_buffer[NEXT]->width / 2]
 			.distance <= 300.0f)
 		{
-			y[0] = rh[i].wall_bounds[0];
-			y[1] = rh[i].wall_bounds[1];
-			if (y[0] < 0)
-				y[0] = 0;
-			if (y[1] >= (int)game->double_buffer[NEXT]->height)
-				y[1] = (int)game->double_buffer[NEXT]->height - 1;
-			if (y[0] >= y[1])
-				return ;
-			x_offset_step[0] = (float)get_effects_tex_x(&game->cub_data.effects,
-					&rh[i]);
-			fog = fog_factor(rh[i].distance);
-			x_offset_step[2] = (float)game->cub_data.effects.absorb_atlas
-				.frame_height / (float)(rh[i].wall_bounds[1]
-					- rh[i].wall_bounds[0] + 1);
-			x_offset_step[1] = (y[0] - rh[i].wall_bounds[0]) * x_offset_step[2];
-			interpolate_wall_with_absorb(game, i, y, x_offset_step, fog);
+			pack_x_offset_step(x_offset_step, &rh[i], game, x_y_packed);
+			x_y_packed[0] = i;
+			interpolate_wall_with_absorb(game, x_y_packed, x_offset_step,
+				fog_factor(rh[i].distance));
 		}
 		i++;
 	}

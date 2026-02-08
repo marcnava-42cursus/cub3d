@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:27:46 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 01:10:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 04:16:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,12 @@ bool	window_init_bonus(t_game *game)
 	game->double_buffer[CURRENT] = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
 	mlx_image_to_window(game->mlx, game->double_buffer[CURRENT], 0, 0);
-	/*
-	if (!world_map_init_bonus(game))
-		return (false);
-	*/
 	minimap_init(game);
 	return (true);
 }
 
 void	window_free_bonus(t_game *game)
 {
-	/* free_map_textures_bonus(game); */
-	/*
-	if (game->map_layer)
-		mlx_delete_image(game->mlx, game->map_layer);
-	if (game->player_layer)
-		mlx_delete_image(game->mlx, game->player_layer);
-	*/
 	if (game->double_buffer[NEXT])
 		mlx_delete_image(game->mlx, game->double_buffer[NEXT]);
 	if (game->double_buffer[CURRENT])

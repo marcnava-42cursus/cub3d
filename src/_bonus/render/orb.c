@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 02:23:03 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 04:14:15 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 		int screen_x, int sprite_width, float cam_y, t_rayhit *rayhits,
 		float tex_pos_start, float tex_step)
 {
-	int			tex_x;
 	float		fog;
 	float		x_offset_step[3];
 	int			frame_width;
@@ -76,21 +75,21 @@ static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
 	frame_width = game->cub_data.effects.orb_atlas.frame_width;
 	while (x_y_packed[0] < draw_x[1])
 	{
-		tex_x = (int)((x_y_packed[0] - (screen_x - sprite_width / 2))
+		x_offset_step[0] = ((x_y_packed[0] - (screen_x - sprite_width / 2))
 				* frame_width / sprite_width) - 1;
-		tex_x = (int)clamp((float)tex_x, 0.0f, (float)(frame_width - 1));
+		x_offset_step[0] = clamp(x_offset_step[0], 0.0f,
+				(float)(frame_width - 1));
 		if (cam_y < rayhits[x_y_packed[0]].distance)
 		{
 			fog = fog_factor(cam_y);
-			x_offset_step[0] = (float)tex_x;
 			x_offset_step[1] = tex_pos_start;
 			x_offset_step[2] = tex_step;
 			pack_game_tex_and_anim_for_vert_line(game,
-					game->cub_data.effects.orb_atlas.xpm,
-					&game->cub_data.effects.orb_anims[
-					game->cub_data.effects.current_orb_anim], &vert_line);
+				game->cub_data.effects.orb_atlas.xpm,
+				&game->cub_data.effects.orb_anims[
+				game->cub_data.effects.current_orb_anim], &vert_line);
 			pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step, fog,
-					&vert_line);
+				&vert_line);
 			paint_vertical_line_texture_bonus(&vert_line);
 		}
 		x_y_packed[0]++;

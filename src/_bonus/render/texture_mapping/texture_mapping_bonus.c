@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 02:13:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:41:43 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 {
 	xpm_t		*texture;
 	float		x_offset_step[3];
-	float		fog;
 	int			x_y_packed[3];
 	t_vert_line	vert_line;
 
@@ -115,9 +114,9 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 	texture = get_x_offset_step(x_offset_step, x_y_packed, game, rayhit);
 	if (!texture)
 		return ;
-	fog = fog_factor(rayhit->distance);
 	pack_game_tex_and_anim_for_vert_line(game, texture, NULL, &vert_line);
-	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step, fog, &vert_line);
+	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step,
+		fog_factor(rayhit->distance), &vert_line);
 	if (texture == game->cub_data.block.atlas.xpm)
 	{
 		vert_line.anim = &game->cub_data.block.anims[ANIM_BREATHE];

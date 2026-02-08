@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:39:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 21:29:56 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 03:29:22 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	init_eating_anim(t_effects *effects)
 
 static void	init_open_anims(t_effects *effects)
 {
-	static const unsigned int	opened_frames[1] = {0};
+	static const unsigned int	opened_frames[1] = {8};
 	static const unsigned int	opened_holds[1] = {1};
 	static const unsigned int	open_frames[7] = {1, 2, 3, 4, 5, 6, 7};
 	static const unsigned int	open_holds[7] = {1, 1, 1, 1, 1, 1, 1};
@@ -39,7 +39,7 @@ static void	init_open_anims(t_effects *effects)
 
 static void	init_close_anims(t_effects *effects)
 {
-	static const unsigned int	closed_frames[1] = {8};
+	static const unsigned int	closed_frames[1] = {0};
 	static const unsigned int	closed_holds[1] = {1};
 	static const unsigned int	close_frames[7] = {7, 6, 5, 4, 3, 2, 1};
 	static const unsigned int	close_holds[7] = {1, 1, 1, 1, 1, 1, 1};

@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 22:58:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 02:18:22 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:38:20 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,16 @@ static void	render_living_block_creation_line(t_rayhit *rayhit, unsigned int x,
 {
 	xpm_t		*texture;
 	float		x_offset_step[3];
-	float		fog;
-	float		wall_x;
 	int			x_y_packed[3];
 	t_vert_line	vert_line;
 
 	texture = NULL;
 	pack_x_ys(x, rayhit->wall_bounds, x_y_packed);
 	x_offset_step[1] = (float)(x_y_packed[2] - x_y_packed[1] + 1);
-	if (!get_wall_x(rayhit, game, x_y_packed, &wall_x))
+	if (!get_wall_x(rayhit, game, x_y_packed, &x_offset_step[0]))
 		return ;
-	x_offset_step[0] = wall_x * (float)game->cub_data.block.atlas.frame_width;
+	x_offset_step[0] = x_offset_step[0]
+		* (float)game->cub_data.block.atlas.frame_width;
 	if ((rayhit->side == 0 && rayhit->face == NORTH)
 		|| (rayhit->side == 1 && rayhit->face == WEST))
 		x_offset_step[0] = game->cub_data.block.atlas.frame_width
@@ -51,11 +50,10 @@ static void	render_living_block_creation_line(t_rayhit *rayhit, unsigned int x,
 		/ x_offset_step[1];
 	x_offset_step[1] = (rayhit->wall_bounds[0] - x_y_packed[1])
 		* x_offset_step[2];
-	fog = fog_factor(rayhit->distance);
 	pack_game_tex_and_anim_for_vert_line(game, texture,
-			&game->cub_data.block.anims[0], &vert_line);
-	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step, fog,
-			&vert_line);
+		&game->cub_data.block.anims[0], &vert_line);
+	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step,
+		fog_factor(rayhit->distance), &vert_line);
 	paint_vertical_line_texture_bonus(&vert_line);
 }
 
