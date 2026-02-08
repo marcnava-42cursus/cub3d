@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 16:24:48 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 13:53:36 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 14:31:41 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 # define MAX_WINDOW_WIDTH 1920
 # define MAX_WINDOW_HEIGHT 1080
-# define RESOLUTION_SCALE 0.25f
+# define RESOLUTION_SCALE 0.5f // 0.25f
 # define WORLDMAP_TILE_SIZE 64.0f
 # define MAX_TILE_RENDER 20.0f
 

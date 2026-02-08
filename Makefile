@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/08 13:52:39 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/08 14:29:28 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,10 +15,11 @@ NAME		:= cub3D
 NAME_BONUS	:= cub3D_bonus
 
 # Compiler and flags
-CC			:= gcc
-CFLAGS		:= -Wall -Wextra #-Werror
+CC			:= cc
+CFLAGS		:= -Wall -Wextra -Werror
 CFLAGS		+= -MMD -MP
 DFLAGS		:= -g3
+LDFLAGS		:= -no-pie
 SANITIZE	:= -fsanitize=address
 DEBUG		?= 0
 VSYNC		?= off
