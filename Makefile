@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/08 05:45:57 by marcnava         ###   ########.fr        #
+#    Updated: 2026/02/08 12:46:46 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -274,13 +274,13 @@ SRCS_BONUS	+=	\
 				$(RENDER_B)/minimap_player.c \
 				$(RENDER_B)/minimap_walls.c \
 				$(RENDER_B)/minimap_utils.c \
-				$(RENDER_B)/outlines.c \
 				$(RENDER_B)/window_bonus.c \
 				$(RENDER_B)/gameplay_window_bonus.c \
 				$(RENDER_B)/walls_bonus.c \
 				$(RENDER_B)/floors_and_ceilings.c \
 				$(RENDER_B)/door.c \
 				$(RENDER_B)/orb.c \
+				$(RENDER_B)/paint_orb_by_line.c \
 				$(RENDER_B)/fog.c \
 				$(RENDER_B)/absorb.c 
 

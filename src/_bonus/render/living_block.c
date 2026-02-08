@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 22:58:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 02:38:20 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:22:58 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static void	render_living_block_creation_line(t_rayhit *rayhit, unsigned int x,
 		/ x_offset_step[1];
 	x_offset_step[1] = (rayhit->wall_bounds[0] - x_y_packed[1])
 		* x_offset_step[2];
-	pack_game_tex_and_anim_for_vert_line(game, texture,
-		&game->cub_data.block.anims[0], &vert_line);
+	pack_tex_and_anim_for_vert_line(texture, &game->cub_data.block.anims[0],
+		&vert_line);
 	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step,
 		fog_factor(rayhit->distance), &vert_line);
-	paint_vertical_line_texture_bonus(&vert_line);
+	paint_vertical_line_texture_bonus(game, &vert_line);
 }
 
 static void	render_living_block_creations(t_game *game, t_rayhit *rayhit, int i)

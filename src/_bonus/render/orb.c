@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 10:55:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 04:14:15 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:45:49 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ static bool	set_cam_x_y(t_game *game, float cam[2], float ray_dir[4])
 	return (true);
 }
 
-static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
-		int sprite_render_dims[2], float *tex_step,
-		float *tex_pos_start, t_game *game, int screen_x)
+static void	set_draw_y(int draw_y[2], float center, int sprite_render_dims[2],
+		t_game *game)
 {
 	float	sprite_top;
 
@@ -46,11 +45,11 @@ static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
 		draw_y[0] = 0;
 	if (draw_y[1] >= (int)game->double_buffer[NEXT]->height)
 		draw_y[1] = (int)game->double_buffer[NEXT]->height - 1;
-	*tex_step = (float)game->cub_data.effects.orb_atlas.frame_height
-		/ (float)sprite_render_dims[Y];
-	*tex_pos_start = (draw_y[0] - sprite_top) * *tex_step;
-	if (*tex_pos_start < 0.0f)
-		*tex_pos_start = 0.0f;
+}
+
+static void	set_draw_x(int draw_x[2], int screen_x, int sprite_render_dims[2],
+		t_game *game)
+{
 	draw_x[0] = screen_x - sprite_render_dims[X] / 2;
 	draw_x[1] = screen_x + sprite_render_dims[X] / 2;
 	if (draw_x[1] < 0 || draw_x[0] >= (int)game->double_buffer[NEXT]->width)
@@ -61,63 +60,40 @@ static void	set_draw_x_and_draw_y(int draw_x[2], int draw_y[2], float center,
 		draw_x[1] = (int)game->double_buffer[NEXT]->width - 1;
 }
 
-static void	paint_orb_by_line(t_game *game, int draw_x[2], int draw_y[2],
-		int screen_x, int sprite_width, float cam_y, t_rayhit *rayhits,
-		float tex_pos_start, float tex_step)
+static bool	set_sprite_render_dims(int sprite_render_dims[2], t_game *game,
+		float cam_y)
 {
-	float		fog;
-	float		x_offset_step[3];
-	int			frame_width;
-	int			x_y_packed[3];
-	t_vert_line	vert_line;
-
-	pack_x_ys(draw_x[0], draw_y, x_y_packed);
-	frame_width = game->cub_data.effects.orb_atlas.frame_width;
-	while (x_y_packed[0] < draw_x[1])
-	{
-		x_offset_step[0] = ((x_y_packed[0] - (screen_x - sprite_width / 2))
-				* frame_width / sprite_width) - 1;
-		x_offset_step[0] = clamp(x_offset_step[0], 0.0f,
-				(float)(frame_width - 1));
-		if (cam_y < rayhits[x_y_packed[0]].distance)
-		{
-			fog = fog_factor(cam_y);
-			x_offset_step[1] = tex_pos_start;
-			x_offset_step[2] = tex_step;
-			pack_game_tex_and_anim_for_vert_line(game,
-				game->cub_data.effects.orb_atlas.xpm,
-				&game->cub_data.effects.orb_anims[
-				game->cub_data.effects.current_orb_anim], &vert_line);
-			pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step, fog,
-				&vert_line);
-			paint_vertical_line_texture_bonus(&vert_line);
-		}
-		x_y_packed[0]++;
-	}
+	sprite_render_dims[Y] = (game->double_buffer[NEXT]->height / cam_y) / 2;
+	sprite_render_dims[X] = sprite_render_dims[Y];
+	if (sprite_render_dims[Y] == 0)
+		return (false);
+	return (true);
 }
 
 void	render_orb(t_game *game, t_rayhit *rayhits, float center,
 		float ray_dir[4])
 {
-	float	cam[2];
-	int		screen_x;
-	int		sprite_render_dims[2];
-	int		draw_y[2];
-	float	tex_pos_start;
-	float	tex_step;
-	int		draw_x[2];
+	float		cam[2];
+	int			sprite_render_dims[2];
+	int			draw[2][2];
+	float		x_offset_step[3];
+	t_orb_line	orb_line;
 
 	if (!game->orb.active || game->orb.mode == ORB_MODE_PLACE
-		|| !set_cam_x_y(game, cam, ray_dir))
+		|| !set_cam_x_y(game, cam, ray_dir)
+		|| !set_sprite_render_dims(sprite_render_dims, game, cam[Y]))
 		return ;
-	screen_x = (int)(game->double_buffer[NEXT]->width / 2)
+	x_offset_step[0] = (game->double_buffer[NEXT]->width / 2)
 		* (1 + cam[X] / cam[Y]);
-	sprite_render_dims[Y] = (game->double_buffer[NEXT]->height / cam[Y]) / 2;
-	sprite_render_dims[X] = sprite_render_dims[Y];
-	if (sprite_render_dims[Y] == 0)
-		return ;
-	set_draw_x_and_draw_y(draw_x, draw_y, center, sprite_render_dims,
-		&tex_step, &tex_pos_start, game, screen_x);
-	paint_orb_by_line(game, draw_x, draw_y, screen_x, sprite_render_dims[X],
-		cam[Y] * WORLDMAP_TILE_SIZE, rayhits, tex_pos_start, tex_step);
+	set_draw_y(draw[Y], center, sprite_render_dims, game);
+	set_draw_x(draw[X], (int)x_offset_step[0], sprite_render_dims, game);
+	x_offset_step[2] = (float)game->cub_data.effects.orb_atlas.frame_height
+		/ (float)sprite_render_dims[Y];
+	x_offset_step[1] = (draw[Y][0] - (center - sprite_render_dims[Y] * 0.5f))
+		* x_offset_step[2];
+	if (x_offset_step[1] < 0.0f)
+		x_offset_step[1] = 0.0f;
+	pack_x_y_w_to_orb_line(&orb_line, draw[X], draw[Y], sprite_render_dims[X]);
+	pack_cam_y_and_scrn_xos_to_orb_line(&orb_line, cam[Y], x_offset_step);
+	paint_orb_by_line(game, rayhits, &orb_line);
 }
