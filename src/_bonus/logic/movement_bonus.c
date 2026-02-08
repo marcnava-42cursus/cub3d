@@ -28,6 +28,8 @@ bool	process_mouse_rotation_advanced(t_game *game);
 #define HEADBOB_AMPLITUDE 5.0f
 #define HEADBOB_SPEED 14.0f
 #define HEADBOB_RECOVER_SPEED 30.0f
+#define JUMP_PITCH_IMPULSE 700.0f
+#define GRAVITY 2200.0f
 
 static int	is_elevator_char_logic(char c)
 {
@@ -404,6 +406,13 @@ static void	reset_headbob_state(t_game *game)
 	game->headbob_phase = 0.0f;
 }
 
+static void	reset_jump_state(t_game *game)
+{
+	game->jump_active = false;
+	game->jump_offset = 0.0f;
+	game->jump_velocity = 0.0f;
+}
+
 static vertex_t	capture_player_position(t_game *game)
 {
 	vertex_t	snapshot;
@@ -430,12 +439,42 @@ static bool	update_step_audio_and_headbob(t_game *game, bool player_translated,
 			prev_headbob));
 }
 
+static bool	update_jump_pitch(t_game *game, float prev_jump)
+{
+	float	max_pitch;
+
+	if (!game || !game->mlx)
+		return (false);
+	if (game->jump_active)
+	{
+		game->jump_velocity -= GRAVITY * (float)game->mlx->delta_time;
+		game->jump_offset += game->jump_velocity * (float)game->mlx->delta_time;
+		if (game->jump_offset <= 0.0f && game->jump_velocity < 0.0f)
+			reset_jump_state(game);
+	}
+	game->cub_data.player.pitch += game->jump_offset;
+	max_pitch = game->double_buffer[NEXT]->height * 0.35f;
+	game->cub_data.player.pitch = clamp(game->cub_data.player.pitch,
+			-max_pitch, max_pitch);
+	return (fabsf(game->jump_offset - prev_jump) > 0.0001f);
+}
+
+void	trigger_jump_advanced(t_game *game)
+{
+	if (!game || !game->mlx || game->jump_active)
+		return ;
+	game->jump_active = true;
+	game->jump_offset = 0.0f;
+	game->jump_velocity = JUMP_PITCH_IMPULSE;
+}
+
 static bool	handle_modal_loop(t_game *game)
 {
 	if (!is_config_modal_open(game))
 		return (false);
 	audio_step_update_loop(false);
 	reset_headbob_state(game);
+	reset_jump_state(game);
 	controller_handle_rebind_advanced(game);
 	controller_update_advanced(game);
 	update_config_modal(game);
@@ -471,12 +510,13 @@ static bool	throttle_fps_loop(t_game *game, double *next_tick, int *last_limit)
 	return (false);
 }
 
-static bool	update_motion_frame(t_game *game, float prev_headbob)
+static bool	update_motion_frame(t_game *game, float prev_headbob, float prev_jump)
 {
 	bool				moved;
 	bool				mouse_rotated;
 	bool				player_translated;
 	bool				headbob_changed;
+	bool				jump_changed;
 	vertex_t			prev;
 
 	if (game->mlx->delta_time <= 0.0)
@@ -490,7 +530,8 @@ static bool	update_motion_frame(t_game *game, float prev_headbob)
 	player_translated = player_translated_since(game, prev);
 	headbob_changed = update_step_audio_and_headbob(game, player_translated,
 			prev_headbob);
-	if (moved || mouse_rotated || headbob_changed)
+	jump_changed = update_jump_pitch(game, prev_jump);
+	if (moved || mouse_rotated || headbob_changed || jump_changed)
 		handle_movement_rendering(game);
 	return (true);
 }
@@ -512,6 +553,7 @@ void	update_game_loop_advanced(void *param)
 {
 	t_game			*game;
 	float			prev_headbob;
+	float			prev_jump;
 	static double	next_tick = 0.0;
 	static int		last_limit = -2;
 
@@ -519,8 +561,11 @@ void	update_game_loop_advanced(void *param)
 	if (!game || !game->mlx)
 		return ;
 	prev_headbob = game->headbob_offset;
+	prev_jump = game->jump_offset;
 	if (prev_headbob != 0.0f)
 		game->cub_data.player.pitch -= prev_headbob;
+	if (prev_jump != 0.0f)
+		game->cub_data.player.pitch -= prev_jump;
 	if (handle_modal_loop(game))
 		return ;
 	if (throttle_fps_loop(game, &next_tick, &last_limit))
@@ -530,11 +575,12 @@ void	update_game_loop_advanced(void *param)
 	{
 		audio_step_update_loop(false);
 		reset_headbob_state(game);
+		reset_jump_state(game);
 		update_config_modal(game);
 		return ;
 	}
 	fps_overlay_update(game);
-	update_motion_frame(game, prev_headbob);
+	update_motion_frame(game, prev_headbob, prev_jump);
 }
 
 /**
@@ -573,6 +619,9 @@ static void	init_movement_runtime(t_game *game)
 	game->last_mouse_y = 0.0;
 	game->headbob_phase = 0.0f;
 	game->headbob_offset = 0.0f;
+	game->jump_active = false;
+	game->jump_offset = 0.0f;
+	game->jump_velocity = 0.0f;
 	game->last_player_angle = game->cub_data.player.angle;
 	game->last_grid_x = -1;
 	game->last_grid_y = -1;

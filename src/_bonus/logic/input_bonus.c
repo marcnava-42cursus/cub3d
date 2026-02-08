@@ -115,6 +115,11 @@ void	key_hook_advanced(mlx_key_data_t keydata, void *param)
 		return ;
 	if (handle_modal_key_input(game, keydata))
 		return ;
+	if (keydata.key == MLX_KEY_SPACE && keydata.action == MLX_PRESS)
+	{
+		trigger_jump_advanced(game);
+		return ;
+	}
 	/*
 	map_key = game->menu.controls_key_codes[ACTION_MAP];
 	if (keydata.key == map_key && keydata.action == MLX_PRESS)

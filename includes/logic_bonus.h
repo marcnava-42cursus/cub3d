@@ -38,6 +38,7 @@ bool	process_mouse_rotation_advanced(t_game *game);
 // Movement bonus
 void	update_game_loop_advanced(void *param);
 void	init_movement_system_advanced(t_game *game);
+void	trigger_jump_advanced(t_game *game);
 
 // Inventory
 bool	player_has_block(const t_player *player);
@@ -114,6 +115,7 @@ void	cursor_hook_advanced(double xpos, double ypos, void *param);
 bool	process_mouse_rotation_advanced(t_game *game);
 void	update_game_loop_advanced(void *param);
 void	init_movement_system_advanced(t_game *game);
+void	trigger_jump_advanced(t_game *game);
 			
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
