@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "config_bonus.h"
+
 #include "structs.h"
+
 #include "logic_bonus.h"
 
 static void	init_menu_defaults(t_menu_state *menu)

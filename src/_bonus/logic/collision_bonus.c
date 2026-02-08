@@ -11,8 +11,11 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
 #include "logic_bonus.h"
+
 #include <math.h>
+
 #include <string.h>
 
 static bool	is_closed_elevator(t_game *game, char cell)

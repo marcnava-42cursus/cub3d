@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
 #include "logic_bonus.h"
 
 static void	orb_projectile_activate(t_game *game, t_orb_mode mode,

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "logic_bonus.h"
+
 #include "structs.h"
 
 bool	player_has_block(const t_player *player)
