@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 21:19:33 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:13:00 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,56 +82,53 @@ static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
 	return (tex_x);
 }
 
-// Textured vertical line painter - y[0] is start and y[1] is end
-void	paint_vertical_line_texture_bonus(int x_y_packed[3], t_game *game,
-		xpm_t *texture, float x_offset_step[3], float fog, t_anim *anim)
+static xpm_t	*get_x_offset_step(float x_offset_step[3], int x_y_packed[3],
+		t_game *game, t_rayhit *rayhit)
 {
-	int			pixel[2];
-	int			tex_coord[2];
-	uint32_t	pixel_color;
+	xpm_t	*texture;
 
-	pixel[X] = x_y_packed[0];
-	pixel[Y] = x_y_packed[1];
-	tex_coord[X] = (int)x_offset_step[0];
-	while (pixel[Y] <= x_y_packed[2])
-	{
-		tex_coord[Y] = (int)x_offset_step[1];
-		pixel_color = get_pixel_color_bonus(anim, texture, tex_coord);
-		paint_pixel_color_bonus(game, pixel, pixel_color, fog);
-		pixel[Y]++;
-		x_offset_step[1] += x_offset_step[2];
-	}
+	texture = NULL;
+	x_offset_step[2] = (float)(x_y_packed[2] - x_y_packed[1] + 1);
+	if ((unsigned int)x_y_packed[0] >= game->double_buffer[NEXT]->width)
+		return (NULL);
+	if (x_y_packed[1] >= x_y_packed[2])
+		return (NULL);
+	x_offset_step[0] = (float)get_tex_x(game, rayhit, &texture,
+			&x_offset_step[2]);
+	if (x_offset_step[0] == -1.0f)
+		return (NULL);
+	x_offset_step[1] = (rayhit->wall_bounds[0] - x_y_packed[1])
+		* x_offset_step[2];
+	return (texture);
 }
 
 void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 			t_game *game)
 {
-	xpm_t	*texture;
-	float	x_offset_step[3];
-	float	fog;
-	int		x_y_packed[3];
+	xpm_t		*texture;
+	float		x_offset_step[3];
+	float		fog;
+	int			x_y_packed[3];
+	t_vert_line	vert_line;
 
 	pack_x_ys((int)x, rayhit->wall_bounds, x_y_packed);
-	x_offset_step[2] = (float)(x_y_packed[2] - x_y_packed[1] + 1);
-	if ((unsigned int)x_y_packed[0] >= game->double_buffer[NEXT]->width)
+	texture = get_x_offset_step(x_offset_step, x_y_packed, game, rayhit);
+	if (!texture)
 		return ;
-	if (x_y_packed[1] >= x_y_packed[2])
-		return ;
-	x_offset_step[0] = (float)get_tex_x(game, rayhit, &texture,
-			&x_offset_step[2]);
-	if (x_offset_step[0] == -1.0f)
-		return ;
-	x_offset_step[1] = (rayhit->wall_bounds[0] - x_y_packed[1])
-		* x_offset_step[2];
 	fog = fog_factor(rayhit->distance);
+	pack_game_tex_and_anim_for_vert_line(game, texture, NULL, &vert_line);
+	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step, fog, &vert_line);
 	if (texture == game->cub_data.block.atlas.xpm)
-		paint_vertical_line_texture_bonus(x_y_packed, game, texture,
-			x_offset_step, fog, &game->cub_data.block.anims[ANIM_BREATHE]);
+	{
+		vert_line.anim = &game->cub_data.block.anims[ANIM_BREATHE];
+		paint_vertical_line_texture_bonus(&vert_line);
+	}
 	else if (texture == game->cub_data.effects.door_atlas.xpm)
-		paint_vertical_line_texture_bonus(x_y_packed, game, texture,
-			x_offset_step, fog, &game->cub_data.effects.door_anims[
-			game->cub_data.effects.current_door_anim]);
-	else
-		paint_vertical_line_texture_bonus(x_y_packed, game, texture,
-			x_offset_step, fog, NULL);
+	{
+		vert_line.anim = &game->cub_data.effects.door_anims[
+			game->cub_data.effects.current_door_anim];
+		paint_vertical_line_texture_bonus(&vert_line);
+	}
+	else if (game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]] != '3')
+		paint_vertical_line_texture_bonus(&vert_line);
 }

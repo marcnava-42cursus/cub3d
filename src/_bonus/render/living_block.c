@@ -6,46 +6,57 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 22:58:04 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 22:07:14 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 02:18:22 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render_bonus.h"
 
+static bool	get_wall_x(t_rayhit *rayhit, t_game *game, int x_y_packed[3],
+		float *wall_x)
+{
+	if ((unsigned int)x_y_packed[0] >= game->double_buffer[NEXT]->width)
+		return (false);
+	if (x_y_packed[1] >= x_y_packed[2])
+		return (false);
+	if (rayhit->side == 0)
+		*wall_x = rayhit->position.y / WORLDMAP_TILE_SIZE;
+	else
+		*wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
+	*wall_x = *wall_x - floorf(*wall_x);
+	return (true);
+}
+
 static void	render_living_block_creation_line(t_rayhit *rayhit, unsigned int x,
 		t_game *game)
 {
-	xpm_t	*texture;
-	float	x_offset_step[3];
-	float	line_height;
-	float	fog;
-	float	wall_x;
-	int		x_y_packed[3];
+	xpm_t		*texture;
+	float		x_offset_step[3];
+	float		fog;
+	float		wall_x;
+	int			x_y_packed[3];
+	t_vert_line	vert_line;
 
 	texture = NULL;
 	pack_x_ys(x, rayhit->wall_bounds, x_y_packed);
-	line_height = (float)(x_y_packed[2] - x_y_packed[1] + 1);
-	if ((unsigned int)x_y_packed[0] >= game->double_buffer[NEXT]->width)
+	x_offset_step[1] = (float)(x_y_packed[2] - x_y_packed[1] + 1);
+	if (!get_wall_x(rayhit, game, x_y_packed, &wall_x))
 		return ;
-	if (x_y_packed[1] >= x_y_packed[2])
-		return ;
-	if (rayhit->side == 0)
-		wall_x = rayhit->position.y / WORLDMAP_TILE_SIZE;
-	else
-		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
-	wall_x = wall_x - floorf(wall_x);
 	x_offset_step[0] = wall_x * (float)game->cub_data.block.atlas.frame_width;
 	if ((rayhit->side == 0 && rayhit->face == NORTH)
 		|| (rayhit->side == 1 && rayhit->face == WEST))
 		x_offset_step[0] = game->cub_data.block.atlas.frame_width
 			- x_offset_step[0] - 1;
 	x_offset_step[2] = (float)game->cub_data.block.atlas.frame_height
-		/ line_height;
+		/ x_offset_step[1];
 	x_offset_step[1] = (rayhit->wall_bounds[0] - x_y_packed[1])
 		* x_offset_step[2];
 	fog = fog_factor(rayhit->distance);
-	paint_vertical_line_texture_bonus(x_y_packed, game, texture,
-		x_offset_step, fog, &game->cub_data.block.anims[0]);
+	pack_game_tex_and_anim_for_vert_line(game, texture,
+			&game->cub_data.block.anims[0], &vert_line);
+	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step, fog,
+			&vert_line);
+	paint_vertical_line_texture_bonus(&vert_line);
 }
 
 static void	render_living_block_creations(t_game *game, t_rayhit *rayhit, int i)

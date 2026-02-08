@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 17:47:44 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 22:42:06 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:47:26 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static void	get_world_pixel(int pixel[2], t_player *player, int world_pixel[2],
 
 	d[X] = (float)pixel[X] - (MINIMAP_WIDTH / 2.0f);
 	d[Y] = (float)pixel[Y] - (MINIMAP_HEIGHT / 2.0f);
-	world[X] = d[X] * cos_pai - d[Y] * sin_pai;
-	world[Y] = d[X] * sin_pai + d[Y] * cos_pai;
+	world[X] = d[X] * cos_sin_pai[0] - d[Y] * cos_sin_pai[1];
+	world[Y] = d[X] * cos_sin_pai[1] + d[Y] * cos_sin_pai[0];
 	world[X] = player->x + (world[X] / (float)MINIMAP_TILE_SIZE);
 	world[Y] = player->y + (world[Y] / (float)MINIMAP_TILE_SIZE);
 	world_pixel[X] = (int)floorf(world[X]);
@@ -41,8 +41,9 @@ static void	paint_pixel_to_minimap(t_minimap *minimap, int pixel[2],
 		float cos_sin_pai[2])
 {
 	int		world_pixel[2];
+	int		tile_color;
 
-	get_world_pixel(pixel, &minimap->player, world_pixel, cos_sin_pai);
+	get_world_pixel(pixel, minimap->player, world_pixel, cos_sin_pai);
 	if (world_pixel[Y] >= 0 && world_pixel[Y] < minimap->map->height
 		&& minimap->map->grid[world_pixel[Y]]
 		&& world_pixel[X] >= 0 && world_pixel[X]
@@ -61,7 +62,6 @@ void	render_minimap_walls(t_minimap *minimap)
 	int		pixel[2];
 	float	cos_sin_pai[2];
 	float	player_angle_inverse;
-	int		tile_color;
 
 	player_angle_inverse = minimap->player->angle + (FT_PI / 2.0f);
 	cos_sin_pai[0] = cosf(player_angle_inverse);

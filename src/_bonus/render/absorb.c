@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 21:49:21 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:50:13 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,8 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 	int				c_cell[2];
 	t_orientation	c_face;
 	float			fog;
-	float			step;
-	float			tex_offset;
 	float			x_offset_step[3];
 	int				y[2];
-	int				tex_x;
 
 	i = 0;
 	c_cell[X] = rh[game->double_buffer[NEXT]->width / 2].cell[X];

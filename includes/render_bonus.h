@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:52:19 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 22:43:07 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 01:02:45 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@
 // Tile size used for 2D map (world tiles are WORLDMAP_TILE_SIZE)
 # define TILE_SIZE 64
 
+typedef struct	s_vert_line
+{
+	t_game	*game;
+	xpm_t	*texture;
+	t_anim	*anim;
+	int		x_y_packed[3];
+	float	x_offset_step[3];
+	float	fog;
+}	t_vert_line;
+
 /*------------------------------- BRESENHAM.C --------------------------------*/
 void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
 				int color);
@@ -61,9 +71,13 @@ void		bresenham_clipped(vertex_t *start, vertex_t *end, mlx_image_t *img,
 /*------------------------- TEXTURE_MAPPING_BONUS.C --------------------------*/
 void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 				t_game *game);
-void		paint_vertical_line_texture_bonus(int x_y_packed[3], t_game *game,
-				xpm_t *texture, float x_offset_step[3], float fog,
-				t_anim *anim);
+
+/*------------------- PAINT_VERTICAL_TEXTURE_LINE_BONUS.C --------------------*/
+void		pack_coords_and_fog_for_vert_line(int x_y_packed[3],
+				float x_offset_step[3], float fog, t_vert_line *vert_line);
+void		pack_game_tex_and_anim_for_vert_line(t_game *game, xpm_t *texture,
+				t_anim *anim, t_vert_line *vert_line);
+void		paint_vertical_line_texture_bonus(t_vert_line *vert_line);
 
 /*------------------------ PAINT_PIXEL_COLOR_BONUS.C -------------------------*/
 uint32_t	get_pixel_color_bonus(t_anim *anim, xpm_t *texture,
