@@ -131,7 +131,8 @@ SRCS		+=	\
 				$(RENDER)/gameplay_window.c 
 
 # Bonus source files
-SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c
+SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c \
+				$(SRCPATH)/_bonus/cub3d_bonus_init.c
 
 SRCS_BONUS	+=	\
 				$(UTILS)/utils.c

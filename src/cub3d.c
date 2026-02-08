@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 13:44:43 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:58:42 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ int	init_game(t_game *game, const char *map_file)
 void	cleanup_game(t_game *game)
 {
 	if (!game)
-		return;
+		return ;
 	free_cub_data(&game->cub_data);
 	if (game->mlx)
 		window_free(game);
 }
 
-static void render_loop(void *param)
+static void	render_loop(void *param)
 {
 	t_game	*game;
 
-	game= (t_game *)param;
+	game = (t_game *)param;
 	render_double_buffer(game);
 }
 
@@ -64,23 +64,16 @@ int	run_game(t_game *game)
 	return (1);
 }
 
-static int	validate_args(int argc, char **argv)
-{
-	if (argc != 2)
-	{
-		printf("Error:\n\tUsage: %s <map_path>\n", argv[0]);
-		return (0);
-	}
-	return (1);
-}
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_game	game;
 
 	ft_bzero(&game, sizeof(t_game));
-	if (!validate_args(argc, argv))
+	if (argc != 2)
+	{
+		printf("Error:\n\tUsage: %s <map_path>\n", argv[0]);
 		return (1);
+	}
 	if (!init_game(&game, argv[1]))
 	{
 		cleanup_game(&game);
