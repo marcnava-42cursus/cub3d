@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 01:50:36 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 10:14:54 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 11:43:08 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
 	wall_x = wall_x - floorf(wall_x);
 	x_offset_step[2] = (float)((*texture)->texture.height / x_offset_step[1]);
 	x_offset_step[0] = (float)(wall_x * (float)(*texture)->texture.width);
-	if ((rayhit->side == 0 && rayhit->step[X] > 0) ||
-			(rayhit->side == 1 && rayhit->step[Y] < 0 ))
+	if ((rayhit->side == 0 && rayhit->step[X] < 0)
+		|| (rayhit->side == 1 && rayhit->step[Y] > 0))
 		x_offset_step[0] = (float)((*texture)->texture.width - x_offset_step[0]
 				- 1);
 }

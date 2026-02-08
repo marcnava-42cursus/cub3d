@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 00:52:19 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 13:16:23 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:52:50 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,21 @@
 
 typedef struct s_vert_line
 {
-	t_game	*game;
 	xpm_t	*texture;
 	t_anim	*anim;
 	int		x_y_packed[3];
 	float	x_offset_step[3];
 	float	fog;
 }	t_vert_line;
+
+typedef struct s_orb_line
+{
+	int		draw_x[2];
+	int		draw_y[2];
+	int		sprite_width;
+	float	cam_y;
+	float	screen_x_o_s[3];
+}	t_orb_line;
 
 /*------------------------------- BRESENHAM.C --------------------------------*/
 // void		bresenham(vertex_t *start, vertex_t *end, mlx_image_t *img,
@@ -76,9 +84,10 @@ void		render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 /*------------------- PAINT_VERTICAL_TEXTURE_LINE_BONUS.C --------------------*/
 void		pack_coords_and_fog_for_vert_line(int x_y_packed[3],
 				float x_offset_step[3], float fog, t_vert_line *vert_line);
-void		pack_game_tex_and_anim_for_vert_line(t_game *game, xpm_t *texture,
-				t_anim *anim, t_vert_line *vert_line);
-void		paint_vertical_line_texture_bonus(t_vert_line *vert_line);
+void		pack_tex_and_anim_for_vert_line(xpm_t *texture, t_anim *anim,
+				t_vert_line *vert_line);
+void		paint_vertical_line_texture_bonus(t_game *game,
+				t_vert_line *vert_line);
 
 /*------------------------ PAINT_PIXEL_COLOR_BONUS.C -------------------------*/
 uint32_t	get_pixel_color_bonus(t_anim *anim, xpm_t *texture,
@@ -124,6 +133,14 @@ void		render_floors_and_ceilings(t_game *game, float center,
 /*---------------------------------- ORB.C -----------------------------------*/
 void		render_orb(t_game *game, t_rayhit *rayhits, float center,
 				float ray_dir[4]);
+
+/*-------------------------- PAINT_ORB_BY_LINE.C -----------------------------*/
+void		pack_x_y_w_to_orb_line(t_orb_line *orb_line, int draw_x[2],
+				int draw_y[2], int sprite_width);
+void		pack_cam_y_and_scrn_xos_to_orb_line(t_orb_line *orb_line,
+				float cam_y, float screen_x_o_s[3]);
+void		paint_orb_by_line(t_game *game, t_rayhit *rayhits,
+				t_orb_line *orb_line);
 
 /*---------------------------------- FOG.C -----------------------------------*/
 float		fog_factor(float distance);

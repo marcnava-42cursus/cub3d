@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 11:38:38 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 13:22:33 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
 		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
 	tex_x = (int)(wall_x * (float)source_wh[0]);
-	if ((rayhit->side == 0 && rayhit->step[X] < 0) ||
-			(rayhit->side == 1 && rayhit->step[Y] > 0 ))
+	if ((rayhit->side == 0 && rayhit->step[X] < 0)
+		|| (rayhit->side == 1 && rayhit->step[Y] > 0))
 		tex_x = source_wh[0] - tex_x - 1;
 	*original_line_height = (float)source_wh[1] / *original_line_height;
 	return (tex_x);
@@ -114,20 +114,20 @@ void	render_texture_line_bonus(t_rayhit *rayhit, unsigned int x,
 	texture = get_x_offset_step(x_offset_step, x_y_packed, game, rayhit);
 	if (!texture)
 		return ;
-	pack_game_tex_and_anim_for_vert_line(game, texture, NULL, &vert_line);
+	pack_tex_and_anim_for_vert_line(texture, NULL, &vert_line);
 	pack_coords_and_fog_for_vert_line(x_y_packed, x_offset_step,
 		fog_factor(rayhit->distance), &vert_line);
 	if (texture == game->cub_data.block.atlas.xpm)
 	{
 		vert_line.anim = &game->cub_data.block.anims[ANIM_BREATHE];
-		paint_vertical_line_texture_bonus(&vert_line);
+		paint_vertical_line_texture_bonus(game, &vert_line);
 	}
 	else if (texture == game->cub_data.effects.door_atlas.xpm)
 	{
 		vert_line.anim = &game->cub_data.effects.door_anims[
 			game->cub_data.effects.current_door_anim];
-		paint_vertical_line_texture_bonus(&vert_line);
+		paint_vertical_line_texture_bonus(game, &vert_line);
 	}
 	else if (game->cub_data.map.grid[rayhit->cell[Y]][rayhit->cell[X]] != '3')
-		paint_vertical_line_texture_bonus(&vert_line);
+		paint_vertical_line_texture_bonus(game, &vert_line);
 }

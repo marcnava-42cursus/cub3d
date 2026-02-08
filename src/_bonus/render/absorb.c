@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 19:34:24 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/08 03:12:30 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 11:50:53 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static void	pack_x_offset_step(float x_offset_step[3], t_rayhit *rayhit,
 	pack_x_ys(0, y, x_y_packed);
 }
 
-static void	interpolate_wall_with_absorb(t_game *game, int x_y_packed[3],
-		float x_offset_step[3], float fog)
+static void	lerp(t_game *game, int x_y_packed[3], float x_offset_step[3],
+		float fog)
 {
 	int			pixel[2];
 	int			tex_coord[2];
@@ -98,8 +98,7 @@ void	render_absorb_effects(t_game *game, t_rayhit *rh, float center,
 		{
 			pack_x_offset_step(x_offset_step, &rh[i], game, x_y_packed);
 			x_y_packed[0] = i;
-			interpolate_wall_with_absorb(game, x_y_packed, x_offset_step,
-				fog_factor(rh[i].distance));
+			lerp(game, x_y_packed, x_offset_step, fog_factor(rh[i].distance));
 		}
 		i++;
 	}
