@@ -6,7 +6,7 @@
 /*   By: ivmirand <ivmirand@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 10:25:25 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 11:38:38 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ static int	get_tex_x(t_game *game, t_rayhit *rayhit, xpm_t **texture,
 		wall_x = rayhit->position.x / WORLDMAP_TILE_SIZE;
 	wall_x = wall_x - floorf(wall_x);
 	tex_x = (int)(wall_x * (float)source_wh[0]);
-	if ((rayhit->side == 0 && rayhit->step[X] > 0) ||
-			(rayhit->side == 1 && rayhit->step[Y] < 0 ))
+	if ((rayhit->side == 0 && rayhit->step[X] < 0) ||
+			(rayhit->side == 1 && rayhit->step[Y] > 0 ))
 		tex_x = source_wh[0] - tex_x - 1;
 	*original_line_height = (float)source_wh[1] / *original_line_height;
 	return (tex_x);
