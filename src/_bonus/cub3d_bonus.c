@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 01:33:16 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/08 03:53:23 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/08 05:45:49 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,33 @@
 #include <string.h>
 
 // Prototypes for bonus functions
-int		parse_cub_file_advanced(const char *filename, t_cub_data *data);
-/* int	load_map_textures_bonus(t_game *game); */
-void	init_movement_system_advanced(t_game *game);
+int		parse_cub_file_bonus(const char *filename, t_cub_data *data);
+void	init_movement_system_bonus(t_game *game);
 void	set_map_overlay_visible_bonus(t_game *game, bool visible);
 bool	window_init_bonus(t_game *game);
 void	window_free_bonus(t_game *game);
 
-void	cleanup_game_advanced(t_game *game)
+static void	free_bonus_assets_bonus(t_game *game)
+{
+	if (!game)
+		return ;
+	free_player_anims(&game->cub_data.player);
+	free_living_block_anims(&game->cub_data.block);
+	free_effects_anims(&game->cub_data.effects);
+	atlas_free(&game->cub_data.player.hand_atlas);
+	atlas_free(&game->cub_data.player.thumb_atlas);
+	atlas_free(&game->cub_data.block.atlas);
+	atlas_free(&game->cub_data.effects.orb_atlas);
+	atlas_free(&game->cub_data.effects.absorb_atlas);
+	atlas_free(&game->cub_data.effects.door_atlas);
+}
+
+void	cleanup_game_bonus(t_game *game)
 {
 	if (!game)
 		return;
 	audio_system_shutdown();
+	free_bonus_assets_bonus(game);
 
 	// Liberar datos del parser
 	free_cub_data(&game->cub_data);
@@ -36,11 +51,11 @@ void	cleanup_game_advanced(t_game *game)
 		window_free_bonus(game);
 }
 
-int	init_game_advanced(t_game *game, const char *map_file)
+int	init_game_bonus(t_game *game, const char *map_file)
 {
 	config_options_init(game);
 	// Parsear el archivo .cub (Bonus)
-	if (!parse_cub_file_advanced(map_file, &game->cub_data))
+	if (!parse_cub_file_bonus(map_file, &game->cub_data))
 	{
 		printf("Error: Failed to parse map file %s\n", map_file);
 		return (0);
@@ -115,14 +130,14 @@ static void render_loop(void *param)
 	render_double_buffer(game);
 	/*
 	if (orb_moved && game->map_2d_visible)
-		render_player_dynamic_advanced(game);
+		render_player_dynamic_bonus(game);
 	*/
 }
 
-int	run_game_advanced(t_game *game)
+int	run_game_bonus(t_game *game)
 {
     // Inicializar sistema de movimiento (Bonus)
-    init_movement_system_advanced(game);
+    init_movement_system_bonus(game);
 
 	// Iniciar loop de MLX
 	mlx_loop_hook(game->mlx, render_loop, (void *)game);
@@ -147,16 +162,16 @@ int main(int argc, char **argv)
 	ft_memset(&game, 0, sizeof(t_game));
 	if (!validate_args(argc, argv))
 		return (1);
-	if (!init_game_advanced(&game, argv[1]))
+	if (!init_game_bonus(&game, argv[1]))
 	{
-		cleanup_game_advanced(&game);
+		cleanup_game_bonus(&game);
 		return (1);
 	}
-	if (!run_game_advanced(&game))
+	if (!run_game_bonus(&game))
 	{
-		cleanup_game_advanced(&game);
+		cleanup_game_bonus(&game);
 		return (1);
 	}
-	cleanup_game_advanced(&game);
+	cleanup_game_bonus(&game);
 	return (0);
 }

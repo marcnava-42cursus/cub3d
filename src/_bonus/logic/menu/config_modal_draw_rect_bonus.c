@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 05:26:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	color_to_channels(uint32_t color, uint8_t out[4])
 }
 
 static void	gradient_row_channels(uint8_t channels[4], uint8_t colors[2][4],
-				int y, int h)
+			int y, int h)
 {
 	float	t;
 
@@ -71,24 +71,6 @@ static void	gradient_row_channels(uint8_t channels[4], uint8_t colors[2][4],
 	channels[1] = (uint8_t)(colors[0][1] + (colors[1][1] - colors[0][1]) * t);
 	channels[2] = (uint8_t)(colors[0][2] + (colors[1][2] - colors[0][2]) * t);
 	channels[3] = (uint8_t)(colors[0][3] + (colors[1][3] - colors[0][3]) * t);
-}
-
-void	draw_rect(mlx_image_t *img, t_rect rect, uint32_t color)
-{
-	int		yy;
-	uint8_t	*row;
-	uint8_t	channels[4];
-
-	if (!clamp_rect(img, &rect))
-		return ;
-	color_to_channels(color, channels);
-	yy = 0;
-	while (yy < rect.h)
-	{
-		row = &img->pixels[((rect.y + yy) * img->width + rect.x) * 4];
-		fill_row(row, channels, rect.w);
-		yy++;
-	}
 }
 
 void	draw_vertical_gradient(mlx_image_t *img, t_rect rect,

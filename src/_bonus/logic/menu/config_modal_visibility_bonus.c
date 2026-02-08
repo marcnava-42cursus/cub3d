@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 23:54:04 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 05:26:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,4 @@ void	set_config_modal_visible(t_game *game, bool visible)
 		return ;
 	}
 	close_config_modal(game);
-}
-
-void	toggle_config_modal(t_game *game)
-{
-	if (!game)
-		return ;
-	set_config_modal_visible(game, !game->menu.open);
-}
-
-bool	is_config_modal_open(const t_game *game)
-{
-	if (!game)
-		return (false);
-	return (game->menu.open);
 }

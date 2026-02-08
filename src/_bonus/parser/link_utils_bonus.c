@@ -6,14 +6,14 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/12/04 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 03:34:51 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "structs.h"
 
-int	is_link_identifier_advanced(const char *line)
+int	is_link_identifier_bonus(const char *line)
 {
 	char	*trimmed;
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   controller_bonus_state.c                           :+:      :+:    :+:   */
+/*   controller_state_poll_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/29 00:00:00 by marcnava         ###   ########.fr       */
+/*   Created: 2026/02/08 04:35:00 by marcnava          #+#    #+#             */
+/*   Updated: 2026/02/08 04:35:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,26 +56,19 @@ static void	controller_on_connection_change(t_game *game, int jid,
 	}
 }
 
-static bool	controller_try_jid(t_game *game, int jid, GLFWgamepadstate *state)
-{
-	if (!glfwJoystickPresent(jid))
-		return (false);
-	if (!controller_fill_state_from_raw(game, jid, state))
-		return (false);
-	return (true);
-}
-
 static int	controller_find_active_jid(t_game *game, GLFWgamepadstate *state)
 {
 	int	jid;
 
 	jid = game->controller.gamepad_id;
-	if (jid >= 0 && controller_try_jid(game, jid, state))
+	if (jid >= 0 && glfwJoystickPresent(jid)
+		&& controller_fill_state_from_raw(game, jid, state))
 		return (jid);
 	jid = 0;
 	while (jid <= GLFW_JOYSTICK_LAST)
 	{
-		if (controller_try_jid(game, jid, state))
+		if (glfwJoystickPresent(jid)
+			&& controller_fill_state_from_raw(game, jid, state))
 			return (jid);
 		jid++;
 	}
@@ -103,54 +96,4 @@ bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 	game->controller.axis_calibrated = false;
 	controller_reset_runtime_state(game);
 	return (false);
-}
-
-void	controller_calibrate_axes(t_game *game,
-			const GLFWgamepadstate *state)
-{
-	int	i;
-
-	if (!game || !state)
-		return ;
-	i = 0;
-	while (i < CONTROLLER_AXIS_COUNT)
-	{
-		game->controller.axis_center[i] = state->axes[i];
-		i++;
-	}
-	game->controller.axis_calibrated = true;
-}
-
-float	controller_axis_delta(const t_game *game,
-			const GLFWgamepadstate *state, int axis)
-{
-	float	value;
-
-	if (!game || !state || axis < 0 || axis >= CONTROLLER_AXIS_COUNT)
-		return (0.0f);
-	value = state->axes[axis];
-	if (game->controller.axis_calibrated)
-		value -= game->controller.axis_center[axis];
-	return (value);
-}
-
-void	controller_store_raw_state(t_game *game,
-			const GLFWgamepadstate *state)
-{
-	int	i;
-
-	if (!game || !state)
-		return ;
-	i = 0;
-	while (i < CONTROLLER_BUTTON_COUNT)
-	{
-		game->controller.prev_buttons[i] = (state->buttons[i] == GLFW_PRESS);
-		i++;
-	}
-	i = 0;
-	while (i < CONTROLLER_AXIS_COUNT)
-	{
-		game->controller.prev_axes[i] = controller_axis_delta(game, state, i);
-		i++;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 05:26:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,4 @@ const char	*config_controls_key_text(t_game *game, int index)
 		return ("");
 	menu = &game->menu;
 	return (menu->controls_key_text[index]);
-}
-
-const char	*config_controls_controller_text(t_game *game, int index)
-{
-	t_menu_state	*menu;
-
-	if (!game || index < 0 || index >= CONFIG_MODAL_CONTROL_COUNT)
-		return ("");
-	menu = &game->menu;
-	return (menu->controls_controller_text[index]);
 }

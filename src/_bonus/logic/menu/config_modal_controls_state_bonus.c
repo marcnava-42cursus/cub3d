@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "config_bonus.h"
+
 #include "structs.h"
+
 #include "logic_bonus.h"
 
 void	config_controls_select(t_game *game, int delta)

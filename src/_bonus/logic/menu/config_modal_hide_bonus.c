@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "config_bonus.h"
+
 #include "structs.h"
+
 #include "logic_bonus.h"
 
 void	hide_settings_options(t_game *game)

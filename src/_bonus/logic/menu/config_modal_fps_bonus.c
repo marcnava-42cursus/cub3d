@@ -6,46 +6,32 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 23:36:59 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 05:26:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "config_bonus.h"
 #include "structs.h"
 #include "logic_bonus.h"
+
 #include <stdlib.h>
 
 static t_fps_overlay	g_fps;
 
-static void	hide_fps_label(void)
-{
-	if (!g_fps.label)
-		return ;
-	set_image_enabled(g_fps.label, false);
-}
-
-static void	build_fps_text(char *buffer, size_t size, int fps)
-{
-	char	*number;
-
-	if (!buffer || size == 0)
-		return ;
-	number = ft_itoa(fps);
-	if (!number)
-		return ;
-	buffer[0] = '\0';
-	ft_strlcpy(buffer, "FPS: ", size);
-	ft_strlcat(buffer, number, size);
-	free(number);
-}
-
 static void	update_fps_label(t_game *game, double fps)
 {
 	char	text[32];
+	char	*number;
 
 	if (!game || !game->mlx)
 		return ;
-	build_fps_text(text, sizeof(text), (int)(fps + 0.5));
+	number = ft_itoa((int)(fps + 0.5));
+	if (!number)
+		return ;
+	text[0] = '\0';
+	ft_strlcpy(text, "FPS: ", sizeof(text));
+	ft_strlcat(text, number, sizeof(text));
+	free(number);
 	if (g_fps.label)
 		mlx_delete_image(game->mlx, g_fps.label);
 	g_fps.label = mlx_put_string(game->mlx, text, 12, 12);
@@ -62,7 +48,8 @@ static bool	fps_overlay_begin_sample(t_game *game, double *dt)
 		return (false);
 	if (!game->menu.options.show_fps)
 	{
-		hide_fps_label();
+		if (g_fps.label)
+			set_image_enabled(g_fps.label, false);
 		return (false);
 	}
 	now = mlx_get_time();

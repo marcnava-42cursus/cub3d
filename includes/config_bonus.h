@@ -309,6 +309,8 @@ void	render_quit_button(t_game *game);
 void	draw_modal_layout(t_game *game);
 void	draw_settings_options(t_game *game, t_rect panel);
 void	draw_controls_options(t_game *game, t_rect panel);
+void	draw_settings_sliders_bonus(t_game *game, t_menu_layout layout);
+void	config_controls_draw_rows_bonus(t_game *game, t_rect card, int column);
 void	hide_settings_options(t_game *game);
 void	hide_controls_options(t_game *game);
 void	config_options_init(t_game *game);
@@ -323,6 +325,7 @@ int		config_option_slider_raw(t_game *game, int slider);
 void	config_option_set_slider_raw(t_game *game, int slider, int value);
 int		config_fps_limit_value(int index);
 float	config_mouse_sens_value(int raw);
+float	config_quality_scale_value_bonus(int index);
 void	config_option_set_slider_percent(t_game *game, int slider,
 			int percent);
 void	config_option_step_slider(t_game *game, int slider, int delta);
@@ -330,6 +333,42 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 			size_t buffer_size);
 bool	config_option_drag_update(t_game *game, int32_t mx, int32_t my,
 			bool mouse_down);
+void	config_modal_sync_settings_selection_bonus(t_game *game);
+void	config_modal_advance_section_bonus(t_game *game, int delta);
+bool	config_modal_handle_column_navigation_bonus(t_game *game,
+			mlx_key_data_t keydata);
+bool	config_modal_handle_left_column_keys_bonus(t_game *game,
+			bool confirm_pressed, mlx_key_data_t keydata);
+bool	config_modal_handle_controls_tab_keys_bonus(t_game *game,
+			bool confirm_pressed, mlx_key_data_t keydata);
+void	config_mouse_sync_settings_selection_bonus(t_menu_state *menu);
+int		config_mouse_menu_section_from_pos_bonus(t_menu_layout layout,
+			int32_t mx, int32_t my);
+bool	config_mouse_point_in_row_bonus(t_rect area, int row_y,
+			int32_t mx, int32_t my);
+bool	config_mouse_select_controls_row_bonus(t_game *game,
+			t_menu_layout layout, int row, int32_t mx);
+void	config_mouse_select_controls_from_mouse_bonus(t_game *game,
+			t_menu_layout layout, int32_t mx, int32_t my);
+int		config_mouse_select_general_option_bonus(t_menu_state *menu,
+			t_menu_layout layout, int32_t mx, int32_t my);
+int		config_mouse_clear_tuning_slider_selection_bonus(t_game *game,
+			t_menu_state *menu);
+void	config_mouse_set_tuning_slider_pending_bonus(t_menu_state *menu,
+			t_rect slider, int option, int32_t mx);
+int		config_mouse_select_tuning_row_bonus(t_game *game,
+			t_menu_layout layout, int option, int32_t mx);
+int		config_mouse_select_tuning_option_bonus(t_game *game,
+			t_menu_layout layout, int32_t mx, int32_t my);
+bool	config_mouse_handle_section_click_bonus(t_game *game, int section);
+void	config_mouse_reset_slider_drag_state_bonus(t_menu_state *menu);
+void	config_mouse_find_slider_drag_target_bonus(t_menu_state *menu,
+			t_menu_layout layout, int32_t mx, int32_t my);
+int		config_mouse_slider_percent_from_mouse_bonus(t_rect slider, int32_t mx);
+bool	config_mouse_prepare_slider_drag_bonus(t_game *game,
+			t_menu_layout *layout, int32_t mx, int32_t my);
+bool	config_mouse_apply_slider_drag_bonus(t_game *game,
+			t_menu_layout layout, t_menu_state *menu, int32_t mx);
 void	config_controls_select(t_game *game, int delta);
 void	config_controls_set_column(t_game *game, int delta);
 void	config_controls_begin_rebind(t_game *game);
@@ -341,5 +380,29 @@ int		config_controls_rebind_column(t_game *game);
 bool	config_controls_is_rebinding(t_game *game);
 const char	*config_controls_key_text(t_game *game, int index);
 const char	*config_controls_controller_text(t_game *game, int index);
+bool	*config_toggle_value_ptr_bonus(t_game *game, int index);
+const char	*config_toggle_name_bonus(int index);
+void	config_toggle_option_value_bonus(t_game *game, int index, bool *toggle);
+bool	config_ensure_label_image_bonus(t_game *game, mlx_image_t **label,
+			const char *text);
+bool	config_ensure_label_group_text_bonus(t_game *game, mlx_image_t **labels,
+			const char **text, size_t count);
+bool	config_ensure_control_headers_bonus(t_game *game, t_menu_state *menu);
+bool	config_update_control_key_labels_bonus(t_game *game, t_menu_state *menu);
+void	config_write_prefixed_int_bonus(char *buffer, size_t buffer_size,
+			const char *prefix, int value);
+const char	*config_key_name_literal_nav_bonus(keys_t key);
+const char	*config_key_name_literal_modifiers_bonus(keys_t key);
+const char	*config_key_name_literal_punct_bonus(keys_t key);
+const char	*config_key_name_alnum_or_fn_bonus(keys_t key, char *buffer,
+			size_t buffer_size);
+const char	*config_key_name_from_mlx_bonus(keys_t key, char *buffer,
+			size_t buffer_size);
+void	config_cancel_rebind_and_redraw_bonus(t_game *game);
+bool	config_handle_controller_rebind_key_bonus(t_game *game,
+			mlx_key_data_t keydata);
+bool	config_is_invalid_rebind_target_bonus(const t_menu_state *menu);
+bool	config_handle_keyboard_rebind_cancel_bonus(t_game *game,
+			t_menu_state *menu, mlx_key_data_t keydata);
 
 #endif

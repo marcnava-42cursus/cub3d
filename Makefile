@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/08 04:19:12 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/08 05:45:57 by marcnava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -144,55 +144,114 @@ SRCS_BONUS	+=	\
 				$(PARSER)/utils/debug_text_utils.c \
 				$(PARSER_B)/core/parser_init_bonus.c \
 				$(PARSER_B)/core/parser_orchestrator_bonus.c \
+				$(PARSER_B)/core/parser_orchestrator_links_bonus.c \
+				$(PARSER_B)/core/parser_orchestrator_elements_bonus.c \
 				$(PARSER_B)/link_utils_bonus.c \
-				$(PARSER_B)/floor_manager_bonus.c \
+				$(PARSER_B)/floor/floor_path_tokens_bonus.c \
+				$(PARSER_B)/floor/floor_path_normalize_bonus.c \
+				$(PARSER_B)/floor/floor_elevator_collect_bonus.c \
+				$(PARSER_B)/floor/floor_elevator_register_bonus.c \
+				$(PARSER_B)/floor/floor_node_bonus.c \
+				$(PARSER_B)/floor/floor_parse_bonus.c \
+				$(PARSER_B)/floor/floor_neighbors_bonus.c \
+				$(PARSER_B)/floor/floor_graph_bonus.c \
 				$(PARSER_B)/core/parser_finder_bonus.c \
-				$(PARSER_B)/map/map_validation_bonus.c \
-				$(PARSER_B)/textures/texture_parser_bonus.c \
-				$(PARSER_B)/utils/memory_utils_bonus.c
+				$(PARSER_B)/map/map_validation_chars_bonus.c \
+				$(PARSER_B)/map/map_validation_closed_bonus.c \
+				$(PARSER_B)/map/map_validation_line_bonus.c \
+				$(PARSER_B)/map/map_validation_player_bonus.c \
+					$(PARSER_B)/textures/texture_identifier_bonus.c \
+					$(PARSER_B)/textures/texture_parse_bonus.c \
+					$(PARSER_B)/utils/memory_data_bonus.c \
+					$(PARSER_B)/utils/memory_data_helpers_bonus.c \
+					$(PARSER_B)/utils/memory_lines_bonus.c
 
 SRCS_BONUS	+=	\
 				$(LOGIC)/texture_loader.c \
 				$(LOGIC)/timing.c \
-				$(LOGIC)/move.c \
-				$(LOGIC)/rotation.c \
-				$(LOGIC_B)/movement_bonus.c \
-				$(LOGIC_B)/input_bonus.c \
-				$(LOGIC_B)/controller_bonus.c \
-				$(LOGIC_B)/controller_bonus_state.c \
-				$(LOGIC_B)/controller_bonus_actions.c \
-				$(LOGIC_B)/controller_bonus_menu.c \
-				$(LOGIC_B)/controller_bonus_bindings.c \
-				$(LOGIC_B)/inventory.c \
-				$(LOGIC_B)/menu/config_modal_draw_base_bonus.c \
-				$(LOGIC_B)/menu/config_modal_draw_rect_bonus.c \
-				$(LOGIC_B)/menu/config_modal_border_bonus.c \
-				$(LOGIC_B)/menu/config_modal_icons_bonus.c \
-				$(LOGIC_B)/menu/config_modal_layout_calc_bonus.c \
-				$(LOGIC_B)/menu/config_modal_layout_draw_bonus.c \
-				$(LOGIC_B)/menu/config_modal_labels_bonus.c \
-				$(LOGIC_B)/menu/config_modal_cards_bonus.c \
-				$(LOGIC_B)/menu/config_modal_hide_bonus.c \
-				$(LOGIC_B)/menu/config_modal_settings_draw_bonus.c \
-				$(LOGIC_B)/menu/config_modal_controls_draw_bonus.c \
-				$(LOGIC_B)/menu/config_modal_visibility_bonus.c \
-				$(LOGIC_B)/menu/config_modal_events_bonus.c \
-				$(LOGIC_B)/menu/config_modal_options_values_bonus.c \
-				$(LOGIC_B)/menu/config_modal_options_math_bonus.c \
-				$(LOGIC_B)/menu/config_modal_options_actions_bonus.c \
-				$(LOGIC_B)/menu/config_modal_options_mouse_bonus.c \
-				$(LOGIC_B)/menu/config_modal_options_init_bonus.c \
-				$(LOGIC_B)/menu/config_modal_fps_bonus.c \
-				$(LOGIC_B)/menu/config_modal_crosshair_bonus.c \
-				$(LOGIC_B)/menu/config_modal_controls_state_bonus.c \
-				$(LOGIC_B)/menu/config_modal_controls_rebind_bonus.c \
-				$(LOGIC_B)/menu/config_modal_controls_query_bonus.c \
-				$(LOGIC_B)/state_swapper.c \
-				$(LOGIC_B)/animations/orb_projectile_state_bonus.c \
-				$(LOGIC_B)/animations/orb_projectile_ghost_bonus.c \
-				$(LOGIC_B)/animations/orb_projectile_spawn_bonus.c \
-				$(LOGIC_B)/animations/orb_projectile_update_bonus.c \
-				$(LOGIC_B)/collision_bonus.c
+					$(LOGIC)/move.c \
+					$(LOGIC)/rotation.c \
+					$(LOGIC_B)/movement/movement_elevator_helpers_bonus.c \
+					$(LOGIC_B)/movement/movement_floor_switch_bonus.c \
+					$(LOGIC_B)/movement/movement_headbob_input_bonus.c \
+					$(LOGIC_B)/movement/movement_player_controls_bonus.c \
+					$(LOGIC_B)/movement/movement_runtime_state_bonus.c \
+					$(LOGIC_B)/movement/movement_jump_audio_bonus.c \
+					$(LOGIC_B)/movement/movement_update_loop_bonus.c \
+					$(LOGIC_B)/movement/movement_init_hooks_bonus.c \
+						$(LOGIC_B)/input/input_refresh_bonus.c \
+						$(LOGIC_B)/input/input_key_hook_bonus.c \
+						$(LOGIC_B)/input/input_mouse_bonus.c \
+					$(LOGIC_B)/controller/controller_core_values_bonus.c \
+					$(LOGIC_B)/controller/controller_core_update_runtime_bonus.c \
+					$(LOGIC_B)/controller/controller_core_update_flow_bonus.c \
+					$(LOGIC_B)/controller/controller_state_poll_bonus.c \
+					$(LOGIC_B)/controller/controller_state_axes_bonus.c \
+					$(LOGIC_B)/controller/controller_actions_bonus.c \
+					$(LOGIC_B)/controller/controller_menu_navigation_bonus.c \
+					$(LOGIC_B)/controller/controller_menu_update_bonus.c \
+					$(LOGIC_B)/controller/controller_bindings_text_bonus.c \
+					$(LOGIC_B)/controller/controller_bindings_setup_bonus.c \
+					$(LOGIC_B)/controller/controller_bindings_detect_bonus.c \
+					$(LOGIC_B)/controller/controller_bindings_rebind_bonus.c \
+					$(LOGIC_B)/inventory.c \
+					$(LOGIC_B)/menu/config_modal_draw_base_bonus.c \
+					$(LOGIC_B)/menu/config_modal_draw_rect_bonus.c \
+					$(LOGIC_B)/menu/config_modal_draw_rect_fill_bonus.c \
+					$(LOGIC_B)/menu/config_modal_border_bonus.c \
+					$(LOGIC_B)/menu/config_modal_icons_bonus.c \
+					$(LOGIC_B)/menu/config_modal_layout_calc_bonus.c \
+					$(LOGIC_B)/menu/config_modal_layout_calc_shared_bonus.c \
+					$(LOGIC_B)/menu/config_modal_layout_draw_bonus.c \
+					$(LOGIC_B)/menu/config_modal_labels_bonus.c \
+					$(LOGIC_B)/menu/config_modal_labels_settings_bonus.c \
+					$(LOGIC_B)/menu/config_modal_labels_controls_keys_bonus.c \
+					$(LOGIC_B)/menu/config_modal_labels_controls_bonus.c \
+					$(LOGIC_B)/menu/config_modal_cards_bonus.c \
+					$(LOGIC_B)/menu/config_modal_cards_slider_bonus.c \
+					$(LOGIC_B)/menu/config_modal_hide_bonus.c \
+					$(LOGIC_B)/menu/config_modal_settings_draw_bonus.c \
+					$(LOGIC_B)/menu/config_modal_settings_draw_sliders_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_draw_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_draw_rows_bonus.c \
+						$(LOGIC_B)/menu/config_modal_visibility_bonus.c \
+						$(LOGIC_B)/menu/config_modal_visibility_state_bonus.c \
+						$(LOGIC_B)/menu/config_modal_events_bonus.c \
+						$(LOGIC_B)/menu/config_modal_events_nav_bonus.c \
+						$(LOGIC_B)/menu/config_modal_events_quit_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_values_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_values_limits_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_values_text_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_math_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_actions_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_actions_select_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_actions_toggle_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_mouse_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_mouse_controls_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_mouse_tuning_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_mouse_drag_helpers_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_mouse_drag_bonus.c \
+						$(LOGIC_B)/menu/config_modal_options_init_bonus.c \
+					$(LOGIC_B)/menu/config_modal_fps_bonus.c \
+					$(LOGIC_B)/menu/config_modal_crosshair_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_state_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_rebind_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_rebind_helpers_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_rebind_keyname_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_query_bonus.c \
+					$(LOGIC_B)/menu/config_modal_controls_query_text_bonus.c \
+					$(LOGIC_B)/state/state_swapper_api_bonus.c \
+					$(LOGIC_B)/state/state_swapper_target_bonus.c \
+					$(LOGIC_B)/state/state_swapper_target_attach_bonus.c \
+					$(LOGIC_B)/state/state_swapper_place_bonus.c \
+					$(LOGIC_B)/state/state_swapper_take_bonus.c \
+					$(LOGIC_B)/state/state_swapper_create_bonus.c \
+						$(LOGIC_B)/animations/orb_projectile_state_bonus.c \
+						$(LOGIC_B)/animations/orb_projectile_ghost_bonus.c \
+						$(LOGIC_B)/animations/orb_projectile_spawn_bonus.c \
+						$(LOGIC_B)/animations/orb_projectile_arrival_bonus.c \
+						$(LOGIC_B)/animations/orb_projectile_update_bonus.c \
+						$(LOGIC_B)/collision_bonus.c
 
 SRCS_BONUS	+=	\
 				$(RENDER)/texture_atlas.c \
@@ -275,12 +334,12 @@ export ASCII_ART
 .DEFAULT_GOAL := all
 
 all:
-	@echo "$$ASCII_ART"
+	@printf "$$ASCII_ART\n"
 	@$(MAKE) _compile BONUS_FLAG=""
 
 bonus:
-	@echo "$$ASCII_ART"
-	@echo "$(YELLOW)$(BOLD)>>> BONUS MODE ENABLED <<<$(RESET)"
+	@printf "$$ASCII_ART\n"
+	@printf "$(YELLOW)$(BOLD)>>> BONUS MODE ENABLED <<<$(RESET)\n"
 	@$(MAKE) _compile_bonus BONUS_FLAG="-D BONUS"
 
 _compile:	libft libmlx $(OBJS)

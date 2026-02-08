@@ -6,27 +6,13 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/02/07 23:33:28 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 05:40:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "config_bonus.h"
 #include "structs.h"
 #include "logic_bonus.h"
-
-static void	write_int_value(char *buffer, size_t buffer_size, int value)
-{
-	char	*num;
-
-	if (!buffer || buffer_size == 0)
-		return ;
-	buffer[0] = '\0';
-	num = ft_itoa(value);
-	if (!num)
-		return ;
-	ft_strlcpy(buffer, num, buffer_size);
-	free(num);
-}
 
 static int	clamp_value(int value, int min, int max)
 {
@@ -35,41 +21,6 @@ static int	clamp_value(int value, int min, int max)
 	if (value > max)
 		return (max);
 	return (value);
-}
-
-static float	config_quality_scale(int index)
-{
-	static const float	scales[CONFIG_QUALITY_COUNT] = {
-		0.2f, 0.35f, 0.42f, 0.5f
-	};
-
-	index = clamp_value(index, 0, CONFIG_QUALITY_COUNT - 1);
-	return (scales[index]);
-}
-
-static const char	*config_quality_label(int index)
-{
-	static const char	*labels[CONFIG_QUALITY_COUNT] = {
-		"LOW", "MEDIUM", "HIGH", "ULTRA"
-	};
-
-	index = clamp_value(index, 0, CONFIG_QUALITY_COUNT - 1);
-	return (labels[index]);
-}
-
-int	config_fps_limit_value(int index)
-{
-	static const int	limits[6] = {10, 30, 60, 120, 240, -1};
-
-	if (index < 0 || index >= (int)(sizeof(limits) / sizeof(limits[0])))
-		return (-1);
-	return (limits[index]);
-}
-
-float	config_mouse_sens_value(int raw)
-{
-	raw = clamp_value(raw, 1, 100);
-	return ((float)raw / 10000.0f);
 }
 
 int	config_option_slider_raw(t_game *game, int slider)
@@ -101,7 +52,7 @@ void	config_option_set_slider_raw(t_game *game, int slider, int value)
 	{
 		value = clamp_value(value, 0, CONFIG_QUALITY_COUNT - 1);
 		game->menu.options.quality_index = value;
-		game->resolution_scale = config_quality_scale(value);
+		game->resolution_scale = config_quality_scale_value_bonus(value);
 	}
 }
 
@@ -127,8 +78,7 @@ int	config_option_slider_value(t_game *game, int index)
 	int	slider;
 	int	value;
 
-	if (index < CONFIG_MODAL_TOGGLE_COUNT
-		|| index >= CONFIG_MODAL_OPTION_COUNT)
+	if (index < CONFIG_MODAL_TOGGLE_COUNT || index >= CONFIG_MODAL_OPTION_COUNT)
 		return (0);
 	slider = index - CONFIG_MODAL_TOGGLE_COUNT;
 	value = config_option_slider_raw(game, slider);
@@ -140,49 +90,4 @@ int	config_option_slider_value(t_game *game, int index)
 		return ((value * 100) / (CONFIG_QUALITY_COUNT - 1));
 	}
 	return (((value - 1) * 100) / 99);
-}
-
-static bool	write_fps_limit_text(char *buffer, size_t size, int raw)
-{
-	int	value;
-
-	raw = clamp_value(raw, 0, 5);
-	value = config_fps_limit_value(raw);
-	if (value < 0)
-		ft_strlcpy(buffer, "UNLIMITED", size);
-	else
-		write_int_value(buffer, size, value);
-	return (true);
-}
-
-static bool	write_slider_special_text(int slider, int raw, char *buffer,
-				size_t buffer_size)
-{
-	if (slider == CONFIG_SLIDER_FPS_LIMIT)
-		return (write_fps_limit_text(buffer, buffer_size, raw));
-	if (slider == CONFIG_SLIDER_QUALITY)
-	{
-		ft_strlcpy(buffer, config_quality_label(raw), buffer_size);
-		return (true);
-	}
-	return (false);
-}
-
-void	config_option_slider_text(t_game *game, int index, char *buffer,
-				size_t buffer_size)
-{
-	int	slider;
-	int	raw;
-
-	if (!buffer || buffer_size == 0)
-		return ;
-	buffer[0] = '\0';
-	if (index < CONFIG_MODAL_TOGGLE_COUNT
-		|| index >= CONFIG_MODAL_OPTION_COUNT)
-		return ;
-	slider = index - CONFIG_MODAL_TOGGLE_COUNT;
-	raw = config_option_slider_raw(game, slider);
-	if (write_slider_special_text(slider, raw, buffer, buffer_size))
-		return ;
-	write_int_value(buffer, buffer_size, raw);
 }

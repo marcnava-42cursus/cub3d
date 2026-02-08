@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   controller_bonus_actions.c                         :+:      :+:    :+:   */
+/*   controller_actions_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/29 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/29 00:00:00 by marcnava         ###   ########.fr       */
+/*   Created: 2026/02/08 04:35:00 by marcnava          #+#    #+#             */
+/*   Updated: 2026/02/08 04:35:00 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool	controller_action_active(t_game *game, int action,
 }
 
 bool	controller_action_pressed(t_game *game,
-				const GLFWgamepadstate *state, int action)
+			const GLFWgamepadstate *state, int action)
 {
 	const t_controller_bind	*bind;
 
@@ -73,7 +73,7 @@ bool	controller_action_pressed(t_game *game,
 }
 
 bool	controller_button_pressed(t_game *game,
-				const GLFWgamepadstate *state, int button)
+			const GLFWgamepadstate *state, int button)
 {
 	if (!game || !state)
 		return (false);

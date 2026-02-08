@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "config_bonus.h"
+
 #include "structs.h"
+
 #include "logic_bonus.h"
 
 static void	draw_menu_item_border(mlx_image_t *img, t_rect item)

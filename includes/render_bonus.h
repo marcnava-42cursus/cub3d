@@ -137,9 +137,9 @@ void		render_living_block(t_game *game, t_rayhit *rayhits, float center,
 				float dist_to_proj_plane);
 
 /*----------------------------- MAP_2D_BONUS.C -------------------------------*/
-void		render_player_dynamic_advanced(t_game *game);
-void		render_map_2d_initial_advanced(t_game *game);
-void		toggle_map_overlay_advanced(t_game *game);
+void		render_player_dynamic_bonus(t_game *game);
+void		render_map_2d_initial_bonus(t_game *game);
+void		toggle_map_overlay_bonus(t_game *game);
 
 // Texture loading
 int			load_map_textures(t_game *game);
