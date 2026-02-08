@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/31 16:20:20 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:36:59 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,58 @@ static void	update_fps_label(t_game *game, double fps)
 	set_image_enabled(g_fps.label, true);
 }
 
-void	fps_overlay_update(t_game *game)
+static bool	fps_overlay_begin_sample(t_game *game, double *dt)
 {
 	double	now;
-	double	dt;
-	double	fps;
-	int		limit;
 
 	if (!game || !game->mlx)
-		return ;
+		return (false);
 	if (!game->menu.options.show_fps)
 	{
 		hide_fps_label();
-		return ;
+		return (false);
 	}
 	now = mlx_get_time();
 	if (g_fps.last_time <= 0.0)
 		g_fps.last_time = now;
-	dt = now - g_fps.last_time;
+	*dt = now - g_fps.last_time;
 	g_fps.last_time = now;
-	if (dt <= 0.0)
-		return ;
+	return (*dt > 0.0);
+}
+
+static bool	fps_overlay_needs_refresh(double dt)
+{
 	g_fps.accum += dt;
 	g_fps.frames += 1;
-	if (g_fps.accum < 0.25)
-	{
-		if (g_fps.label)
-			set_image_enabled(g_fps.label, true);
-		return ;
-	}
+	if (g_fps.accum >= 0.25)
+		return (true);
+	if (g_fps.label)
+		set_image_enabled(g_fps.label, true);
+	return (false);
+}
+
+static double	fps_overlay_clamped_value(t_game *game)
+{
+	double	fps;
+	int		limit;
+
 	fps = (double)g_fps.frames / g_fps.accum;
-	{
-		limit = config_fps_limit_value(game->menu.options.fps_limit_index);
-		if (limit > 0 && fps > (double)limit)
-			fps = (double)limit;
-	}
+	limit = config_fps_limit_value(game->menu.options.fps_limit_index);
+	if (limit > 0 && fps > (double)limit)
+		return ((double)limit);
+	return (fps);
+}
+
+void	fps_overlay_update(t_game *game)
+{
+	double	dt;
+	double	fps;
+
+	if (!fps_overlay_begin_sample(game, &dt))
+		return ;
+	if (!fps_overlay_needs_refresh(dt))
+		return ;
+	fps = fps_overlay_clamped_value(game);
 	g_fps.accum = 0.0;
 	g_fps.frames = 0;
 	update_fps_label(game, fps);

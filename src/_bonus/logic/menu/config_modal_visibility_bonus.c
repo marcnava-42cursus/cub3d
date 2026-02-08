@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/06 15:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:54:04 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,19 @@ static void	clear_input_state(t_game *game)
 	game->last_mouse_y = 0.0;
 }
 
-void	set_config_modal_visible(t_game *game, bool visible)
+static void	open_config_modal(t_game *game)
 {
-	if (!game || !game->mlx)
-		return ;
-	if (visible)
-	{
-		if (!ensure_config_modal_ready(game))
-			return ;
-		set_image_enabled(game->menu.modal, true);
-		game->menu.open = true;
-		clear_input_state(game);
-		if (game->mlx->window && glfwRawMouseMotionSupported())
-			glfwSetInputMode((GLFWwindow *)game->mlx->window,
-				GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
-		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
-		return ;
-	}
+	set_image_enabled(game->menu.modal, true);
+	game->menu.open = true;
+	clear_input_state(game);
+	if (game->mlx->window && glfwRawMouseMotionSupported())
+		glfwSetInputMode((GLFWwindow *)game->mlx->window,
+			GLFW_RAW_MOUSE_MOTION, GLFW_FALSE);
+	mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
+}
+
+static void	close_config_modal(t_game *game)
+{
 	game->menu.open = false;
 	clear_input_state(game);
 	disable_label_group(game->menu.labels.menu_entries,
@@ -90,6 +86,20 @@ void	set_config_modal_visible(t_game *game, bool visible)
 	if (game->mlx->window && glfwRawMouseMotionSupported())
 		glfwSetInputMode((GLFWwindow *)game->mlx->window,
 			GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+}
+
+void	set_config_modal_visible(t_game *game, bool visible)
+{
+	if (!game || !game->mlx)
+		return ;
+	if (visible)
+	{
+		if (!ensure_config_modal_ready(game))
+			return ;
+		open_config_modal(game);
+		return ;
+	}
+	close_config_modal(game);
 }
 
 void	toggle_config_modal(t_game *game)

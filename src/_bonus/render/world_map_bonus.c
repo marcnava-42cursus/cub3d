@@ -12,9 +12,13 @@
 
 #include "render.h"
 
+#if 0
+/*
 // Prototype for the bonus renderer
 void	render_map_2d_initial_advanced(t_game *game);
+*/
 
+/*
 static void	clear_image(mlx_image_t *img)
 {
 	uint32_t	i;
@@ -26,7 +30,9 @@ static void	clear_image(mlx_image_t *img)
 		i++;
 	}
 }
+*/
 
+/*
 static void	map_set_image_enabled(mlx_image_t *img, bool enabled)
 {
 	size_t	i;
@@ -40,9 +46,12 @@ static void	map_set_image_enabled(mlx_image_t *img, bool enabled)
 		i++;
 	}
 }
+*/
 
 bool	world_map_init_bonus(t_game *game)
 {
+	(void)game;
+	/*
 	game->map_layer = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
 			MAX_WINDOW_HEIGHT);
 	game->player_layer = mlx_new_image(game->mlx, MAX_WINDOW_WIDTH,
@@ -61,11 +70,16 @@ bool	world_map_init_bonus(t_game *game)
 	game->key_right_pressed = false;
 	game->map_layer_attached = false;
 	game->player_layer_attached = false;
+	*/
 	return (true);
 }
 
 void	set_map_overlay_visible_bonus(t_game *game, bool visible)
 {
+	(void)visible;
+	if (!game)
+		return ;
+	/*
 	if (!game || !game->mlx)
 		return ;
 	if (visible)
@@ -90,11 +104,17 @@ void	set_map_overlay_visible_bonus(t_game *game, bool visible)
 		map_set_image_enabled(game->player_layer, false);
 	}
 	game->map_2d_visible = visible;
+	*/
+	game->map_2d_visible = false;
 }
 
 void	toggle_map_overlay_advanced(t_game *game)
 {
 	if (!game)
 		return ;
+	/*
 	set_map_overlay_visible_bonus(game, !game->map_2d_visible);
+	*/
+	game->map_2d_visible = false;
 }
+#endif

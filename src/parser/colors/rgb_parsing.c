@@ -6,29 +6,38 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 01:55:00 by marcnava          #+#    #+#             */
-/*   Updated: 2025/11/03 19:07:06 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:32:34 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "structs.h"
 
+static int	check_token_symbols(char **token, int *sign)
+{
+	if (!token || !*token || !sign)
+		return (-1);
+	while (**token == ' ' || **token == '\t')
+		(*token)++;
+	if (**token == '\0')
+		return (-1);
+	*sign = 1;
+	if (**token == '+' || **token == '-')
+	{
+		if (**token == '-')
+			*sign = -1;
+		(*token)++;
+	}
+	return (0);
+}
+
 static int	convert_token_to_int(char *token)
 {
 	long	value;
 	int		sign;
 
-	while (*token == ' ' || *token == '\t')
-		token++;
-	if (*token == '\0')
+	if (check_token_symbols(&token, &sign) != 0)
 		return (-1);
-	sign = 1;
-	if (*token == '+' || *token == '-')
-	{
-		if (*token == '-')
-			sign = -1;
-		token++;
-	}
 	if (!ft_isdigit(*token))
 		return (-1);
 	value = 0;

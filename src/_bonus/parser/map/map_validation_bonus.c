@@ -29,6 +29,45 @@ static int	is_walkable_char_advanced(char c)
 	return (0);
 }
 
+static int	is_walkable_on_border_advanced(t_map *map, int x, int y)
+{
+	if (y == 0 || y == map->height - 1)
+		return (1);
+	if (x == 0 || x == (int)ft_strlen(map->grid[y]) - 1)
+		return (1);
+	return (0);
+}
+
+static int	has_adjacent_space_advanced(t_map *map, int x, int y)
+{
+	if (y > 0 && x < (int)ft_strlen(map->grid[y - 1])
+		&& map->grid[y - 1][x] == ' ')
+		return (1);
+	if (y < map->height - 1 && x < (int)ft_strlen(map->grid[y + 1])
+		&& map->grid[y + 1][x] == ' ')
+		return (1);
+	if (x > 0 && map->grid[y][x - 1] == ' ')
+		return (1);
+	if (x < (int)ft_strlen(map->grid[y]) - 1 && map->grid[y][x + 1] == ' ')
+		return (1);
+	return (0);
+}
+
+static int	validate_walkable_cell_advanced(t_map *map, char c, int x, int y)
+{
+	if (is_walkable_on_border_advanced(map, x, y))
+	{
+		printf("Error: Walkable char '%c' at border (%d, %d)\n", c, x, y);
+		return (0);
+	}
+	if (has_adjacent_space_advanced(map, x, y))
+	{
+		printf("Error: Map not closed - space adjacent at (%d, %d)\n", x, y);
+		return (0);
+	}
+	return (1);
+}
+
 int	validate_map_characters_advanced(t_map *map)
 {
 	int	x;
@@ -67,52 +106,9 @@ int	is_map_closed_advanced(t_map *map)
 		while (x < (int)ft_strlen(map->grid[y]))
 		{
 			c = map->grid[y][x];
-			if (is_walkable_char_advanced(c))
-			{
-				if (y == 0 || y == map->height - 1)
-				{
-					printf("Error: Walkable char '%c' at border (%d, %d)\n",
-						c, x, y);
-					return (0);
-				}
-				if (x == 0 || x == (int)ft_strlen(map->grid[y]) - 1)
-				{
-					printf("Error: Walkable char '%c' at border (%d, %d)\n",
-						c, x, y);
-					return (0);
-				}
-				if (y > 0 && x < (int)ft_strlen(map->grid[y - 1])
-					&& map->grid[y - 1][x] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
-					return (0);
-				}
-				if (y < map->height - 1 && x < (int)ft_strlen(map->grid[y + 1])
-					&& map->grid[y + 1][x] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
-					return (0);
-				}
-				if (x > 0 && map->grid[y][x - 1] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
-					return (0);
-				}
-				if (x < (int)ft_strlen(map->grid[y]) - 1
-					&& map->grid[y][x + 1] == ' ')
-				{
-					printf(
-						"Error: Map not closed - space adjacent at (%d, %d)\n",
-						x, y);
-					return (0);
-				}
-			}
+			if (is_walkable_char_advanced(c)
+				&& !validate_walkable_cell_advanced(map, c, x, y))
+				return (0);
 			x++;
 		}
 		y++;
@@ -125,49 +121,67 @@ static int	is_player_char(char c)
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
+static void	set_player_from_cell_advanced(t_player *player, char orientation,
+				int x, int y)
+{
+	player->x = (float)x + 0.5f;
+	player->y = (float)y + 0.5f;
+	player->orientation = orientation;
+	if (orientation == NORTH)
+		player->angle = 3.0f * (FT_PI / 2);
+	else if (orientation == SOUTH)
+		player->angle = FT_PI / 2;
+	else if (orientation == EAST)
+		player->angle = 0.0f;
+	else if (orientation == WEST)
+		player->angle = FT_PI;
+}
+
+static void	reset_missing_player_advanced(t_player *player)
+{
+	player->x = -1.0f;
+	player->y = -1.0f;
+	player->angle = 0.0f;
+	player->orientation = 0;
+}
+
+static int	process_player_cell_advanced(t_map *map, t_player *player,
+		int *found, int pos[2])
+{
+	if (!is_player_char(map->grid[pos[1]][pos[0]]))
+		return (1);
+	if (*found)
+	{
+		printf("Error: Multiple player positions found\n");
+		return (0);
+	}
+	set_player_from_cell_advanced(player, map->grid[pos[1]][pos[0]],
+		pos[0], pos[1]);
+	map->grid[pos[1]][pos[0]] = '0';
+	*found = 1;
+	return (1);
+}
+
 int	find_player_position_advanced(t_map *map, t_player *player)
 {
-	int		x;
-	int		y;
-	int		found;
+	int	pos[2];
+	int	found;
 
 	found = 0;
-	y = -1;
-	while (++y < map->height)
+	pos[1] = 0;
+	while (pos[1] < map->height)
 	{
-		x = -1;
-		while (++x < (int)ft_strlen(map->grid[y]))
+		pos[0] = 0;
+		while (pos[0] < (int)ft_strlen(map->grid[pos[1]]))
 		{
-			if (is_player_char(map->grid[y][x]))
-			{
-				if (found)
-				{
-					printf("Error: Multiple player positions found\n");
-					return (0);
-				}
-				player->x = (float)x + 0.5f;
-				player->y = (float)y + 0.5f;
-				player->orientation = map->grid[y][x];
-				if (player->orientation == NORTH)
-					player->angle = 3.0f * (FT_PI / 2);
-				else if (player->orientation == SOUTH)
-					player->angle = FT_PI / 2;
-				else if (player->orientation == EAST)
-					player->angle = 0.0f;
-				else if (player->orientation == WEST)
-					player->angle = FT_PI;
-				map->grid[y][x] = '0';
-				found = 1;
-			}
+			if (!process_player_cell_advanced(map, player, &found, pos))
+				return (0);
+			pos[0]++;
 		}
+		pos[1]++;
 	}
 	if (!found)
-	{
-		player->x = -1.0f;
-		player->y = -1.0f;
-		player->angle = 0.0f;
-		player->orientation = 0;
-	}
+		reset_missing_player_advanced(player);
 	return (1);
 }
 

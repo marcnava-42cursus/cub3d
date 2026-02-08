@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/06 17:36:00 by ivmirand          #+#    #+#             */
-/*   Updated: 2026/02/07 03:04:00 by ivmirand         ###   ########.fr       */
+/*   Updated: 2026/02/07 22:18:35 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string.h>
 #include "libft.h"
 
+/*
 // Modal constants matching config_modal_bonus.c
 # define MAP_MODAL_BG_COLOR 0x000000C0
 # define MAP_MODAL_PANEL_COLOR 0x1E1E1ED0
@@ -578,3 +579,4 @@ void	render_player_dynamic_advanced(t_game *game)
 		orb_projectile_mark_drawn(game);
 	}
 }
+*/

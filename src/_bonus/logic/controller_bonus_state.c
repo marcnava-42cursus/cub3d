@@ -31,7 +31,7 @@ static void	controller_reset_runtime_state(t_game *game)
 }
 
 static bool	controller_fill_state_from_raw(t_game *game, int jid,
-			GLFWgamepadstate *state)
+				GLFWgamepadstate *state)
 {
 	if (!game || !state)
 		return (false);
@@ -44,6 +44,44 @@ static bool	controller_fill_state_from_raw(t_game *game, int jid,
 	return (true);
 }
 
+static void	controller_on_connection_change(t_game *game, int jid,
+				int prev_jid, bool was_connected)
+{
+	if (!game)
+		return ;
+	if (!was_connected || jid != prev_jid)
+	{
+		game->controller.axis_calibrated = false;
+		controller_reset_runtime_state(game);
+	}
+}
+
+static bool	controller_try_jid(t_game *game, int jid, GLFWgamepadstate *state)
+{
+	if (!glfwJoystickPresent(jid))
+		return (false);
+	if (!controller_fill_state_from_raw(game, jid, state))
+		return (false);
+	return (true);
+}
+
+static int	controller_find_active_jid(t_game *game, GLFWgamepadstate *state)
+{
+	int	jid;
+
+	jid = game->controller.gamepad_id;
+	if (jid >= 0 && controller_try_jid(game, jid, state))
+		return (jid);
+	jid = 0;
+	while (jid <= GLFW_JOYSTICK_LAST)
+	{
+		if (controller_try_jid(game, jid, state))
+			return (jid);
+		jid++;
+	}
+	return (-1);
+}
+
 bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 {
 	int		jid;
@@ -54,35 +92,11 @@ bool	controller_poll_state(t_game *game, GLFWgamepadstate *state)
 		return (false);
 	prev_jid = game->controller.gamepad_id;
 	was_connected = game->controller.connected;
-	jid = game->controller.gamepad_id;
-	if (jid >= 0 && glfwJoystickPresent(jid))
+	jid = controller_find_active_jid(game, state);
+	if (jid >= 0)
 	{
-		if (controller_fill_state_from_raw(game, jid, state))
-		{
-			if (!was_connected || jid != prev_jid)
-			{
-				game->controller.axis_calibrated = false;
-				controller_reset_runtime_state(game);
-			}
-			return (true);
-		}
-	}
-	jid = 0;
-	while (jid <= GLFW_JOYSTICK_LAST)
-	{
-		if (glfwJoystickPresent(jid))
-		{
-			if (controller_fill_state_from_raw(game, jid, state))
-			{
-				if (!was_connected || jid != prev_jid)
-				{
-					game->controller.axis_calibrated = false;
-					controller_reset_runtime_state(game);
-				}
-				return (true);
-			}
-		}
-		jid++;
+		controller_on_connection_change(game, jid, prev_jid, was_connected);
+		return (true);
 	}
 	game->controller.connected = false;
 	game->controller.gamepad_id = -1;

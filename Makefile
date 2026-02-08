@@ -6,7 +6,7 @@
 #    By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/31 18:17:31 by marcnava          #+#    #+#              #
-#    Updated: 2026/02/07 23:36:09 by ivmirand         ###   ########.fr        #
+#    Updated: 2026/02/08 02:29:19 by ivmirand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,22 +109,22 @@ SRCS		+=	\
 				$(LOGIC)/collision.c \
 				$(LOGIC)/move.c \
 				$(LOGIC)/rotation.c \
-				$(LOGIC)/fps_overlay.c
+				$(LOGIC)/fps_overlay.c \
+				$(LOGIC)/texture_loader.c
 
 SRCS		+=	\
-				$(SRCPATH)/textures/texture_loader.c \
-				$(SRCPATH)/render/background.c \
-				$(SRCPATH)/render/double_buffer.c \
-				$(SRCPATH)/render/raycast.c \
-				$(SRCPATH)/render/rayhit.c \
-				$(SRCPATH)/render/texture_mapping.c \
-				$(SRCPATH)/render/texture_atlas.c \
-				$(SRCPATH)/render/frame_to_image.c \
-				$(SRCPATH)/render/texture_atlas_utils.c \
-				$(SRCPATH)/render/walls.c \
-				$(SRCPATH)/render/window.c \
-				$(SRCPATH)/render/utils.c \
-				$(SRCPATH)/render/gameplay_window.c 
+				$(RENDER)/background.c \
+				$(RENDER)/double_buffer.c \
+				$(RENDER)/raycast.c \
+				$(RENDER)/rayhit.c \
+				$(RENDER)/texture_mapping.c \
+				$(RENDER)/texture_atlas.c \
+				$(RENDER)/frame_to_image.c \
+				$(RENDER)/texture_atlas_utils.c \
+				$(RENDER)/walls.c \
+				$(RENDER)/window.c \
+				$(RENDER)/utils.c \
+				$(RENDER)/gameplay_window.c 
 
 # Bonus source files
 SRCS_BONUS	:=	$(SRCPATH)/_bonus/cub3d_bonus.c
@@ -152,6 +152,7 @@ SRCS_BONUS	+=	\
 				$(PARSER_B)/utils/memory_utils_bonus.c
 
 SRCS_BONUS	+=	\
+				$(LOGIC)/texture_loader.c \
 				$(LOGIC)/timing.c \
 				$(LOGIC)/move.c \
 				$(LOGIC)/rotation.c \
@@ -194,52 +195,55 @@ SRCS_BONUS	+=	\
 				$(LOGIC_B)/collision_bonus.c
 
 SRCS_BONUS	+=	\
-				$(SRCPATH)/_bonus/render/texture_mapping/texture_mapping_bonus.c \
-				$(SRCPATH)/_bonus/render/texture_mapping/paint_pixel_color_bonus.c \
-				$(SRCPATH)/_bonus/render/texture_mapping/paint_vertical_line_texture_bonus.c \
-				$(SRCPATH)/_bonus/render/living_block.c \
-				$(SRCPATH)/textures/texture_loader.c \
-				$(SRCPATH)/render/texture_atlas.c \
-				$(SRCPATH)/render/frame_to_image.c \
-				$(SRCPATH)/render/texture_atlas_utils.c \
-				$(SRCPATH)/render/raycast.c \
-				$(SRCPATH)/render/rayhit.c \
-				$(SRCPATH)/render/background.c \
-				$(SRCPATH)/render/scanline_fill.c \
-				$(SRCPATH)/render/utils.c \
-				$(SRCPATH)/_bonus/render/player.c \
-				$(SRCPATH)/_bonus/render/bresenham_clipped.c \
-				$(SRCPATH)/_bonus/render/double_buffer_bonus.c \
-				$(SRCPATH)/_bonus/render/minimap.c \
-				$(SRCPATH)/_bonus/render/minimap_player_vision.c \
-				$(SRCPATH)/_bonus/render/minimap_walls.c \
-				$(SRCPATH)/_bonus/render/minimap_player.c \
-				$(SRCPATH)/_bonus/render/minimap_utils.c \
-				$(SRCPATH)/_bonus/render/outlines.c \
-				$(SRCPATH)/_bonus/render/window_bonus.c \
-				$(SRCPATH)/_bonus/render/map_2d_bonus.c \
-				$(SRCPATH)/_bonus/render/gameplay_window_bonus.c \
-				$(SRCPATH)/_bonus/render/walls_bonus.c \
-				$(SRCPATH)/_bonus/render/floors_and_ceilings.c \
-				$(SRCPATH)/_bonus/render/door.c \
-				$(SRCPATH)/_bonus/render/orb.c \
-				$(SRCPATH)/_bonus/render/fog.c \
-				$(SRCPATH)/_bonus/render/absorb.c \
-				$(SRCPATH)/_bonus/render/world_map_bonus.c \
-				$(SRCPATH)/_bonus/audio/orb_audio_bonus.c \
-				$(SRCPATH)/_bonus/audio/orb_distance_audio_bonus.c \
-				$(SRCPATH)/_bonus/audio/step_audio_bonus.c \
-				$(SRCPATH)/_bonus/animation/anim.c \
-				$(SRCPATH)/_bonus/animation/anim_utils.c \
-				$(SRCPATH)/_bonus/animation/living_block_anims.c \
-				$(SRCPATH)/_bonus/animation/absorb_anims.c \
-				$(SRCPATH)/_bonus/animation/effects_anims.c \
-				$(SRCPATH)/_bonus/animation/orb_anims.c \
-				$(SRCPATH)/_bonus/animation/door_anims.c \
-				$(SRCPATH)/_bonus/animation/door_anim_states.c \
-				$(SRCPATH)/_bonus/animation/player/player_anim.c \
-				$(SRCPATH)/_bonus/animation/player/player_left_hand_anims.c \
-				$(SRCPATH)/_bonus/animation/player/player_right_hand_anims.c 
+				$(RENDER)/texture_atlas.c \
+				$(RENDER)/frame_to_image.c \
+				$(RENDER)/texture_atlas_utils.c \
+				$(RENDER)/raycast.c \
+				$(RENDER)/rayhit.c \
+				$(RENDER)/background.c \
+				$(RENDER)/scanline_fill.c \
+				$(RENDER)/utils.c \
+				$(RENDER_B)/texture_mapping/texture_mapping_bonus.c \
+				$(RENDER_B)/texture_mapping/paint_pixel_color_bonus.c \
+				$(RENDER_B)/texture_mapping/paint_vertical_line_texture_bonus.c \
+				$(RENDER_B)/living_block.c \
+				$(RENDER_B)/player.c \
+				$(RENDER_B)/bresenham_clipped.c \
+				$(RENDER_B)/double_buffer_bonus.c \
+				$(RENDER_B)/minimap.c \
+				$(RENDER_B)/minimap_player_vision.c \
+				$(RENDER_B)/minimap_player.c \
+				$(RENDER_B)/minimap_walls.c \
+				$(RENDER_B)/minimap_utils.c \
+				$(RENDER_B)/outlines.c \
+				$(RENDER_B)/window_bonus.c \
+				$(RENDER_B)/map_2d_bonus.c \
+				$(RENDER_B)/gameplay_window_bonus.c \
+				$(RENDER_B)/walls_bonus.c \
+				$(RENDER_B)/floors_and_ceilings.c \
+				$(RENDER_B)/door.c \
+				$(RENDER_B)/orb.c \
+				$(RENDER_B)/fog.c \
+				$(RENDER_B)/absorb.c \
+				$(RENDER_B)/world_map_bonus.c
+
+SRCS_BONUS	+=	\
+				$(AUDIO)/orb_audio_bonus.c \
+				$(AUDIO)/orb_distance_audio_bonus.c \
+				$(AUDIO)/step_audio_bonus.c
+
+SRCS_BONUS	+=	\
+				$(ANIMATION)/anim.c \
+				$(ANIMATION)/anim_utils.c \
+				$(ANIMATION)/living_block_anims.c \
+				$(ANIMATION)/absorb_anims.c \
+				$(ANIMATION)/effects_anims.c \
+				$(ANIMATION)/orb_anims.c \
+				$(ANIMATION)/door_anims.c \
+				$(ANIMATION)/door_anim_states.c \
+				$(ANIMATION)/player/player_anim.c \
+				$(ANIMATION)/player/player_left_hand_anims.c \
+				$(ANIMATION)/player/player_right_hand_anims.c 
 
 OBJS		:= $(SRCS:%.c=$(OBJPATH)/%.o)
 OBJS_BONUS	:= $(SRCS_BONUS:%.c=$(OBJPATH_B)/%.o)

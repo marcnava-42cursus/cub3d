@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:35:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:33:28 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,36 @@ int	config_option_slider_value(t_game *game, int index)
 	return (((value - 1) * 100) / 99);
 }
 
+static bool	write_fps_limit_text(char *buffer, size_t size, int raw)
+{
+	int	value;
+
+	raw = clamp_value(raw, 0, 5);
+	value = config_fps_limit_value(raw);
+	if (value < 0)
+		ft_strlcpy(buffer, "UNLIMITED", size);
+	else
+		write_int_value(buffer, size, value);
+	return (true);
+}
+
+static bool	write_slider_special_text(int slider, int raw, char *buffer,
+				size_t buffer_size)
+{
+	if (slider == CONFIG_SLIDER_FPS_LIMIT)
+		return (write_fps_limit_text(buffer, buffer_size, raw));
+	if (slider == CONFIG_SLIDER_QUALITY)
+	{
+		ft_strlcpy(buffer, config_quality_label(raw), buffer_size);
+		return (true);
+	}
+	return (false);
+}
+
 void	config_option_slider_text(t_game *game, int index, char *buffer,
-			size_t buffer_size)
+				size_t buffer_size)
 {
 	int	slider;
-	int	value;
 	int	raw;
 
 	if (!buffer || buffer_size == 0)
@@ -157,23 +182,7 @@ void	config_option_slider_text(t_game *game, int index, char *buffer,
 		return ;
 	slider = index - CONFIG_MODAL_TOGGLE_COUNT;
 	raw = config_option_slider_raw(game, slider);
-	if (slider == CONFIG_SLIDER_FPS_LIMIT)
-	{
-		if (raw < 0)
-			raw = 0;
-		if (raw > 5)
-			raw = 5;
-		value = config_fps_limit_value(raw);
-		if (value < 0)
-			ft_strlcpy(buffer, "UNLIMITED", buffer_size);
-		else
-			write_int_value(buffer, buffer_size, value);
+	if (write_slider_special_text(slider, raw, buffer, buffer_size))
 		return ;
-	}
-	if (slider == CONFIG_SLIDER_QUALITY)
-	{
-		ft_strlcpy(buffer, config_quality_label(raw), buffer_size);
-		return ;
-	}
 	write_int_value(buffer, buffer_size, raw);
 }

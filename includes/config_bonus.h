@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/30 14:10:02 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/08 00:01:18 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ typedef enum e_control_action
 # define CONFIG_MODAL_MENU_ITEM_H 52
 # define CONFIG_MODAL_MENU_ITEM_GAP 12
 # define CONFIG_MODAL_MENU_ITEM_COLOR 0x272727EE
-# define CONFIG_MODAL_MENU_ITEM_ACTIVE_COLOR 0xF2B13444
-# define CONFIG_MODAL_MENU_ITEM_BORDER_COLOR 0x131313FF
+# define CONFIG_MODAL_MENU_ITEM_ACT_COLOR 0xF2B13444
+# define CONFIG_MODAL_MENU_ITEM_BRD_COLOR 0x131313FF
 # define CONFIG_MODAL_CARD_PADDING 18
 # define CONFIG_MODAL_SECTION_TITLE_GAP 26
 # define CONFIG_MODAL_ROW_SPACING 40
@@ -273,6 +273,12 @@ typedef struct s_menu_layout
 	int		slider_w;
 }	t_menu_layout;
 
+typedef struct s_label_cache
+{
+	char	*text;
+	size_t	size;
+}	t_label_cache;
+
 t_rect	rect_make(int x, int y, int w, int h);
 void	set_image_enabled(mlx_image_t *img, bool enabled);
 void	draw_rect(mlx_image_t *img, t_rect rect, uint32_t color);
@@ -286,8 +292,8 @@ void	draw_vertical_gradient(mlx_image_t *img, t_rect rect,
 void	draw_settings_icon(mlx_image_t *img, t_icon icon);
 void	draw_controls_icon(mlx_image_t *img, t_icon icon);
 void	disable_label_group(mlx_image_t **labels, size_t count);
-bool	update_label_text(t_game *game, mlx_image_t **label, char *cache,
-			size_t cache_size, const char *text);
+bool	update_label_text(t_game *game, mlx_image_t **label,
+			t_label_cache cache, const char *text);
 bool	ensure_menu_labels(t_game *game);
 bool	ensure_settings_labels(t_game *game);
 bool	ensure_controls_labels(t_game *game);

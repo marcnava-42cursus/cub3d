@@ -295,6 +295,9 @@ typedef struct s_game
 	float		mouse_sensitivity;
 	float		headbob_phase;
 	float		headbob_offset;
+	bool		jump_active;
+	float		jump_offset;
+	float		jump_velocity;
 
 	// Datos de renderizado (raycast, sprites, etc.)
 	mlx_image_t			*double_buffer[2];

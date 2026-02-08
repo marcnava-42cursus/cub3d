@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 15:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/21 21:10:57 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:35:46 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,8 @@
 #include "structs.h"
 #include "logic_bonus.h"
 
-void	config_options_init(t_game *game)
+static void	init_menu_defaults(t_menu_state *menu)
 {
-	static const keys_t	default_keys[CONFIG_MODAL_CONTROL_COUNT] = {
-		MLX_KEY_W, MLX_KEY_S, MLX_KEY_D, MLX_KEY_A,
-		MLX_KEY_RIGHT, MLX_KEY_LEFT, MLX_KEY_UP, MLX_KEY_DOWN,
-		MLX_KEY_E, MLX_KEY_R, MLX_KEY_ESCAPE, MLX_KEY_M,
-		MLX_KEY_ENTER, MLX_KEY_Q
-	};
-	static const char	*defaults[CONFIG_MODAL_CONTROL_COUNT] = {
-		"W", "S", "D", "A", "RIGHT", "LEFT", "UP", "DOWN",
-		"E", "R", "ESC", "M", "ENTER", "Q"
-	};
-	t_menu_state		*menu;
-	int					i;
-
-	if (!game)
-		return ;
-	menu = &game->menu;
 	menu->options.show_fps = false;
 	menu->options.crosshair = true;
 	menu->options.minimap = true;
@@ -50,6 +34,13 @@ void	config_options_init(t_game *game)
 	menu->controls_rebind_column = -1;
 	menu->controls_rebinding = false;
 	menu->controls_rebind_target = -1;
+}
+
+static void	init_default_controls(t_menu_state *menu,
+				const keys_t *default_keys, const char **defaults)
+{
+	int	i;
+
 	i = 0;
 	while (i < CONFIG_MODAL_CONTROL_COUNT)
 	{
@@ -58,6 +49,27 @@ void	config_options_init(t_game *game)
 			CONFIG_MODAL_KEY_LABEL_LEN);
 		i++;
 	}
+}
+
+void	config_options_init(t_game *game)
+{
+	static const keys_t	default_keys[CONFIG_MODAL_CONTROL_COUNT] = {
+		MLX_KEY_W, MLX_KEY_S, MLX_KEY_D, MLX_KEY_A,
+		MLX_KEY_RIGHT, MLX_KEY_LEFT, MLX_KEY_UP, MLX_KEY_DOWN,
+		MLX_KEY_E, MLX_KEY_R, MLX_KEY_ESCAPE, MLX_KEY_M,
+		MLX_KEY_ENTER, MLX_KEY_Q
+	};
+	static const char	*defaults[CONFIG_MODAL_CONTROL_COUNT] = {
+		"W", "S", "D", "A", "RIGHT", "LEFT", "UP", "DOWN",
+		"E", "R", "ESC", "M", "ENTER", "Q"
+	};
+	t_menu_state		*menu;
+
+	if (!game)
+		return ;
+	menu = &game->menu;
+	init_menu_defaults(menu);
+	init_default_controls(menu, default_keys, defaults);
 	config_option_set_slider_raw(game, CONFIG_SLIDER_MOUSE_SENS,
 		menu->options.mouse_sens);
 	config_option_set_slider_raw(game, CONFIG_SLIDER_QUALITY,

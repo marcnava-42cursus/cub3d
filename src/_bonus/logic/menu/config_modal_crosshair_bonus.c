@@ -6,7 +6,7 @@
 /*   By: marcnava <marcnava@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 00:00:00 by marcnava          #+#    #+#             */
-/*   Updated: 2026/01/27 00:00:00 by marcnava         ###   ########.fr       */
+/*   Updated: 2026/02/07 23:48:04 by marcnava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,33 @@
  *
  * @param game Game state structure
  */
-static void	draw_crosshair(t_game *game)
+static void	draw_crosshair_segment(t_game *game, int offset)
 {
+	int			thickness;
 	int			center_x;
 	int			center_y;
-	int			i;
-	int			thickness;
 	uint32_t	color;
 
-	if (!game || !game->crosshair)
-		return ;
 	center_x = game->crosshair->width / 2;
 	center_y = game->crosshair->height / 2;
 	color = 0x000000FF;
+	thickness = -1;
+	while (thickness <= 1)
+	{
+		mlx_put_pixel(game->crosshair, center_x + offset, center_y + thickness,
+			color);
+		mlx_put_pixel(game->crosshair, center_x + thickness, center_y + offset,
+			color);
+		thickness++;
+	}
+}
+
+static void	draw_crosshair(t_game *game)
+{
+	int	i;
+
+	if (!game || !game->crosshair)
+		return ;
 	i = -20;
 	while (i <= 20)
 	{
@@ -40,15 +54,7 @@ static void	draw_crosshair(t_game *game)
 			i++;
 			continue ;
 		}
-		thickness = -1;
-		while (thickness <= 1)
-		{
-			mlx_put_pixel(game->crosshair, center_x + i,
-				center_y + thickness, color);
-			mlx_put_pixel(game->crosshair, center_x + thickness,
-				center_y + i, color);
-			thickness++;
-		}
+		draw_crosshair_segment(game, i);
 		i++;
 	}
 }

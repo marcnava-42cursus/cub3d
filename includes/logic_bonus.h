@@ -38,6 +38,7 @@ bool	process_mouse_rotation_advanced(t_game *game);
 // Movement bonus
 void	update_game_loop_advanced(void *param);
 void	init_movement_system_advanced(t_game *game);
+void	trigger_jump_advanced(t_game *game);
 
 // Inventory
 bool	player_has_block(const t_player *player);
@@ -51,8 +52,8 @@ bool	orb_projectile_start_take(t_game *game, int cell_x, int cell_y,
 			char block);
 bool	orb_projectile_start_place(t_game *game, int target_x, int target_y,
 			char block);
-bool	orb_projectile_start_elevator_place(t_game *game, int target_x,
-			int target_y, char block, int elevator_slot);
+bool	orb_projectile_start_elevator_place(t_game *game,
+			const int target_cell[2], char block, int elevator_slot);
 bool	orb_projectile_update(t_game *game, float delta_time);
 bool	orb_projectile_needs_redraw(const t_game *game);
 void	orb_projectile_mark_drawn(t_game *game);
@@ -93,7 +94,6 @@ float	controller_axis_delta(const t_game *game,
 void	controller_store_raw_state(t_game *game,
 			const GLFWgamepadstate *state);
 bool	controller_action_active(t_game *game, int action,
-			const struct s_controller_bind *bind,
 			const GLFWgamepadstate *state, float deadzone);
 bool	controller_action_pressed(t_game *game,
 			const GLFWgamepadstate *state, int action);
@@ -115,6 +115,7 @@ void	cursor_hook_advanced(double xpos, double ypos, void *param);
 bool	process_mouse_rotation_advanced(t_game *game);
 void	update_game_loop_advanced(void *param);
 void	init_movement_system_advanced(t_game *game);
+void	trigger_jump_advanced(t_game *game);
 			
 // Test / Prototype
 void	test_break_wall_in_front(t_game *game);
